@@ -1,0 +1,31 @@
+# SubSense — sampling-rate defaults (PRD §8.3; NFR-6: configuration-driven, never hard-coded)
+channels:
+  tilt:
+    default_hz: 2.0        # §8.3: default 2 Hz, range 1–10 Hz
+    min_hz: 1.0
+    max_hz: 10.0
+  displacement:
+    default_hz: 1.0        # matches expected deformation timescale; protects LoRa payload
+  vibration:
+    on_node_sampling_hz: 100.0   # §8.3: ≥100 Hz on-node, NEVER transmitted raw
+    min_on_node_hz: 100.0
+    transmitted_summary_hz: 1.0  # reduced on-node to summary statistics
+    summary_statistics: [rms, peak, crest_factor]
+  crack_width:
+    default_hz: 0.1
+    optional: true               # optional channel (§8.1)
+  temperature:
+    default_hz: 0.1
+    purpose: drift_compensation  # used for drift compensation, not primary signal
+
+node_metadata:
+  # battery / RSSI / SNR / packet_loss piggyback on data packets — no separate schedule (§8.3)
+  attach_to: every_uplink_packet
+
+adaptive_sampling:
+  # §8.3 adaptive-sampling multiplier: escalation to WATCH or above (§21.1)
+  trigger: risk_state_ge_watch
+  rate_multiplier: 3.0
+  applies_to: [affected_node, immediate_spatial_neighbours]
+  return_to_baseline: after_cooldown
+  cooldown_seconds: 900

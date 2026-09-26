@@ -1,0 +1,70 @@
+# SubSense — Isolation Forest config (PRD §14, T-043/T-045)
+# §14 code block, verbatim discipline: IsolationForest(n_estimators=300,
+# contamination="auto", random_state=42); anomaly_score = -score_samples(X).
+isolation_forest:
+  n_estimators: 300
+  contamination: "auto"
+  random_state: 42
+
+# Healthy-baseline definition (resolves Gap G-2 for the 3-class MVP):
+# "healthy" = normal on ALL THREE §12 label axes. §14's `df[risk_label=="GREEN"]`
+# filter is inoperable under the MVP vocabulary (no GREEN), so the healthy mask is
+#   anomaly_label == 0  AND  fault_label == "NONE"  AND  risk_label == "NORMAL"
+# which keeps sensor-faulted windows (risk_label=NORMAL under faults) OUT of the
+# baseline — the §12 "sensor is broken ≠ ground is moving" separation, applied
+# to the training set.
+healthy_baseline:
+  require_anomaly_zero: true
+  require_fault_none: true
+  require_risk: "NORMAL"
+
+# Decision threshold = quantile `far_alpha` of VALIDATION healthy scores
+# (chosen on validation only; the false-alarm rate on test ≈ 1 - far_alpha).
+far_alpha: 0.99
+
+# §14 ablation feature sets (A physical, B +temporal, C +spatial).
+# Names are §13 group keys resolved against the feature store.
+ablation:
+  A_physical:
+    - tilt_x
+    - tilt_y
+    - tilt_magnitude
+    - displacement
+    - strain
+  B_add_temporal:
+    - rolling_mean
+    - rolling_std
+    - rolling_min
+    - rolling_max
+    - slope
+    - velocity
+    - acceleration
+    - trend
+    - persistence
+    - change_point_score
+  C_add_spatial:
+    - neighbor_mean
+    - neighbor_std
+    - neighbor_anomaly_fraction
+    - spatial_coherence
+    - local_gradient
+    - local_strain
+    - hotspot_density
+    - distance_to_subsidence_center
+  # §14 full model input adds vibration + sensor-health groups on top of A/B/C
+  D_add_vibration:
+    - vibration_rms
+    - vibration_peak
+    - crest_factor
+    - band_energy_low
+    - band_energy_mid
+    - band_energy_high
+    - spectral_centroid
+  E_add_sensor_health:
+    - battery
+    - RSSI
+    - SNR
+    - packet_loss
+    - missing_ratio
+    - stuck_sensor_flag
+    - drift_score

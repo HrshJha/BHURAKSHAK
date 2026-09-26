@@ -1,0 +1,30 @@
+{
+  "dataset": "tabletop_trapdoor_v2",
+  "generated": "2026-09-26",
+  "generator": "scripts/generate_tabletop_dataset.py",
+  "generator_seed": 42,
+  "source_plan": "AI_Mine_Subsidence_Sensor_Data_and_Model_Training_Plan (4-node wireless mesh, VL53L0X + MPU9250 + Ultrasonic)",
+  "physical_model": {
+    "nodes": {"N1": "reference @ 0 cm", "N2": "active over TD1 @ 9.5 cm", "N3": "active over TD2 @ 19 cm", "N4": "reference @ 28.5 cm"},
+    "trapdoors": {"TD1": "M8 thread, 1.25 mm per turn", "TD2": "M8 thread, 1.25 mm per turn"},
+    "severity_thresholds_mm": {"class_0_stable": 0.0, "class_1_initiation": "0-15", "class_2_progressive": "15-35", "class_3_critical": ">35"}
+  },
+  "files": {
+    "raw/sensors/tabletop/trial_metadata.csv": "26 trials, 9 columns (adds achieved_displacement_mm_TD1/TD2 provenance)",
+    "raw/sensors/tabletop/raw_sensor_log.csv": "150,720 rows = 26 trials x 4 nodes x 10 Hz x duration",
+    "processed/sensors/tabletop/processed_windowed_dataset.csv": "14,968 rows = 2 s windows, 1 s step, 15 columns"
+  },
+  "declared_simplification": "one common 10 Hz sample rate for all sensors (plan specifies MPU 50-100 Hz + ToF/Ultrasonic 5-10 Hz) — stated up front for the demo",
+  "v2_fixes_vs_user_v1": [
+    "metadata targets now hit exactly per trapdoor (were matched in only 3/26 trials; ratios 0.90-2.0)",
+    "knob_turns monotonic (v1 had 152 decreasing runs across series)",
+    "known_displacement_mm is pure mechanism truth: class 0 exactly 0 mm, boundaries exact (v1 had sensor noise, negative ground truth)",
+    "both_sequential trials stagger TD2 onset 61-107 s after TD1 (v1 T024 moved both from t=0)",
+    "vibration bursts at step onsets + micro-collapses (v1 was static: per-class medians 0.0100-0.0103)",
+    "tof_delta is an independent crack channel with 0.4x coupling + own noise (v1 was a noiseless copy of displacement_mm, r=1.00000)",
+    "reference nodes N1/N4 ground truth and relative features exactly 0"
+  ],
+  "class_distribution_all_nodes": {"0": 10771, "1": 2053, "2": 1823, "3": 321},
+  "intended_use": "T-072 tabletop ground-truth protocol, T-074 domain-gap Stage 2 (synthetic -> tabletop), Random Forest + Isolation Forest two-model pipeline (plan section 7)",
+  "ground_truth_rule": "known_displacement_mm = knob_turns x 1.25 mm, mechanism-defined, never model-defined; labels derived only from that column"
+}

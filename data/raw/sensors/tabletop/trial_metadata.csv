@@ -1,0 +1,27 @@
+trial_id,condition,speed,step_pattern,duration_s,max_displacement_mm_target,datetime,achieved_displacement_mm_TD1,achieved_displacement_mm_TD2
+T001,TD1_only,slow,stepped,149.0,32.17,2026-08-03 10:00:00,32.17,0.0
+T002,TD2_only,fast,stepped,166.0,20.13,2026-08-03 10:12:00,0.0,20.13
+T003,both_together,fast,stepped,147.0,29.86,2026-08-03 10:24:00,29.86,29.86
+T004,both_sequential,slow,continuous,123.0,4.84,2026-08-03 10:36:00,4.84,4.84
+T005,TD1_only,slow,continuous,162.0,17.26,2026-08-03 10:48:00,17.26,0.0
+T006,TD2_only,fast,stepped,159.0,34.47,2026-08-03 11:00:00,0.0,34.47
+T007,both_together,fast,continuous,152.0,17.14,2026-08-03 11:12:00,17.14,17.14
+T008,both_sequential,slow,stepped,152.0,37.54,2026-08-03 11:24:00,37.54,37.54
+T009,TD1_only,fast,stepped,153.0,32.12,2026-08-03 11:36:00,32.12,0.0
+T010,TD2_only,slow,stepped,125.0,32.82,2026-08-03 11:48:00,0.0,32.82
+T011,both_together,slow,continuous,162.0,2.13,2026-08-03 12:00:00,2.13,2.13
+T012,both_sequential,slow,continuous,95.0,6.54,2026-08-03 12:12:00,6.54,6.54
+T013,TD1_only,slow,stepped,176.0,13.23,2026-08-03 12:24:00,13.23,0.0
+T014,TD2_only,slow,stepped,147.0,52.53,2026-08-03 12:36:00,0.0,52.53
+T015,both_together,slow,continuous,162.0,45.8,2026-08-03 12:48:00,45.8,45.8
+T016,both_sequential,fast,stepped,119.0,48.48,2026-08-03 13:00:00,48.48,48.48
+T017,TD1_only,slow,continuous,156.0,52.53,2026-08-03 13:12:00,52.53,0.0
+T018,TD2_only,fast,stepped,95.0,47.93,2026-08-03 13:24:00,0.0,47.93
+T019,both_together,fast,continuous,180.0,22.16,2026-08-03 13:36:00,22.16,22.16
+T020,both_sequential,slow,stepped,178.0,11.29,2026-08-03 13:48:00,11.29,11.29
+T021,TD1_only,fast,stepped,99.0,26.74,2026-08-03 14:00:00,26.74,0.0
+T022,TD2_only,fast,continuous,154.0,9.87,2026-08-03 14:12:00,0.0,9.87
+T023,both_together,fast,continuous,132.0,28.37,2026-08-03 14:24:00,28.37,28.37
+T024,both_sequential,fast,continuous,145.0,54.25,2026-08-03 14:36:00,54.25,54.25
+T025,TD1_only,slow,continuous,177.0,0.27,2026-08-03 14:48:00,0.27,0.0
+T026,TD2_only,fast,stepped,103.0,16.11,2026-08-03 15:00:00,0.0,16.11

@@ -1,0 +1,202 @@
+{
+  "seed": 42,
+  "splits": {
+    "train": [
+      "T001",
+      "T003",
+      "T005",
+      "T006",
+      "T007",
+      "T008",
+      "T009",
+      "T011",
+      "T013",
+      "T015",
+      "T016",
+      "T018",
+      "T019",
+      "T020",
+      "T022",
+      "T023",
+      "T025",
+      "T026"
+    ],
+    "validation": [
+      "T002",
+      "T010",
+      "T014",
+      "T021"
+    ],
+    "test": [
+      "T004",
+      "T012",
+      "T017",
+      "T024"
+    ]
+  },
+  "features": [
+    "roll",
+    "pitch",
+    "vibration_rms",
+    "accel_peak",
+    "tof_delta",
+    "tof_rate",
+    "displacement_mm",
+    "displacement_rate",
+    "relative_tilt",
+    "relative_vibration"
+  ],
+  "isolation_forest": {
+    "trained_on": "severity_class==0 windows of the 18 training trials only",
+    "n_estimators": 300,
+    "contamination": "auto",
+    "val_auc": 0.9990794879898861,
+    "test_auc": 0.9974518292653693,
+    "threshold_rule": "p99 of validation Stable scores",
+    "threshold": 0.5475688569833771
+  },
+  "random_forest": {
+    "params": {
+      "n_estimators": 200,
+      "max_depth": null,
+      "min_samples_leaf": 1
+    },
+    "class_weight": "balanced_subsample",
+    "cv": {
+      "cv_accuracy_mean": 0.9969023537197479,
+      "cv_macro_f1_mean": 0.9942016068183251,
+      "cv_critical_recall_mean": 0.5934974898398279,
+      "n_folds": 5
+    },
+    "test": {
+      "confusion_matrix": [
+        [
+          1506,
+          0,
+          0,
+          0
+        ],
+        [
+          9,
+          320,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          106,
+          0
+        ],
+        [
+          0,
+          0,
+          1,
+          118
+        ]
+      ],
+      "per_class": [
+        {
+          "class": "Stable",
+          "precision": 0.9941,
+          "recall": 1.0,
+          "f1": 0.997,
+          "support": 1506
+        },
+        {
+          "class": "Initiation",
+          "precision": 1.0,
+          "recall": 0.9726,
+          "f1": 0.9861,
+          "support": 329
+        },
+        {
+          "class": "Progressive",
+          "precision": 0.9907,
+          "recall": 1.0,
+          "f1": 0.9953,
+          "support": 106
+        },
+        {
+          "class": "Critical",
+          "precision": 1.0,
+          "recall": 0.9916,
+          "f1": 0.9958,
+          "support": 119
+        }
+      ],
+      "critical_recall": 0.9915966386554622
+    }
+  },
+  "baseline": {
+    "rule": "displacement_rate>0.06 OR vibration_rms>0.02 sustained 3 windows; class by displacement",
+    "per_class": [
+      {
+        "class": "Stable",
+        "precision": 0.8961,
+        "recall": 0.996,
+        "f1": 0.9434,
+        "support": 1506
+      },
+      {
+        "class": "Initiation",
+        "precision": 0.9497,
+        "recall": 0.5167,
+        "f1": 0.6693,
+        "support": 329
+      },
+      {
+        "class": "Progressive",
+        "precision": 0.9717,
+        "recall": 0.9717,
+        "f1": 0.9717,
+        "support": 106
+      },
+      {
+        "class": "Critical",
+        "precision": 1.0,
+        "recall": 0.8487,
+        "f1": 0.9182,
+        "support": 119
+      }
+    ]
+  },
+  "lead_time_s": {
+    "random_forest": {
+      "n_critical_series": 3,
+      "median_lead_time_s": 68.0,
+      "min_lead_time_s": 31.0,
+      "never_flagged": 0,
+      "per_series": {
+        "T017/N2": 84.0,
+        "T024/N2": 68.0,
+        "T024/N3": 31.0
+      }
+    },
+    "threshold_baseline": {
+      "n_critical_series": 3,
+      "median_lead_time_s": 74.0,
+      "min_lead_time_s": 29.0,
+      "never_flagged": 0,
+      "per_series": {
+        "T017/N2": 83.0,
+        "T024/N2": 74.0,
+        "T024/N3": 29.0
+      }
+    }
+  },
+  "ml_beats_baseline": {
+    "macro_f1": {
+      "rf": 0.9935597801536591,
+      "baseline": 0.8756418740967842
+    }
+  },
+  "artifacts": {
+    "models": [
+      "models/tabletop/isolation_forest.joblib",
+      "models/tabletop/random_forest.joblib"
+    ],
+    "predictions": "models/tabletop/test_predictions.csv",
+    "figure": "reports/tabletop_model_evaluation.png"
+  }
+}

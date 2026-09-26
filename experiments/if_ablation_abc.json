@@ -1,0 +1,106 @@
+{
+  "seed": 42,
+  "far_alpha": 0.99,
+  "split_rule": "event-level within scenario family, 60/20/20",
+  "ablation": {
+    "A_physical_only": {
+      "feature_groups": [
+        "A_physical"
+      ],
+      "n_features": 5,
+      "features": [
+        "tilt_x",
+        "tilt_y",
+        "tilt_magnitude",
+        "displacement",
+        "strain"
+      ],
+      "n_training_windows": 30349,
+      "threshold": 0.6792426618619772,
+      "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
+      "test_far_healthy": 0.010365251727541954,
+      "test_detection_anomalous": 0.23074908328968047,
+      "test_auc": 0.7917372924709452
+    },
+    "B_add_temporal": {
+      "feature_groups": [
+        "A_physical",
+        "B_add_temporal"
+      ],
+      "n_features": 15,
+      "features": [
+        "tilt_x",
+        "tilt_y",
+        "tilt_magnitude",
+        "displacement",
+        "strain",
+        "rolling_mean",
+        "rolling_std",
+        "rolling_min",
+        "rolling_max",
+        "slope",
+        "velocity",
+        "acceleration",
+        "trend",
+        "persistence",
+        "change_point_score"
+      ],
+      "n_training_windows": 30349,
+      "threshold": 0.7213510014338542,
+      "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
+      "test_far_healthy": 0.013115216471583698,
+      "test_detection_anomalous": 0.3672079622839183,
+      "test_auc": 0.8049991101979733
+    },
+    "C_add_spatial": {
+      "feature_groups": [
+        "A_physical",
+        "B_add_temporal",
+        "C_add_spatial"
+      ],
+      "n_features": 23,
+      "features": [
+        "tilt_x",
+        "tilt_y",
+        "tilt_magnitude",
+        "displacement",
+        "strain",
+        "rolling_mean",
+        "rolling_std",
+        "rolling_min",
+        "rolling_max",
+        "slope",
+        "velocity",
+        "acceleration",
+        "trend",
+        "persistence",
+        "change_point_score",
+        "neighbor_mean",
+        "neighbor_std",
+        "neighbor_anomaly_fraction",
+        "spatial_coherence",
+        "local_gradient",
+        "local_strain",
+        "hotspot_density",
+        "distance_to_subsidence_center"
+      ],
+      "n_training_windows": 30349,
+      "threshold": 0.721536911494156,
+      "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
+      "test_far_healthy": 0.011563954308278099,
+      "test_detection_anomalous": 0.42221058145625984,
+      "test_auc": 0.9412772677781077
+    }
+  },
+  "verdict": {
+    "question": "does adding spatial coherence reduce false alarms?",
+    "far_A_physical": 0.010365251727541954,
+    "far_B_add_temporal": 0.013115216471583698,
+    "far_C_add_spatial": 0.011563954308278099,
+    "far_reduced_B_over_A": false,
+    "far_reduced_C_over_B": true,
+    "auc_A": 0.7917372924709452,
+    "auc_B": 0.8049991101979733,
+    "auc_C": 0.9412772677781077
+  }
+}

@@ -1,0 +1,96 @@
+# SubSense — physics & simulator parameters (PRD §10, NFR-6, NFR-7)
+# All values are MVP starting defaults for the synthetic-data generator and the
+# live physics-consistency engine (§21). Nothing here may be hard-coded in src/.
+physics:
+  panel_center_x: 0.0          # metres, mesh-local frame (§9.2)
+  panel_center_y: 0.0
+  panel_width: 200.0           # metres — x extent of the working panel
+  panel_length: 300.0          # metres — y extent of the working panel
+  mine_depth: 150.0            # metres — depth of extraction below surface
+  extraction_height: 3.0       # metres — extracted seam thickness
+  subsidence_factor: 0.7       # fraction of extraction height reaching surface subsidence
+  influence_radius: 120.0      # metres — angle-of-draw influence radius
+  time_coefficient: 0.25       # per day — Knothe c in W(t) = W_max * (1 - e^(-c t))
+  maximum_subsidence: 2100.0   # millimetres — W_max at panel centre
+
+kernel:
+  # Spatial Gaussian kernel width: sigma = influence_radius / sigma_divisor (§10)
+  sigma_from: influence_radius
+  sigma_divisor: 2.0
+
+noise:                         # feeds dataset_manifest noise_parameters (§10.1)
+  tilt_noise_std_deg: 0.01
+  displacement_noise_std_mm: 0.5
+  vibration_noise_model: gaussian
+  vibration_noise_std: 0.02
+
+faults:                        # §10 injected sensor-fault parameters (T-016)
+  bias_mm: 2.0                 # constant offset once faulted
+  drift_mm_per_day: 1.5        # slow growing offset
+  dropout_probability: 0.05    # per-timestep chance in a dropout run
+  dropout_run_length: 8        # consecutive NaN timesteps per dropout run
+  spike_probability: 0.02      # per-timestep chance within a spike window
+  spike_magnitude_mm: 25.0
+  stuck_duration_steps: 12
+
+scenarios:                     # §10 scenario-engine parameters (T-018)
+  duration_days: 1.0
+  steps_per_day: 144           # 10-minute feature-grid cadence (§9.1)
+  anomaly_subsidence_threshold_mm: 5.0   # subsidence above this ⇒ anomaly_label=1
+  slow_c_multiplier: 0.3
+  rapid_c_multiplier: 8.0
+  accelerating_beta: 1.6       # time-warp exponent for accelerating growth
+  accelerating_duration_fraction: 0.35
+  irregular_osc_amplitude_fraction: 0.18
+  irregular_osc_periods: 3.0
+  local_anomaly_amplitude_mm: 8.0
+  local_anomaly_sigma_m: 15.0
+  local_anomaly_window_fraction: 0.25
+  second_zone_offset_m: 130.0
+  second_zone_amplitude_fraction: 0.65
+  second_zone_c_multiplier: 0.8
+  temperature_drift_amplitude_deg: 0.05
+  temperature_drift_mm: 1.2
+  temperature_period_days: 1.0
+  packet_loss_rate: 0.05
+  outage_fraction: 0.2
+  fault_injection_rate: 0.35
+  vibration_event_rate: 0.02
+  deformation_onset_fraction: 0.15
+
+telemetry:                     # node-metadata channel models (§8: battery/RSSI/SNR piggybacked)
+  battery_start_v: 4.1
+  battery_end_v: 3.6
+  rssi_mean_dbm: -95.0
+  rssi_std_dbm: 6.0
+  snr_mean_db: 0.0
+  snr_std_db: 5.0
+
+vibration:                     # component parameters for the vibration channel (T-015)
+  vehicle_rate_per_day: 6.0
+  vehicle_amplitude: 0.075
+  transient_rate_per_day: 0.5
+  transient_amplitude: 0.8
+  burst_rate_per_day: 0.1
+  burst_amplitude: 1.5
+  burst_duration_minutes: 3.0
+  on_node_window_seconds: 10.0   # synthetic on-node summarisation window
+
+strain:                        # horizontal-convergence model for inter-node strain (T-014)
+  horizontal_displacement_factor: 0.3   # u(p,t) = -factor · W(x,y,t) · (p-p0)/sigma
+
+grid:                          # virtual mesh for the synthetic generator (§10 scale)
+  nodes_per_side: 20           # 20×20 = 400 virtual nodes
+  spacing_m: 25.0
+  neighbour_radius_multiplier: 1.5   # Group C neighbourhood = this × spacing_m (§13/T-037)
+
+crs:                           # §9.2 dual coordinate reference system, per deployment
+  # Mesh-local frame: metres, origin at the mesh (0,0) — used for all inter-node
+  # distance/strain/gradient calculations. Global frame: WGS84 for GIS mapping
+  # and Sentinel-1/DGPS/NISAR alignment. Jharia study region (§18): the origin
+  # sits in the Jharia coalfield, Dhanbad district, Jharkhand.
+  origin_lat_deg: 23.75
+  origin_lon_deg: 86.45
+  utm_zone: 45                 # WGS84 UTM zone 45N covers 84°E–90°E
+  earth_radius_m: 6378137.0    # WGS84 equatorial radius for the local tangent plane
+  projection_model: equirectangular  # §9.2 allows the small-extent approximation

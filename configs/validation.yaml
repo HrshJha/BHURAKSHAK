@@ -1,0 +1,36 @@
+# SubSense — validation-split config (PRD §23, T-068)
+# All split fractions live here (NFR-6); code never hard-codes them.
+# §23: random row-shuffling across time is explicitly disallowed — the module
+# refuses to implement it.
+
+time_split:
+  # early → train, middle → validation, late → test (fractions of the span)
+  train_upper_fraction: 0.6
+  val_upper_fraction: 0.8
+
+spatial_split:
+  # sector A: x < 0 → train; sector B: x >= 0 and y < 0 → validation;
+  # sector C: x >= 0 and y >= 0 → test (fractions of the quadrant extents)
+  boundary_fraction_x: 0.5
+  boundary_fraction_y: 0.5
+
+node_split:
+  # §23 example: nodes 1–15 → train, nodes 16–20 → test (fractions of the
+  # node-id-ordered list; middle slice is validation)
+  train_upper_fraction: 0.75
+  val_upper_fraction: 0.875
+
+event_split:
+  # §23: train on slow deformation, test on accelerating deformation.
+  # Families are matched by substring against the event's scenario family.
+  train_families: ["stable", "slow", "vibration", "temperature", "packet", "sensor", "communication", "single_node", "multiple"]
+  test_families: ["accelerating", "rapid", "irregular"]
+  # validation draws from the train-side families at this fraction of events
+  validation_fraction: 0.2
+
+synthetic_split:
+  # §23 example: train σ=5–20, test σ=22–30 → hold out the TOP fraction of the
+  # subsidence-magnitude range (a complete parameter regime, never sampled in
+  # training) plus a middle slice for validation.
+  test_upper_fraction: 0.2
+  val_upper_fraction: 0.6

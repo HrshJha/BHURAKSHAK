@@ -1,0 +1,40 @@
+# SubSense — alert-engine configuration (PRD §21.1, FR-7, NFR-6)
+# Every threshold/persistence value here is the MVP starting default; the state
+# machine in src/ must read them from this file, never hard-code them.
+
+risk_levels: [GREEN, WATCH, WARNING, CRITICAL]
+
+escalation:
+  GREEN_to_WATCH:
+    probability_of: WATCH_or_higher
+    class_threshold: 0.5
+    persistence_windows: 3
+    requires: []
+  WATCH_to_WARNING:
+    probability_of: WARNING_or_higher
+    class_threshold: 0.6
+    persistence_windows: 3
+    requires:
+      - spatial_coherence_above_threshold
+      - displacement_trend_positive
+  WARNING_to_CRITICAL:
+    probability_of: CRITICAL
+    class_threshold: 0.7
+    persistence_windows: 2
+    requires:
+      - physics_residual_low
+      - neighbour_confirmation
+    min_confirming_neighbours: 2   # §21.1: confirmed by ≥2 neighbouring nodes
+
+de_escalation:
+  # Hysteresis: recovery is deliberately slower than alarm (§21.1)
+  persistence_multiplier: 1.5      # × the escalation persistence window at each level
+
+spatial_aggregation:
+  rule: max                        # region state = max over constituent node states
+  single_node_critical_requires_neighbour_confirmation: true
+
+manual_override:
+  requires_operator_id: true
+  requires_reason: true
+  suppresses_model_output: false   # underlying model output is always recorded (§21.1)

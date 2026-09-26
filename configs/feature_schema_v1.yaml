@@ -1,0 +1,126 @@
+# SubSense — feature schema v1 (PRD §11 dataset schema, §13 feature groups, §10.1 manifest)
+feature_schema_version: "v1"
+
+# §11 dataset schema — exact field list
+dataset_fields:
+  - timestamp
+  - node_id
+  - x
+  - y
+  - tilt_x
+  - tilt_y
+  - tilt_magnitude
+  - displacement
+  - strain
+  - tilt_velocity
+  - tilt_acceleration
+  - displacement_velocity
+  - displacement_acceleration
+  - vibration_rms
+  - vibration_peak
+  - neighbor_mean
+  - neighbor_std
+  - neighbor_anomaly_fraction
+  - spatial_coherence
+  - battery
+  - RSSI
+  - SNR
+  - packet_loss
+  - DGPS_displacement
+  - DGPS_velocity
+  - InSAR_displacement
+  - InSAR_velocity
+  - InSAR_coherence
+  - physics_displacement
+  - physics_residual
+  - anomaly_score
+  - progression_label
+  - risk_label
+
+# §13 feature groups A–J (feature names exactly as listed in the PRD table)
+feature_groups:
+  A_physical:
+    - tilt_x
+    - tilt_y
+    - tilt_magnitude
+    - displacement
+    - strain
+  B_temporal:
+    - rolling_mean
+    - rolling_std
+    - rolling_min
+    - rolling_max
+    - slope
+    - velocity
+    - acceleration
+    - trend
+    - persistence
+    - change_point_score
+  C_spatial:
+    - neighbor_mean
+    - neighbor_std
+    - neighbor_anomaly_fraction
+    - spatial_coherence
+    - local_gradient
+    - local_strain
+    - hotspot_density
+    - distance_to_subsidence_center
+  D_vibration:
+    - vibration_rms
+    - vibration_peak
+    - crest_factor
+    - band_energy_low
+    - band_energy_mid
+    - band_energy_high
+    - spectral_centroid
+  E_sensor_health:
+    - battery
+    - RSSI
+    - SNR
+    - packet_loss
+    - missing_ratio
+    - stuck_sensor_flag
+    - drift_score
+  F_physics:
+    - expected_displacement
+    - expected_tilt
+    - physics_residual
+    - physics_residual_velocity
+  G_dgps:
+    - vertical_displacement
+    - horizontal_displacement
+    - velocity
+    - acceleration
+    - mesh_vs_dgps_residual
+  H_insar:
+    - LOS_displacement
+    - LOS_velocity
+    - LOS_acceleration
+    - cumulative_displacement
+    - coherence
+    - spatial_gradient
+    - local_hotspot_density
+  I_terrain:
+    - elevation
+    - slope
+    - aspect
+    - curvature
+    - mine_depth
+    - panel_distance
+    - panel_geometry
+    - overburden
+  J_environmental:
+    features:
+      - rainfall
+      - temperature
+      - land_surface_temperature
+      - land_cover
+    # §13: Group J included ONLY if an ablation shows predictive value
+    enabled_by_default: false
+    gate: ablation_required
+
+# §13 target budget for the first model iteration
+model_input_budget:
+  min: 40
+  max: 70
+  first_iteration_groups: [A_physical, B_temporal, C_spatial, D_vibration, E_sensor_health, F_physics]

@@ -1,0 +1,93 @@
+{
+  "dataset_version": "v0.1.0",
+  "fault_parameters": {
+    "fault_types": [
+      "BIAS",
+      "STUCK",
+      "DROPOUT",
+      "SPIKE",
+      "DRIFT"
+    ],
+    "injection_rate": 0.35
+  },
+  "feature_schema_version": "v1",
+  "generator_version": "sim-0.1.0",
+  "noise_parameters": {
+    "displacement_noise_std": 0.5,
+    "tilt_noise_std": 0.01,
+    "vibration_noise_model": "gaussian"
+  },
+  "physics_parameters": {
+    "extraction_height": 3.0,
+    "influence_radius": 120.0,
+    "maximum_subsidence": 2100.0,
+    "mine_depth": 150.0,
+    "panel_center_x": 0.0,
+    "panel_center_y": 0.0,
+    "panel_length": 300.0,
+    "panel_width": 200.0,
+    "subsidence_factor": 0.7,
+    "time_coefficient": 0.25
+  },
+  "random_seed": 42,
+  "row_counts": {
+    "sequences_generated": 10000,
+    "sequences_planned": 4000000,
+    "synthetic_events_rows": 10000,
+    "synthetic_nodes_rows": 1440000,
+    "timesteps_per_sequence": 144
+  },
+  "scenario_parameters": {
+    "counts_per_scenario": {
+      "accelerating_subsidence": 625,
+      "communication_failure": 625,
+      "irregular_subsidence": 625,
+      "multiple_zones": 625,
+      "packet_loss": 625,
+      "rapid_subsidence": 625,
+      "sensor_bias": 625,
+      "sensor_drift": 625,
+      "sensor_dropout": 625,
+      "sensor_spike": 625,
+      "sensor_stuck": 625,
+      "single_node_disturbance": 625,
+      "slow_drift_temperature": 625,
+      "slow_subsidence": 625,
+      "stable_ground": 625,
+      "vibration_only": 625
+    },
+    "scenario_types": [
+      "stable_ground",
+      "slow_drift_temperature",
+      "sensor_bias",
+      "sensor_stuck",
+      "sensor_dropout",
+      "sensor_spike",
+      "sensor_drift",
+      "packet_loss",
+      "single_node_disturbance",
+      "vibration_only",
+      "slow_subsidence",
+      "accelerating_subsidence",
+      "rapid_subsidence",
+      "irregular_subsidence",
+      "multiple_zones",
+      "communication_failure"
+    ],
+    "taxonomy_rows": 12
+  },
+  "source_data_versions": {
+    "dgps": null,
+    "hardware": null,
+    "sentinel1": null
+  },
+  "split_definition": {
+    "test_range": {
+      "note": "assigned in Phase 4 (T-068)"
+    },
+    "train_range": {
+      "note": "assigned in Phase 4 (T-068)"
+    },
+    "type": "synthetic_parameter_holdout"
+  }
+}
