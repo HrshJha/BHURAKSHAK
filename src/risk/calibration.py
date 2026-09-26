@@ -4,10 +4,14 @@
 calibration metrics; calibration is fitted on a validation split **disjoint
 from training** (§15: "calibrated class probabilities" are the model output).
 
-Usage: fit :class:`ProbabilityCalibrator` on validation rows (features +
-true labels), then ``transform`` test probabilities. The calibrator maps each
-class's raw probability through a monotonic isotonic-like binned regression
-fitted on validation data only; the test frame is never touched during fitting.
+Method: **confidence calibration** — an isotonic regression maps the row's
+maximum raw probability (the model's confidence) to the observed accuracy at
+that confidence level on the validation split. At inference the top class's
+probability is replaced by the mapped value and the remainder is redistributed
+proportionally over the other classes, so rows still sum to exactly 1 (§15).
+Calibrating each class independently and renormalising would re-inflate the
+top class after the sum constraint — the known multiclass distortion this
+design avoids.
 """
 
 from __future__ import annotations
@@ -30,38 +34,40 @@ class CalibrationError(ValueError):
 
 @dataclass
 class ProbabilityCalibrator:
-    mapping: np.ndarray  # (n_classes, _BINS+1) bin edges + per-bin calibrated values
+    """Confidence calibrator: isotonic mapping fitted on validation data only."""
+
+    edges: np.ndarray  # (_BINS+1,) confidence bin edges
+    values: np.ndarray  # (_BINS,) calibrated confidence per bin
     classes: list[str]
 
-    def transform(self, proba: np.ndarray) -> np.ndarray:
-        """Map raw probabilities through the fitted per-class calibration.
+    def _calibrated_confidence(self, confidence: np.ndarray) -> np.ndarray:
+        idx = np.clip(np.searchsorted(self.edges, confidence, side="right") - 1, 0, _BINS - 1)
+        return self.values[idx]
 
-        Rows are renormalised to sum to 1 (§15: probabilities stay a distribution).
+    def transform(self, proba: np.ndarray) -> np.ndarray:
+        """Map raw probabilities through the fitted confidence calibration.
+
+        The top class receives the calibrated confidence; the other classes
+        share the remainder proportionally. Rows sum to exactly 1 (§15).
         """
         proba = np.asarray(proba, dtype=float)
         if proba.ndim != 2 or proba.shape[1] != len(self.classes):
             raise CalibrationError(f"expected (n, {len(self.classes)}) probabilities")
-        edges = self.mapping[:, : _BINS + 1]
-        values = self.mapping[:, _BINS + 1 :]
-        out = np.zeros_like(proba)
-        for k in range(proba.shape[1]):
-            idx = np.clip(np.searchsorted(edges[k], proba[:, k], side="right") - 1, 0, _BINS - 1)
-            out[:, k] = values[k, idx]
-        total = out.sum(axis=1, keepdims=True)
-        total[total == 0] = 1.0
-        return out / total
+        confidence = proba.max(axis=1)
+        top = proba.argmax(axis=1)
+        cal_conf = self._calibrated_confidence(confidence)
 
-
-def _fit_one_class(proba: np.ndarray, truth: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """Isotonic-style binning: per-bin mean predicted p vs empirical positive rate."""
-    from sklearn.isotonic import IsotonicRegression
-
-    iso = IsotonicRegression(out_of_bounds="clip", y_min=0.0, y_max=1.0)
-    iso.fit(proba, truth)
-    edges = np.linspace(0.0, 1.0, _BINS + 1)
-    centers = (edges[:-1] + edges[1:]) / 2.0
-    values = np.clip(iso.predict(centers), 0.0, 1.0)
-    return edges, values
+        out = proba.copy()
+        n_classes = proba.shape[1]
+        for i in range(proba.shape[0]):
+            others = [j for j in range(n_classes) if j != top[i]]
+            rest_sum = float(out[i, others].sum())
+            out[i, top[i]] = cal_conf[i]
+            if rest_sum > 0:
+                out[i, others] *= (1.0 - cal_conf[i]) / rest_sum
+            else:
+                out[i, others] = (1.0 - cal_conf[i]) / (n_classes - 1)
+        return out
 
 
 def fit_probability_calibrator(
@@ -87,13 +93,17 @@ def fit_probability_calibrator(
     if np.isnan(y_idx.astype(float)).any():
         raise CalibrationError("labels contain classes outside the model's classes")
 
-    mapping = np.zeros((len(classes), _BINS + 1 + _BINS))
-    for k, cls in enumerate(classes):
-        truth = (y_idx == k).astype(float)
-        edges, values = _fit_one_class(raw_proba[:, k], truth)
-        mapping[k, : _BINS + 1] = edges
-        mapping[k, _BINS + 1 :] = values
-    return ProbabilityCalibrator(mapping=mapping, classes=list(classes))
+    confidence = raw_proba.max(axis=1)
+    correct = (raw_proba.argmax(axis=1) == y_idx).astype(float)
+
+    from sklearn.isotonic import IsotonicRegression
+
+    iso = IsotonicRegression(out_of_bounds="clip", y_min=0.0, y_max=1.0)
+    iso.fit(confidence, correct)
+    edges = np.linspace(0.0, 1.0, _BINS + 1)
+    centers = (edges[:-1] + edges[1:]) / 2.0
+    values = np.clip(iso.predict(centers), 0.0, 1.0)
+    return ProbabilityCalibrator(edges=edges, values=values, classes=list(classes))
 
 
 def brier_score(proba: np.ndarray, y_true_idx: np.ndarray) -> float:

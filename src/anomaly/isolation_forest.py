@@ -118,6 +118,7 @@ def train_isolation_forest(
     for col in ("split",):
         if col not in df.columns:
             raise IsolationForestError("frame must carry a 'split' column (§23 discipline)")
+    df = df.reset_index(drop=True)  # boolean masks are positional; never trust index labels
 
     features = _resolve_features(feature_groups)
     missing = [c for c in features if c not in df.columns]

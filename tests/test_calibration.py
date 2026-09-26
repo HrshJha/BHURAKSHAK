@@ -16,18 +16,24 @@ from src.risk.calibration import (
 
 
 def _probabilities(n: int = 600, overconfident: bool = True, seed: int = 0):
-    """Probabilities that are systematically overconfident when overconfident=True."""
+    """Probabilities with a controlled confidence/accuracy gap.
+
+    overconfident=True: confidence 0.95 but the prediction is right only 75%
+    of the time (ECE ≈ 0.20). overconfident=False: confidence 0.55 with 55%
+    accuracy (ECE ≈ 0, properly calibrated).
+    """
     rng = np.random.default_rng(seed)
     classes = ["CRITICAL", "NORMAL", "WARNING"]
     y_idx = rng.integers(0, 3, size=n)
+    p_true = 0.95 if overconfident else 0.55
+    acc_rate = 0.75 if overconfident else 0.55
     proba = np.zeros((n, 3))
     for i in range(n):
         truth = y_idx[i]
-        # predicted probability of the true class: 0.55 when miscalibrated
-        p_true = 0.95 if overconfident else 0.55
+        pred_cls = truth if rng.random() < acc_rate else (truth + 1) % 3
         rest = (1.0 - p_true) / 2.0
         proba[i] = [rest, rest, rest]
-        proba[i, truth] = p_true
+        proba[i, pred_cls] = p_true
     return proba, y_idx, classes
 
 
@@ -50,7 +56,8 @@ def test_ece_detects_overconfidence() -> None:
     proba_c, y_c, _ = _probabilities(overconfident=False)
     ece_better = expected_calibration_error(proba_c, y_c)
     assert ece_bad > ece_better, "overconfident probabilities must have higher ECE"
-    assert ece_bad > 0.2
+    assert ece_bad > 0.15, f"confidence 0.95 at accuracy 0.75 must score ECE ≈ 0.2, got {ece_bad:.3f}"
+    assert ece_better < 0.1, "calibrated probabilities must have near-zero ECE"
 
 
 def test_reliability_curve_shape_and_monotonicity() -> None:
