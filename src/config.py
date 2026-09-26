@@ -28,6 +28,8 @@ _CONFIG_FILES = {
     "feature_schema": "feature_schema_v1.yaml",
     "preprocessing": "preprocessing.yaml",
     "anomaly": "anomaly.yaml",
+    "validation": "validation.yaml",
+    "risk_model": "risk_model.yaml",
 }
 
 
@@ -74,6 +76,16 @@ def feature_schema_config() -> dict[str, Any]:
 def anomaly_config() -> dict[str, Any]:
     """PRD §14 Isolation Forest parameters + ablation sets (T-043/T-045)."""
     return load_config("anomaly")
+
+
+def validation_config() -> dict[str, Any]:
+    """PRD §23 split fractions (T-068)."""
+    return load_config("validation")
+
+
+def risk_model_config() -> dict[str, Any]:
+    """PRD §15/§24 risk-model parameters (T-046…T-049)."""
+    return load_config("risk_model")
 
 
 def escalation_thresholds() -> dict[str, dict[str, Any]]:
