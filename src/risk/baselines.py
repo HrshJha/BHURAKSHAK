@@ -48,18 +48,18 @@ class Baselines:
         return df[self.features].to_numpy(dtype=float)
 
     def predict_logistic(self, df: pd.DataFrame) -> np.ndarray:
-        idx = self.logistic.predict(self.logistic_scaler.transform(self._matrix(df)))
-        return np.asarray(self.classes)[idx]
+        pred = self.logistic.predict(self.logistic_scaler.transform(self._matrix(df)))
+        return np.asarray(pred, dtype=object)
 
     def predict_random_forest(self, df: pd.DataFrame) -> np.ndarray:
-        idx = self.random_forest.predict(self._matrix(df))
-        return np.asarray(self.classes)[idx]
+        pred = self.random_forest.predict(self._matrix(df))
+        return np.asarray(pred, dtype=object)
 
 
 def _classes_from(df: pd.DataFrame) -> list[str]:
     classes = sorted(df["risk_label"].unique())
-    if classes != CLASSES:
-        raise BaselinesError(f"baselines expect the 3-class MVP order {CLASSES}, got {classes}")
+    if set(classes) != set(CLASSES):
+        raise BaselinesError(f"baselines expect the 3-class MVP classes {sorted(CLASSES)}, got {classes}")
     return classes
 
 

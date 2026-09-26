@@ -27,7 +27,7 @@ def _frame(n: int = 2400, seed: int = 0) -> pd.DataFrame:
         rows.append(
             pd.DataFrame(
                 {
-                    "event_id": f"E_{cls}_{i // 20:02d}_000" for i in range(n_per)
+                    "event_id": [f"E_{cls}_{i // 20:02d}_000" for i in range(n_per)]
                 }
             )
         )
@@ -80,12 +80,13 @@ def test_threshold_rule_persistence_requires_consecutive_windows() -> None:
     pred = threshold_rule_predict(df, velocity_warning=0.05, persistence_windows=3)
     assert list(pred[:2]) == ["NORMAL", "NORMAL"], "first windows cannot carry the label yet"
     assert set(pred[2:]) == {"WARNING"}
-    # a single hot window inside a calm series must NOT flag
+    # a single hot window inside a calm series must NOT flag (calm = low level
+    # AND low velocity; the level alone above score_warning counts as hot)
     df2 = pd.DataFrame(
         {
             "event_id": ["E", "E", "E", "E"],
             "node_id": ["V"] * 4,
-            "displacement": [1.0, 30.0, 1.0, 1.0],
+            "displacement": [0.0, 30.0, 0.0, 0.0],
             "velocity": [0.001, 0.3, 0.001, 0.001],
             "acceleration": [0.0001] * 4,
         }
