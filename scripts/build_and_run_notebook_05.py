@@ -61,13 +61,12 @@ matplotlib.use("agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from sklearn.metrics import f1_score, precision_recall_curve, precision_recall_fscore_support, roc_auc_score
-from sklearn.preprocessing import label_binarize
+from sklearn.metrics import average_precision_score, f1_score, precision_recall_fscore_support
 
 sys.path.insert(0, str(Path.cwd().parent))
 
 from src.risk.baselines import calibrate_threshold_rule, fit_baselines, threshold_rule_predict
-from src.risk.calibration import brier_score, expected_calibration_error, fit_probability_calibrator
+from src.risk.calibration import brier_score, expected_calibration_error, fit_probability_calibrator, reliability_curve
 from src.risk.xgboost_model import train_risk_model
 
 REPO = Path.cwd().parent
@@ -90,8 +89,10 @@ for typ, g in meta.groupby("type"):
         # validation 60-80%, test > 80% of the type's deformation range)
         val_cut = lo + 0.6 * (hi - lo)
         test_cut = lo + 0.8 * (hi - lo)
-        meta.loc[g.index[g.max_deformation > test_cut], "split"] = "test"
-        meta.loc[g.index[(g.max_deformation > val_cut) & (g.max_deformation <= test_cut)], "split"] = "validation"
+        test_ids = set(g.loc[g.max_deformation > test_cut, "event_id"])
+        val_ids = set(g.loc[(g.max_deformation > val_cut) & (g.max_deformation <= test_cut), "event_id"])
+        meta.loc[meta.event_id.isin(test_ids), "split"] = "test"
+        meta.loc[meta.event_id.isin(val_ids), "split"] = "validation"
     else:
         # constant magnitude (e.g. stable/sensor scenarios): the magnitude axis
         # is degenerate, so the holdout falls back to event identity (sorted
@@ -101,9 +102,9 @@ for typ, g in meta.groupby("type"):
         n_tr = int(round(len(g) * 0.6))
         n_va = int(round(len(g) * 0.2))
         ids = g["event_id"].tolist()
-        meta.loc[ids[:n_tr], "split"] = "train"
-        meta.loc[ids[n_tr : n_tr + n_va], "split"] = "validation"
-        meta.loc[ids[n_tr + n_va :], "split"] = "test"
+        meta.loc[meta.event_id.isin(ids[:n_tr]), "split"] = "train"
+        meta.loc[meta.event_id.isin(ids[n_tr : n_tr + n_va]), "split"] = "validation"
+        meta.loc[meta.event_id.isin(ids[n_tr + n_va :]), "split"] = "test"
 regime_test = set(meta.loc[meta.split == "test", "event_id"])
 regime_val = set(meta.loc[meta.split == "validation", "event_id"])
 df["split"] = np.where(df.event_id.isin(regime_test), "test",
@@ -171,16 +172,6 @@ print("models fitted:", list(test_pred))"""
 y_true = test_df["risk_label"].to_numpy()
 
 proba = xgb.predict_proba(test_df)
-y_bin = label_binarize(y_true, classes=CLASSES)
-pr_auc = {}
-for k, cls in enumerate(CLASSES):
-    prec, rec, _ = precision_recall_curve((y_true == cls).astype(int), proba[:, k])
-    # PR-AUC via average precision (step-weighted)
-    pr_auc[cls] = float(np.sum(np.diff(np.r_[1, rec[::-1]]) * -prec[::-1][:-1].repeat(1)) ) if False else float(
-        -np.sum(np.diff(np.r_[1.0, rec])[:-1] * np.r_[1.0, prec][:-1])
-    )
-# use sklearn's average_precision_score for correctness
-from sklearn.metrics import average_precision_score
 pr_auc = {cls: float(average_precision_score((y_true == cls).astype(int), proba[:, k]))
           for k, cls in enumerate(CLASSES)}
 
@@ -243,7 +234,9 @@ plt.show()"""
     new_markdown_cell("## Verdict"),
     new_code_cell(
         """print("T-049 XGBOOST RISK MODEL vs BASELINES")
-print(f"  split: unseen-parameter-regime (max_deformation > {top_cut:.1f} mm), {n.test} test events")
+print(f"  split: unseen-parameter-regime — top magnitude band per variable type, "
+      f"event-identity holdout for constant-magnitude types ({n_test_types} types)")
+print(f"  events: train={n.train} / validation={n.validation} / test={n.test}")
 print(f"  XGBoost macro-F1 {f1_xgb:.4f} vs Logistic {f1_log:.4f} / ThresholdRule {f1_rule:.4f}")
 print(f"  PR-AUC macro {pr_auc_macro:.4f} (per-class: {[f'{c}:{pr_auc[c]:.3f}' for c in CLASSES]})")
 print(f"  calibration: ECE {ece_raw:.4f} -> {ece_cal:.4f} (validation-fitted)")

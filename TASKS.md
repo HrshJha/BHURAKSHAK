@@ -356,54 +356,54 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** the run reports false-alarm rate for (A) physical-only, (B) +temporal, (C) +spatial and states explicitly whether adding spatial coherence reduced false alarms.
 - **Status:** done
 
-### [ ] T-046 — Implement the XGBoost risk classifier
+### [x] T-046 — Implement the XGBoost risk classifier
 - **PRD ref:** §15, FR-6
 - **Depends on:** T-022, T-023, T-024, T-042, T-043
 - **Output:** `src/risk/xgboost_model.py`, `tests/test_xgboost_model.py`
 - **Acceptance check:** `pytest tests/test_xgboost_model.py` passes, asserting the model targets the 3-class MVP `risk_label`, consumes feature groups A–F plus the Isolation Forest `anomaly_score` and `physics_residual`, and emits per-class probabilities that sum to 1.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-047 — Implement the §15 comparison baselines
+### [x] T-047 — Implement the §15 comparison baselines
 - **PRD ref:** §15, §35 (acceptance bullet 3)
 - **Depends on:** T-042
 - **Output:** `src/risk/baselines.py`, `tests/test_baselines.py`
 - **Acceptance check:** `pytest tests/test_baselines.py` passes, asserting threshold-rule, logistic-regression and random-forest baselines all train and predict on the same feature matrix as XGBoost.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-048 — Implement probability calibration and calibration metrics
+### [x] T-048 — Implement probability calibration and calibration metrics
 - **PRD ref:** §15 (calibrated probabilities), §24 (Brier, reliability curve, ECE)
 - **Depends on:** T-046
 - **Output:** `src/risk/calibration.py`, `tests/test_calibration.py`
 - **Acceptance check:** `pytest tests/test_calibration.py` passes, asserting Brier score, a reliability curve and expected calibration error are computed, and that calibration is fitted on a validation split disjoint from training.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-049 — Build the XGBoost risk-model notebook 05
+### [x] T-049 — Build the XGBoost risk-model notebook 05
 - **PRD ref:** §15, §33, §35 (acceptance bullet 3)
 - **Depends on:** T-046, T-047, T-048, T-068
 - **Output:** `notebooks/05_xgboost_risk_model.ipynb`
 - **Acceptance check:** the notebook executes end-to-end and demonstrates XGBoost beating threshold-rule and logistic-regression baselines on PR-AUC and F1 on the held-out unseen-parameter-regime split (never a random split).
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-050 — Implement the alert-engine state machine
+### [x] T-050 — Implement the alert-engine state machine
 - **PRD ref:** §21.1, FR-7
 - **Depends on:** T-004, T-046
 - **Output:** `src/risk/alert_engine.py`, `tests/test_alert_engine.py`
 - **Acceptance check:** `pytest tests/test_alert_engine.py` passes, asserting the three §21.1 transitions fire only after their required consecutive-window persistence and that NO single reading can escalate to CRITICAL.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-051 — Implement de-escalation hysteresis
+### [x] T-051 — Implement de-escalation hysteresis
 - **PRD ref:** §21.1 (de-escalation), §35 (acceptance bullet 8)
 - **Depends on:** T-050
 - **Output:** `src/risk/hysteresis.py`, `tests/test_hysteresis.py`
 - **Acceptance check:** `pytest tests/test_hysteresis.py` passes, asserting de-escalation requires 1.5× the escalation persistence window at each level and that a borderline oscillating input does not flap between states.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-052 — Implement per-node → region risk roll-up
+### [x] T-052 — Implement per-node → region risk roll-up
 - **PRD ref:** §21.1 (spatial aggregation)
 - **Depends on:** T-050
 - **Output:** `src/risk/aggregation.py`, `tests/test_aggregation.py`
 - **Acceptance check:** `pytest tests/test_aggregation.py` passes, asserting region state is the max over constituent node states, and that a single noisy node cannot produce a panel-wide CRITICAL without the ≥2-neighbour confirmation rule.
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-053 — Implement operator override logging
 - **PRD ref:** §21.1 (manual override)
@@ -514,12 +514,12 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** `pytest tests/test_group_j.py` passes, asserting Group J features are excluded from the model feature set by default and can only be enabled by a config flag that records the ablation result justifying inclusion.
 - **Status:** pending
 
-### [ ] T-068 — Implement the §23 leakage-safe validation splits
+### [x] T-068 — Implement the §23 leakage-safe validation splits
 - **PRD ref:** §23 (random row-shuffling explicitly disallowed)
 - **Depends on:** T-042
 - **Output:** `src/evaluation/splits.py`, `tests/test_splits.py`
 - **Acceptance check:** `pytest tests/test_splits.py` passes, asserting all five §23 split types (time, spatial, node, event, synthetic-parameter-regime) are implemented, that no `node_id` or time block appears in both train and test, and that a random row shuffle raises.
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-069 — Implement the §24 metrics module
 - **PRD ref:** §24

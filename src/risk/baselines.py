@@ -160,9 +160,9 @@ def calibrate_threshold_rule(val: pd.DataFrame) -> dict:
 
     cfg = risk_model_config()["baselines"]["threshold_rule"]
     best: dict | None = None
-    for v_mult in (0.5, 1.0, 2.0):
-        for a_mult in (0.5, 1.0, 2.0):
-            for s_mult in (0.5, 1.0, 2.0):
+    for v_mult in (1 / 2, 1.0, 2.0):
+        for a_mult in (1 / 2, 1.0, 2.0):
+            for s_mult in (1 / 2, 1.0, 2.0):
                 params = dict(
                     velocity_warning=float(cfg["velocity_warning"]) * v_mult,
                     accel_critical=float(cfg["accel_critical"]) * a_mult,

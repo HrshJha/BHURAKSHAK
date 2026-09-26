@@ -1,0 +1,193 @@
+"""Alert-engine state machine — PRD §21.1, FR-7 (T-050).
+
+FR-7: **no single reading can escalate risk straight to CRITICAL.** This
+module makes that requirement structural rather than aspirational:
+
+- each ``update`` moves a node's alert level by AT MOST ONE level, so even a
+  maximally severe window from GREEN lands on WATCH — reaching CRITICAL takes
+  at least one update per §21.1 transition;
+- every §21.1 transition fires only after its configured number of
+  CONSECUTIVE qualifying windows (configs/alerts.yaml, NFR-6 — class
+  thresholds and persistence counts are read from configuration, never
+  hard-coded);
+- every configured ``requires`` condition FAILS CLOSED: a window that does
+  not evidence it resets that transition's streak to zero.
+
+G-vocabulary mapping (user decision 2026-09-27, gaps G-1/G-2/G-3): the MVP
+risk model emits 3 classes while §21.1's machine uses 4 alert levels.
+
+    model NORMAL   → alert GREEN
+    model WARNING  → fills BOTH the WATCH and the WARNING slots
+    model CRITICAL → alert CRITICAL
+
+hence ``P(WATCH or higher) = 1 − P(NORMAL)`` and
+``P(WARNING or higher) = P(model WARNING) + P(model CRITICAL)``. WATCH is fed
+by weaker evidence than WARNING (lower class threshold, no spatial/physics
+confirmation required), so the state machine keeps all three §21.1
+transitions intact while the 3-class model stays untouched. The final
+4-class vocabulary is a post-MVP change and would only widen this mapping.
+
+De-escalation hysteresis is T-051 (recovery deliberately slower than alarm);
+per-node → region roll-up is T-052; operator overrides are T-053. This
+module owns per-node escalation only.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Any, Mapping
+
+from src.config import alerts_config, escalation_thresholds
+
+__all__ = ["AlertEngineError", "NodeAlertState", "AlertEngine", "probability_of", "CONDITION_KEYS"]
+
+#: The MVP model classes whose probabilities the engine consumes (§15).
+MODEL_CLASSES = ("NORMAL", "WARNING", "CRITICAL")
+
+#: §21.1 requirement name (configs/alerts.yaml) → the condition key that evidences it.
+CONDITION_KEYS: dict[str, str] = {
+    "spatial_coherence_above_threshold": "spatial_coherence_above_threshold",
+    "displacement_trend_positive": "displacement_trend_positive",
+    "physics_residual_low": "physics_residual_low",
+    "neighbour_confirmation": "neighbour_confirmations",
+}
+
+
+class AlertEngineError(ValueError):
+    """Raised on invalid alert-engine inputs or configuration."""
+
+
+def probability_of(target: str, proba: Mapping[str, float]) -> float:
+    """§21.1 aggregate ``P(target or higher)`` under the G-vocabulary mapping.
+
+    ``target`` is the ``probability_of`` value from configs/alerts.yaml
+    (``WATCH_or_higher``, ``WARNING_or_higher`` or ``CRITICAL``).
+    """
+    missing = [c for c in MODEL_CLASSES if c not in proba]
+    if missing:
+        raise AlertEngineError(f"probabilities missing model classes {missing}")
+    if target == "CRITICAL":
+        return float(proba["CRITICAL"])
+    if target == "WARNING_or_higher":
+        return float(proba["WARNING"]) + float(proba["CRITICAL"])
+    if target == "WATCH_or_higher":
+        return 1.0 - float(proba["NORMAL"])
+    raise AlertEngineError(f"unsupported probability_of target {target!r}")
+
+
+def _conditions_met(transition_cfg: Mapping[str, Any], conditions: Mapping[str, Any]) -> bool:
+    """Evaluate a transition's ``requires`` list; fail closed on missing evidence."""
+    for req in transition_cfg.get("requires", []):
+        key = CONDITION_KEYS.get(req)
+        if key is None:
+            raise AlertEngineError(f"unknown escalation requirement {req!r} in configs/alerts.yaml")
+        if req == "neighbour_confirmation":
+            need = int(transition_cfg.get("min_confirming_neighbours", 1))
+            got = int(conditions.get(key, 0))
+            if got < need:
+                return False
+        elif not bool(conditions.get(key, False)):
+            return False
+    return True
+
+
+@dataclass
+class NodeAlertState:
+    """§21.1 state for one node: current level + consecutive-window streaks."""
+
+    node_id: str
+    level: str = "GREEN"
+    #: streak of consecutive qualifying windows per transition key
+    streaks: dict[str, int] = field(default_factory=dict)
+
+
+class AlertEngine:
+    """Per-node §21.1 escalation state machine, fully configuration-driven."""
+
+    def __init__(
+        self,
+        escalation: Mapping[str, Mapping[str, Any]] | None = None,
+        levels: list[str] | None = None,
+    ) -> None:
+        self.escalation: dict[str, dict[str, Any]] = (
+            {k: dict(v) for k, v in escalation.items()}
+            if escalation is not None
+            else {k: dict(v) for k, v in escalation_thresholds().items()}
+        )
+        self.levels = list(levels) if levels is not None else list(alerts_config()["risk_levels"])
+        self._validate_config()
+        self._nodes: dict[str, NodeAlertState] = {}
+
+    def _validate_config(self) -> None:
+        if len(self.levels) < 2:
+            raise AlertEngineError(f"need at least two alert levels, got {self.levels}")
+        for l1, l2 in zip(self.levels, self.levels[1:]):
+            key = f"{l1}_to_{l2}"
+            t = self.escalation.get(key)
+            if t is None:
+                raise AlertEngineError(f"missing escalation transition {key!r}")
+            if int(t.get("persistence_windows", 0)) < 1:
+                raise AlertEngineError(f"transition {key!r} needs persistence_windows >= 1")
+            for req in t.get("requires", []):
+                if req not in CONDITION_KEYS:
+                    raise AlertEngineError(f"unknown escalation requirement {req!r}")
+
+    def state(self, node_id: str) -> NodeAlertState:
+        """Current state for ``node_id`` (GREEN before the node's first update)."""
+        st = self._nodes.get(node_id)
+        if st is None:
+            return NodeAlertState(node_id=node_id, level=self.levels[0])
+        return st
+
+    def _validate_proba(self, proba: Mapping[str, float]) -> None:
+        missing = [c for c in MODEL_CLASSES if c not in proba]
+        if missing:
+            raise AlertEngineError(f"probabilities missing model classes {missing}")
+        values = {c: float(proba[c]) for c in MODEL_CLASSES}
+        for c, v in values.items():
+            if not 0.0 <= v <= 1.0:
+                raise AlertEngineError(f"P({c})={v} outside [0, 1]")
+        total = sum(values.values())
+        if abs(total - 1.0) > 1e-4:
+            raise AlertEngineError(f"class probabilities must sum to 1 (§15), got {total}")
+
+    def update(
+        self,
+        node_id: str,
+        proba: Mapping[str, float],
+        *,
+        conditions: Mapping[str, Any] | None = None,
+    ) -> str:
+        """Feed one window for ``node_id``; return the node's alert level after it.
+
+        ``proba`` maps the three model classes to their probabilities (§15:
+        rows sum to 1). ``conditions`` evidences the configured ``requires``
+        items — ``spatial_coherence_above_threshold`` /
+        ``displacement_trend_positive`` / ``physics_residual_low`` as booleans
+        and ``neighbour_confirmations`` as an integer count; missing evidence
+        fails closed.
+
+        At most ONE escalation fires per update, and the window that fires a
+        transition earns no streak credit for the next one (its reading is
+        evaluated as a GREEN/WATCH/... reading from the next update on) — the
+        conservative reading of FR-7.
+        """
+        conditions = conditions or {}
+        self._validate_proba(proba)
+        st = self._nodes.setdefault(node_id, NodeAlertState(node_id=node_id, level=self.levels[0]))
+        idx = self.levels.index(st.level)
+        if idx == len(self.levels) - 1:
+            return st.level  # top level is absorbing here; de-escalation is T-051
+
+        l1, l2 = self.levels[idx], self.levels[idx + 1]
+        key = f"{l1}_to_{l2}"
+        t = self.escalation[key]
+        qualifies = probability_of(t["probability_of"], proba) > float(t["class_threshold"]) and _conditions_met(
+            t, conditions
+        )
+        st.streaks[key] = st.streaks.get(key, 0) + 1 if qualifies else 0
+        if st.streaks[key] >= int(t["persistence_windows"]):
+            st.level = l2
+            for k in st.streaks:
+                st.streaks[k] = 0
+        return st.level
