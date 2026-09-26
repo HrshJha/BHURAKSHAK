@@ -36,7 +36,8 @@ def _frame(n_events: int = 20, n_nodes: int = 20, steps: int = 144) -> pd.DataFr
                     "x": x,
                     "y": y,
                     "timestamp": ts,
-                    "displacement": np.linspace(0, 30, steps),
+                    # distinct amplitudes so the synthetic-split regime bands are well-defined
+                    "displacement": np.linspace(0.0, 6.0 * (e % 5 + 1), steps),
                 }
             )
         )
@@ -45,7 +46,7 @@ def _frame(n_events: int = 20, n_nodes: int = 20, steps: int = 144) -> pd.DataFr
 
 def _events_meta(df: pd.DataFrame) -> pd.DataFrame:
     g = df.groupby("event_id").agg(max_deformation=("displacement", "max")).reset_index()
-    return g
+    return g.rename(columns={"event_id": "id"})
 
 
 def test_time_split_is_early_middle_late_per_series() -> None:
@@ -116,16 +117,17 @@ def test_synthetic_split_holds_out_top_regime() -> None:
 
 
 def test_all_splits_refuse_row_level_leakage() -> None:
+    """Each split is exclusive on ITS OWN unit (§23 table): spatial/node splits
+    on node_id, event/synthetic splits on event_id; the time split guarantees
+    per-series temporal ordering instead (nodes may recur across events)."""
     df = _frame(n_events=8)
-    for name, fn in (
-        ("time", time_split),
-        ("spatial", spatial_split),
-        ("node", node_split),
-        ("event", event_split),
-    ):
-        split = fn(df)
-        unit = "event_id" if name == "event" else "node_id"
-        assert_no_leakage(df, split, unit)  # must not raise
+    assert_no_leakage(df, spatial_split(df), "node_id")
+    assert_no_leakage(df, node_split(df), "node_id")
+    assert_no_leakage(df, event_split(df), "event_id")
+    # time split: labels appear in temporal order within every series
+    work = df.assign(_s=time_split(df)).sort_values("timestamp")
+    order = work.groupby(["event_id", "node_id"])["_s"].agg(lambda s: list(dict.fromkeys(s)))
+    assert all(o == ["train", "validation", "test"] for o in order)
 
 
 def test_random_row_split_is_refused() -> None:

@@ -44,17 +44,19 @@ class SplitsError(ValueError):
     """Raised on invalid split requests or §23 violations."""
 
 
-def _check_fractions() -> tuple[float, float]:
-    cfg = validation_config()
-    pairs = [
-        (cfg["time_split"]["train_upper_fraction"], cfg["time_split"]["val_upper_fraction"]),
-        (cfg["node_split"]["train_upper_fraction"], cfg["node_split"]["val_upper_fraction"]),
-        (cfg["synthetic_split"]["test_upper_fraction"], cfg["synthetic_split"]["val_upper_fraction"]),
-    ]
-    for tr, va in pairs:
-        if not 0 < tr < va < 1:
-            raise SplitsError(f"split fractions must satisfy 0 < train < val < 1, got {tr}, {va}")
-    return pairs[0]
+def _fractions(block: str) -> tuple[float, float]:
+    """Ordered (train_upper, val_upper) fractions for a §23 split block."""
+    cfg = validation_config()[block]
+    if block == "synthetic_split":
+        # synthetic holds out the TOP for test; validation is the next band
+        tr = 1.0 - float(cfg["test_upper_fraction"])
+        va = float(cfg["val_upper_fraction"])
+    else:
+        tr = float(cfg["train_upper_fraction"])
+        va = float(cfg["val_upper_fraction"])
+    if not 0 < tr < va < 1:
+        raise SplitsError(f"{block} fractions must satisfy 0 < train < val < 1, got {tr}, {va}")
+    return tr, va
 
 
 def time_split(df: pd.DataFrame) -> pd.Series:
@@ -63,7 +65,7 @@ def time_split(df: pd.DataFrame) -> pd.Series:
     Applied per (event_id, node_id) series so the temporal ordering inside a
     series is preserved and every event contributes to all three phases.
     """
-    tr, va = _check_fractions()
+    tr, va = _fractions("time_split")
     out = pd.Series(index=df.index, dtype=object)
     for _key, g in df.groupby(["event_id", "node_id"], sort=False):
         g = g.sort_values("timestamp", kind="stable")
@@ -110,7 +112,7 @@ def node_split(df: pd.DataFrame) -> pd.Series:
     The ordered node-id list is sliced into train/val/test fractions; the
     middle slice is validation. A node's windows all share one label.
     """
-    tr, va = _check_fractions()
+    tr, va = _fractions("node_split")
     nodes = sorted(df["node_id"].unique())
     n = len(nodes)
     n_tr = max(1, int(round(n * tr)))
