@@ -405,26 +405,26 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** `pytest tests/test_aggregation.py` passes, asserting region state is the max over constituent node states, and that a single noisy node cannot produce a panel-wide CRITICAL without the ≥2-neighbour confirmation rule.
 - **Status:** done
 
-### [ ] T-053 — Implement operator override logging
+### [x] T-053 — Implement operator override logging
 - **PRD ref:** §21.1 (manual override)
 - **Depends on:** T-050
 - **Output:** `src/risk/override_log.py`, `tests/test_override_log.py`
 - **Acceptance check:** `pytest tests/test_override_log.py` passes, asserting an override records operator ID, reason and timestamp, and that the underlying model output is still recorded (never suppressed).
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-054 — Implement the explainability contribution breakdown
+### [x] T-054 — Implement the explainability contribution breakdown
 - **PRD ref:** §22, FR-15
 - **Depends on:** T-046
 - **Output:** `src/risk/explainability.py`, `tests/test_explainability.py`
 - **Acceptance check:** `pytest tests/test_explainability.py` passes, asserting every risk output is accompanied by a contributing-signal breakdown (e.g. tilt velocity, neighbour anomaly count, displacement trend, InSAR agreement, physics residual) and that emitting a bare probability without a breakdown raises.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-055 — Implement the model registry (FR-14)
+### [x] T-055 — Implement the model registry (FR-14)
 - **PRD ref:** §30, FR-14, §10.1
 - **Depends on:** T-021, T-043, T-046
 - **Output:** `src/risk/model_registry.py`, `models/registry.json`, `tests/test_model_registry.py`
 - **Acceptance check:** `pytest tests/test_model_registry.py` passes, asserting every logged prediction carries `model_name, model_version, feature_version, training_dataset_version, timestamp`, and that `training_dataset_version` resolves to an existing §10.1 manifest.
-- **Status:** pending
+- **Status:** done
 
 ---
 
