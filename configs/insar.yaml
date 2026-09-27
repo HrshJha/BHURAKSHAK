@@ -1,0 +1,57 @@
+# SubSense — Sentinel-1 InSAR configuration (PRD §18, T-056)
+# ONE study region, ONE acquisition geometry — §18 step 1. Every downstream
+# InSAR artifact (T-057…T-062) reads its geometry from this file; nothing in
+# src/ may hard-code these values (NFR-6 config discipline).
+
+study_region:
+  name: "Jharia coalfield (East Jharia), Dhanbad district, Jharkhand, India"
+  center_lat_deg: 23.75          # == mesh origin in configs/physics.yaml crs block
+  center_lon_deg: 86.45
+  bbox:                          # ~14 x 22 km window around the mesh deployment
+    lon_min: 86.38
+    lat_min: 23.65
+    lon_max: 86.52
+    lat_max: 23.85
+  crs: "EPSG:4326"               # interchange CRS; mesh-local frame via src/geospatial/crs.py
+
+acquisition:
+  mission: "Sentinel-1 (S1A through 2026-06, S1D from 2026-07 — fleet handover mid-2026)"
+  product_type: "IW_SLC__1S"     # Interferometric Wide swath, Level-1 SLC, VV+VH
+  relative_orbit: 121            # FIXED track for the whole stack (§18: one geometry)
+  orbit_direction: "DESCENDING"
+  track_repeat_cycle_days: 12    # 6-day pair interleaving for this latitude
+  acquisition_window:            # Jan–Sep 2026 → 21 dates (≥ 20-scene §18 floor)
+    start: "2026-01-01"
+    end: "2026-10-01"
+  expected_slices_per_date: 1    # one slice covers the bbox on this track
+
+processing:
+  # Toolchain: pure-NumPy/SciPy module (T-058) — rasterio/SNAP deliberately
+  # NOT dependencies (§9.2 precedent: simple, auditable implementations).
+  coregistration: "orbit-accuracy + DEM-assisted resampling (jitters < 0.1 pixel assumed for the MVP workflow)"
+  interferogram:
+    multi_look_factors: [2, 8]   # range x azimuth → ~20 x 20 m ground resolution
+    power_spectrum_filter: false # OFF for the MVP: the block-wise Goldstein implementation
+                                 # empirically ATTENUATES deformation phase on this small scene
+                                 # (caught by the synthetic-stack recovery check: pair phase
+                                 # +1.04 rad raw → +0.65 rad filtered). Multi-look averaging +
+                                 # the least-squares stack inversion already suppress noise;
+                                 # re-enable only after a spatially-adaptive rewrite.
+    min_baseline_days: 6         # shortest temporal baseline used per pair
+    max_baseline_days: 36        # longer pairs decorrelate over mining surfaces
+  coherence:
+    window: [5, 5]               # estimation window (multi-looked pixels)
+    mask_threshold: 0.45         # BELOW this a point is MASKED, never silently included (§18 step 4)
+  unwrapping: "skip (MVP) — unwrapped only via small-baseline stacking of filtered wraps; documented honestly in docs/insar_workflow.md"
+  atmosphere: "none (MVP) — regional/seasonal trends assessed by stacking; noted as the dominant unmodelled error"
+  reference_point:
+    selection: "highest-coherence, lowest-variance PS outside mapped subsidence zones"
+    max_displacement_rate_mm_yr: 3.0   # candidate refs must be below this
+  ps_selection:
+    amplitude_dispersion_max: 0.25     # classic A-dsigma PS gate
+    min_stack_coherence: 0.6
+    min_observations: 15               # of 21 dates
+
+outputs:
+  deformation_timeseries: "data/processed/insar/deformation_timeseries.parquet"  # T-059
+  inventory_manifest: "data/raw/sentinel1/inventory_manifest.json"               # T-057

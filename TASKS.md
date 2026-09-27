@@ -430,33 +430,33 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 
 ## Phase 4 — External Modalities, Validation Splits & Ablation
 
-### [ ] T-056 — Select and document the Sentinel-1 study region and orbit track
+### [x] T-056 — Select and document the Sentinel-1 study region and orbit track
 - **PRD ref:** §18 step 1
 - **Depends on:** T-001
 - **Output:** `docs/insar_study_region.md`, `configs/insar.yaml`
 - **Acceptance check:** the document fixes one Jharia study region and ONE consistent acquisition geometry/orbit track, with the bounding box and track number recorded in `configs/insar.yaml`.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-057 — Acquire the Sentinel-1 SLC scene stack
+### [x] T-057 — Acquire the Sentinel-1 SLC scene stack
 - **PRD ref:** §18 step 2
 - **Depends on:** T-056
 - **Output:** `data/raw/sentinel1/`, `scripts/download_sentinel1.py`
 - **Acceptance check:** between 20 and 40 SLC scenes for the fixed track are downloaded from the Copernicus Data Space Ecosystem and an inventory manifest lists each scene's date, track and geometry.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-058 — Implement the offline InSAR processing workflow
+### [x] T-058 — Implement the offline InSAR processing workflow
 - **PRD ref:** §18 step 3 (never on the Raspberry Pi), §4 (non-goal)
 - **Depends on:** T-057
 - **Output:** `src/geospatial/insar_processing.py`, `docs/insar_workflow.md`
 - **Acceptance check:** the workflow runs on the workstation producing interferograms from the SLC stack, and `docs/insar_workflow.md` records the toolchain, coherence masking, atmospheric-correction choice and reference-point selection so the run is reproducible.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-059 — Derive the InSAR deformation time series
+### [x] T-059 — Derive the InSAR deformation time series
 - **PRD ref:** §18 step 4
 - **Depends on:** T-058
 - **Output:** `data/processed/insar/deformation_timeseries.parquet`
 - **Acceptance check:** the output contains LOS displacement, velocity and coherence per persistent-scatterer point over the full scene stack, with low-coherence pixels masked rather than silently included.
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-060 — Map satellite features onto the mesh node/grid representation
 - **PRD ref:** §18 step 5, FR-13

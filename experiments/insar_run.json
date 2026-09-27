@@ -1,0 +1,13 @@
+{
+  "generated_at_utc": "2026-09-27T04:52:41.885755+00:00",
+  "mode": "synthetic (real scenes pending T-057 credentialed download)",
+  "n_dates": 21,
+  "n_pairs": 52,
+  "n_ps_points": 31198,
+  "phase_recovery_rms_rad": 0.017297108001835433,
+  "velocity_at_source_mm_yr": -11.5748607892923,
+  "velocity_farthest_mm_yr": -0.28235037421179526,
+  "imposed_rate_mm_yr": 12.0,
+  "low_coherence_masked": false,
+  "parquet": "data/processed/insar/deformation_timeseries.parquet"
+}
