@@ -479,26 +479,26 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** the notebook executes end-to-end and renders the Jharia deformation map plus the joined mesh-aligned InSAR feature table.
 - **Status:** done
 
-### [ ] T-063 — Implement the DGPS ingestion and residual pipeline
+### [x] T-063 — Implement the DGPS ingestion and residual pipeline
 - **PRD ref:** §19, FR-13
 - **Depends on:** T-031, T-032
 - **Output:** `src/geospatial/dgps.py`, `tests/test_dgps.py`
 - **Acceptance check:** `pytest tests/test_dgps.py` passes, asserting DGPS points ingest at sparse validation/control locations, produce a `mesh_vs_dgps_residual`, and are used as evaluation targets rather than primary at-scale training labels.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-064 — Implement Feature Group G (DGPS/GNSS)
+### [x] T-064 — Implement Feature Group G (DGPS/GNSS)
 - **PRD ref:** §13 Group G
 - **Depends on:** T-063
 - **Output:** `src/features/group_g_dgps.py`, `tests/test_group_g.py`
 - **Acceptance check:** `pytest tests/test_group_g.py` passes, asserting `vertical_displacement, horizontal_displacement, velocity, acceleration, mesh_vs_dgps_residual` are produced with names matching §13.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-065 — Build the DGPS validation notebook 09
+### [~] T-065 — Build the DGPS validation notebook 09
 - **PRD ref:** §19, §33
 - **Depends on:** T-064
 - **Output:** `notebooks/09_dgps_validation.ipynb`
 - **Acceptance check:** the notebook executes end-to-end and reports mesh-vs-DGPS displacement agreement and any detected systematic sensor bias.
-- **Status:** pending
+- **Status:** in-progress (builder written; notebook not yet executed — halted at user request)
 
 ### [ ] T-066 — Implement Feature Group I (Terrain / mine geometry)
 - **PRD ref:** §13 Group I
