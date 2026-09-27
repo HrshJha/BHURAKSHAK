@@ -546,19 +546,19 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 
 ## Phase 5 — Forecasting, Domain-Gap Validation & Final Pipeline
 
-### [ ] T-072 — Implement the tabletop ground-truth analysis harness
+### [x] T-072 — Implement the tabletop ground-truth analysis harness
 - **PRD ref:** §23.1
 - **Depends on:** T-069
 - **Output:** `src/evaluation/tabletop_protocol.py`, `docs/tabletop_ground_truth_protocol.md`, `tests/test_tabletop_protocol.py`
 - **Acceptance check:** `pytest tests/test_tabletop_protocol.py` passes on recorded fixture data, asserting each `run_id` links rig actuator setting → independent reference measurement → raw sensor data → derived risk state, and that mesh-estimated vs reference displacement error is computed. *(Software harness only — operating the physical rig is out of workstream scope.)*
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-073 — Run domain-gap Stage 1 (synthetic → synthetic)
+### [x] T-073 — Run domain-gap Stage 1 (synthetic → synthetic)
 - **PRD ref:** §23.2 stage 1
 - **Depends on:** T-068, T-069, T-046
 - **Output:** `experiments/domain_gap_stage1.json`
 - **Acceptance check:** the run reports model performance on the §23 held-out unseen-parameter-regime split, establishing internal validity within the simulator's parameter space.
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-074 — Run domain-gap Stage 2 (synthetic → tabletop)
 - **PRD ref:** §23.2 stage 2, §35 (acceptance bullet 7)
