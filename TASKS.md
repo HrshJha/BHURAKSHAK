@@ -560,19 +560,19 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** the run reports model performance on the §23 held-out unseen-parameter-regime split, establishing internal validity within the simulator's parameter space.
 - **Status:** done
 
-### [ ] T-074 — Run domain-gap Stage 2 (synthetic → tabletop)
+### [x] T-074 — Run domain-gap Stage 2 (synthetic → tabletop)
 - **PRD ref:** §23.2 stage 2, §35 (acceptance bullet 7)
 - **Depends on:** T-072, T-073
 - **Output:** `experiments/domain_gap_stage2.json`
 - **Acceptance check:** the trained-on-synthetic model runs UNMODIFIED on real tabletop sensor data and its risk classification is scored against the §23.1 independent ground truth. *(Expected to block until real tabletop sensor data exists — hardware-dependent input.)*
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-075 — Publish the honest domain-gap report
+### [x] T-075 — Publish the honest domain-gap report
 - **PRD ref:** §23.2, §35 (acceptance bullet 7), Honesty Statement
 - **Depends on:** T-074
 - **Output:** `reports/domain_gap.md`
 - **Acceptance check:** the report states Stage 2 performance side-by-side with the Stage 1 synthetic-split result and explicitly reports degradation if present — passing requires the degradation be stated, not omitted.
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-076 — Implement the temporal forecasting model
 - **PRD ref:** §16 (Phase 2 — implemented AFTER Isolation Forest + XGBoost are validated)

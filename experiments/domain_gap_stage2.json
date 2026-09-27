@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "task": "T-074 (\u00a723.2 domain-gap Stage 2: synthetic \u2192 tabletop)",
+    "data_provenance": "RECORDED STAND-IN: data/recorded/tabletop/raw_sensor_log.csv is the seeded output of scripts/generate_tabletop_dataset.py (seed 42). The physical \u00a723.1 rig campaign is out of workstream scope; a real campaign's CSVs with the same schema run through this script unchanged.",
+    "status": "conditionally_executed (harness verified; real-hardware validation pending)",
+    "model": "\u00a715 XGBoost trained on the synthetic store (T-068 event split) \u2014 run UNMODIFIED",
+    "bridge": {
+      "channels": [
+        "tilt_x",
+        "tilt_y",
+        "tilt_magnitude",
+        "displacement",
+        "strain",
+        "vibration_rms"
+      ],
+      "windowing": "\u00a710 config (60 steps / stride 10) via src/features/windowing.build_windows",
+      "model_feature_set": "A+B (the \u00a713 groups available on BOTH domains); C/D/E/F absent on the rig",
+      "channel_substitutions": {
+        "strain": "ToF crack-opening delta (mm) \u2014 the rig's physical analog of horizontal convergence",
+        "vibration_rms": "|a| deviation from the node's median magnitude (g)"
+      }
+    },
+    "windows": {
+      "bridged": 14552,
+      "reference_matched": 14552,
+      "unmatched_excluded": 0
+    }
+  },
+  "results": {
+    "model": "A/B feature set (tilt/displacement/strain/vibration + temporal), trained on synthetic",
+    "risk_state_confusion": {
+      "NORMAL": {
+        "NORMAL": 10341,
+        "WARNING": 14,
+        "CRITICAL": 0
+      },
+      "WARNING": {
+        "NORMAL": 3543,
+        "WARNING": 113,
+        "CRITICAL": 220
+      },
+      "CRITICAL": {
+        "NORMAL": 321,
+        "WARNING": 0,
+        "CRITICAL": 0
+      }
+    },
+    "per_state_recall": {
+      "NORMAL": 0.9986479961371318,
+      "WARNING": 0.029153766769865842,
+      "CRITICAL": 0.0
+    },
+    "detection": {
+      "precision": 0.9596541786743515,
+      "recall": 0.07934238741958542,
+      "f1": 0.14656690140845072,
+      "tp": 333,
+      "fp": 14,
+      "fn": 3864,
+      "tn": 10341,
+      "pr_auc": 0.9026203761353676
+    },
+    "displacement_error": {
+      "n_windows": 7276,
+      "mae_mm": 0.5414972512369393,
+      "rmse_mm": 0.8435519137886437,
+      "max_abs_mm": 4.2038333333333355,
+      "bias_mm": -0.4024700842953977
+    },
+    "p_critical_stats": {
+      "mean": 0.016872096806764603,
+      "max": 0.8677636384963989,
+      "n_above_alert_threshold": 122
+    },
+    "diagnostic_full_contract_nanfill": {
+      "note": "full \u00a715 feature contract with C/D/E/F modalities fed as NaN \u2014 measures modality scarcity, NOT the sensor domain gap; informational only",
+      "pred_label_counts": {
+        "NORMAL": 14552
+      },
+      "p_critical_stats": {
+        "mean": 0.0020847637206315994,
+        "max": 0.20461004972457886,
+        "n_above_alert_threshold": 0
+      }
+    }
+  },
+  "in_regime_reference": {
+    "source": "experiments/ablation_a_to_f.json arm E_add_physics (test split)",
+    "f1": 0.39816556914393225,
+    "pr_auc": 0.4826248636071405,
+    "brier": 0.055816675140326365
+  }
+}
