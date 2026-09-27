@@ -34,9 +34,11 @@ def _mini_timeseries() -> pd.DataFrame:
     valid on the final date — exercising fallback, masking and no-row paths.
     """
     specs = {
+        # positions under the corrected descending mapping: range (row) → E–W
+        # (index 0 = east edge), azimuth (column) → N–S (index 0 = north edge).
         "PS_ORIG": {"pos": (1, 1), "vals": [-2.0, -4.0, -6.0, np.nan], "masked": [False] * 4, "coh": 9.0},
-        "PS_EAST": {"pos": (1, 2), "vals": [0.0, np.nan, np.nan, np.nan], "masked": [False, True, True, True], "coh": 8.5},
-        "PS_NORTH": {"pos": (0, 1), "vals": [np.nan, 3.0, 3.5, np.nan], "masked": [False] * 4, "coh": 8.0},
+        "PS_EAST": {"pos": (0, 1), "vals": [0.0, np.nan, np.nan, np.nan], "masked": [False, True, True, True], "coh": 8.5},
+        "PS_NORTH": {"pos": (1, 0), "vals": [np.nan, 3.0, 3.5, np.nan], "masked": [False] * 4, "coh": 8.0},
     }
     rows = []
     for ps_id, s in specs.items():
@@ -90,16 +92,19 @@ def test_ps_at_grid_centre_maps_to_mesh_origin() -> None:
 
 
 def test_axis_directions_match_descending_convention() -> None:
-    """Descending track: azimuth rows run north→south, range columns west→east."""
+    """Descending right-looking pass: range (cross-track, looks WEST) index
+    increases east→west; azimuth (along-track) index increases north→south."""
     geo = georeference_ps(_mini_timeseries(), grid_shape=(3, 3))
     crs = crs_from_config()
-    east = geo.loc[geo.ps_id == "PS_EAST"].iloc[0]
-    north = geo.loc[geo.ps_id == "PS_NORTH"].iloc[0]
-    south = geo.loc[geo.ps_id == "PS_ORIG"].iloc[0]
-    assert east["lon"] > crs.origin_lon_deg  # column 2 → east of centre
-    assert north["lat"] > crs.origin_lat_deg  # row 0 → north of centre
-    assert south["lat"] == pytest.approx(crs.origin_lat_deg, abs=1e-9)
-    assert south["lon"] == pytest.approx(crs.origin_lon_deg, abs=1e-9)
+    east = geo.loc[geo.ps_id == "PS_EAST"].iloc[0]   # (row 0, col 1)
+    north = geo.loc[geo.ps_id == "PS_NORTH"].iloc[0] # (row 1, col 0)
+    centre = geo.loc[geo.ps_id == "PS_ORIG"].iloc[0] # (row 1, col 1)
+    assert east["lon"] > centre["lon"]  # row 0 → east edge of the bbox
+    assert east["lat"] == pytest.approx(centre["lat"], abs=1e-9)
+    assert north["lat"] > centre["lat"]  # column 0 → north edge
+    assert north["lon"] == pytest.approx(centre["lon"], abs=1e-9)
+    assert centre["lat"] == pytest.approx(crs.origin_lat_deg, abs=1e-9)
+    assert centre["lon"] == pytest.approx(crs.origin_lon_deg, abs=1e-9)
 
 
 def test_georeference_xy_consistent_with_crs_round_trip() -> None:

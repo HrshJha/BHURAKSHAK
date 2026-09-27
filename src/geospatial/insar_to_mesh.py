@@ -13,8 +13,11 @@ scatterers live in multi-look index space, and the mesh node table
 (``node_id, x, y`` mesh-local metres). Three steps:
 
 1. **georeference** — map PS indices to WGS84 across the configs/insar.yaml
-   study bbox. Descending-track convention (T121 DESC): the azimuth axis runs
-   north→south with row index, the range axis west→east with column index.
+   study bbox. Sentinel-1 geometry (T121 DESC): the AZIMUTH axis is
+   along-track — the satellite flies southward, so azimuth index increases
+   north→south with column index; the RANGE axis is cross-track — a
+   descending, right-looking pass looks west, so range index increases
+   east→west with row index (an ascending pass mirrors the longitude axis).
    For the synthetic MVP scene this linear index→bbox mapping IS the
    georeferencing (documented honestly); real geocoded PS products carry
    lat/lon directly and enter the identical join unchanged.
@@ -112,12 +115,13 @@ def georeference_ps(
     if n_rows < 1 or n_cols < 1:
         raise InsarToMeshError(f"degenerate PS grid shape {(n_rows, n_cols)}")
 
-    r = timeseries["range_idx"].to_numpy(dtype=float)
-    a = timeseries["azimuth_idx"].to_numpy(dtype=float)
-    # Descending-track convention: row 0 → lat_max (north), rows increase
-    # southward; column 0 → lon_min (west), columns increase eastward.
-    lat = lat_max - (r / max(n_rows - 1, 1)) * (lat_max - lat_min)
-    lon = lon_min + (a / max(n_cols - 1, 1)) * (lon_max - lon_min)
+    r = timeseries["range_idx"].to_numpy(dtype=float)      # cross-track → E–W
+    a = timeseries["azimuth_idx"].to_numpy(dtype=float)    # along-track → N–S
+    # Descending, right-looking (looks WEST): range index increases eastward
+    # index 0 at the EAST edge (lon_max), rows increase westward; azimuth
+    # index increases southward (flight direction), column 0 at lat_max.
+    lon = lon_max - (r / max(n_rows - 1, 1)) * (lon_max - lon_min)
+    lat = lat_max - (a / max(n_cols - 1, 1)) * (lat_max - lat_min)
 
     crs_def = crs if crs is not None else crs_from_config()
     x, y = wgs84_to_local(crs_def, lat, lon)

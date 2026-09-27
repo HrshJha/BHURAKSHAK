@@ -472,12 +472,12 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** `pytest tests/test_group_h.py` passes, asserting `LOS_displacement, LOS_velocity, LOS_acceleration, cumulative_displacement, coherence, spatial_gradient, local_hotspot_density` are produced with names matching §13.
 - **Status:** done
 
-### [ ] T-062 — Build the Sentinel-1 integration notebook 08
+### [x] T-062 — Build the Sentinel-1 integration notebook 08
 - **PRD ref:** §18, §33
 - **Depends on:** T-061
 - **Output:** `notebooks/08_sentinel1_integration.ipynb`
 - **Acceptance check:** the notebook executes end-to-end and renders the Jharia deformation map plus the joined mesh-aligned InSAR feature table.
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-063 — Implement the DGPS ingestion and residual pipeline
 - **PRD ref:** §19, FR-13
