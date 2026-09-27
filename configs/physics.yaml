@@ -84,6 +84,19 @@ grid:                          # virtual mesh for the synthetic generator (§10 
   spacing_m: 25.0
   neighbour_radius_multiplier: 1.5   # Group C neighbourhood = this × spacing_m (§13/T-037)
 
+terrain:                       # Feature Group I synthetic terrain (T-066; G-10)
+  # G-10 honesty: no real DEM or mine survey exists in MVP scope. This block
+  # parameterises a SMOOTH SYNTHETIC surface (regional dip + seeded gentle
+  # undulations); every emitted Group I frame labels its provenance in
+  # terrain_source. mine_depth / panel geometry stay in the physics block.
+  source: synthetic
+  base_elevation_m: 0.0            # surface height at the mesh origin (datum)
+  regional_slope_fraction: 0.002   # rise per run of the regional dip (2 m per km)
+  regional_slope_azimuth_deg: 250.0 # downslope azimuth, degrees clockwise from north
+  undulation_amplitude_m: 3.0      # gentle local relief, metres
+  undulation_wavelength_m: 180.0
+  seed: 42                         # reproducible undulation phases
+
 crs:                           # §9.2 dual coordinate reference system, per deployment
   # Mesh-local frame: metres, origin at the mesh (0,0) — used for all inter-node
   # distance/strain/gradient calculations. Global frame: WGS84 for GIS mapping

@@ -1,0 +1,36 @@
+# SubSense — Feature Group J (Environmental) gate & synthetic sources (T-067)
+# PRD §13 Group J: "included **only if** an ablation shows predictive value"
+# (§38 repeats the gate). Nothing here may be hard-coded in src/ (NFR-6).
+#
+# DEFAULT STATE: Group J is EXCLUDED from the model feature set. Enabling it
+# requires BOTH (a) `enabled: true` below AND (b) a recorded ablation result
+# in the `gate` block naming the study, the metric it moved, the measured
+# delta (>= min_pr_auc_delta) and who/when decided. src/features/
+# group_j_environmental.py enforces this mechanically.
+
+enabled: false                 # master flag — insufficient on its own (see gate)
+
+gate:
+  status: not_run              # one of: not_run | pending | included | excluded
+  ablation_id: null            # e.g. "ablation_J" under experiments/
+  metric: null                 # the decision metric, e.g. "pr_auc"
+  delta: null                  # measured effect of adding Group J (float)
+  decided_by: null             # task/reference that made the call
+  decided_on: null             # ISO date of the decision
+  min_pr_auc_delta: 0.01       # inclusion threshold for the PR-AUC delta
+
+sources:                       # provenance of each channel (none real in MVP)
+  rainfall: synthetic (no real weather feed in MVP scope)
+  temperature: synthetic (no real weather feed in MVP scope)
+  land_surface_temperature: synthetic (no real satellite LST product in MVP scope)
+  land_cover: synthetic (no real land-cover map in MVP scope)
+
+synthetic:                     # parameters for the G-9-style stand-in generator
+  seed: 42
+  temp_mean_c: 28.0            # Jharia annual-ish mean surface air temperature
+  temp_amplitude_c: 6.0        # diurnal swing half-amplitude
+  temp_peak_hour: 15.0         # hour of peak air temperature
+  lst_offset_c: 8.0            # land surface runs hotter than air
+  lst_damping: 0.6             # LST diurnal amplitude = damping × air amplitude
+  storm_rate_per_day: 0.7      # regional storm arrivals (Poisson)
+  storm_mean_intensity_mm: 12.0  # exponential intensity mean per storm

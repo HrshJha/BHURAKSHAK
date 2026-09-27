@@ -493,26 +493,26 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** `pytest tests/test_group_g.py` passes, asserting `vertical_displacement, horizontal_displacement, velocity, acceleration, mesh_vs_dgps_residual` are produced with names matching §13.
 - **Status:** done
 
-### [~] T-065 — Build the DGPS validation notebook 09
+### [x] T-065 — Build the DGPS validation notebook 09
 - **PRD ref:** §19, §33
 - **Depends on:** T-064
 - **Output:** `notebooks/09_dgps_validation.ipynb`
 - **Acceptance check:** the notebook executes end-to-end and reports mesh-vs-DGPS displacement agreement and any detected systematic sensor bias.
 - **Status:** in-progress (builder written; notebook not yet executed — halted at user request)
 
-### [ ] T-066 — Implement Feature Group I (Terrain / mine geometry)
+### [x] T-066 — Implement Feature Group I (Terrain / mine geometry)
 - **PRD ref:** §13 Group I
 - **Depends on:** T-032
 - **Output:** `src/features/group_i_terrain.py`, `tests/test_group_i.py`
 - **Acceptance check:** `pytest tests/test_group_i.py` passes, asserting `elevation, slope, aspect, curvature, mine_depth, panel_distance, panel_geometry, overburden` are produced with names matching §13.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-067 — Implement Feature Group J (Environmental) behind an ablation gate
+### [x] T-067 — Implement Feature Group J (Environmental) behind an ablation gate
 - **PRD ref:** §13 Group J ("included **only if** an ablation shows predictive value"), §38
 - **Depends on:** T-070
 - **Output:** `src/features/group_j_environmental.py`, `tests/test_group_j.py`
 - **Acceptance check:** `pytest tests/test_group_j.py` passes, asserting Group J features are excluded from the model feature set by default and can only be enabled by a config flag that records the ablation result justifying inclusion.
-- **Status:** pending
+- **Status:** done
 
 ### [x] T-068 — Implement the §23 leakage-safe validation splits
 - **PRD ref:** §23 (random row-shuffling explicitly disallowed)
@@ -521,26 +521,26 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** `pytest tests/test_splits.py` passes, asserting all five §23 split types (time, spatial, node, event, synthetic-parameter-regime) are implemented, that no `node_id` or time block appears in both train and test, and that a random row shuffle raises.
 - **Status:** done
 
-### [ ] T-069 — Implement the §24 metrics module
+### [x] T-069 — Implement the §24 metrics module
 - **PRD ref:** §24
 - **Depends on:** T-046
 - **Output:** `src/evaluation/metrics.py`, `tests/test_metrics.py`
 - **Acceptance check:** `pytest tests/test_metrics.py` passes, asserting precision/recall/F1/PR-AUC, MAE/RMSE/max-abs-error/bias, IoU and hotspot-localisation error, Brier/reliability/ECE, and false-alarms-per-day / median lead time / P10 lead time / missed-event rate are all computed, and that bare accuracy is not exposed as a headline metric.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-070 — Run the mandatory §25 ablation study (A–F)
+### [x] T-070 — Run the mandatory §25 ablation study (A–F)
 - **PRD ref:** §25 (mandatory), §17, §16
 - **Depends on:** T-061, T-064, T-066, T-068, T-069
 - **Output:** `experiments/ablation_a_to_f.json`, `reports/ablation.md`
 - **Acceptance check:** the study reports, for each of A (sensors only), B (+spatial), C (+DGPS), D (+Sentinel-1), E (+DGPS+Sentinel-1), F (+physics), the effect on lead time, false alarms, deformation error, spatial accuracy and calibration — the evidence that gates whether G (temporal DL) and H (GNN) are ever built.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-071 — Build the validation and ablation notebook 07
+### [x] T-071 — Build the validation and ablation notebook 07
 - **PRD ref:** §23, §24, §25, §33
 - **Depends on:** T-070
 - **Output:** `notebooks/07_validation_and_ablation.ipynb`
 - **Acceptance check:** the notebook executes end-to-end and renders the full §24 metric table across every §23 split and every §25 ablation step completed to date.
-- **Status:** pending
+- **Status:** done
 
 ---
 

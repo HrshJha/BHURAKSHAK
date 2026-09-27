@@ -30,6 +30,7 @@ _CONFIG_FILES = {
     "anomaly": "anomaly.yaml",
     "validation": "validation.yaml",
     "risk_model": "risk_model.yaml",
+    "environmental": "environmental.yaml",
 }
 
 
@@ -86,6 +87,11 @@ def validation_config() -> dict[str, Any]:
 def risk_model_config() -> dict[str, Any]:
     """PRD §15/§24 risk-model parameters (T-046…T-049)."""
     return load_config("risk_model")
+
+
+def environmental_config() -> dict[str, Any]:
+    """Feature Group J gate + synthetic source parameters (T-067)."""
+    return load_config("environmental")
 
 
 def escalation_thresholds() -> dict[str, dict[str, Any]]:

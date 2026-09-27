@@ -29,7 +29,19 @@ from src.config import risk_model_config
 __all__ = ["XGBoostModelError", "RiskModel", "MODEL_INPUT_GROUPS", "train_risk_model"]
 
 #: §15 input contract: feature groups A–F plus the two cross-model signals.
-MODEL_INPUT_GROUPS = ("A_physical", "B_temporal", "C_spatial", "D_vibration", "E_sensor_health", "F_physics")
+#: T-070 adds the Phase-4 modalities (G DGPS / H Sentinel-1) so the ablation
+#: arms can switch them on; the DEFAULT frame carries none of their columns,
+#: so behaviour for every pre-existing caller is unchanged (absent ⇒ skipped).
+MODEL_INPUT_GROUPS = (
+    "A_physical",
+    "B_temporal",
+    "C_spatial",
+    "D_vibration",
+    "E_sensor_health",
+    "F_physics",
+    "G_dgps",
+    "H_insar",
+)
 
 #: Cross-model signals §15 adds on top of the feature groups.
 EXTRA_SIGNALS = ("anomaly_score", "physics_residual")
@@ -77,6 +89,12 @@ def _resolve_features(df: pd.DataFrame) -> list[str]:
         ("E_sensor_health", ("battery", "RSSI", "SNR", "packet_loss", "missing_ratio",
                              "stuck_sensor_flag", "drift_score")),
         ("F_physics", ("expected_displacement", "expected_tilt", "physics_residual", "physics_residual_velocity")),
+        # Phase-4 modalities (T-070 arms C/D/E): present only on frames joined
+        # to DGPS control points / the mesh-aligned Sentinel-1 product.
+        ("G_dgps", ("vertical_displacement", "horizontal_displacement", "velocity_dgps",
+                    "acceleration_dgps", "mesh_vs_dgps_residual")),
+        ("H_insar", ("LOS_displacement", "LOS_velocity", "LOS_acceleration", "cumulative_displacement",
+                     "coherence", "spatial_gradient", "local_hotspot_density")),
     ):
         assert group in MODEL_INPUT_GROUPS
         for name in names:

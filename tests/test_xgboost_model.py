@@ -45,7 +45,11 @@ def _frame(n: int = 2400, seed: int = 0) -> pd.DataFrame:
 
 
 def test_model_input_contract_lists_groups_and_signals() -> None:
-    assert MODEL_INPUT_GROUPS == ("A_physical", "B_temporal", "C_spatial", "D_vibration", "E_sensor_health", "F_physics")
+    # T-070: the Phase-4 modalities (G DGPS / H Sentinel-1) are switchable
+    # model inputs for the §25 ablation; frames without their columns are
+    # unaffected (resolver skips absent groups).
+    assert MODEL_INPUT_GROUPS[:6] == ("A_physical", "B_temporal", "C_spatial", "D_vibration", "E_sensor_health", "F_physics")
+    assert MODEL_INPUT_GROUPS[6:] == ("G_dgps", "H_insar")
     assert EXTRA_SIGNALS == ("anomaly_score", "physics_residual"), "§15: IF score + physics residual feed XGBoost"
 
 
