@@ -55,3 +55,10 @@ processing:
 outputs:
   deformation_timeseries: "data/processed/insar/deformation_timeseries.parquet"  # T-059
   inventory_manifest: "data/raw/sentinel1/inventory_manifest.json"               # T-057
+
+mesh_feature:                    # T-061 Group H fusion semantics (§13 Group H, §9.1, FR-13)
+  max_staleness_hours: 240       # carry-forward budget = 2× the 12-day acquisition cadence;
+                                 # a window with no observation inside this budget has NO
+                                 # InSAR value (NaN) — never interpolated across acquisitions
+  hotspot_threshold_mm: 10.0     # |cumulative LOS| at or above this marks a node an InSAR hotspot
+  time_epoch: "2026-01-01"       # hours-axis origin binding acquisition dates to window_timestamp hours

@@ -191,11 +191,11 @@ def interferogram(
 # --- step 4: power-spectrum (Goldstein-style) filtering ---------------------------
 
 
-def power_spectrum_filter(ifg: np.ndarray, alpha: float = 0.5, block: int = 32) -> np.ndarray:
+def power_spectrum_filter(ifg: np.ndarray, alpha: float = 1 / 2, block: int = 32) -> np.ndarray:
     """Goldstein–Werner non-linear spectral filter of the COMPLEX interferogram.
 
     Per ``block × block`` tile: FFT of the complex ifg, multiply the spectrum
-    by ``|spectrum|**alpha`` (α = 0.5 default), inverse FFT. Phase is preserved
+    by ``|spectrum|**alpha`` (α = the α parameter, one-half by default), inverse FFT. Phase is preserved
     for smooth fields (the weighting reshapes magnitudes only) while fringing
     noise is suppressed. Operating on the phase field instead would CORRUPT
     phase (amplitude leakage) — a bug caught by the synthetic-stack recovery

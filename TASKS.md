@@ -458,19 +458,19 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** the output contains LOS displacement, velocity and coherence per persistent-scatterer point over the full scene stack, with low-coherence pixels masked rather than silently included.
 - **Status:** done
 
-### [ ] T-060 — Map satellite features onto the mesh node/grid representation
+### [x] T-060 — Map satellite features onto the mesh node/grid representation
 - **PRD ref:** §18 step 5, FR-13
 - **Depends on:** T-059, T-032, T-031
 - **Output:** `src/geospatial/insar_to_mesh.py`, `tests/test_insar_to_mesh.py`
 - **Acceptance check:** `pytest tests/test_insar_to_mesh.py` passes, asserting InSAR values join the shared feature schema on the same node/grid spatial representation and each carries its own observation timestamp and staleness age.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-061 — Implement Feature Group H (InSAR)
+### [x] T-061 — Implement Feature Group H (InSAR)
 - **PRD ref:** §13 Group H, FR-13
 - **Depends on:** T-060
 - **Output:** `src/features/group_h_insar.py`, `tests/test_group_h.py`
 - **Acceptance check:** `pytest tests/test_group_h.py` passes, asserting `LOS_displacement, LOS_velocity, LOS_acceleration, cumulative_displacement, coherence, spatial_gradient, local_hotspot_density` are produced with names matching §13.
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-062 — Build the Sentinel-1 integration notebook 08
 - **PRD ref:** §18, §33
