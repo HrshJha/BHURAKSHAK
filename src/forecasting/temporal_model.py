@@ -184,12 +184,14 @@ def _build_torch(arch: str, n_channels: int, width: int, depth: int):
         return nn.LSTM(input_size=n_channels, hidden_size=width, num_layers=depth, batch_first=True)
     if arch == "gru":
         return nn.GRU(input_size=n_channels, hidden_size=width, num_layers=depth, batch_first=True)
-    # TCN: causal dilated conv stack with residual-style channel mixing
+    # TCN: causal-style dilated conv stack (dilation doubles per layer,
+    # kernel 3, padding = dilation keeps the length; last step sees the past)
     layers: list[nn.Module] = []
     in_ch = n_channels
     for d in range(depth):
+        dilation = 2**d
         layers += [
-            nn.Conv1d(in_ch, width, kernel_size=3, padding=d, dilation=d),
+            nn.Conv1d(in_ch, width, kernel_size=3, padding=dilation, dilation=dilation),
             nn.ReLU(),
         ]
         in_ch = width
@@ -236,8 +238,8 @@ class TemporalForecaster:
                     continue
                 xt = (x - self.mu) / self.sd
                 tensor = torch.tensor(xt, dtype=torch.float32).unsqueeze(0)  # (1, T, C)
-                out = self.torch_module(tensor)  # (1, n_horizons * C)
-                pred = out.numpy()[0].reshape(len(self.horizons), len(self.channels))
+                out = self.torch_module(tensor)  # (1, H, C)
+                pred = out.numpy()[0]
                 pred = pred * self.sd[None, :] + self.mu[None, :]  # back to physical units
                 for h_i, horizon in enumerate(self.horizons):
                     for c_i, ch in enumerate(self.channels):
@@ -316,7 +318,7 @@ def train_temporal_forecaster(
 
     x_t = torch.tensor((x_tr - mu) / sd, dtype=torch.float32)
     y_t = torch.tensor((y_tr - mu) / sd, dtype=torch.float32)  # (n, H, C)
-    n_common = len(x_t)
+    n_ch = len(channels)
 
     class ForecasterModule(nn.Module):
         def __init__(self) -> None:
@@ -331,9 +333,10 @@ def train_temporal_forecaster(
             if architecture == "tcn":
                 z = self.backbone(x.transpose(1, 2))  # (N, width, T)
                 last = z[:, :, -1]  # causal: last step sees only the past
-                return self.head(last)
-            out, _ = self.backbone(x)
-            return self.head(out[:, -1, :])
+            else:
+                out, _ = self.backbone(x)
+                last = out[:, -1, :]
+            return self.head(last).reshape(-1, len(horizons), n_ch)  # (N, H, C)
 
     module = ForecasterModule()
     opt = torch.optim.Adam(module.parameters(), lr=learning_rate)
@@ -355,7 +358,7 @@ def train_temporal_forecaster(
             loss = loss_fn(pred, y_t[idx])
             loss.backward()
             opt.step()
-            losses.append(float(loss))
+            losses.append(float(loss.detach()))
         final_train = float(np.mean(losses)) if losses else float("nan")
         if x_va_t is not None and len(x_va_t):
             module.eval()
