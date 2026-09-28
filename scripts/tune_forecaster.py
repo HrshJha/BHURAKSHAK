@@ -33,7 +33,7 @@ CHANNELS = ("displacement", "tilt_x", "tilt_y")
 HORIZONS = (1,)  # only next-window is representable by the 9-window sequences
 SEEDS = (42, 43, 44)
 FOLDS = 3
-EPOCHS = 8
+EPOCHS = 30
 BATCH_SIZE = 2048
 
 
@@ -83,7 +83,7 @@ def evaluate(frame: pd.DataFrame, train_events: set[str], val_events: set[str], 
     p_err = persistence - truth
     return {
         "seed": seed,
-        "n_train_sequences": int(mask_train.sum()),
+        "n_train_rows": int(mask_train.sum()),
         "n_validation_sequences": int(len(x_val)),
         "normalized_mse": float(np.mean(((pred - truth) / model.sd[None, None, :]) ** 2)),
         "persistence_normalized_mse": float(np.mean(((persistence - truth) / model.sd[None, None, :]) ** 2)),
@@ -170,6 +170,45 @@ def main() -> int:
         "isolation_forest": {"status": "blocked_pending_target_leakage_fix"},
     }
     PARAMS_PATH.write_text(yaml.safe_dump(config, sort_keys=False))
+    # Reload via the public config path and use the frozen values for a
+    # development-only final fit. The test regime is still excluded.
+    final = model_params_config()["forecaster"]
+    if beats:
+        fitted = train_temporal_forecaster(
+            frame,
+            channels=tuple(final["channels"]),
+            horizons=tuple(final["horizons"]),
+            architecture=final["architecture"],
+            history_steps=int(final["history_steps"]),
+            width=int(final["width"]),
+            depth=int(final["depth"]),
+            epochs=int(final["epochs"]),
+            batch_size=int(final["batch_size"]),
+            learning_rate=float(final["learning_rate"]),
+            seed=int(final["seed"]),
+        )
+        manifest = json.loads((ROOT / "data/synthetic/dataset_manifest.json").read_text())
+        import torch
+        artifact = ROOT / "models/temporal_model/forecaster_tuned.pt"
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        torch.save({
+            "metadata": {
+                "model_name": "SubSense temporal forecaster",
+                "model_version": "1.0.0-tuned-dev-cv",
+                "feature_schema_version": manifest["feature_schema_version"],
+                "training_dataset_version": manifest["dataset_version"],
+                "training_groups": int(frame.event_id.nunique()),
+                "held_out_test_used": False,
+            },
+            "params": final,
+            "channels": fitted.channels,
+            "horizons": fitted.horizons,
+            "mu": fitted.mu,
+            "sd": fitted.sd,
+            "state_dict": fitted.torch_module.state_dict(),
+        }, artifact)
+        payload["artifact"] = str(artifact.relative_to(ROOT))
+        (OUT / "forecaster_study.json").write_text(json.dumps(payload, indent=2, default=str) + "\n")
     print(f"Best CV MSE={best['mean_normalized_mse']:.5f}; persistence={best['mean_persistence_normalized_mse']:.5f}; beats={beats}")
     return 0
 

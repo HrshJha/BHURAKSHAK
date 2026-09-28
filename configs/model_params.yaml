@@ -1,0 +1,23 @@
+forecaster:
+  status: tuned_on_development_groups
+  architecture: lstm
+  width: 16
+  history_steps: 3
+  depth: 1
+  learning_rate: 0.003
+  channels:
+  - displacement
+  - tilt_x
+  - tilt_y
+  horizons:
+  - 1
+  seed: 42
+  epochs: 30
+  batch_size: 2048
+  cv_mean_normalized_mse: 0.027352322523954486
+  cv_mean_persistence_normalized_mse: 0.03720146007549597
+  search_artifact: reports/tuning/forecaster_study.json
+risk_classifier:
+  status: blocked_pending_target_leakage_fix
+isolation_forest:
+  status: blocked_pending_target_leakage_fix
