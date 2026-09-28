@@ -22,6 +22,128 @@ forecaster:
   requested_trials: 60
   actual_trials: 60
 risk_classifier:
-  status: blocked_pending_target_leakage_fix
+  status: frozen_after_development_grouped_cv
+  params:
+    learning_rate: 0.02634777514406047
+    max_depth: 3
+    min_child_weight: 6.2095693648805605
+    gamma: 2.5133951161443076
+    subsample: 0.5257393756249946
+    colsample_bytree: 0.5671878785419668
+    colsample_bylevel: 0.9449595315799922
+    reg_alpha: 1.4323759352560882e-06
+    reg_lambda: 0.004795751350199056
+    max_delta_step: 4.89452760277563
+    max_bin: 506
+    class_weighting: inverse
+    critical_threshold: 0.36881877199619983
+    warning_threshold: 0.6141081743059298
+  features: &id001
+  - acceleration
+  - physics_residual
+  - crest_factor
+  - rolling_min
+  - spectral_centroid
+  - slope
+  - expected_displacement
+  - trend
+  - rolling_std
+  - velocity
+  - change_point_score
+  - RSSI
+  - missing_ratio
+  - rolling_max
+  - tilt_y
+  - persistence
+  - stuck_sensor_flag
+  - band_energy_mid
+  - tilt_x
+  - expected_tilt
+  - packet_loss
+  - strain
+  - vibration_peak
+  - displacement
+  - SNR
+  - vibration_rms
+  - band_energy_low
+  - tilt_magnitude
+  - physics_residual_velocity
+  - drift_score
+  - battery
+  - rolling_mean
+  - band_energy_high
+  thresholds:
+    critical: 0.05252690269536467
+    warning: 0.3301082692867959
+  n_estimators: 2000
+  calibration:
+    method: isotonic
+    validation_metrics:
+      isotonic:
+        brier: 0.11508987862799656
+        ece: 0.008939001398051755
+        score: 0.12402888002604832
+      sigmoid:
+        brier: 0.12811741613362343
+        ece: 0.031028668170555444
+        score: 0.15914608430417887
+    threshold_operating_points:
+      WARNING:
+        threshold: 0.3301082692867959
+        precision: 0.6890595009596929
+        recall: 0.8031319910514542
+        support: 1341
+        false_positive_rate: 0.08231707317073171
+        target:
+          minimum_recall: 0.8
+          maximum_false_positive_rate: 0.1
+          met: true
+        selection_reason: highest validation precision meeting configured recall and
+          false-alarm limits; if infeasible, best recall within false-alarm cap
+      CRITICAL:
+        threshold: 0.05252690269536467
+        precision: 0.7236533957845434
+        recall: 0.9035087719298246
+        support: 342
+        false_positive_rate: 0.017094017094017096
+        target:
+          minimum_recall: 0.9
+          maximum_false_positive_rate: 0.05
+          met: true
+        selection_reason: highest validation precision meeting configured recall and
+          false-alarm limits; if infeasible, best recall within false-alarm cap
+  objective_value: 0.8358112058431804
+  study: reports/tuning/xgboost_study.json
 isolation_forest:
-  status: blocked_pending_target_leakage_fix
+  status: frozen_after_development_grouped_cv
+  params:
+    n_estimators: 190
+    max_samples: 0.8199472749273219
+    max_features: 0.5317714351572193
+    bootstrap: false
+  features: *id001
+  score_threshold: 0.5433886244281978
+  threshold_percentile: 0.99
+  study: reports/tuning/isolation_forest_study.json
+baseline_isolation_forest:
+  params:
+    n_estimators: 300
+    contamination: auto
+    random_state: 42
+  score_threshold: 0.655265024240293
+decision_rule:
+  velocity_warning: 0.1
+  accel_critical: 0.01
+  score_warning: 0.1
+  persistence_windows: 3
+alert_conditions:
+  physics_residual_train_mean: -23.16555809946697
+  physics_residual_train_std: 62.2414996813374
+  source_split: train
+training:
+  dataset_version: synthetic-v2-label-blind
+  feature_schema_version: v2
+  seed: 42
+  groups: 6516
+  split: train; validation used only for calibration and thresholds
+  test_touched: false

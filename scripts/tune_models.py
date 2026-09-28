@@ -8,6 +8,7 @@ the one-use held-out corpus.
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import json
 import sys
 import time
@@ -165,7 +166,9 @@ def _mean_records(values: list[dict]) -> dict:
     return result
 
 
-def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, timeout: int) -> dict:
+def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, timeout: int,
+                 output_name: str = "xgboost_study.json", fold_jobs: int = 3,
+                 warm_start: dict | None = None) -> dict:
     import optuna
     from optuna.pruners import HyperbandPruner
     from optuna.samplers import TPESampler
@@ -186,6 +189,61 @@ def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
         pr = lr.predict(scaler.transform(va[features].to_numpy(dtype=float)))
         lr_far.append(float(np.mean(pr[yv == "NORMAL"] != "NORMAL")))
 
+    def fit_fold(fi: int, fold: tuple[np.ndarray, np.ndarray], params: dict) -> tuple[dict, int]:
+        tr_ids, va_ids = fold
+        tr, va = _fold_frames(frame, tr_ids, va_ids)
+        ytr = tr.risk_label.astype(str).to_numpy()
+        yv = va.risk_label.astype(str).to_numpy()
+        xtr = tr[features].to_numpy(dtype=float)
+        xv = va[features].to_numpy(dtype=float)
+        labels = list(CLASSES)
+        per_class = {c: int(np.sum(ytr == c)) for c in labels}
+        total = len(ytr)
+        if params["class_weighting"] == "none":
+            weights = np.ones(len(ytr), dtype=float)
+        else:
+            inverse = {c: total / (len(labels) * max(per_class[c], 1)) for c in labels}
+            power = 1.0 if params["class_weighting"] == "inverse" else 0.5
+            weights = np.array([inverse[c] ** power for c in ytr])
+        model = XGBClassifier(
+            **{k: v for k, v in params.items() if k not in {"class_weighting", "critical_threshold", "warning_threshold"}},
+            n_estimators=2000, objective="multi:softprob", num_class=3, eval_metric="mlogloss",
+            tree_method="hist", early_stopping_rounds=50, n_jobs=1, random_state=SEED + fi,
+        )
+        ytr_i = np.asarray([labels.index(v) for v in ytr], dtype=int)
+        yv_i = np.asarray([labels.index(v) for v in yv], dtype=int)
+        model.fit(xtr, ytr_i, sample_weight=weights, eval_set=[(xv, yv_i)], verbose=False)
+        best_iteration = int(getattr(model, "best_iteration", 0)) + 1
+        rawp = model.predict_proba(xv)
+        aligned = np.zeros((len(va), len(labels)))
+        for j, cl in enumerate(model.classes_):
+            aligned[:, int(cl)] = rawp[:, j]
+        pred = np.asarray(labels)[aligned.argmax(axis=1)]
+        critical_i, warning_i = labels.index("CRITICAL"), labels.index("WARNING")
+        pred[aligned[:, critical_i] >= params["critical_threshold"]] = "CRITICAL"
+        mask_crit = pred != "CRITICAL"
+        pred[mask_crit & (aligned[:, warning_i] >= params["warning_threshold"])] = "WARNING"
+        return _metrics(yv, pred, aligned, labels), best_iteration
+
+    def make_payload(study, elapsed: float) -> dict:
+        trials = [{"number": t.number, "state": t.state.name, "value": t.value, "params": t.params,
+                   "user_attrs": t.user_attrs, "duration_seconds": t.duration.total_seconds() if t.duration else None}
+                  for t in study.trials]
+        complete = [t for t in study.trials if t.state.name == "COMPLETE" and t.value is not None]
+        best_trial = max(complete, key=lambda t: float(t.value)) if complete else None
+        return {"study": {"sampler": "TPESampler", "pruner": "HyperbandPruner", "seed": SEED,
+                           "requested_trials": trial_limit, "actual_trials": len(study.trials),
+                           "completed_trials": len(complete), "pruned_trials": sum(t.state.name == "PRUNED" for t in study.trials),
+                           "failed_trials": sum(t.state.name == "FAIL" for t in study.trials), "timeout_seconds": timeout,
+                           "elapsed_seconds": elapsed, "folds": FOLDS, "group_jobs": fold_jobs,
+                           "grouping": "event_id", "test_touched": False,
+                           "objective": "0.5*macro_PR_AUC + 0.3*recall_CRITICAL + 0.2*macro_F1",
+                           "constraint": "each fold FAR_NORMAL <= selected logistic baseline FAR_NORMAL",
+                           "logistic_C": float(risk_model_config()["baselines"]["logistic"]["C"])},
+                "best": None if best_trial is None else {"value": float(best_trial.value), "params": best_trial.params,
+                          "best_iterations": best_trial.user_attrs.get("best_iterations", []),
+                          "user_attrs": best_trial.user_attrs}, "trials": trials}
+
     def objective(trial):
         params = {
             "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.3, log=True),
@@ -203,43 +261,11 @@ def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
             "critical_threshold": trial.suggest_float("critical_threshold", 0.25, 0.75),
             "warning_threshold": trial.suggest_float("warning_threshold", 0.25, 0.75),
         }
-        fold_scores = []
-        far_values = []
-        best_iterations = []
-        for fi, (tr_ids, va_ids) in enumerate(folds):
-            tr, va = _fold_frames(frame, tr_ids, va_ids)
-            ytr = tr.risk_label.astype(str).to_numpy()
-            yv = va.risk_label.astype(str).to_numpy()
-            xtr = tr[features].to_numpy(dtype=float)
-            xv = va[features].to_numpy(dtype=float)
-            _, counts = np.unique(ytr, return_counts=True)
-            per_class = {c: int(np.sum(ytr == c)) for c in labels}
-            total = len(ytr)
-            if params["class_weighting"] == "none":
-                weights = np.ones(len(ytr), dtype=float)
-            else:
-                inverse = {c: total / (len(labels) * max(per_class[c], 1)) for c in labels}
-                power = 1.0 if params["class_weighting"] == "inverse" else 0.5
-                weights = np.array([inverse[c] ** power for c in ytr])
-            model = XGBClassifier(
-                **{k: v for k, v in params.items() if k not in {"class_weighting", "critical_threshold", "warning_threshold"}},
-                n_estimators=2000, objective="multi:softprob", num_class=3, eval_metric="mlogloss",
-                tree_method="hist", early_stopping_rounds=50, n_jobs=1, random_state=SEED + fi,
-            )
-            ytr_i = np.asarray([labels.index(v) for v in ytr], dtype=int)
-            yv_i = np.asarray([labels.index(v) for v in yv], dtype=int)
-            model.fit(xtr, ytr_i, sample_weight=weights, eval_set=[(xv, yv_i)], verbose=False)
-            best_iterations.append(int(getattr(model, "best_iteration", 0)) + 1)
-            rawp = model.predict_proba(xv)
-            aligned = np.zeros((len(va), len(labels)))
-            for j, cl in enumerate(model.classes_):
-                aligned[:, int(cl)] = rawp[:, j]
-            pred = np.asarray(labels)[aligned.argmax(axis=1)]
-            critical_i, warning_i = labels.index("CRITICAL"), labels.index("WARNING")
-            pred[aligned[:, critical_i] >= params["critical_threshold"]] = "CRITICAL"
-            mask_crit = pred != "CRITICAL"
-            pred[mask_crit & (aligned[:, warning_i] >= params["warning_threshold"])] = "WARNING"
-            m = _metrics(yv, pred, aligned, labels)
+        with ThreadPoolExecutor(max_workers=max(1, min(fold_jobs, len(folds)))) as pool:
+            fold_results = list(pool.map(lambda item: fit_fold(item[0], item[1], params), enumerate(folds)))
+        fold_scores, far_values, best_iterations = [], [], []
+        for fi, (m, best_iteration) in enumerate(fold_results):
+            best_iterations.append(best_iteration)
             far_values.append(m["false_alarm_rate_normal"])
             if far_values[-1] > lr_far[fi] + 1e-12:
                 trial.set_user_attr("fold_false_alarm_rates", far_values)
@@ -253,31 +279,24 @@ def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
                 raise optuna.TrialPruned()
         trial.set_user_attr("fold_false_alarm_rates", far_values)
         trial.set_user_attr("best_iterations", best_iterations)
-        trial.set_user_attr("false_alarm_constraint_pass", bool(np.all(np.array(far_values) <= np.array(lr_far) + 1e-12)))
         trial.set_user_attr("false_alarm_constraint_pass", True)
         trial.set_user_attr("lr_false_alarm_rates", lr_far)
         return float(np.mean(fold_scores))
 
     study = optuna.create_study(direction="maximize", sampler=TPESampler(seed=SEED), pruner=HyperbandPruner())
+    if warm_start:
+        study.enqueue_trial(warm_start)
     start = time.monotonic()
-    study.optimize(objective, n_trials=trial_limit, timeout=timeout, gc_after_trial=True, show_progress_bar=False)
-    trials = []
-    for t in study.trials:
-        trials.append({"number": t.number, "state": t.state.name, "value": t.value, "params": t.params,
-                       "user_attrs": t.user_attrs, "duration_seconds": t.duration.total_seconds() if t.duration else None})
-    complete = [t for t in study.trials if t.state.name == "COMPLETE" and t.value is not None and t.value >= 0]
-    payload = {"study": {"sampler": "TPESampler", "pruner": "HyperbandPruner", "seed": SEED,
-                          "requested_trials": trial_limit, "actual_trials": len(study.trials),
-                          "completed_trials": len(complete), "timeout_seconds": timeout,
-                          "elapsed_seconds": time.monotonic() - start, "folds": FOLDS,
-                          "grouping": "event_id", "test_touched": False,
-                          "objective": "0.5*macro_PR_AUC + 0.3*recall_CRITICAL + 0.2*macro_F1",
-                          "constraint": "each fold FAR_NORMAL <= logistic regression FAR_NORMAL"},
-               "best": None if not complete else {"value": study.best_value, "params": study.best_params,
-                                                   "best_iterations": study.best_trial.user_attrs.get("best_iterations", [])},
-               "trials": trials}
+    output = OUT / output_name
+    def checkpoint(study, _trial):
+        temp = output.with_suffix(output.suffix + ".tmp")
+        temp.write_text(json.dumps(make_payload(study, time.monotonic() - start), indent=2, default=str) + "\n")
+        temp.replace(output)
+    study.optimize(objective, n_trials=trial_limit, timeout=timeout, gc_after_trial=True,
+                   show_progress_bar=False, callbacks=[checkpoint])
+    payload = make_payload(study, time.monotonic() - start)
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "xgboost_study.json").write_text(json.dumps(payload, indent=2, default=str) + "\n")
+    output.write_text(json.dumps(payload, indent=2, default=str) + "\n")
     return payload
 
 
@@ -339,6 +358,8 @@ def main() -> int:
     parser.add_argument("--phase", choices=("baselines", "xgboost", "iforest"), required=True)
     parser.add_argument("--trials", type=int, default=None)
     parser.add_argument("--timeout-seconds", type=int, default=14400)
+    parser.add_argument("--output-name", default="xgboost_study.json")
+    parser.add_argument("--fold-jobs", type=int, default=3)
     args = parser.parse_args()
     frame, features = development_frame()
     OUT.mkdir(parents=True, exist_ok=True)
@@ -349,7 +370,9 @@ def main() -> int:
         return 0
     count = args.trials or (200 if args.phase == "xgboost" else 100)
     if args.phase == "xgboost":
-        result = tune_xgboost(frame, features, count, args.timeout_seconds)
+        warm_start_path = OUT / "xgboost_warmstart.json"
+        warm_start = json.loads(warm_start_path.read_text()) if warm_start_path.exists() else None
+        result = tune_xgboost(frame, features, count, args.timeout_seconds, args.output_name, args.fold_jobs, warm_start)
     else:
         result = tune_iforest(frame, features, count, args.timeout_seconds)
     print(json.dumps(result["study"], indent=2))
