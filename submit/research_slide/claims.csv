@@ -1,0 +1,40 @@
+claim,value,unit,source_file,key,data_origin,split,tag
+Sentinel-1 orbit repeat,12,days per orbit,docs/insar_study_region.md,repeat cycle,literature/project context,not a model split,GAP
+Interleaved Sentinel-1 pair interval,6,days,docs/insar_study_region.md,repeat cycle note,literature/project context,not a model split,GAP
+Raniganj maximum LOS subsidence rate,−21.18,mm/year,docs/insar_references.md,abstract-level reported rate,literature,not applicable,GAP
+Korba cited deformation rate,~30,mm/year,user comparison table; reference metadata in refs_verified.csv,user-supplied table claim,literature,not applicable,GAP
+PRD tilt sensor options,2,"models (MPU-6050, MPU-9250)",PRD.md,§8 component options,PRD design,not applicable,HW
+Evaluation count,1,locked evaluation,reports/test_lock.json,evals_run,synthetic corpus,unseen scenario-regime holdout,SW
+Locked evaluation seed,20260929,seed,reports/test_lock.json,seed,synthetic corpus,unseen scenario-regime holdout,SW
+Balanced accuracy: threshold rule,0.4692,fraction,reports/final_eval.json,macro avg recall,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL precision: threshold rule,0.1554,fraction,reports/final_eval.json,per_class.CRITICAL.precision,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL recall: threshold rule,0.0416,fraction,reports/final_eval.json,recall_critical,synthetic corpus,unseen scenario-regime holdout,SW
+Macro F1: threshold rule,0.3897,fraction,reports/final_eval.json,f1_macro,synthetic corpus,unseen scenario-regime holdout,SW
+Balanced accuracy: logistic regression,0.4457,fraction,reports/final_eval.json,macro avg recall,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL precision: logistic regression,0.4904,fraction,reports/final_eval.json,per_class.CRITICAL.precision,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL recall: logistic regression,0.7650,fraction,reports/final_eval.json,recall_critical,synthetic corpus,unseen scenario-regime holdout,SW
+Macro F1: logistic regression,0.4297,fraction,reports/final_eval.json,f1_macro,synthetic corpus,unseen scenario-regime holdout,SW
+Balanced accuracy: default XGBoost,0.5233,fraction,reports/final_eval.json,macro avg recall,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL precision: default XGBoost,0.2469,fraction,reports/final_eval.json,per_class.CRITICAL.precision,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL recall: default XGBoost,0.0457,fraction,reports/final_eval.json,recall_critical,synthetic corpus,unseen scenario-regime holdout,SW
+Macro F1: default XGBoost,0.4450,fraction,reports/final_eval.json,f1_macro,synthetic corpus,unseen scenario-regime holdout,SW
+Balanced accuracy: tuned XGBoost,0.4910,fraction,reports/final_eval.json,macro avg recall,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL precision: tuned XGBoost,0.2632,fraction,reports/final_eval.json,per_class.CRITICAL.precision,synthetic corpus,unseen scenario-regime holdout,SW
+CRITICAL recall: tuned XGBoost,0.0933,fraction,reports/final_eval.json,recall_critical,synthetic corpus,unseen scenario-regime holdout,SW
+Macro F1: tuned XGBoost,0.4458,fraction,reports/final_eval.json,f1_macro,synthetic corpus,unseen scenario-regime holdout,SW
+Alert-engine false alarms per normal-event day,0.046,episodes/day,reports/final_eval.json,alert_engine.false_alarms_per_normal_event_day,synthetic corpus,unseen scenario-regime holdout,SW
+Median alert lead time,−3.33,hours,reports/final_eval.json,alert_engine.median_lead_time_hours,synthetic corpus,unseen scenario-regime holdout,SW
+Held-out events,1875,events,reports/final_eval.json,evaluation.events,synthetic corpus,unseen scenario-regime holdout,SW
+Held-out windows,16875,windows,reports/final_eval.json,evaluation.windows,synthetic corpus,unseen scenario-regime holdout,SW
+Raniganj paper publication year,2024,year,refs_verified.csv,GAP-1 bibliographic year,literature,not applicable,GAP
+Korba paper publication year,2018,year,refs_verified.csv,GAP-2 bibliographic year,literature,not applicable,GAP
+Knothe simulator reference year,2015,year,refs_verified.csv,SW-5 bibliographic year,literature,not applicable,SW
+Isolation Forest paper publication year,2008,year,refs_verified.csv,SW-6a bibliographic year,literature,not applicable,SW
+XGBoost paper publication year,2016,year,refs_verified.csv,SW-6b bibliographic year,literature,not applicable,SW
+LoRa radio part number,SX1276/SX1278,model,PRD.md,§8 radio option,PRD design,not applicable,HW
+IMU part number options,MPU-6050 / MPU-9250,model,PRD.md,§8 tilt sensor options,PRD design,not applicable,HW
+Displacement sensor part number,VL53L1X,model,PRD.md,§8 displacement option,PRD design,not applicable,HW
+Node microcontroller model,ESP32-WROOM-32,model,PRD.md,§8 compute option,PRD design,not applicable,HW
+Gateway model,Raspberry Pi 5,model,PRD.md,§26 gateway design,PRD design,not applicable,HW
+PRD hardware component section,8,section,PRD.md,§8,PRD design,not applicable,HW
+PRD gateway section,26,section,PRD.md,§26,PRD design,not applicable,HW
