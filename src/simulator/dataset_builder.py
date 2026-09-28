@@ -118,10 +118,10 @@ def build_dataset(
             node_id = grid.node_ids[node_idx]
             event_id = _event_id(scenario, seq_idx, node_idx)
 
-            result = generate_scenario(scenario, x, y, node_id, rng, reference_node=ref)
+            scenario_data = generate_scenario(scenario, x, y, node_id, rng, reference_node=ref)
 
-            start_h = float(result.timestamps_hours[0])
-            end_h = float(result.timestamps_hours[-1])
+            start_h = float(scenario_data.timestamps_hours[0])
+            end_h = float(scenario_data.timestamps_hours[-1])
 
             events_rows.append(
                 {
@@ -129,10 +129,10 @@ def build_dataset(
                     "start_time": f"{start_h:.2f}h",
                     "end_time": f"{end_h:.2f}h",
                     "type": scenario.value,
-                    "severity": _severity_for(result.risk_label),
+                    "severity": _severity_for(scenario_data.risk_label),
                     "center": f"({x:.1f},{y:.1f})",
-                    "max_deformation": round(float(np.nanmax(result.subsidence_mm)), 4),
-                    "rate": round(_event_rate_mm_per_day(result.subsidence_mm, result.timestamps_hours), 4),
+                    "max_deformation": round(float(np.nanmax(scenario_data.subsidence_mm)), 4),
+                    "rate": round(_event_rate_mm_per_day(scenario_data.subsidence_mm, scenario_data.timestamps_hours), 4),
                 }
             )
             counts[scenario.value] += 1
@@ -140,27 +140,27 @@ def build_dataset(
             frame = pd.DataFrame(
                 {
                     "event_id": event_id,
-                    "timestamp": np.round(result.timestamps_hours, 4),
+                    "timestamp": np.round(scenario_data.timestamps_hours, 4),
                     "node_id": node_id,
                     "x": x,
                     "y": y,
-                    "tilt_x": np.round(result.tilt_x_deg, 6),
-                    "tilt_y": np.round(result.tilt_y_deg, 6),
+                    "tilt_x": np.round(scenario_data.tilt_x_deg, 6),
+                    "tilt_y": np.round(scenario_data.tilt_y_deg, 6),
                     "tilt_magnitude": np.round(
-                        np.sqrt(result.tilt_x_deg**2 + result.tilt_y_deg**2), 6
+                        np.sqrt(scenario_data.tilt_x_deg**2 + scenario_data.tilt_y_deg**2), 6
                     ),
-                    "displacement": np.round(result.displacement_mm, 6),
-                    "strain": np.round(result.strain, 8),
-                    "vibration_rms": np.round(result.vibration_rms, 6),
-                    "vibration_peak": np.round(result.vibration_peak, 6),
-                    "battery": np.round(result.battery_v, 4),
-                    "RSSI": np.round(result.rssi_dbm, 2),
-                    "SNR": np.round(result.snr_db, 2),
-                    "packet_loss": (result.data_quality_label != "").astype(int),
-                    "anomaly_label": result.anomaly_label,
-                    "fault_label": result.fault_label,
-                    "progression_label": result.progression_label,
-                    "risk_label": result.risk_label,
+                    "displacement": np.round(scenario_data.displacement_mm, 6),
+                    "strain": np.round(scenario_data.strain, 8),
+                    "vibration_rms": np.round(scenario_data.vibration_rms, 6),
+                    "vibration_peak": np.round(scenario_data.vibration_peak, 6),
+                    "battery": np.round(scenario_data.battery_v, 4),
+                    "RSSI": np.round(scenario_data.rssi_dbm, 2),
+                    "SNR": np.round(scenario_data.snr_db, 2),
+                    "packet_loss": (scenario_data.data_quality_label != "").astype(int),
+                    "anomaly_label": scenario_data.anomaly_label,
+                    "fault_label": scenario_data.fault_label,
+                    "progression_label": scenario_data.progression_label,
+                    "risk_label": scenario_data.risk_label,
                 }
             )
             nodes_rows.append(frame)

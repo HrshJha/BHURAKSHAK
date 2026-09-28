@@ -15,7 +15,6 @@ block) via src/config.py — no numeric scenario literals live here (NFR-6).
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 import numpy as np
 
@@ -39,14 +38,14 @@ class VibrationComponents:
     localized_transient: bool = False
     high_frequency_burst: bool = False
 
-    noise_std: Optional[float] = None
-    vehicle_rate_per_day: Optional[float] = None
-    vehicle_amplitude: Optional[float] = None
-    transient_rate_per_day: Optional[float] = None
-    transient_amplitude: Optional[float] = None
-    burst_rate_per_day: Optional[float] = None
-    burst_amplitude: Optional[float] = None
-    burst_duration_minutes: Optional[float] = None
+    noise_std: float | None = None
+    vehicle_rate_per_day: float | None = None
+    vehicle_amplitude: float | None = None
+    transient_rate_per_day: float | None = None
+    transient_amplitude: float | None = None
+    burst_rate_per_day: float | None = None
+    burst_amplitude: float | None = None
+    burst_duration_minutes: float | None = None
 
     def resolved(self) -> "VibrationComponents":
         """Fill any None parameter from config and return a concrete copy."""

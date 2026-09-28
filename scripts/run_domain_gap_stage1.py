@@ -180,7 +180,7 @@ def main() -> int:
         raise SystemExit("events metadata carries duplicate ids")
     events = events.assign(family=events["id"].str.rsplit("_", n=2).str[0])
     defa = events.set_index("id")["max_deformation"]
-# 
+
     literal = synthetic_split(store, events)
     if literal.isna().any():
         missing = sorted(store.loc[literal.isna(), "event_id"].unique())[:5]
@@ -190,7 +190,7 @@ def main() -> int:
     literal_res = run_axis("literal §23 synthetic_split (corpus-wide deformation quantile)",
                            literal_store, defa)
 
-    # ---- axis 2: family-conditional regime split ---------------------------
+    # axis 2: family-conditional regime split
     fam_split, zero_var_fams = family_conditional_split(events)
     fam_series = store["event_id"].map(fam_split)
     if fam_series.isna().any():

@@ -20,17 +20,31 @@
       "feature_version": "v2",
       "model_name": "subsense_xgboost_risk",
       "model_version": "1.0.0",
-      "registered_at": "2026-09-28T07:51:43.363796+00:00",
+      "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
+      "registered_at": "2026-09-28T08:33:48.851548+00:00",
+      "seed": 42,
+      "split_name": "train; validation used for early stopping",
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-139/test_load_refuses_schema_misma0/m.joblib",
+      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-160/test_load_refuses_schema_misma0/m.joblib",
       "feature_version": "v2",
       "model_name": "test_model",
       "model_version": "1.0.0",
-      "registered_at": "2026-09-28T08:33:17.719386+00:00",
+      "registered_at": "2026-09-28T09:24:40.737313+00:00",
       "seed": 42,
       "split_name": "regime_holdout",
+      "training_dataset_version": "synthetic-v2-label-blind"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/temporal_model/forecaster_tuned.pt",
+      "feature_version": "v2",
+      "model_name": "subsense_temporal_forecaster",
+      "model_version": "v2.0.0-tuned-dev",
+      "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
+      "registered_at": "2026-09-28T08:41:50.206771+00:00",
+      "seed": 42,
+      "split_name": "train+validation development groups",
       "training_dataset_version": "synthetic-v2-label-blind"
     }
   ]

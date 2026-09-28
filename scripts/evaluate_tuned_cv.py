@@ -96,6 +96,16 @@ def main() -> int:
                                                        "mean": _mean_std(if_folds, ("pr_auc_anomaly", "recall_at_validation_healthy_99th_percentile", "false_positive_rate_healthy")),
                                                        "params": ibest["params"]}},
     }
+    lr_folds = baseline["models"]["logistic"]["folds"]
+    result["xgboost_false_alarm_constraint_revalidation"] = {
+        "comparator": "selected scaled balanced logistic baseline",
+        "logistic_params": baseline["models"]["logistic"].get("params", {}),
+        "folds": [{"fold": int(xgb_folds[i]["fold"]),
+                   "xgboost_false_alarm_rate_normal": float(xgb_folds[i]["false_alarm_rate_normal"]),
+                   "logistic_false_alarm_rate_normal": float(lr_folds[i]["false_alarm_rate_normal"]),
+                   "passes": bool(xgb_folds[i]["false_alarm_rate_normal"] <= lr_folds[i]["false_alarm_rate_normal"] + 1e-12)}
+                  for i in range(min(len(xgb_folds), len(lr_folds)))],
+    }
     forecaster_path = ROOT / "reports/tuning/forecaster_study.json"
     if forecaster_path.exists():
         forecast = json.loads(forecaster_path.read_text(encoding="utf-8"))

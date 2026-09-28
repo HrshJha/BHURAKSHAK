@@ -249,7 +249,7 @@ def main() -> int:
     val_split = split_frame(win, VAL_TRIALS)
     test_split = split_frame(win, TEST_TRIALS)
 
-    # ---- Isolation Forest (Stable-only training, §8.2 step 4) ---------------
+    # Isolation Forest (Stable-only training, §8.2 step 4)
     iso, iso_scaler, _ = train_if(train_split)
     val_if = if_scores(iso, iso_scaler, val_split)
     val_stable = val_split[val_split.severity_class == 0]["severity_class"].size
@@ -267,14 +267,14 @@ def main() -> int:
     )
     print(f"IF separation on validation: AUC={auc_val:.4f} | "
           f"stable median={np.median(stable_scores):.4f} vs non-stable median={np.median(val_nonstable):.4f}")
-# 
+
     params = tune_rf(val_split)
     print(f"\nRF hyperparameters chosen on validation: {params}")
     cv = cross_validate_rf(win, params)
     print(f"5-fold GroupKFold (trial-grouped) on training trials: {cv}")
     rf, rf_scaler = train_rf(train_split, params)
 
-    # ---- Held-out test evaluation (once, §8.2 step 7) ------------------------
+    # Held-out test evaluation (once, §8.2 step 7)
     Xte = test_split[FEATURES].to_numpy()
     yte = test_split["severity_class"].to_numpy()
     rf_pred = rf.predict(rf_scaler.transform(Xte))
@@ -309,7 +309,7 @@ def main() -> int:
     lead_base = lead_time_seconds(test_split, base_pred)
     print("\nlead time to critical (median): RF =", lead_rf["median_lead_time_s"], "s |",
           "baseline =", lead_base["median_lead_time_s"], "s")
-# 
+
     fig, axes = plt.subplots(1, 2, figsize=(13, 4.6))
     axes[0].hist(test_if[yte == 0], bins=50, alpha=0.6, label="Stable", density=True)
     axes[0].hist(test_if[yte > 0], bins=50, alpha=0.6, label="non-Stable", density=True)
@@ -324,7 +324,7 @@ def main() -> int:
     fig.savefig(OUT_REPORTS / "tabletop_model_evaluation.png", dpi=110)
     plt.close(fig)
 
-    # ---- artifacts (versioned, integrity-checked, registry-registered) ------
+    # artifacts (versioned, integrity-checked, registry-registered)
     from src.risk.artifacts import save_model_artifact
 
     tabletop_dataset_version = "tabletop-recorded-v1"  # data/recorded/tabletop/dataset_manifest.json

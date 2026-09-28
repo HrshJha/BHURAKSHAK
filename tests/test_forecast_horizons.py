@@ -25,7 +25,7 @@ SRC_DIR = REPO_ROOT / "src"
 FORECASTING_YAML = REPO_ROOT / "configs" / "forecasting.yaml"
 
 
-# --- config file + loader ------------------------------------------------------
+# config file + loader
 
 def test_forecasting_yaml_exists_and_carries_all_five_horizons() -> None:
     assert FORECASTING_YAML.is_file()
@@ -46,7 +46,7 @@ def test_config_reachable_through_loader() -> None:
     assert isinstance(cfg["horizons"], dict)
 
 
-# --- resolution to §10 window-steps ---------------------------------------------
+# resolution to §10 window-steps
 
 def test_horizons_resolve_to_window_steps_on_default_grid() -> None:
     assert grid_interval_minutes() == 10.0  # §8.3 default mesh cadence
@@ -65,7 +65,7 @@ def test_horizons_are_strictly_increasing() -> None:
     assert all(s >= 1 for s in steps)
 
 
-# --- misconfiguration fails loudly ------------------------------------------------
+# misconfiguration fails loudly
 
 def test_off_grid_horizon_raises() -> None:
     with pytest.raises(HorizonError, match="not a multiple"):
@@ -102,7 +102,7 @@ def test_negative_horizon_raises(monkeypatch: pytest.MonkeyPatch) -> None:
         configured_horizon_minutes()
 
 
-# --- NFR-6: §16 horizons live in config, not in code -------------------------------
+# NFR-6: §16 horizons live in config, not in code
 
 def test_no_hardcoded_horizon_literals_outside_config() -> None:
     """The §16 horizons must be configuration-driven (NFR-6).
