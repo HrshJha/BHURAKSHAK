@@ -158,18 +158,12 @@ class AlertEngine:
         *,
         conditions: Mapping[str, Any] | None = None,
     ) -> str:
-        """Feed one window for ``node_id``; return the node's alert level after it.
+        """Feed one window; return the node's alert level after it.
 
-        ``proba`` maps the three model classes to their probabilities (§15:
-        rows sum to 1). ``conditions`` evidences the configured ``requires``
-        items — ``spatial_coherence_above_threshold`` /
-        ``displacement_trend_positive`` / ``physics_residual_low`` as booleans
-        and ``neighbour_confirmations`` as an integer count; missing evidence
-        fails closed.
-
-        At most ONE escalation fires per update, and the window that fires a
-        transition earns no streak credit for the next one (its reading is
-        evaluated as a GREEN/WATCH/... reading from the next update on) — the
+        ``conditions`` evidences the configured ``requires`` items (booleans,
+        ``neighbour_confirmations`` as a count); missing evidence fails
+        closed. At most ONE escalation fires per update, and the window that
+        fires a transition earns no streak credit for the next one — the
         conservative reading of FR-7.
         """
         conditions = conditions or {}
