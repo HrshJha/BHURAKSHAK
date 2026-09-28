@@ -46,6 +46,61 @@
       "seed": 42,
       "split_name": "train+validation development groups",
       "training_dataset_version": "synthetic-v2-label-blind"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/risk_xgboost_tuned.joblib",
+      "feature_version": "v2",
+      "model_name": "SubSense risk XGBoost tuned",
+      "model_version": "v2.0.0-dev",
+      "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
+      "registered_at": "2026-09-28T12:25:51.452714+00:00",
+      "seed": 42,
+      "split_name": "train",
+      "training_dataset_version": "synthetic-v2-label-blind"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/risk_xgboost_default.joblib",
+      "feature_version": "v2",
+      "model_name": "SubSense risk XGBoost default baseline",
+      "model_version": "v2.0.0-dev",
+      "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
+      "registered_at": "2026-09-28T12:25:51.463016+00:00",
+      "seed": 42,
+      "split_name": "train",
+      "training_dataset_version": "synthetic-v2-label-blind"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/risk_logistic_baseline.joblib",
+      "feature_version": "v2",
+      "model_name": "SubSense risk logistic baseline",
+      "model_version": "v2.0.0-dev",
+      "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
+      "registered_at": "2026-09-28T12:25:51.467118+00:00",
+      "seed": 42,
+      "split_name": "train",
+      "training_dataset_version": "synthetic-v2-label-blind"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/iforest_default.joblib",
+      "feature_version": "v2",
+      "model_name": "SubSense iforest_default",
+      "model_version": "v2.0.0-dev",
+      "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
+      "registered_at": "2026-09-28T12:25:51.498710+00:00",
+      "seed": 42,
+      "split_name": "train",
+      "training_dataset_version": "synthetic-v2-label-blind"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/iforest_tuned.joblib",
+      "feature_version": "v2",
+      "model_name": "SubSense iforest_tuned",
+      "model_version": "v2.0.0-dev",
+      "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
+      "registered_at": "2026-09-28T12:25:51.607818+00:00",
+      "seed": 42,
+      "split_name": "train",
+      "training_dataset_version": "synthetic-v2-label-blind"
     }
   ]
 }
