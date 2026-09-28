@@ -264,6 +264,26 @@ def main() -> int:
         per_scenario[str(name)] = {"events": int(val.loc[rows, "event_id"].nunique()),
                                    "recall_per_class": {c: float(recall_score(yt, yp, labels=[c], average=None, zero_division=0)[0]) for c in CLASSES}}
     result["per_scenario_validation_recall"] = per_scenario
+    scenario_alias = scenario.astype(str).str.replace(r"^E_", "", regex=True)
+    scenario_sets = {
+        "SENSOR_FAULT": {"sensor_bias", "sensor_stuck", "sensor_dropout", "sensor_spike", "sensor_drift"},
+        "DATA_QUALITY": {"packet_loss", "communication_failure"},
+        "COMMUNICATION_FAILURE": {"communication_failure"},
+        "noise_injected": {"sensor_bias", "sensor_stuck", "sensor_dropout", "sensor_spike", "sensor_drift",
+                           "packet_loss", "single_node_disturbance", "vibration_only", "slow_drift_temperature"},
+    }
+    category_recall = {}
+    for category, members in scenario_sets.items():
+        mask = scenario_alias.isin(members).to_numpy()
+        yt, yp = y_val[mask], pred_val[mask]
+        category_recall[category] = {"events": int(val.loc[mask, "event_id"].nunique()),
+                                     "recall_per_class": {c: float(recall_score(yt, yp, labels=[c], average=None, zero_division=0)[0]) for c in CLASSES}}
+    category_recall["missing_modality"] = {
+        "status": "unavailable_in_this_synthetic_corpus",
+        "available_source_versions": json.loads((ROOT / "data/synthetic/dataset_manifest.json").read_text()).get("source_data_versions", {}),
+        "note": "Sentinel-1 and DGPS source channels are not present in this development corpus.",
+    }
+    result["required_scenario_category_recall"] = category_recall
 
     # Workstation-only inference latency and process RSS on a single window.
     probe = val[feature_set].iloc[[0]].to_numpy(dtype=float)
