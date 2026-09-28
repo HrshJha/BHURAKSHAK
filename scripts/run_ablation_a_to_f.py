@@ -102,15 +102,11 @@ ARM_DEVELOPMENT = {
 def enrich_with_insar(store: pd.DataFrame) -> pd.DataFrame:
     """Join the T-062 mesh-aligned Sentinel-1 features onto the store.
 
-    Honest-join note: the mesh-aligned product carries ONE acquisition (the
-    nb08 as-of snapshot, 400 nodes), and the synthetic store's
-    ``window_timestamp`` is event-local hours — there is no wall-clock date
-    to align a per-window join to. Sentinel-1 therefore enters arm F as a
-    STATIC per-node LOS context (what a deployment genuinely knows about
-    each node from the latest acquisition at inference time), NOT as a
-    per-window observation. This limitation is recorded in the payload's
-    ``deviations_from_prd`` — a real temporal stack is T-057's missing
-    scenes, not something to fake here.
+    Static per-node join, honestly: the product is ONE acquisition and the
+    store's timestamps are event-local hours, so there is no wall-clock key.
+    Sentinel-1 enters arm F as what a deployment knows per node from the
+    latest acquisition — recorded in ``deviations_from_prd``; a real
+    temporal stack waits for T-057's scenes.
     """
     insar = pd.read_csv(INSAR_CSV)
     keep = ["node_id", *H_INSAR]

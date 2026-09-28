@@ -90,15 +90,10 @@ def _series_groups(df: pd.DataFrame) -> list[tuple[str, str, pd.DataFrame]]:
 def validate_packets(df: pd.DataFrame) -> ValidationResult:
     """Flag missing / duplicate / out-of-order / corrupted rows as DQ states.
 
-    Flags (all boolean, aligned to the input row order):
-      - ``dq_missing``: the (event, node, timestamp) row that the regular grid
-        expects is absent (detected per series against the §8.3 10-minute
-        cadence configured in configs/preprocessing.yaml).
-      - ``dq_duplicate``: repeated (event, node, timestamp) keys (first
-        occurrence unflagged).
-      - ``dq_out_of_order``: timestamps not monotonically increasing within a
-        series (first occurrence unflagged).
-      - ``dq_corrupted``: non-numeric or NaN values in the raw §9 channels.
+    ``dq_missing`` detects grid gaps against the §8.3 cadence in
+    configs/preprocessing.yaml; duplicates and out-of-order timestamps flag
+    all but the first occurrence; ``dq_corrupted`` covers non-numeric/NaN
+    values in the raw §9 channels.
     """
     from src.config import load_config
 

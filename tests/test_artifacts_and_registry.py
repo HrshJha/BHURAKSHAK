@@ -93,20 +93,24 @@ def test_preprocessing_declaration_must_match_payload(tmp_path: Path) -> None:
         _save(tmp_path, preprocessing="standardise", scaler=None)
 
 
-def test_pipeline_prediction_log_carries_the_five_fr14_fields() -> None:
-    """One real prediction path (the pipeline run's log) must carry FR-14 fields."""
+def test_pipeline_prediction_log_carries_fr14_and_training_provenance() -> None:
+    """Check the latest append-only pipeline record and its registry metadata."""
     from src.risk.model_registry import ModelRegistry
 
     log_path = REPO / "models" / "predictions.jsonl"
     if not log_path.is_file():
         pytest.skip("predictions.jsonl not produced yet — run scripts/run_pipeline.py")
-    first = json.loads(log_path.read_text().splitlines()[0])
-    for field in ("model_name", "model_version", "feature_version", "training_dataset_version", "timestamp"):
-        assert field in first, f"FR-14 field {field} missing from the prediction record"
+    latest = json.loads(log_path.read_text().splitlines()[-1])
+    for field in ("model_name", "model_version", "feature_version", "training_dataset_version", "timestamp",
+                  "split_name", "seed", "provenance_hash"):
+        assert field in latest, f"traceability field {field} missing from the latest prediction record"
     registry = ModelRegistry()
-    entry = registry.get_entry(first["model_name"], first["model_version"])
-    assert first["training_dataset_version"] == entry.training_dataset_version
-    assert first["feature_version"] == entry.feature_version
+    entry = registry.get_entry(latest["model_name"], latest["model_version"])
+    assert latest["training_dataset_version"] == entry.training_dataset_version
+    assert latest["feature_version"] == entry.feature_version
+    assert latest["split_name"] == entry.split_name
+    assert latest["seed"] == entry.seed
+    assert latest["provenance_hash"] == entry.provenance_hash
 
 
 def test_downloader_takes_no_password_argv() -> None:

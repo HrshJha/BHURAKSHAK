@@ -165,17 +165,13 @@ def event_split(df: pd.DataFrame) -> pd.Series:
 
 
 def regime_split(df: pd.DataFrame) -> pd.Series:
-    """§35 unseen-parameter-regime holdout (fixall Phase 1.2).
+    """§35 unseen-parameter-regime holdout.
 
-    TEST = whole scenario regimes the model never sees in train/validation:
-    the ``regime_split.test_families`` from configs/validation.yaml (the two
-    growth regimes — rapid and accelerating subsidence — plus the
-    no-deformation regime, so P(NORMAL) has held-out support). VALIDATION is
-    a deterministic 1-in-N sample WITHIN each remaining family (stride from
-    the configured fraction, no rng). Everything else is TRAIN.
-
-    Whole units only: no event, node or time block appears on two sides
-    (asserted by :func:`assert_no_leakage`).
+    TEST = the whole scenario regimes in ``regime_split.test_families``
+    (growth regimes plus the no-deformation regime so P(NORMAL) has held-out
+    support); VALIDATION = deterministic 1-in-N within each remaining family
+    (no rng); the rest is TRAIN. Whole units only — asserted by
+    :func:`assert_no_leakage`.
     """
     cfg = validation_config()["regime_split"]
     test_families = tuple(cfg["test_families"])

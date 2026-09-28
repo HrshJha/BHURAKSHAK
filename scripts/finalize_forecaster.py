@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 from pathlib import Path
 
@@ -52,6 +53,16 @@ def main() -> int:
                                  "training_groups": int(frame.event_id.nunique()), "held_out_test_used": False},
                     "params": params, "channels": model.channels, "horizons": model.horizons,
                     "mu": model.mu, "sd": model.sd, "state_dict": model.torch_module.state_dict()}, artifact)
+        artifact_hash = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        artifact.with_suffix(artifact.suffix + ".sha256").write_text(artifact_hash + "\n", encoding="utf-8")
+        provenance_hash = hashlib.sha256((ROOT / "configs/feature_provenance.yaml").read_bytes()).hexdigest()
+        from src.risk.model_registry import ModelRegistry
+        ModelRegistry().register_model(
+            model_name="subsense_temporal_forecaster", model_version="v2.0.0-tuned-dev",
+            feature_version=str(manifest["feature_schema_version"]),
+            training_dataset_version=str(manifest["dataset_version"]), artifact_path=str(artifact),
+            split_name="train+validation development groups", seed=42, provenance_hash=provenance_hash,
+        )
         study["artifact"] = str(artifact.relative_to(ROOT))
         study["post_study_final_fit"] = {"training_rows": int(len(frame)), "test_touched": False, "seed": 42}
         study_path.write_text(json.dumps(study, indent=2, default=str) + "\n", encoding="utf-8")
