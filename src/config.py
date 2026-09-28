@@ -31,6 +31,7 @@ _CONFIG_FILES = {
     "validation": "validation.yaml",
     "risk_model": "risk_model.yaml",
     "environmental": "environmental.yaml",
+    "forecasting": "forecasting.yaml",
 }
 
 
@@ -92,6 +93,11 @@ def risk_model_config() -> dict[str, Any]:
 def environmental_config() -> dict[str, Any]:
     """Feature Group J gate + synthetic source parameters (T-067)."""
     return load_config("environmental")
+
+
+def forecasting_config() -> dict[str, Any]:
+    """PRD §16 temporal-forecasting parameters (T-076/T-078)."""
+    return load_config("forecasting")
 
 
 def escalation_thresholds() -> dict[str, dict[str, Any]]:

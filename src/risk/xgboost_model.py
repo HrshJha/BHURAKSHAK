@@ -30,8 +30,10 @@ __all__ = ["XGBoostModelError", "RiskModel", "MODEL_INPUT_GROUPS", "train_risk_m
 
 #: §15 input contract: feature groups A–F plus the two cross-model signals.
 #: T-070 adds the Phase-4 modalities (G DGPS / H Sentinel-1) so the ablation
-#: arms can switch them on; the DEFAULT frame carries none of their columns,
-#: so behaviour for every pre-existing caller is unchanged (absent ⇒ skipped).
+#: arms can switch them on; T-077 adds the §16 forecast features (I_forecast),
+#: present only on frames joined via src/forecasting/forecast_to_risk.py —
+#: the DEFAULT frame carries none of their columns, so behaviour for every
+#: pre-existing caller is unchanged (absent ⇒ skipped).
 MODEL_INPUT_GROUPS = (
     "A_physical",
     "B_temporal",
@@ -41,6 +43,7 @@ MODEL_INPUT_GROUPS = (
     "F_physics",
     "G_dgps",
     "H_insar",
+    "I_forecast",
 )
 
 #: Cross-model signals §15 adds on top of the feature groups.
@@ -95,6 +98,10 @@ def _resolve_features(df: pd.DataFrame) -> list[str]:
                     "acceleration_dgps", "mesh_vs_dgps_residual")),
         ("H_insar", ("LOS_displacement", "LOS_velocity", "LOS_acceleration", "cumulative_displacement",
                      "coherence", "spatial_gradient", "local_hotspot_density")),
+        # §16 forecast features (T-077): ``forecast_{channel}_h{steps}`` —
+        # physical-unit forecasts entering the risk layer as FEATURES; the
+        # names are pattern-matched so any horizon config (T-078) resolves.
+        ("I_forecast", tuple(sorted(n for n in schema_cols if n.startswith("forecast_")))),
     ):
         assert group in MODEL_INPUT_GROUPS
         for name in names:

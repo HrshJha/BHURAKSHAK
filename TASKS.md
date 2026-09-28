@@ -574,40 +574,40 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** the report states Stage 2 performance side-by-side with the Stage 1 synthetic-split result and explicitly reports degradation if present — passing requires the degradation be stated, not omitted.
 - **Status:** done
 
-### [ ] T-076 — Implement the temporal forecasting model
+### [x] T-076 — Implement the temporal forecasting model
 - **PRD ref:** §16 (Phase 2 — implemented AFTER Isolation Forest + XGBoost are validated)
 - **Depends on:** T-049, T-071
 - **Output:** `src/forecasting/temporal_model.py`, `tests/test_temporal_model_fc.py`
 - **Acceptance check:** `pytest tests/test_temporal_model_fc.py` passes, asserting the model predicts a PHYSICAL quantity (future displacement / tilt / deformation velocity) and never "future danger" directly, with TCN/GRU/LSTM selectable and LSTM retained as the literature benchmark.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-077 — Feed forecasts back through the XGBoost risk layer
+### [x] T-077 — Feed forecasts back through the XGBoost risk layer
 - **PRD ref:** §16 (preserving the layered explainable design)
 - **Depends on:** T-076
 - **Output:** `src/forecasting/forecast_to_risk.py`, `tests/test_forecast_to_risk.py`
 - **Acceptance check:** `pytest tests/test_forecast_to_risk.py` passes, asserting forecasted physical values enter the XGBoost risk layer as features and that the forecaster never emits a risk state directly.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-078 — Make forecast horizons configurable
+### [x] T-078 — Make forecast horizons configurable
 - **PRD ref:** §16 (next-window, 30 min, 1 hr, 6 hr, 24 hr), NFR-6
 - **Depends on:** T-076
 - **Output:** `configs/forecasting.yaml`, `tests/test_forecast_horizons.py`
 - **Acceptance check:** `pytest tests/test_forecast_horizons.py` passes, asserting all five §16 horizons are selectable from config with none hardcoded.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-079 — Build the temporal forecasting notebook 06
+### [x] T-079 — Build the temporal forecasting notebook 06
 - **PRD ref:** §16, §33, §24
 - **Depends on:** T-077, T-078
 - **Output:** `notebooks/06_temporal_forecasting.ipynb`
 - **Acceptance check:** the notebook executes end-to-end and reports MAE, RMSE, max absolute error and bias per horizon against a persistence baseline, stating whether the neural forecaster justifies its complexity.
-- **Status:** pending
+- **Status:** done
 
-### [ ] T-080 — Profile inference latency and memory against the edge budget
+### [x] T-080 — Profile inference latency and memory against the edge budget
 - **PRD ref:** NFR-2, §33 (notebook 10)
 - **Depends on:** T-043, T-046
 - **Output:** `notebooks/10_inference_profiling.ipynb`, `reports/inference_profile.md`
 - **Acceptance check:** the notebook measures p50/p95 inference latency and peak RSS for the Isolation Forest + XGBoost artifacts on a single feature window and records them against the documented edge budget. *(Portable profiling only — executing on actual Raspberry Pi 5 hardware is out of workstream scope; see Gap G-8 on the missing numeric budget.)*
-- **Status:** pending
+- **Status:** done
 
 ### [ ] T-081 — Assemble the final end-to-end Data+ML pipeline and verify §35
 - **PRD ref:** §35, §7 (layered pipeline)

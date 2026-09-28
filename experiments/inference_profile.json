@@ -1,0 +1,32 @@
+{
+  "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.12.13",
+    "sklearn": "1.6.1",
+    "xgboost": "3.2.0",
+    "cpu_count": 10
+  },
+  "latency_single_window_ms": {
+    "if_p50": 4.5439165,
+    "if_p95": 5.8191048,
+    "xgb_p50": 0.23372900000000002,
+    "xgb_p95": 0.28413125,
+    "chain_p50": 4.942063,
+    "chain_p95": 6.0601065499999995
+  },
+  "memory": {
+    "peak_rss_after_training_mb": 644.5625,
+    "inference_delta_mb": 0.0,
+    "artifact_mb": {
+      "isolation_forest": 2.326234817504883,
+      "xgboost_risk": 1.3845949172973633
+    }
+  },
+  "cadence_context": {
+    "window_stride_h": 1.6666999999999987,
+    "chain_p95_pct_of_period": 0.00010099975583821664
+  },
+  "gap_g8": "NFR-2 states no numeric edge budget; measurements recorded, no pass/fail claimed",
+  "n_calls": 2000
+}

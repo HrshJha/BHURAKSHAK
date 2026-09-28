@@ -29,10 +29,21 @@ repo works without torch installed.
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
+
+# Threading discipline (root-caused 2026-09-28): when sklearn/scipy are already
+# loaded in the same process (full test suite), the OpenMP runtime is
+# initialised before torch imports its own, and torch's intra-op parallelism
+# oversubscribes the cores inside Adam's per-parameter update loop — training
+# appears to hang. Capping the thread pools before the first torch import makes
+# torch single-threaded, which costs nothing at these model sizes and removes
+# the interaction entirely.
+os.environ.setdefault("OMP_NUM_THREADS", "1")
+os.environ.setdefault("MKL_NUM_THREADS", "1")
 
 __all__ = [
     "ForecastError",
@@ -283,6 +294,10 @@ def train_temporal_forecaster(
     """
     import torch
     import torch.nn as nn
+
+    # Belt-and-braces if another module imported torch before this one (the
+    # env caps above only apply before the OpenMP runtime is first loaded).
+    torch.set_num_threads(1)
 
     if architecture not in _ALLOWED_ARCHITECTURES:
         raise ForecastError(
