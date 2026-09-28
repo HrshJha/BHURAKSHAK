@@ -2,9 +2,9 @@
 
 ## Gap statement options
 
-**A — cautious (44 words):** Despite periodic ground surveys and Sentinel-1 observations revisited every 6–12 days, a gap remains in continuous ground-level sensing and explainable risk analytics for coalfield subsidence; SubSense explores sensor fusion and risk scoring, while repository evidence remains synthetic and hardware remains a design.
+**A — cautious (42 words):** Despite periodic ground surveys and Sentinel-1 observations revisited every 6–12 days, a gap remains in continuous ground-level sensing and explainable risk analytics for coalfield subsidence; SubSense explores sensor fusion and risk scoring, while repository evidence remains synthetic and hardware remains a design.
 
-**B — balanced (42 words):** Despite periodic surveys and Sentinel-1's 6–12-day revisit interval, a gap remains in continuous ground sensing paired with explainable subsidence-risk analytics; this project designs a sensor-to-alert workflow, with model evaluation limited to a locked synthetic scenario-regime holdout.
+**B — balanced (36 words):** Despite periodic surveys and Sentinel-1's 6–12-day revisit interval, a gap remains in continuous ground sensing paired with explainable subsidence-risk analytics; this project designs a sensor-to-alert workflow, with model evaluation limited to a locked synthetic scenario-regime holdout.
 
 **C — strongest defensible (40 words):** Despite satellite revisit intervals of 6–12 days and periodic survey practice, a gap remains in continuous sensing plus timely, explainable risk scoring; our repository demonstrates the analytics on synthetic data, while the sensor network and gateway are still PRD designs.
 
@@ -18,8 +18,8 @@ Each card is tagged and ends in the cited DOI/product URL. Titles and takeaways 
 2. **[GAP] Korba PS-InSAR precedent** — Monika et al.; ISPRS Archives (2018). **Takeaway (11 words):** Shows coalfield PS-InSAR use; it is not validation of our system. [DOI](https://doi.org/10.5194/isprs-archives-XLII-5-427-2018)
 3. **[HW] SX1276 LoRa radio** — Semtech product page and datasheet. **Takeaway (9 words):** Datasheet supports the PRD radio choice; mesh remains designed. [Product page](https://www.semtech.com/products/wireless-rf/lora-connect/sx1276)
 4. **[HW] MPU-9250 IMU option** — InvenSense/TDK Product Specification. **Takeaway (11 words):** Supports a PRD-listed IMU option; no physical sensor test is evidenced. [Datasheet](https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf)
-5. **[SW] Knothe time function** — Hejmanowski; International Journal of Coal Science & Technology (2015). **Takeaway (8 words):** Informs the configured synthetic deformation simulator. [DOI](https://doi.org/10.1007/s40789-015-0092-z)
-6. **[SW] Isolation Forest + XGBoost** — Liu et al. (2008); Chen & Guestrin (2016). **Takeaway (12 words):** Research basis for anomaly and risk models; locked results are synthetic. [Isolation Forest DOI](https://doi.org/10.1109/ICDM.2008.17) · [XGBoost DOI](https://doi.org/10.1145/2939672.2939785)
+5. **[SW] Knothe time function** — Hejmanowski; International Journal of Coal Science & Technology (2015). **Takeaway (6 words):** Informs the configured synthetic deformation simulator. [DOI](https://doi.org/10.1007/s40789-015-0092-z)
+6. **[SW] Isolation Forest + XGBoost** — Liu et al. (2008); Chen & Guestrin (2016). **Takeaway (11 words):** Research basis for anomaly and risk models; locked results are synthetic. [Isolation Forest DOI](https://doi.org/10.1109/ICDM.2008.17) · [XGBoost DOI](https://doi.org/10.1145/2939672.2939785)
 
 ## Other documented info link box
 
@@ -71,8 +71,8 @@ Visible words and characters are counted after removing Markdown formatting and 
 
 | Block | Words | Characters |
 |---|---:|---:|
-| Gap option A | 44 | 317 |
-| Gap option B | 42 | 288 |
+| Gap option A | 42 | 317 |
+| Gap option B | 36 | 288 |
 | Gap option C | 40 | 274 |
 
 | Block | Words | Characters |
@@ -80,15 +80,15 @@ Visible words and characters are counted after removing Markdown formatting and 
 | Card 1 title | 3 | 21 |
 | Card 1 takeaway | 11 | 71 |
 | Card 1 full visible copy | 25 | 166 |
-| Card 2 title | 4 | 24 |
-| Card 2 takeaway | 12 | 65 |
-| Card 2 full visible copy | 24 | 143 |
+| Card 2 title | 3 | 24 |
+| Card 2 takeaway | 11 | 65 |
+| Card 2 full visible copy | 22 | 143 |
 | Card 3 title | 3 | 17 |
 | Card 3 takeaway | 9 | 63 |
 | Card 3 full visible copy | 20 | 141 |
-| Card 4 title | 4 | 19 |
-| Card 4 takeaway | 12 | 71 |
-| Card 4 full visible copy | 22 | 150 |
+| Card 4 title | 3 | 19 |
+| Card 4 takeaway | 11 | 71 |
+| Card 4 full visible copy | 20 | 150 |
 | Card 5 title | 3 | 20 |
 | Card 5 takeaway | 6 | 55 |
 | Card 5 full visible copy | 19 | 163 |
@@ -107,6 +107,6 @@ Visible words and characters are counted after removing Markdown formatting and 
 
 | Block | Words | Characters |
 |---|---:|---:|
-| Figure caption 1 | 37 | 233 |
-| Figure caption 2 | 33 | 264 |
-| Figure caption 3 | 39 | 287 |
+| Figure caption 1 | 34 | 233 |
+| Figure caption 2 | 32 | 264 |
+| Figure caption 3 | 36 | 287 |
