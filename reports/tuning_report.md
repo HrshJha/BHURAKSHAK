@@ -2,7 +2,7 @@
 
 ## Development-only results
 
-All figures here are from the leakage-controlled synthetic development corpus and grouped cross-validation. The locked test set remains unevaluated until the final freeze.
+Development figures below use the leakage-controlled synthetic corpus and grouped cross-validation. The final section reports the single, post-freeze synthetic holdout evaluation.
 
 | Model | Macro PR-AUC (mean ± SD) | Critical recall (mean ± SD) | Macro F1 (mean ± SD) | Normal false-alarm rate (mean ± SD) |
 |---|---:|---:|---:|---:|
@@ -25,7 +25,16 @@ The frozen XGBoost model selected isotonic calibration on a held-out portion of 
 
 ## Locked test
 
-The fresh synthetic locked set is read only by `scripts/final_eval.py`, which consumes its single evaluation allowance. The final table and alert-engine figures will be added here after that one run. No real-mine performance claim is supported.
+The fresh locked set was read once by `scripts/final_eval.py` after commit `d09db22` and tag `frozen-for-test`; `reports/test_lock.json` records `evals_run: 1`.
+
+| Model | Macro PR-AUC | Macro F1 | Critical recall | Normal false-alarm rate |
+|---|---:|---:|---:|---:|
+| Tuned XGBoost | 0.5029 | 0.4458 | 0.0933 | 0.1508 |
+| Default XGBoost | 0.5351 | 0.4450 | 0.0457 | 0.0372 |
+| Logistic regression | 0.4687 | 0.4297 | 0.7650 | 0.6263 |
+| Threshold rule | 0.4146 | 0.3897 | 0.0416 | 0.0174 |
+
+Tuned XGBoost modestly exceeded default XGBoost on macro F1 and Critical recall, but its Critical recall remained 0.093 and its false-alarm rate was higher. Logistic regression had higher Critical recall but a 0.626 normal false-alarm rate. The alert engine produced 0.046 false-alert episodes per normal event day; median and P10 lead times were −3.33 and −11.67 hours. This holdout does not show useful early-warning performance. No retuning or repeat evaluation was performed. These results describe only the synthetic holdout, not a real mine.
 
 ## Artifacts
 

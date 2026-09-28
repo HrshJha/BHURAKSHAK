@@ -1,0 +1,280 @@
+{
+  "evaluation": {
+    "kind": "single_use_locked_final",
+    "synthetic_corpus_only": true,
+    "dataset_version": "synthetic-heldout-v3-20260929",
+    "feature_schema_version": "v2",
+    "seed": 20260929,
+    "sha256": "e49000ce6142a6c5e59a9743d8551526da62997b03edbb48173b7d4d03377cbb",
+    "evals_run": 1,
+    "events": 1875,
+    "windows": 16875,
+    "center_mode": "detected",
+    "test_touched_once": true
+  },
+  "risk_models": {
+    "tuned_xgboost": {
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.6853658536585366,
+          "recall": 0.8492444444444445,
+          "f1-score": 0.7585549821357681,
+          "support": 5625.0
+        },
+        "WARNING": {
+          "precision": 0.37724399494311,
+          "recall": 0.5304888888888889,
+          "f1-score": 0.44093091983745847,
+          "support": 5625.0
+        },
+        "CRITICAL": {
+          "precision": 0.2631578947368421,
+          "recall": 0.09333333333333334,
+          "f1-score": 0.1377952755905512,
+          "support": 5625.0
+        },
+        "accuracy": 0.49102222222222225,
+        "macro avg": {
+          "precision": 0.44192258111282956,
+          "recall": 0.4910222222222222,
+          "f1-score": 0.4457603925212592,
+          "support": 16875.0
+        },
+        "weighted avg": {
+          "precision": 0.44192258111282956,
+          "recall": 0.49102222222222225,
+          "f1-score": 0.4457603925212592,
+          "support": 16875.0
+        }
+      },
+      "confusion_matrix_labels_normal_warning_critical": [
+        [
+          4777,
+          691,
+          157
+        ],
+        [
+          1328,
+          2984,
+          1313
+        ],
+        [
+          865,
+          4235,
+          525
+        ]
+      ],
+      "pr_auc_macro_ovr": 0.5028714641737996,
+      "f1_macro": 0.4457603925212592,
+      "recall_critical": 0.09333333333333334,
+      "false_alarm_rate_normal": 0.15075555555555556,
+      "multiclass_brier": 0.8268936663804195,
+      "ece_top_label_15_bins": 0.3291996131447231
+    },
+    "default_xgboost": {
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.653159671972986,
+          "recall": 0.9628444444444444,
+          "f1-score": 0.7783286627865201,
+          "support": 5625.0
+        },
+        "WARNING": {
+          "precision": 0.41858923362503314,
+          "recall": 0.5612444444444444,
+          "f1-score": 0.47953216374269003,
+          "support": 5625.0
+        },
+        "CRITICAL": {
+          "precision": 0.24687800192122958,
+          "recall": 0.04568888888888889,
+          "f1-score": 0.0771077107710771,
+          "support": 5625.0
+        },
+        "accuracy": 0.5232592592592593,
+        "macro avg": {
+          "precision": 0.43954230250641624,
+          "recall": 0.5232592592592592,
+          "f1-score": 0.4449895124334291,
+          "support": 16875.0
+        },
+        "weighted avg": {
+          "precision": 0.43954230250641624,
+          "recall": 0.5232592592592593,
+          "f1-score": 0.444989512433429,
+          "support": 16875.0
+        }
+      },
+      "confusion_matrix_labels_normal_warning_critical": [
+        [
+          5416,
+          194,
+          15
+        ],
+        [
+          1699,
+          3157,
+          769
+        ],
+        [
+          1177,
+          4191,
+          257
+        ]
+      ],
+      "pr_auc_macro_ovr": 0.5351496371043436,
+      "f1_macro": 0.4449895124334291,
+      "recall_critical": 0.04568888888888889,
+      "false_alarm_rate_normal": 0.03715555555555555,
+      "multiclass_brier": 0.7706206412554049,
+      "ece_top_label_15_bins": 0.31984279469030874
+    },
+    "logistic_regression": {
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.6758842443729903,
+          "recall": 0.3736888888888889,
+          "f1-score": 0.4812821980538065,
+          "support": 5625.0
+        },
+        "WARNING": {
+          "precision": 0.2236024844720497,
+          "recall": 0.1984,
+          "f1-score": 0.21024868123587037,
+          "support": 5625.0
+        },
+        "CRITICAL": {
+          "precision": 0.49042625940278095,
+          "recall": 0.7649777777777778,
+          "f1-score": 0.5976803944718383,
+          "support": 5625.0
+        },
+        "accuracy": 0.4456888888888889,
+        "macro avg": {
+          "precision": 0.4633043294159403,
+          "recall": 0.44568888888888886,
+          "f1-score": 0.42973709125383835,
+          "support": 16875.0
+        },
+        "weighted avg": {
+          "precision": 0.46330432941594035,
+          "recall": 0.4456888888888889,
+          "f1-score": 0.4297370912538384,
+          "support": 16875.0
+        }
+      },
+      "confusion_matrix_labels_normal_warning_critical": [
+        [
+          2102,
+          2601,
+          922
+        ],
+        [
+          960,
+          1116,
+          3549
+        ],
+        [
+          48,
+          1274,
+          4303
+        ]
+      ],
+      "pr_auc_macro_ovr": 0.46871124745415277,
+      "f1_macro": 0.42973709125383835,
+      "recall_critical": 0.7649777777777778,
+      "false_alarm_rate_normal": 0.6263111111111112,
+      "multiclass_brier": 0.6666172088835493,
+      "ece_top_label_15_bins": 0.14093103633586346
+    },
+    "threshold_rule": {
+      "per_class": {
+        "NORMAL": {
+          "precision": 0.571266149870801,
+          "recall": 0.9825777777777778,
+          "f1-score": 0.722483660130719,
+          "support": 5625.0
+        },
+        "WARNING": {
+          "precision": 0.37864418686336493,
+          "recall": 0.3832888888888889,
+          "f1-score": 0.38095238095238093,
+          "support": 5625.0
+        },
+        "CRITICAL": {
+          "precision": 0.1553784860557769,
+          "recall": 0.0416,
+          "f1-score": 0.06562894404711822,
+          "support": 5625.0
+        },
+        "accuracy": 0.46915555555555555,
+        "macro avg": {
+          "precision": 0.3684296075966476,
+          "recall": 0.4691555555555556,
+          "f1-score": 0.3896883283767394,
+          "support": 16875.0
+        },
+        "weighted avg": {
+          "precision": 0.36842960759664767,
+          "recall": 0.46915555555555555,
+          "f1-score": 0.3896883283767394,
+          "support": 16875.0
+        }
+      },
+      "confusion_matrix_labels_normal_warning_critical": [
+        [
+          5527,
+          94,
+          4
+        ],
+        [
+          2201,
+          2156,
+          1268
+        ],
+        [
+          1947,
+          3444,
+          234
+        ]
+      ],
+      "pr_auc_macro_ovr": 0.41458390773039316,
+      "f1_macro": 0.3896883283767394,
+      "recall_critical": 0.0416,
+      "false_alarm_rate_normal": 0.01742222222222222,
+      "multiclass_brier": 1.061688888888889,
+      "ece_top_label_15_bins": 0.5308444444444445
+    }
+  },
+  "anomaly_models": {
+    "default": {
+      "pr_auc_anomaly": 0.9716803920288084,
+      "roc_auc_anomaly": 0.9907308291588685,
+      "recall_at_development_healthy_threshold": 0.5885286783042394,
+      "false_positive_rate_normal_anomaly_label": 0.0058568677792041075,
+      "threshold": 0.655265024240293
+    },
+    "tuned": {
+      "pr_auc_anomaly": 0.9739993541371479,
+      "roc_auc_anomaly": 0.9920168907582835,
+      "recall_at_development_healthy_threshold": 0.8959419632736341,
+      "false_positive_rate_normal_anomaly_label": 0.021742618741976895,
+      "threshold": 0.5433886244281978
+    }
+  },
+  "alert_engine": {
+    "false_alarms_per_normal_event_day": 0.046079769601152,
+    "normal_event_days": 347.22395833333326,
+    "false_alert_episodes_on_normal_events": 16,
+    "median_lead_time_hours": -3.333400000000001,
+    "p10_lead_time_hours": -11.6667,
+    "lead_time_events": 887,
+    "time_in_state_fraction": {
+      "GREEN": 0.6862814814814815,
+      "WATCH": 0.3137185185185185
+    },
+    "neighbour_confirmations_available": false,
+    "de_escalation": "not implemented in current AlertEngine; cannot be evaluated",
+    "watch_probability_mapping": "P(WATCH or higher) = 1 - P(NORMAL)"
+  }
+}

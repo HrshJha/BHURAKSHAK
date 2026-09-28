@@ -40,6 +40,8 @@ The shuffled-label control yielded mean macro PR-AUC 0.3344 (chance reference ap
 
 Workstation CPU p50/p95 latency per window: tuned XGBoost 0.317/0.613 ms; Isolation Forest 2.989/3.829 ms; forecaster 0.042/0.045 ms. This is a workstation profile, not device performance. The seeded tabletop stand-in has 14,552 matched windows, 18 absent model inputs, and Critical recall 0.0; physical tabletop validation remains pending.
 
-## Test-set status and open items
+## Final locked-test result and open items
 
-Before final evaluation, `reports/test_lock.json` remains at `evals_run: 0`. The next step is to freeze and commit, tag `frozen-for-test`, and run `scripts/final_eval.py` once. G-5 remains unresolved: the corpus has one node per event, so spatial neighbor confirmation cannot be tested. No real-mine performance is claimed.
+The frozen synthetic test set was evaluated once after commit `d09db22` and tag `frozen-for-test`; `reports/test_lock.json` is now `evals_run: 1`. On 1,875 events / 16,875 windows, tuned XGBoost achieved macro PR-AUC 0.5029, macro F1 0.4458, Critical recall 0.0933, and Normal false-alarm rate 0.1508. Default XGBoost Critical recall was 0.0457 (FAR 0.0372); logistic Critical recall was 0.7650 with FAR 0.6263. The tuned model did not provide strong holdout Critical recall.
+
+Alert-engine false alarms were 0.046 per normal event day. Median lead time was −3.33 h (P10 −11.67 h), so this holdout does not show useful early warning. The set was not reread and no tuning used its outcomes. G-5 remains unresolved because there is one node per event. Real-mine performance is unvalidated.
