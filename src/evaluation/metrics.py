@@ -31,7 +31,6 @@ module exposes no ``accuracy`` function and the headline registry
 from __future__ import annotations
 
 import numpy as np
-import pandas as pd
 
 from src.risk.calibration import (
     brier_score,

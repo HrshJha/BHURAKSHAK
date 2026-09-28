@@ -22,7 +22,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 
 from src.config import risk_model_config
-from src.risk.xgboost_model import RiskModel, XGBoostModelError
+from src.risk.xgboost_model import XGBoostModelError
 
 __all__ = ["BaselinesError", "fit_baselines", "threshold_rule_predict", "calibrate_threshold_rule"]
 
