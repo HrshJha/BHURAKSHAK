@@ -2,11 +2,11 @@
 
 ## Gap statement options
 
-**A — cautious (39 words):** Despite periodic ground surveys and Sentinel-1 observations revisited every 6–12 days, a gap remains in continuous ground-level sensing and explainable risk analytics for coalfield subsidence; SubSense explores sensor fusion and risk scoring, while repository evidence remains synthetic and hardware remains a design.
+**A — cautious (44 words):** Despite periodic ground surveys and Sentinel-1 observations revisited every 6–12 days, a gap remains in continuous ground-level sensing and explainable risk analytics for coalfield subsidence; SubSense explores sensor fusion and risk scoring, while repository evidence remains synthetic and hardware remains a design.
 
-**B — balanced (39 words):** Despite periodic surveys and Sentinel-1's 6–12-day revisit interval, a gap remains in continuous ground sensing paired with explainable subsidence-risk analytics; this project designs a sensor-to-alert workflow, with model evaluation limited to a locked synthetic scenario-regime holdout.
+**B — balanced (42 words):** Despite periodic surveys and Sentinel-1's 6–12-day revisit interval, a gap remains in continuous ground sensing paired with explainable subsidence-risk analytics; this project designs a sensor-to-alert workflow, with model evaluation limited to a locked synthetic scenario-regime holdout.
 
-**C — strongest defensible (37 words):** Despite satellite revisit intervals of 6–12 days and periodic survey practice, a gap remains in continuous sensing plus timely, explainable risk scoring; our repository demonstrates the analytics on synthetic data, while the sensor network and gateway are still PRD designs.
+**C — strongest defensible (40 words):** Despite satellite revisit intervals of 6–12 days and periodic survey practice, a gap remains in continuous sensing plus timely, explainable risk scoring; our repository demonstrates the analytics on synthetic data, while the sensor network and gateway are still PRD designs.
 
 Selected: **B**. Its revisit wording follows the repo's 12-day orbit repeat and 6-day interleaved-pair note; it does not imply a measured service gap or deployment.
 
