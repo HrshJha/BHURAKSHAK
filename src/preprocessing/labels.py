@@ -13,9 +13,18 @@ This module is the runtime authority for that rule:
   or if two label fields are re-encodings of one another (a collapse);
 - vocabularies mirror the simulator (§10/T-016/T-018): ``fault_label`` carries
   the five injected fault modes (incl. ``SPIKE``) plus ``NONE``; ``risk_label``
-  uses the 3-class MVP vocabulary NORMAL/WARNING/CRITICAL (Gap G-1/G-2/G-3
-  provisional mapping: NORMAL fills the §12 GREEN slot) with the full
-  4-class vocabulary available for the pre-T-050 expansion.
+  uses the 3-class MVP vocabulary NORMAL/WARNING/CRITICAL with the full
+  4-class vocabulary available for the future expansion.
+
+  G-1 mapping (resolved, T-050 shipped): the §12 GREEN slot is filled by
+  NORMAL — ``FULL4_TO_MVP3`` below is the authoritative rename table
+  (GREEN→NORMAL, WATCH→WARNING, WARNING→WARNING, CRITICAL→CRITICAL), and the
+  §10 scenario taxonomy is mapped to ``risk_label`` at generation time in
+  ``src/simulator/scenarios.py`` (per-scenario, documented there and in
+  docs/label_mapping.md). The §10-only labels (SENSOR_FAULT, DATA_QUALITY,
+  LOCAL_ANOMALY, NON_SUBSIDENCE, COMMUNICATION_FAILURE, MIXED) are carried by
+  the separate ``fault_label`` / ``anomaly_label`` / ``data_quality_label``
+  fields — never collapsed into ``risk_label`` (§12).
 """
 
 from __future__ import annotations
@@ -56,8 +65,8 @@ FAULT_VALUES = ("NONE", "BIAS", "STUCK", "DROPOUT", "SPIKE", "DRIFT")
 
 PROGRESSION_VALUES = ("STABLE", "SLOW", "ACCELERATING", "RAPID")
 
-#: §12: start with 3 classes (MVP), expand later. Provisional G-1/G-2/G-3
-#: mapping — NORMAL fills the GREEN slot — must be revisited before T-050.
+#: §12: start with 3 classes (MVP); the 4-class expansion path is kept ready.
+#: G-1 mapping is RESOLVED (see module docstring + docs/label_mapping.md).
 RISK_VOCAB_MVP3 = ("NORMAL", "WARNING", "CRITICAL")
 RISK_VOCAB_FULL4 = ("GREEN", "WATCH", "WARNING", "CRITICAL")
 

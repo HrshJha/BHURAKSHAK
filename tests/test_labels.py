@@ -8,7 +8,9 @@ import pytest
 from src.preprocessing.labels import (
     CONTINUOUS_TARGETS,
     FAULT_VALUES,
+    FULL4_TO_MVP3,
     LABEL_COLUMNS,
+    RISK_VOCAB_FULL4,
     RISK_VOCAB_MVP3,
     LabelError,
     assert_labels_separate,
@@ -54,6 +56,15 @@ def test_unknown_risk_value_rejected() -> None:
     df.loc[0, "risk_label"] = "PURPLE"
     with pytest.raises(LabelError, match="PURPLE"):
         validate_labels(df)
+
+
+def test_full4_to_mvp3_mapping_is_pinned() -> None:
+    """G-1 closure: the 4-class → 3-class rename table is authoritative."""
+    assert FULL4_TO_MVP3 == {"GREEN": "NORMAL", "WATCH": "WARNING", "WARNING": "WARNING", "CRITICAL": "CRITICAL"}
+    # the rename must be within one vocabulary: every value is an MVP class
+    assert set(FULL4_TO_MVP3.values()) == set(RISK_VOCAB_MVP3)
+    # and it must cover the whole 4-class vocabulary
+    assert set(FULL4_TO_MVP3) == set(RISK_VOCAB_FULL4)
 
 
 def test_full4_vocabulary_accepted_when_selected() -> None:

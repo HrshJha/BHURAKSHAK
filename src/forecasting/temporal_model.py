@@ -229,42 +229,29 @@ class TemporalForecaster:
         Each series' LAST complete history window is the input; outputs are
         in the channel's physical unit (unscaled). Series shorter than the
         history produce no rows — never an invented forecast.
+
+        Single source of truth: delegates to
+        :func:`src.forecasting.forecast_to_risk.forecast_all_origins` and keeps
+        each series' LAST origin (imported lazily to avoid a module-level
+        cycle; forecast_to_risk imports this module's types).
         """
         if self.torch_module is None:
             raise ForecastError("forecaster is not fitted")
-        import torch
+        from src.forecasting.forecast_to_risk import forecast_all_origins
 
-        self.torch_module.eval()
-        rows = []
-        with torch.no_grad():
-            for (event, node), g in windowed.groupby(["event_id", "node_id"], sort=False):
-                g = g.sort_values("window_index", kind="stable")
-                series = np.column_stack(
-                    [g[f"{ch}_mean"].to_numpy(dtype=float) for ch in self.channels]
-                )
-                if len(series) < self.history_steps:
-                    continue
-                x = series[-self.history_steps :]
-                if not np.isfinite(x).all():
-                    continue
-                xt = (x - self.mu) / self.sd
-                tensor = torch.tensor(xt, dtype=torch.float32).unsqueeze(0)  # (1, T, C)
-                out = self.torch_module(tensor)  # (1, H, C)
-                pred = out.numpy()[0]
-                pred = pred * self.sd[None, :] + self.mu[None, :]  # back to physical units
-                for h_i, horizon in enumerate(self.horizons):
-                    for c_i, ch in enumerate(self.channels):
-                        rows.append(
-                            {
-                                "event_id": event,
-                                "node_id": node,
-                                "channel": ch,
-                                "horizon_steps": int(horizon),
-                                "predicted_value": float(pred[h_i, c_i]),
-                            }
-                        )
+        all_rows = forecast_all_origins(self, windowed)
+        if all_rows.empty:
+            return Forecast(
+                rows=pd.DataFrame(columns=["event_id", "node_id", "channel", "horizon_steps", "predicted_value"]),
+                channel_units={ch: "mm" if ch == "displacement" else "deg" for ch in self.channels},
+            )
+        # the last origin per (event, node): max window_index that emitted rows
+        last = all_rows.sort_values("window_index", kind="stable").groupby(
+            ["event_id", "node_id"], sort=False
+        ).tail(len(self.horizons) * len(self.channels))
+        last = last[["event_id", "node_id", "channel", "horizon_steps", "predicted_value"]]
         return Forecast(
-            rows=pd.DataFrame(rows),
+            rows=last.reset_index(drop=True),
             channel_units={ch: "mm" if ch == "displacement" else "deg" for ch in self.channels},
         )
 
