@@ -9,6 +9,6 @@
 | Forecaster vs persistence | Selected next-window TCN beat persistence on grouped development CV; longer horizons unsupported by sequence length. |
 | Shuffled-label control | Macro PR-AUC 0.3344, near the approximately 1/3 chance reference; macro F1 0.0321. |
 | Neighbor confirmation / G-5 | Not verifiable: one node per event. Spatial confirmation is gated; no synthetic cross-event neighbors are fabricated. |
-| Alert-engine targets / de-escalation | Report measured once on the locked set in `reports/final_eval.md`; neighbor confirmation and de-escalation remain unavailable/unimplemented. PRD targets remain undefined where applicable. |
+| Alert-engine targets / de-escalation | Locked synthetic test: 0.046 false-alert episodes per normal event day; median lead time −3.33 h and P10 −11.67 h. Neighbor confirmation and de-escalation remain unavailable/unimplemented; PRD targets remain undefined. |
 | Physical tabletop / real-mine validation | Physical hardware and real-mine evidence absent. Seeded synthetic tabletop stand-in transfer has Critical recall 0.0 with 18 model features missing; this is not physical validation. |
-| Fresh locked-test result | Pending one authorized evaluation by `scripts/final_eval.py`. |
+| Fresh locked-test result | Evaluated exactly once after freeze; `reports/test_lock.json` has `evals_run: 1`. Tuned model Critical recall is 0.0933; no early-warning success claim is supported. |

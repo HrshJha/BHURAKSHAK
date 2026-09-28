@@ -33,4 +33,4 @@
 - `reports/pytest_phase7_hashseed_101.txt`, `_202.txt`, `_303.txt`: 625 tests passed at each seed. `scripts/check_tree.py` and `scripts/validate_synthetic_dataset.py` pass.
 - Seeded tabletop stand-in is feature-scarce (18 missing features) and has Critical recall 0.0; it is not hardware or mine validation.
 
-The fresh locked evaluation and its single-use lock update are recorded in `reports/final_eval.md` after freeze.
+The frozen state is commit `d09db22`, tagged `frozen-for-test`. `scripts/final_eval.py` ran once; `reports/test_lock.json` now records `evals_run: 1`. The synthetic holdout result is in `reports/final_eval.md`: tuned XGBoost Critical recall 0.0933, normal FAR 0.1508; alert median lead time −3.33 h. No second test evaluation or post-test tuning was performed.
