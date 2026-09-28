@@ -130,7 +130,7 @@ def build_feature_store(
     feature_raw = raw[structural + observable].copy()
     windowed = build_windows(feature_raw, channels=window_channels, labels=()).df
 
-    # ---- per-group emission -------------------------------------------------
+    # per-group emission
     group_a = emit_group_a(windowed)
     group_b = emit_group_b(windowed)
     group_c = emit_group_c(windowed, node_coords, center_mode=center_mode)
@@ -150,7 +150,7 @@ def build_feature_store(
     model = _prefix_merge(model, group_d, list(GROUP_D_FEATURES))
     model = _prefix_merge(model, group_e, list(GROUP_E_FEATURES))
     model = _prefix_merge(model, group_f, list(GROUP_F_FEATURES))
-# 
+
     present_labels = [lab for lab in MODEL_LABELS if lab in raw.columns]
     if present_labels:
         label_rows = raw[["event_id", "node_id", "timestamp", *present_labels]].copy()

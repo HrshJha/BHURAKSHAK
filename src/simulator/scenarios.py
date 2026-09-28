@@ -31,7 +31,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 import numpy as np
 
@@ -42,7 +41,7 @@ from src.simulator.comms_degradation import link_outage, random_packet_loss
 from src.simulator.deformation_field import DeformationField, FieldParams
 from src.simulator.faults import FaultType, inject_fault
 from src.simulator.temporal_model import subsidence_growth
-# 
+
 PROGRESSION_STABLE = "STABLE"
 PROGRESSION_SLOW = "SLOW"
 PROGRESSION_ACCELERATING = "ACCELERATING"
@@ -210,7 +209,7 @@ def generate_scenario(
     node_id: str,
     rng: np.random.Generator,
     reference_node: tuple[float, float] = (0.0, 0.0),
-    fault_type: Optional[FaultType] = None,
+    fault_type: FaultType | None = None,
 ) -> ScenarioResult:
     """Generate one node's raw channels and labels under one scenario.
 
@@ -229,37 +228,37 @@ def generate_scenario(
     steps = int(cfg["steps_per_day"] * cfg["duration_days"])
     t_hours = np.arange(steps, dtype=float) * (24.0 / float(cfg["steps_per_day"]))
     t_days = t_hours / 24.0
-# 
+
     profile = _temporal_profile(scenario, t_days, fld.params.time_coefficient)
     weight = _spatial_weight(scenario, node_x, node_y, fld)
     subsidence = profile * weight
 
-    # ---- tilt: analytic gradient of the same field (T-013 coupling) ---------
+    # tilt: analytic gradient of the same field (T-013 coupling)
     gx = np.asarray(fld.dW_dx(np.full(steps, node_x), np.full(steps, node_y), t_days))
     gy = np.asarray(fld.dW_dy(np.full(steps, node_x), np.full(steps, node_y), t_days))
     tilt_std = float(physics_config()["noise"]["tilt_noise_std_deg"])
     tilt_x = np.degrees(gx / 1000.0) + rng.normal(0.0, tilt_std, steps)
     tilt_y = np.degrees(gy / 1000.0) + rng.normal(0.0, tilt_std, steps)
-# 
+
     disp_noise = float(physics_config()["noise"]["displacement_noise_std_mm"])
     displacement = subsidence + rng.normal(0.0, disp_noise, steps)
-# 
+
     strain = edge_strain_series(fld, node_x, node_y, reference_node[0], reference_node[1], t_days)
 
-    # ---- vibration: supporting-only channel (T-015) --------------------------
+    # vibration: supporting-only channel (T-015)
     vib_comps = VibrationComponents(normal_noise=True)
     vib = summarized_vibration_batch(vib_comps, rng, steps)
     vibration_rms = np.asarray(vib.rms)
     vibration_peak = np.asarray(vib.peak)
     vibration_crest = np.asarray(vib.crest_factor)
-# 
+
     tcfg = physics_config()["telemetry"]
     battery = np.linspace(float(tcfg["battery_start_v"]), float(tcfg["battery_end_v"]), steps) + rng.normal(
         0.0, 0.01, steps
     )
     rssi = rng.normal(float(tcfg["rssi_mean_dbm"]), float(tcfg["rssi_std_dbm"]), steps)
     snr = rng.normal(float(tcfg["snr_mean_db"]), float(tcfg["snr_std_db"]), steps)
-# 
+
     progression, risk = _SUBSIDENCE_SCENARIOS.get(scenario, (PROGRESSION_STABLE, RISK_NORMAL))
     anomaly_flag = ""
 
@@ -268,7 +267,7 @@ def generate_scenario(
     dq = np.empty(steps, dtype=object)
     dq[:] = ""
 
-    # ---- per-scenario behaviour ----------------------------------------------
+    # per-scenario behaviour
     if scenario is Scenario.MULTIPLE_ZONES:
         # zone-dependent risk: nodes closer to the secondary zone are weaker (WARNING);
         # nodes under the main zone are CRITICAL (max roll-up at panel level)
@@ -320,7 +319,7 @@ def generate_scenario(
         period = float(cfg["temperature_period_days"])
         displacement += amp_mm * np.sin(2.0 * np.pi * t_days / period)
         meta["temperature_drift_amplitude_deg"] = float(cfg["temperature_drift_amplitude_deg"])
-# 
+
     threshold_mm = float(cfg["anomaly_subsidence_threshold_mm"])
     deformation_mask = subsidence > threshold_mm
     anomaly[deformation_mask] = 1

@@ -42,26 +42,6 @@ def spatial_kernel(
     return np.exp(-((dx * dx + dy * dy) / (2.0 * sigma * sigma)))
 
 
-def kernel_peak_location(center_x: float, center_y: float) -> tuple[float, float]:
-    """The kernel peaks exactly at the configured center (x0, y0)."""
-    return (center_x, center_y)
-
-
-def kernel_cross_section(
-    axis_points: np.ndarray,
-    center: float,
-    sigma: float,
-    axis: str = "x",
-    other: float = 0.0,
-) -> np.ndarray:
-    """Kernel values along one axis through the center (for notebook proof plots)."""
-    if axis == "x":
-        return spatial_kernel(axis_points, other, center, other, sigma)
-    if axis == "y":
-        return spatial_kernel(other, axis_points, other, center, sigma)
-    raise ValueError("axis must be 'x' or 'y'")
-
-
 def analytic_kernel_check(center_x: float, center_y: float, sigma: float, n_points: int = 20) -> bool:
     """Self-check against math.exp at >=20 sampled points (used by tests/docs)."""
     rng = np.random.default_rng(0)

@@ -6,7 +6,7 @@ SubSense is a prototype repository for mine-subsidence sensing and modeling. Its
 
 This repository contains the **Data + ML workstream**: the physics-coupled synthetic-data generator, feature store, Isolation Forest anomaly detection, XGBoost risk classification, physics-consistency engine, and the alert state machine. Hardware, LoRa networking, the Raspberry Pi gateway, MQTT, the FastAPI backend, databases, the GIS dashboard, OTA and alert hardware are separate workstreams (see `TASKS.md` → "Excluded by Scope").
 
-> Current status: leakage remediation and re-tuning are in progress. Previous risk-model, ablation, domain-gap, and test-set numbers are archived as `superseded_leaky` and are not results. Group C spatial features are gated because the current corpus has one node per event.
+> Current status: leakage remediation is complete and development-only tuning is in progress. Previous risk-model, ablation, domain-gap, legacy test, and calibration numbers are archived as `superseded_leaky` and are not results. The fresh locked test set remains unevaluated (`evals_run: 0`). Group C spatial features are gated because the current corpus has one node per event.
 
 ## Honesty Statement
 

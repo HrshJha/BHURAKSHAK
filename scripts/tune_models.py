@@ -179,7 +179,9 @@ def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
         ytr = tr.risk_label.astype(str).to_numpy()
         yv = va.risk_label.astype(str).to_numpy()
         scaler = StandardScaler().fit(tr[features].to_numpy(dtype=float))
-        lr = LogisticRegression(C=1.0, max_iter=2000, class_weight="balanced", random_state=SEED)
+        lr_cfg = risk_model_config()["baselines"]["logistic"]
+        lr = LogisticRegression(C=float(lr_cfg["C"]), max_iter=int(lr_cfg["max_iter"]),
+                                class_weight="balanced", random_state=SEED)
         lr.fit(scaler.transform(tr[features].to_numpy(dtype=float)), ytr)
         pr = lr.predict(scaler.transform(va[features].to_numpy(dtype=float)))
         lr_far.append(float(np.mean(pr[yv == "NORMAL"] != "NORMAL")))

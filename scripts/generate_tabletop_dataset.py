@@ -252,7 +252,7 @@ def generate_trial(trial, rng) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
                 }
             )
         )
-# 
+
         tof_base = float(tof[ts_ms < 2000].mean())
         ultra_base = float(ultra[ts_ms < 2000].mean())
         amag = np.sqrt(ax**2 + ay**2 + az**2)
@@ -340,7 +340,7 @@ def main() -> int:
     raw = pd.concat(raw_parts, ignore_index=True)
     win = pd.concat(win_parts, ignore_index=True)
 
-    # ---- built-in audit (fails loudly on any regression) --------------------
+    # built-in audit (fails loudly on any regression)
     assert len(raw) == 150720, f"raw row count changed: {len(raw)}"
     assert len(win) == 14968, f"windowed row count changed: {len(win)}"
     for (t, nid), g in raw.groupby(["trial_id", "node_id"]):

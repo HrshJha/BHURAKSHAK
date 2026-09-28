@@ -90,7 +90,7 @@ class DeformationField:
             p.extraction_height * p.subsidence_factor * 1000.0
         )  # mm; metres → mm
         self.w_max = derived
-# 
+
     def w_of_t(self, t: float | np.ndarray) -> float | np.ndarray:
         """W(t) = W_max · (1 − e^(−c·t)) in mm."""
         return subsidence_growth(t, self.w_max, self.params.time_coefficient)
@@ -98,7 +98,7 @@ class DeformationField:
     def w_velocity(self, t: float | np.ndarray) -> float | np.ndarray:
         """dW/dt in mm/day."""
         return growth_velocity(t, self.w_max, self.params.time_coefficient)
-# 
+
     def __call__(
         self,
         x: float | np.ndarray,
@@ -118,7 +118,7 @@ class DeformationField:
     ) -> np.ndarray:
         """Field value at node coordinates (arrays of equal length) at time(s) t."""
         return self.__call__(x, y, t)
-# 
+
     def dW_dx(
         self,
         x: float | np.ndarray,

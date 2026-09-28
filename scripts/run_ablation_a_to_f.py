@@ -131,23 +131,23 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
     model = train_risk_model(store, feature_groups=features)
     test = store[store["split"] == "test"].reset_index(drop=True)
     af = alert_frame(model, test)
-# 
+
     y_true = (af["anomaly_label"] > 0).astype(int).to_numpy()
     y_pred = (af["pred_label"] != "NORMAL").astype(int).to_numpy()
     det = classification_metrics(y_true, y_pred, y_score=af["alarm_score"].to_numpy())
     det["macro_f1_risk3"] = float(
         sk_f1(af["risk_label"], af["pred_label"], average="macro", labels=sorted(af["risk_label"].unique()))
     )
-# 
+
     p_crit = af["p_critical"].to_numpy()
     two_col = np.stack([p_crit, 1.0 - p_crit], axis=1)  # class 0 = CRITICAL
     y_idx = (af["risk_label"] != "CRITICAL").astype(int).to_numpy()
     calib = {"brier": brier_score(two_col, y_idx),
              "ece": expected_calibration_error(two_col, y_idx)}
 
-    # ---- deformation error (model-invariant; §24 honesty) -------------------
+    # deformation error (model-invariant; §24 honesty)
     defo = regression_metrics(test["displacement"], test["expected_displacement"])
-# 
+
     ious: list[float] = []
     true_pts: list[tuple[float, float]] = []
     pred_pts: list[tuple[float, float]] = []
@@ -168,7 +168,7 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
         **hotspot_localisation_error(np.array(true_pts), np.array(pred_pts) if pred_pts else np.zeros((0, 2)),
                                      match_radius_m=HOTSPOT_RADIUS_M),
     }
-# 
+
     alerts: dict[str, float] = {}
     onsets: dict[str, float] = {}
     for ev, g in af.groupby("event_id", sort=False):

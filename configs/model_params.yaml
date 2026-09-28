@@ -1,10 +1,13 @@
 forecaster:
   status: tuned_on_development_groups
-  architecture: lstm
-  width: 16
+  architecture: tcn
+  width: 40
+  depth: 2
   history_steps: 3
-  depth: 1
-  learning_rate: 0.003
+  dropout: 0.0001655986745397811
+  learning_rate: 0.001536803574815708
+  weight_decay: 3.078244539168094e-08
+  batch_size: 64
   channels:
   - displacement
   - tilt_x
@@ -12,11 +15,12 @@ forecaster:
   horizons:
   - 1
   seed: 42
-  epochs: 30
-  batch_size: 2048
-  cv_mean_normalized_mse: 0.027352322523954486
-  cv_mean_persistence_normalized_mse: 0.03720146007549597
+  epochs: 15
+  cv_mean_normalized_mse: 0.001488100945641195
+  cv_mean_persistence_normalized_mse: 0.037284219020542214
   search_artifact: reports/tuning/forecaster_study.json
+  requested_trials: 60
+  actual_trials: 60
 risk_classifier:
   status: blocked_pending_target_leakage_fix
 isolation_forest:

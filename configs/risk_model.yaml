@@ -14,7 +14,7 @@ baselines:
     random_state: 42
     class_weight: balanced_subsample
   logistic:
-    C: 1.0
+    C: 10.0
     max_iter: 2000
   # §7.3-style explainable rule on the SAME feature matrix (thresholds are
   # calibration starting points, tuned on the validation split only — NFR-6)

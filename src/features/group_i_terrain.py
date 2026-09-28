@@ -80,7 +80,7 @@ def terrain_surface(node_coords: pd.DataFrame) -> pd.DataFrame:
     x = node_coords["x"].to_numpy(dtype=float)
     y = node_coords["y"].to_numpy(dtype=float)
 
-    # --- Synthetic elevation surface (G-10): regional dip + seeded undulations.
+    # Synthetic elevation surface (G-10): regional dip + seeded undulations.
     base = float(tp["base_elevation_m"])
     slope_frac = float(tp["regional_slope_fraction"])
     az = math.radians(float(tp["regional_slope_azimuth_deg"]))

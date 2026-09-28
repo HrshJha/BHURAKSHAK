@@ -50,7 +50,7 @@ def engine() -> AlertEngine:
     return AlertEngine(escalation=ESC)
 
 
-# --- G-vocabulary mapping -----------------------------------------------------
+# G-vocabulary mapping
 
 
 def test_probability_of_aggregates_follow_the_g_mapping() -> None:
@@ -67,7 +67,7 @@ def test_probability_of_rejects_incomplete_or_unknown_targets() -> None:
         probability_of("NOT_A_LEVEL", probs(1.0, 0.0, 0.0))
 
 
-# --- §21.1 persistence: transitions fire only after consecutive windows -------
+# §21.1 persistence: transitions fire only after consecutive windows
 
 
 def test_green_to_watch_needs_three_consecutive_qualifying_windows() -> None:
@@ -121,7 +121,7 @@ def test_warning_to_critical_needs_physics_and_two_neighbours() -> None:
     assert eng.update("n1", severe, conditions=CONFIRMED) == "CRITICAL"
 
 
-# --- FR-7: no single reading escalates straight to CRITICAL -------------------
+# FR-7: no single reading escalates straight to CRITICAL
 
 
 def test_no_single_reading_can_escalate_to_critical() -> None:
@@ -162,7 +162,7 @@ def test_top_level_is_absorbing_until_t051_hysteresis() -> None:
     assert eng.update("n1", calm) == "CRITICAL"  # de-escalation is T-051
 
 
-# --- input validation ---------------------------------------------------------
+# input validation
 
 
 def test_probabilities_must_be_complete_in_range_and_sum_to_one() -> None:
@@ -185,7 +185,7 @@ def test_state_is_tracked_per_node() -> None:
     assert eng.state("n3").level == "GREEN"  # untouched node defaults to GREEN
 
 
-# --- configuration discipline (NFR-6 / §21.1) ---------------------------------
+# configuration discipline (NFR-6 / §21.1)
 
 
 def test_engine_reads_the_real_alerts_config() -> None:

@@ -201,7 +201,7 @@ def test_false_alarms_per_day_rejects_unstated_span() -> None:
         false_alarms_per_day([0, 1], [1, 1], n_days=0.0)
 
 
-def test_lead_time_stats_basic() -> None:
+def test_lead_time_stats_median_p10_and_missed_events() -> None:
     alerts = {"E1": 2.0, "E2": 0.0, "E3": 5.0}
     onsets = {"E1": 5.0, "E2": 4.0, "E3": 4.0}
     out = lead_time_stats(alerts, onsets, stride_hours=0.6)
