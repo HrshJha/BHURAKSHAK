@@ -234,6 +234,22 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     log(f"[7/8] alert engine: {timeline.alert_level.value_counts().to_dict()}")
 
     # ---- 8. explainability (FR-11/§22, never a bare probability) ------------
+    # FR-14: every prediction is logged with the five traceability fields,
+    # copied from the REGISTERED model entry (never hand-assembled). The
+    # dataset/schema versions come from the §10.1 manifest itself.
+    import json
+
+    from src.risk.model_registry import ModelRegistry
+
+    manifest = json.loads((repo / "data" / "synthetic" / "dataset_manifest.json").read_text())
+    registry = ModelRegistry()
+    registry.register_model(
+        model_name="subsense_xgboost_risk",
+        model_version="1.0.0",
+        feature_version=str(manifest["feature_schema_version"]),
+        training_dataset_version=str(manifest["dataset_version"]),
+        artifact_path=None,  # in-process model; artifact dump is the runner's choice
+    )
     explanations = []
     for _, row in test.iterrows():
         signals = {
@@ -247,7 +263,21 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
             str(row["node_id"]), {c: float(row[f"p_{c}"]) for c in classes}, signals
         )
         explanations.append(expl)
-    log(f"[8/8] explainability: {len(explanations):,} FR-11 payloads emitted")
+        registry.log_prediction(
+            "subsense_xgboost_risk",
+            "1.0.0",
+            {
+                "node_id": str(row["node_id"]),
+                "event_id": str(row["event_id"]),
+                "window_index": int(row["window_index"]),
+                "predicted_level": expl.predicted_level,
+                "probabilities": dict(expl.probabilities),
+                "alert_level": str(row["alert_level"]),
+                "top_signal": expl.contributions[0].signal if expl.contributions else None,
+            },
+        )
+    log(f"[8/8] explainability: {len(explanations):,} FR-11 payloads emitted, "
+        f"FR-14 prediction log written ({len(explanations):,} records)")
 
     return PipelineResult(
         validation={"n_rows": int(len(vr.df)), **vsum},

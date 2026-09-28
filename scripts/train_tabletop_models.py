@@ -326,11 +326,29 @@ def main() -> int:
     fig.savefig(OUT_REPORTS / "tabletop_model_evaluation.png", dpi=110)
     plt.close(fig)
 
-    # ---- artifacts -----------------------------------------------------------
-    joblib.dump({"model": iso, "scaler": iso_scaler, "threshold": if_threshold,
-                 "features": FEATURES}, OUT_MODELS / "isolation_forest.joblib")
-    joblib.dump({"model": rf, "scaler": rf_scaler, "features": FEATURES,
-                 "params": params, "class_names": CLASS_NAMES}, OUT_MODELS / "random_forest.joblib")
+    # ---- artifacts (versioned, integrity-checked, registry-registered) ------
+    from src.risk.artifacts import save_model_artifact
+
+    tabletop_dataset_version = "tabletop-recorded-v1"  # data/recorded/tabletop/dataset_manifest.json
+    save_model_artifact(
+        OUT_MODELS / "isolation_forest.joblib",
+        model=iso, features=list(FEATURES),
+        model_name="tabletop_isolation_forest", model_version="1.0.0",
+        training_dataset_version=tabletop_dataset_version,
+        split_name="trial_holdout", seed=SEED,
+        scaler=iso_scaler, preprocessing="standardise",
+        extra={"threshold": float(if_threshold)},
+    )
+    # RF is scale-invariant: no scaler, preprocessing declared "none" (fixall 3.5)
+    save_model_artifact(
+        OUT_MODELS / "random_forest.joblib",
+        model=rf, features=list(FEATURES),
+        model_name="tabletop_random_forest", model_version="1.0.0",
+        training_dataset_version=tabletop_dataset_version,
+        split_name="trial_holdout", seed=SEED,
+        preprocessing="none",
+        extra={"params": params, "class_names": CLASS_NAMES},
+    )
 
     test_if_frame = test_split[["trial_id", "node_id", "window_start_ms", "known_displacement_mm", "severity_class"]].copy()
     test_if_frame["if_score"] = test_if

@@ -34,7 +34,10 @@ __all__ = ["ModelRegistryError", "ModelEntry", "ModelRegistry", "REPO_ROOT", "DE
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REGISTRY_PATH = REPO_ROOT / "models" / "registry.json"
-DEFAULT_MANIFEST_PATHS: tuple[Path, ...] = (REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json",)
+DEFAULT_MANIFEST_PATHS: tuple[Path, ...] = (
+    REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json",
+    REPO_ROOT / "data" / "recorded" / "tabletop" / "dataset_manifest.json",
+)
 
 #: the FR-14 traceability fields every logged prediction must carry
 FR14_FIELDS = ("model_name", "model_version", "feature_version", "training_dataset_version", "timestamp")

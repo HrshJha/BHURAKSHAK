@@ -1,0 +1,35 @@
+{
+  "models": [
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tabletop/isolation_forest.joblib",
+      "feature_version": "v1",
+      "model_name": "tabletop_isolation_forest",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T06:19:41.679733+00:00",
+      "training_dataset_version": "tabletop-recorded-v1"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tabletop/random_forest.joblib",
+      "feature_version": "v1",
+      "model_name": "tabletop_random_forest",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T06:19:41.698331+00:00",
+      "training_dataset_version": "tabletop-recorded-v1"
+    },
+    {
+      "feature_version": "v1",
+      "model_name": "subsense_xgboost_risk",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T06:24:25.303849+00:00",
+      "training_dataset_version": "v1.1"
+    },
+    {
+      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-81/test_load_refuses_schema_misma0/m.joblib",
+      "feature_version": "v1",
+      "model_name": "test_model",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T06:31:14.043516+00:00",
+      "training_dataset_version": "v1.1"
+    }
+  ]
+}

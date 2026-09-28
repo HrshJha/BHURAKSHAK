@@ -1,0 +1,20 @@
+{
+  "dataset_version": "tabletop-recorded-v1",
+  "generator_version": "tabletop-bridge-0.1.0",
+  "random_seed": 42,
+  "description": "Recorded tabletop rig corpus (T-072/T-074): 26 trials, raw 10 Hz log bridged through the \u00a710 pipeline; seed 42 generator, reproducibility verified against the Desktop copy.",
+  "row_counts": {
+    "raw_log_rows": 1200000,
+    "windows": 14552
+  },
+  "feature_schema_version": "v1",
+  "split_definition": {
+    "type": "trial_holdout",
+    "note": "TRAIN_TRIALS/VAL_TRIALS/TEST_TRIALS in scripts/train_tabletop_models.py (trial-level, no trial spans splits)"
+  },
+  "artifacts": {
+    "raw_sensor_log.csv": "b02861b9ed79b6cde255c5b5dc0cdf7513b3dded80c80598b7f0d6715722b49c",
+    "trial_metadata.csv": "9e91d4ad4d95d5cb7ae15f85e454038ed47d63e51b6ba83e2ecfb360611a6fd1",
+    "processed_windowed_dataset.csv": "a305a902a12ab2dd43480c71cec601c88e17eb69e7f5be33db83248c3acf9fd1"
+  }
+}
