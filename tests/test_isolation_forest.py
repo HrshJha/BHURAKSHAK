@@ -143,3 +143,31 @@ def test_missing_feature_columns_raise() -> None:
 
 def test_ablation_steps_order_documented() -> None:
     assert ABLATION_STEPS == ("A_physical", "B_add_temporal", "C_add_spatial")
+
+
+def test_healthy_mask_handles_read_only_series_views(monkeypatch) -> None:
+    df = pd.DataFrame({
+        "anomaly_label": [0, 0, 1],
+        "fault_label": ["NONE", "BIAS", "NONE"],
+        "risk_label": ["NORMAL", "NORMAL", "WARNING"],
+    })
+    original = pd.Series.to_numpy
+
+    def readonly_to_numpy(series, *args, **kwargs):
+        values = original(series, *args, **kwargs)
+        if isinstance(values, np.ndarray):
+            values.setflags(write=False)
+        return values
+
+    monkeypatch.setattr(pd.Series, "to_numpy", readonly_to_numpy)
+    assert healthy_baseline_mask(df).tolist() == [True, False, False]
+
+
+def test_healthy_mask_accepts_arrow_backed_copy_on_write_frame() -> None:
+    frame = pd.DataFrame({
+        "anomaly_label": [0, 0, 1],
+        "fault_label": ["NONE", "BIAS", "NONE"],
+        "risk_label": ["NORMAL", "NORMAL", "WARNING"],
+    }).convert_dtypes(dtype_backend="pyarrow")
+    with pd.option_context("mode.copy_on_write", True):
+        assert healthy_baseline_mask(frame).tolist() == [True, False, False]

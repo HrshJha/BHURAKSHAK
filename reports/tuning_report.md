@@ -36,4 +36,4 @@ Thus no claim is made that tuned XGBoost beats threshold-rule or logistic regres
 
 On this workstation, forecaster CPU inference for one three-step history measured **0.0298 ms p50 / 0.0312 ms p95** over 1,000 calls after warmup. Process peak RSS was **206.4 MB** including Python and PyTorch imports; the artifact is **9.8 KB**. This is not an edge-device measurement, and the PRD does not provide a numeric NFR-2 budget.
 
-The requested full test suite was run and has **17 failures**: 6 Isolation Forest tests and 10 packet-validation tests fail on mutation of read-only NumPy views; one Group G test finds a 1,000× velocity unit-scale mismatch. Details and required follow-up are in `tuning_notes.md`. No tests were modified.
+The baseline failures were caused by compatibility assumptions exposed by the unpinned Python 3.14/pandas 3/NumPy 2.4 environment. Those assumptions now have regression coverage. The full suite passes **590 tests** under both Python 3.12.13 with the exact repository pins and Python 3.14.3. It also passes three pinned runs with `PYTHONHASHSEED=1, 777, 20260929`. No tests were weakened or deleted.

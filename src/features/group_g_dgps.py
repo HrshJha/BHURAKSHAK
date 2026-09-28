@@ -54,7 +54,11 @@ def _point_series(dgps: pd.DataFrame) -> dict[str, pd.DataFrame]:
     out = {}
     for pid, g in dgps.groupby("point_id", sort=False):
         g = g.sort_values("observation_timestamp", kind="stable").reset_index(drop=True)
-        t = g["observation_timestamp"].astype("int64").to_numpy(dtype=float) / 86400e9  # ns → days
+        # pandas 3 preserves datetime64[us] for parsed timestamps; raw int64
+        # ticks therefore no longer have a stable unit. Normalize explicitly
+        # to nanoseconds before converting elapsed time to days.
+        ticks_ns = g["observation_timestamp"].to_numpy(dtype="datetime64[ns]").astype("int64")
+        t = ticks_ns.astype(float) / 86400e9  # ns → days
         v = g["vertical_displacement_mm"].to_numpy(dtype=float)
         vel = np.full(len(g), np.nan)
         acc = np.full(len(g), np.nan)

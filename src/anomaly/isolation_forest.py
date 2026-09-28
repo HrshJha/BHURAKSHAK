@@ -82,10 +82,12 @@ def healthy_baseline_mask(df: pd.DataFrame) -> np.ndarray:
     for col in ("anomaly_label", "fault_label"):
         if col not in df.columns:
             raise IsolationForestError(f"healthy-baseline mask needs the §12 column {col!r}")
-    mask = (pd.to_numeric(df["anomaly_label"], errors="coerce") == 0).to_numpy()
-    mask &= (df["fault_label"] == "NONE").to_numpy()
+    # pandas 3 / Arrow-backed frames may expose read-only NumPy views. Build
+    # new boolean arrays instead of mutating a view owned by the Series.
+    mask = (pd.to_numeric(df["anomaly_label"], errors="coerce") == 0).to_numpy(dtype=bool, copy=True)
+    mask = mask & (df["fault_label"] == "NONE").to_numpy(dtype=bool, copy=True)
     if "risk_label" in df.columns:
-        mask &= (df["risk_label"] == "NORMAL").to_numpy()
+        mask = mask & (df["risk_label"] == "NORMAL").to_numpy(dtype=bool, copy=True)
     return mask
 
 
