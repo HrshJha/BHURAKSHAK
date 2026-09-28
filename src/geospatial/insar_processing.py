@@ -114,7 +114,6 @@ class InSARConfig:
             min_observations=int(ps["min_observations"]),
             max_ref_rate_mm_yr=float(proc["reference_point"]["max_displacement_rate_mm_yr"]),
         )
-# 
 def coarseregister(secondary: np.ndarray, dr: int, da: int) -> np.ndarray:
     """Integer-pixel shift of ``secondary`` onto the master grid (orbit accuracy).
 
@@ -136,9 +135,7 @@ def coarseregister(secondary: np.ndarray, dr: int, da: int) -> np.ndarray:
     return out
 
 
-# --- step 2: multi-looking -------------------------------------------------------
-
-
+# multi-looking
 def multi_look(slc: np.ndarray, range_looks: int, azimuth_looks: int) -> np.ndarray:
     """Complex averaging → coarser resolution + speckle reduction."""
     if slc.ndim != 2 or not np.iscomplexobj(slc):
@@ -153,9 +150,7 @@ def multi_look(slc: np.ndarray, range_looks: int, azimuth_looks: int) -> np.ndar
     ).mean(axis=(1, 3))
 
 
-# --- step 3: interferogram + flat-Earth removal -----------------------------------
-
-
+# interferogram + flat-Earth removal
 def _plane_fit(phase: np.ndarray, valid: np.ndarray) -> np.ndarray:
     """Least-squares plane (a + b·r + c·a) over valid cells; NaN-safe."""
     rr, aa = np.indices(phase.shape)
@@ -184,9 +179,7 @@ def interferogram(
     return ifg
 
 
-# --- step 4: power-spectrum (Goldstein-style) filtering ---------------------------
-
-
+# power-spectrum (Goldstein-style) filtering
 def power_spectrum_filter(ifg: np.ndarray, alpha: float = 1 / 2, block: int = 32) -> np.ndarray:
     """Goldstein–Werner non-linear spectral filter of the COMPLEX interferogram.
 
@@ -211,7 +204,6 @@ def power_spectrum_filter(ifg: np.ndarray, alpha: float = 1 / 2, block: int = 32
             filtered = np.fft.ifft2(np.abs(spec) ** alpha * spec)
             out[r0 : min(r0 + block, n_r), a0 : min(a0 + block, n_a)] = filtered[: tile.shape[0], : tile.shape[1]]
     return out
-# 
 def _boxcar(sum_sqi: np.ndarray, sum_prod: np.ndarray, window: tuple[int, int]) -> tuple[np.ndarray, np.ndarray]:
     from scipy.ndimage import uniform_filter
 
@@ -235,7 +227,6 @@ def coherence(master: np.ndarray, secondary: np.ndarray, window: tuple[int, int]
     with np.errstate(invalid="ignore", divide="ignore"):
         coh = np.abs(num) / np.sqrt(np.maximum(den, np.finfo(float).eps))
     return np.clip(coh, 0.0, 1.0)
-# 
 def amplitude_dispersion(stack_amplitudes: np.ndarray) -> np.ndarray:
     """Amplitude dispersion σ_A/μ_A per pixel across the stack (PS gate).
 
@@ -264,7 +255,6 @@ def select_reference_point(
         raise InSARError("no reference-point candidate: no stable PS below the configured rate cap")
     order = sorted(eligible, key=lambda i: (-stack_coherence[i], abs(rates_mm_yr[i])))
     return int(order[0])
-# 
 def small_baseline_pairs(dates: list[str], cfg: InSARConfig) -> list[tuple[int, int]]:
     """All (master, secondary) index pairs within the temporal-baseline window."""
     from datetime import date

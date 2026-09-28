@@ -72,24 +72,12 @@ def emit_group_j(
     *,
     timestamps_hours: pd.Series | np.ndarray | None = None,
 ) -> pd.DataFrame:
-    """Emit the four §13 Group J channels per window row.
+    """Emit the four §13 Group J channels, 1:1 with ``windowed`` rows.
 
-    ``windowed``: any frame with the window keys (``event_id, node_id,
-    window_index``; ``window_timestamp`` hours on the event axis when
-    available). ``timestamps_hours``: optional absolute hours used for the
-    diurnal cycle — defaults to the frame's ``window_timestamp`` column
-    (hours), or zeros when that column is absent.
-
-    Channels (synthetic G-9-style stand-ins, seeded from config):
-    ``rainfall`` — a Poisson storm process per event (regional: all nodes in
-    an event share the same rain), exponential intensities;
-    ``temperature`` — sinusoidal diurnal air temperature;
-    ``land_surface_temperature`` — hotter than air by ``lst_offset_c`` with
-    damped diurnal swing; ``land_cover`` — a static per-node index from the
-    mesh geometry (Jharia context: built-up / water / vegetation bands by
-    distance bands — index only, never a classification claim).
-
-    Rows align 1:1 with ``windowed``; the frame is stamped
+    Synthetic stand-ins seeded from config: per-event Poisson rainfall
+    (shared across an event's nodes), diurnal air temperature, LST offset
+    from air, static per-node land-cover index (distance bands — an index,
+    never a classification claim). Output carries
     ``gate_status = "not_in_model"``.
     """
     for col in ("event_id", "node_id", "window_index"):
