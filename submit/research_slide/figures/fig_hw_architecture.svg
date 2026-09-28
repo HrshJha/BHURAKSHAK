@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-09-28T19:13:35.469704</dc:date>
+    <dc:date>2026-09-28T19:20:17.639224</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -40,7 +40,7 @@ Q 1.88136 10.33344 1.88136 11.22768
 L 1.88136 25.03872 
 Q 1.88136 25.93296 4.48632 25.93296 
 z
-" clip-path="url(#pb2b7e0b234)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
     <path d="M 42.83712 25.93296 
@@ -53,7 +53,7 @@ Q 40.23216 10.33344 40.23216 11.22768
 L 40.23216 25.03872 
 Q 40.23216 25.93296 42.83712 25.93296 
 z
-" clip-path="url(#pb2b7e0b234)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
     <path d="M 76.12272 25.93296 
@@ -66,7 +66,7 @@ Q 73.51776 10.33344 73.51776 11.22768
 L 73.51776 25.03872 
 Q 73.51776 25.93296 76.12272 25.93296 
 z
-" clip-path="url(#pb2b7e0b234)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
     <path d="M 110.85552 25.93296 
@@ -79,57 +79,57 @@ Q 108.25056 10.33344 108.25056 11.22768
 L 108.25056 25.03872 
 Q 108.25056 25.93296 110.85552 25.93296 
 z
-" clip-path="url(#pb2b7e0b234)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
     <path d="M 37.45478 18.1332 
 Q 38.348712 18.1332 37.7892 18.1332 
-" clip-path="url(#pb2b7e0b234)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
     <path d="M 34.5892 16.5332 
 L 37.7892 18.1332 
 L 34.5892 19.7332 
 z
-" clip-path="url(#pb2b7e0b234)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
    </g>
    <g id="patch_7">
     <path d="M 70.01678 18.1332 
 Q 70.910712 18.1332 70.3512 18.1332 
-" clip-path="url(#pb2b7e0b234)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
     <path d="M 67.1512 16.5332 
 L 70.3512 18.1332 
 L 67.1512 19.7332 
 z
-" clip-path="url(#pb2b7e0b234)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
    </g>
    <g id="patch_8">
     <path d="M 103.30238 18.1332 
 Q 104.196312 18.1332 103.6368 18.1332 
-" clip-path="url(#pb2b7e0b234)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
     <path d="M 100.4368 16.5332 
 L 103.6368 18.1332 
 L 100.4368 19.7332 
 z
-" clip-path="url(#pb2b7e0b234)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
+" clip-path="url(#p9fbe9c9a78)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 5.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #12243a" x="4.3416" y="6.931988" transform="rotate(-0 4.3416 6.931988)">[HW]  PRD DESIGN PATH</text>
    </g>
    <g id="text_2">
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(11.442263 14.673441)">Sensors</text>
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(9.068747 19.264544)">IMU · ToF ·</text>
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(10.427192 23.855647)">vibration</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(10.652512 14.335903)">Sensors</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(8.047434 19.374919)">IMU · ToF ·</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(9.538411 24.413934)">vibration</text>
    </g>
    <g id="text_3">
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(48.552116 16.968992)">ESP32</text>
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(43.197772 21.560095)">WROOM-32</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(47.923678 16.855411)">ESP32</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(42.046959 21.894427)">WROOM-32</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(77.057052 16.968992)">SX1276/78</text>
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(83.283927 21.560095)">LoRa</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(75.962208 16.855411)">SX1276/78</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(82.796583 21.894427)">LoRa</text>
    </g>
    <g id="text_5">
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(112.047105 16.968992)">Pi 5 gateway</text>
-    <text style="font-size: 4.1px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(115.498792 21.560095)">LoRa HAT</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(110.765573 16.855411)">Pi 5 gateway</text>
+    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(114.554011 21.894427)">LoRa HAT</text>
    </g>
    <g id="text_6">
     <text style="font-weight: 700; font-size: 4.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #d85f59" x="72.36" y="32.292" transform="rotate(-0 72.36 32.292)">DESIGNED · PRD only · no build evidence</text>
@@ -140,7 +140,7 @@ z
   </g>
  </g>
  <defs>
-  <clipPath id="pb2b7e0b234">
+  <clipPath id="p9fbe9c9a78">
    <rect x="0" y="0" width="144.72" height="49.68"/>
   </clipPath>
  </defs>

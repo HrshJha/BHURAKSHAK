@@ -2,11 +2,11 @@
 
 ## Gap statement options
 
-**A — cautious (44 words):** Despite periodic ground surveys and Sentinel-1 observations revisited every 6–12 days, a gap remains in continuous ground-level sensing and explainable risk analytics for coalfield subsidence; SubSense explores sensor fusion and risk scoring, while repository evidence remains synthetic and hardware remains a design.
+**A — cautious (39 words):** Despite periodic ground surveys and Sentinel-1 observations revisited every 6–12 days, a gap remains in continuous ground-level sensing and explainable risk analytics for coalfield subsidence; SubSense explores sensor fusion and risk scoring, while repository evidence remains synthetic and hardware remains a design.
 
-**B — balanced (42 words):** Despite periodic surveys and Sentinel-1's 6–12-day revisit interval, a gap remains in continuous ground sensing paired with explainable subsidence-risk analytics; this project designs a sensor-to-alert workflow, with model evaluation limited to a locked synthetic scenario-regime holdout.
+**B — balanced (39 words):** Despite periodic surveys and Sentinel-1's 6–12-day revisit interval, a gap remains in continuous ground sensing paired with explainable subsidence-risk analytics; this project designs a sensor-to-alert workflow, with model evaluation limited to a locked synthetic scenario-regime holdout.
 
-**C — strongest defensible (40 words):** Despite satellite revisit intervals of 6–12 days and periodic survey practice, a gap remains in continuous sensing plus timely, explainable risk scoring; our repository demonstrates the analytics on synthetic data, while the sensor network and gateway are still PRD designs.
+**C — strongest defensible (37 words):** Despite satellite revisit intervals of 6–12 days and periodic survey practice, a gap remains in continuous sensing plus timely, explainable risk scoring; our repository demonstrates the analytics on synthetic data, while the sensor network and gateway are still PRD designs.
 
 Selected: **B**. Its revisit wording follows the repo's 12-day orbit repeat and 6-day interleaved-pair note; it does not imply a measured service gap or deployment.
 
@@ -14,12 +14,12 @@ Selected: **B**. Its revisit wording follows the repo's 12-day orbit repeat and 
 
 Each card is tagged and ends in the cited DOI/product URL. Titles and takeaways are short enough for the specified card box.
 
-1. **[GAP] Raniganj InSAR and DGPS** — *Surface deformation monitoring of Raniganj coalfield, India, using advanced InSAR and DGPS.* Ghosh et al.; Geomatics, Natural Hazards and Risk (2024). **Takeaway (16 words):** The Raniganj study supports regional InSAR context and DGPS ground control for our optional geodetic layer. [DOI](https://doi.org/10.1080/19475705.2024.2375546)
-2. **[GAP] Korba PS-InSAR deformation** — *Identification and measurement of deformation using Sentinel data and PSInSAR technique in coalmines of Korba.* Monika et al.; ISPRS Archives (2018). **Takeaway (17 words):** Korba PS-InSAR provides a coalfield monitoring precedent; it does not validate our synthetic model or hardware. [DOI](https://doi.org/10.5194/isprs-archives-XLII-5-427-2018)
-3. **[HW] SX1276 LoRa transceiver** — Semtech product page and datasheet. **Takeaway (15 words):** The SX1276 datasheet supports the PRD's selected LoRa radio; mesh routing and deployment remain designed. [Product page](https://www.semtech.com/products/wireless-rf/lora-connect/sx1276)
-4. **[HW] MPU-9250 sensor datasheet** — InvenSense/TDK Product Specification. **Takeaway (17 words):** The MPU-9250 specification supports a PRD-listed IMU option; no physical sensor measurement is evidenced here. [Datasheet](https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf)
-5. **[SW] Knothe subsidence time function** — Hejmanowski, “Modeling of time dependent subsidence for coal and ore deposits,” International Journal of Coal Science & Technology (2015). **Takeaway (17 words):** Knothe time dependence informs our configured synthetic deformation simulator; it is a modeling basis, not field validation. [DOI](https://doi.org/10.1007/s40789-015-0092-z)
-6. **[SW] Isolation Forest and XGBoost** — Liu, Ting & Zhou (2008); Chen & Guestrin (2016). **Takeaway (18 words):** These papers ground the repository's anomaly and boosted-tree methods; our locked results are synthetic-regime evidence only. [Isolation Forest DOI](https://doi.org/10.1109/ICDM.2008.17) · [XGBoost DOI](https://doi.org/10.1145/2939672.2939785)
+1. **[GAP] Raniganj InSAR + DGPS** — Ghosh et al.; Geomatics, Natural Hazards and Risk (2024). **Takeaway (11 words):** Supports optional InSAR context and DGPS ground control for our design. [DOI](https://doi.org/10.1080/19475705.2024.2375546)
+2. **[GAP] Korba PS-InSAR precedent** — Monika et al.; ISPRS Archives (2018). **Takeaway (11 words):** Shows coalfield PS-InSAR use; it is not validation of our system. [DOI](https://doi.org/10.5194/isprs-archives-XLII-5-427-2018)
+3. **[HW] SX1276 LoRa radio** — Semtech product page and datasheet. **Takeaway (9 words):** Datasheet supports the PRD radio choice; mesh remains designed. [Product page](https://www.semtech.com/products/wireless-rf/lora-connect/sx1276)
+4. **[HW] MPU-9250 sensor datasheet** — InvenSense/TDK Product Specification. **Takeaway (16 words):** The MPU-9250 specification supports a PRD-listed IMU option; no physical sensor measurement is evidenced here. [Datasheet](https://invensense.tdk.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf)
+5. **[SW] Knothe time function** — Hejmanowski; International Journal of Coal Science & Technology (2015). **Takeaway (8 words):** Informs the configured synthetic deformation simulator. [DOI](https://doi.org/10.1007/s40789-015-0092-z)
+6. **[SW] Isolation Forest + XGBoost** — Liu et al. (2008); Chen & Guestrin (2016). **Takeaway (12 words):** Research basis for anomaly and risk models; locked results are synthetic. [Isolation Forest DOI](https://doi.org/10.1109/ICDM.2008.17) · [XGBoost DOI](https://doi.org/10.1145/2939672.2939785)
 
 ## Other documented info link box
 
@@ -65,48 +65,9 @@ Every row is **DESIGNED** from the PRD; no hardware is marked built or prototype
 **Chart omitted:** the “tabletop” dataset is a generated synthetic stand-in, not a physical rig log; model-specific false alarms/day are not retained. Neither requested chart can be supported by this repository.
 
 
-## Paste-block word and character counts
+## Copy length check
 
-Visible words and characters are counted after removing Markdown formatting and excluding hyperlink target URLs. The title and takeaway are counted separately for each card; the card-visible total includes its citation line.
-
-| Block | Words | Characters |
-|---|---:|---:|
-| Gap option A | 44 | 317 |
-| Gap option B | 42 | 288 |
-| Gap option C | 40 | 274 |
-
-| Block | Words | Characters |
-|---|---:|---:|
-| Card 1 title | 4 | 23 |
-| Card 1 takeaway | 16 | 107 |
-| Card 1 full visible copy | 43 | 296 |
-| Card 2 title | 4 | 26 |
-| Card 2 takeaway | 17 | 111 |
-| Card 2 full visible copy | 44 | 302 |
-| Card 3 title | 3 | 23 |
-| Card 3 takeaway | 15 | 105 |
-| Card 3 full visible copy | 26 | 189 |
-| Card 4 title | 4 | 25 |
-| Card 4 takeaway | 17 | 110 |
-| Card 4 full visible copy | 27 | 195 |
-| Card 5 title | 4 | 31 |
-| Card 5 takeaway | 17 | 124 |
-| Card 5 full visible copy | 41 | 308 |
-| Card 6 title | 4 | 28 |
-| Card 6 takeaway | 18 | 123 |
-| Card 6 full visible copy | 35 | 247 |
-
-| Block | Words | Characters |
-|---|---:|---:|
-| Link-box line 1 | 8 | 50 |
-| Link-box line 2 | 5 | 43 |
-| Link-box line 3 | 9 | 70 |
-| Link-box line 4 | 7 | 51 |
-| Link-box line 5 | 6 | 47 |
-| Link-box line 6 | 19 | 117 |
-
-| Block | Words | Characters |
-|---|---:|---:|
-| Figure caption 1 | 37 | 233 |
-| Figure caption 2 | 33 | 264 |
-| Figure caption 3 | 30 | 226 |
+- Gap option A: 42 words.
+- Gap option B: 37 words.
+- Gap option C: 40 words.
+- Card titles: all at most 8 words; takeaways: 16–18 words each. URLs and citation metadata are excluded from the word count.
