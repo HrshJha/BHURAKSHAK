@@ -22,3 +22,15 @@
 
 - The checkout contained an untracked `src/risk/artifacts.py` and subsequent registry/tabletop artifact changes appeared during this work. They are preserved and not yet audited or included in the Phase 0/1 commits.
 - `reports/superseded_leaky/` preserves v1 model outputs only for traceability; all are withdrawn as performance evidence. A clean tuning and final-evaluation run remains required.
+
+## Tuning and finalization evidence
+
+- `reports/tuning/baselines.json`: fixed three-fold event-grouped baseline comparison; logistic C selected from the light grid.
+- `reports/tuning/isolation_forest_study.json`: 41/100 complete, 59 pruned; healthy-only fitting and validation-healthy percentile threshold.
+- `reports/tuning/forecaster_study.json`: 59/60 complete, 1 pruned; next-window TCN beats grouped-CV persistence.
+- `reports/tuning/xgboost_study.json`: 16 actual trials (12 complete, 4 pruned) after the user requested turnaround; 40 were requested and the 200+ plan was not reached. Independent CV revalidation passed the logistic false-alarm limit in all three folds.
+- `reports/tuning/robustness.json`: shuffled-label chance control, learning curve, feature and IF ablations, SHAP, permutation, repeated 3-fold CV over three settings and three seeds, scenario recall, and workstation inference profile.
+- `reports/pytest_phase7_hashseed_101.txt`, `_202.txt`, `_303.txt`: 625 tests passed at each seed. `scripts/check_tree.py` and `scripts/validate_synthetic_dataset.py` pass.
+- Seeded tabletop stand-in is feature-scarce (18 missing features) and has Critical recall 0.0; it is not hardware or mine validation.
+
+The fresh locked evaluation and its single-use lock update are recorded in `reports/final_eval.md` after freeze.
