@@ -1,0 +1,6 @@
+# Forecast
+
+| model | metric | value | unit | split | source_file | source_key |
+| --- | --- | --- | --- | --- | --- | --- |
+| Selected TCN | Normalized MSE | 0.001488100946 | normalized_mse | grouped_cv | reports/tuning/forecaster_study.json | best.mean_normalized_mse |
+| Persistence | Normalized MSE | 0.03728421902 | normalized_mse | grouped_cv | reports/tuning/forecaster_study.json | best.mean_persistence_normalized_mse |

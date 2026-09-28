@@ -1,0 +1,20 @@
+# Results
+
+| model | metric | value | unit | split | source_file | source_key |
+| --- | --- | --- | --- | --- | --- | --- |
+| Tuned XGBoost | Macro PR-AUC | 0.5028714642 | fraction | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.pr_auc_macro_ovr |
+| Tuned XGBoost | Macro F1 | 0.4457603925 | fraction | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.f1_macro |
+| Tuned XGBoost | Critical recall | 0.09333333333 | fraction | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.recall_critical |
+| Tuned XGBoost | Normal false-alarm rate | 0.1507555556 | fraction | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.false_alarm_rate_normal |
+| Default XGBoost | Macro PR-AUC | 0.5351496371 | fraction | locked_test | reports/final_eval.json | risk_models.default_xgboost.pr_auc_macro_ovr |
+| Default XGBoost | Macro F1 | 0.4449895124 | fraction | locked_test | reports/final_eval.json | risk_models.default_xgboost.f1_macro |
+| Default XGBoost | Critical recall | 0.04568888889 | fraction | locked_test | reports/final_eval.json | risk_models.default_xgboost.recall_critical |
+| Default XGBoost | Normal false-alarm rate | 0.03715555556 | fraction | locked_test | reports/final_eval.json | risk_models.default_xgboost.false_alarm_rate_normal |
+| Logistic regression | Macro PR-AUC | 0.4687112475 | fraction | locked_test | reports/final_eval.json | risk_models.logistic_regression.pr_auc_macro_ovr |
+| Logistic regression | Macro F1 | 0.4297370913 | fraction | locked_test | reports/final_eval.json | risk_models.logistic_regression.f1_macro |
+| Logistic regression | Critical recall | 0.7649777778 | fraction | locked_test | reports/final_eval.json | risk_models.logistic_regression.recall_critical |
+| Logistic regression | Normal false-alarm rate | 0.6263111111 | fraction | locked_test | reports/final_eval.json | risk_models.logistic_regression.false_alarm_rate_normal |
+| Threshold rule | Macro PR-AUC | 0.4145839077 | fraction | locked_test | reports/final_eval.json | risk_models.threshold_rule.pr_auc_macro_ovr |
+| Threshold rule | Macro F1 | 0.3896883284 | fraction | locked_test | reports/final_eval.json | risk_models.threshold_rule.f1_macro |
+| Threshold rule | Critical recall | 0.0416 | fraction | locked_test | reports/final_eval.json | risk_models.threshold_rule.recall_critical |
+| Threshold rule | Normal false-alarm rate | 0.01742222222 | fraction | locked_test | reports/final_eval.json | risk_models.threshold_rule.false_alarm_rate_normal |

@@ -1,0 +1,16 @@
+# Fault Scenarios
+
+| scenario_category | class | recall | events | split | source_file | source_key | events_source_key |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| SENSOR_FAULT | NORMAL | 0.7949398443 | 628 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.SENSOR_FAULT.recall_per_class.NORMAL | required_scenario_category_recall.SENSOR_FAULT.events |
+| SENSOR_FAULT | WARNING | 0 | 628 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.SENSOR_FAULT.recall_per_class.WARNING | required_scenario_category_recall.SENSOR_FAULT.events |
+| SENSOR_FAULT | CRITICAL | 0 | 628 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.SENSOR_FAULT.recall_per_class.CRITICAL | required_scenario_category_recall.SENSOR_FAULT.events |
+| DATA_QUALITY | NORMAL | 0.8229305002 | 251 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.DATA_QUALITY.recall_per_class.NORMAL | required_scenario_category_recall.DATA_QUALITY.events |
+| DATA_QUALITY | WARNING | 0 | 251 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.DATA_QUALITY.recall_per_class.WARNING | required_scenario_category_recall.DATA_QUALITY.events |
+| DATA_QUALITY | CRITICAL | 0 | 251 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.DATA_QUALITY.recall_per_class.CRITICAL | required_scenario_category_recall.DATA_QUALITY.events |
+| COMMUNICATION_FAILURE | NORMAL | 0.6868686869 | 132 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.COMMUNICATION_FAILURE.recall_per_class.NORMAL | required_scenario_category_recall.COMMUNICATION_FAILURE.events |
+| COMMUNICATION_FAILURE | WARNING | 0 | 132 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.COMMUNICATION_FAILURE.recall_per_class.WARNING | required_scenario_category_recall.COMMUNICATION_FAILURE.events |
+| COMMUNICATION_FAILURE | CRITICAL | 0 | 132 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.COMMUNICATION_FAILURE.recall_per_class.CRITICAL | required_scenario_category_recall.COMMUNICATION_FAILURE.events |
+| noise_injected | NORMAL | 0.7879705318 | 1101 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.noise_injected.recall_per_class.NORMAL | required_scenario_category_recall.noise_injected.events |
+| noise_injected | WARNING | 0 | 1101 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.noise_injected.recall_per_class.WARNING | required_scenario_category_recall.noise_injected.events |
+| noise_injected | CRITICAL | 0 | 1101 | development_validation | reports/tuning/robustness.json | required_scenario_category_recall.noise_injected.recall_per_class.CRITICAL | required_scenario_category_recall.noise_injected.events |

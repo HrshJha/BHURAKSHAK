@@ -1,0 +1,4 @@
+model,p50_ms,p95_ms,peak_sampled_rss_mib,artifact_bytes,device,source_file,source_key
+risk_xgboost_tuned,0.3170205,0.6130708,550.625,6498680,workstation CPU,reports/tuning/robustness.json,workstation_edge_profile.models.risk_xgboost_tuned
+isolation_forest_tuned,2.9885,3.8287875,501.359375,49315608,workstation CPU,reports/tuning/robustness.json,workstation_edge_profile.models.isolation_forest_tuned
+forecaster_tuned,0.041708,0.04479315,627.1875,32587,workstation CPU,reports/tuning/robustness.json,workstation_edge_profile.models.forecaster_tuned
