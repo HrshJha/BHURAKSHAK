@@ -38,6 +38,19 @@ python3.12 -m venv .venv
 python3 scripts/check_tree.py
 ```
 
+### Regenerating the large data artifacts (not tracked in git)
+
+The 220 MB raw synthetic corpus, the feature store, and the tabletop rig log
+are intentionally untracked (they are byte-reproducible or recorded once);
+git history retains the pre-fixall copies. Regenerate in this order:
+
+```bash
+python3 scripts/generate_synthetic_nodes.py --seed 42   # data/synthetic/synthetic_nodes.csv + events + manifest
+python3 scripts/make_split_assignment.py                # data/features/split_assignment.csv
+python3 scripts/build_and_run_notebook_03.py            # data/features/features_v2.parquet
+python3 scripts/generate_tabletop_dataset.py data/raw/sensors/tabletop  # tabletop rig log (recorded stand-in, seed 42)
+```
+
 ## Repository layout
 
 ```text
