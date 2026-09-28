@@ -15,6 +15,14 @@
     "injection_rate": 0.35
   },
   "feature_schema_version": "v2",
+  "feature_store": {
+    "center_mode": "detected",
+    "n_features": 61,
+    "n_windows": 90000,
+    "path": "data/features/features_v2.parquet",
+    "stride_steps": 10,
+    "window_steps": 60
+  },
   "generator_version": "sim-0.1.0",
   "noise_parameters": {
     "displacement_noise_std": 0.5,
@@ -80,50 +88,40 @@
     ],
     "taxonomy_rows": 12
   },
+  "sequence_count_note": "Windows are overlapping windows, not independent sequences; count is per source event/node series and follows floor((timesteps-window)/stride)+1.",
   "source_data_versions": {
     "dgps": null,
     "hardware": null,
     "sentinel1": null
   },
+  "split_assignment_sha256": "9ed57cf99669ab15bb4e600e4fd5a9138dbbc34ba73e46528a7c8ea546d778eb",
   "split_definition": {
-    "producer": "scripts/make_split_assignment.py",
     "default_split": "regime_holdout",
-    "type": "unseen_parameter_regime_holdout",
-    "splits": {
-      "regime_holdout": {
-        "column": "split",
-        "function": "src/evaluation/splits.py:regime_split",
-        "method": "unseen-parameter-regime holdout (\u00a735): test = whole scenario regimes E_rapid_subsidence + E_accelerating_subsidence + E_stable_ground; validation = deterministic 1-in-5 within each remaining family (no rng); rest = train",
-        "config": "configs/validation.yaml:regime_split",
-        "counts_events": {
-          "train": 6500,
-          "validation": 1625,
-          "test": 1875
-        },
-        "test_class_support_windows": {
-          "NORMAL": 5625,
-          "WARNING": 5625,
-          "CRITICAL": 5625
-        }
-      },
-      "family_balanced": {
-        "column": "split_family_balanced",
-        "function": "scripts/make_split_assignment.py:family_balanced_split",
-        "method": "legacy 60/20/20 within each scenario family (sorted-order, deterministic); kept for comparability with pre-fixall results",
-        "counts_events": {
-          "train": 6000,
-          "validation": 2000,
-          "test": 2000
-        }
-      }
+    "event_counts": {
+      "test": 1875,
+      "train": 6516,
+      "validation": 1609
     },
+    "method": "scenario_family_regime_split",
+    "parameter_counts": {
+      "test": 941,
+      "train": 3252,
+      "validation": 819
+    },
+    "producer": "scripts/make_split_assignment.py",
+    "seed": 42,
+    "split_column": "split",
     "test_range": {
-      "note": "superseded by the regime holdout above (kept for v1 compatibility)"
+      "scenario_types": [
+        "accelerating_subsidence",
+        "rapid_subsidence",
+        "stable_ground"
+      ]
     },
     "train_range": {
-      "note": "superseded by the regime holdout above (kept for v1 compatibility)"
-    }
+      "note": "assigned by event split"
+    },
+    "type": "synthetic_parameter_holdout"
   },
-  "windows_produced": 90000,
-  "sequence_count_note": "sequences_generated=10000 meets the PRD \u00a710 floor (10k); the resulting \u00a710 window count (90,000 at window=60/stride=10) is BELOW \u00a715's 100k-500k band - recorded honestly; 'sequences_planned' 4,000,000 was the generator's scaling ceiling, never attempted"
+  "windows_produced": 90000
 }

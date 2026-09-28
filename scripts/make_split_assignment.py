@@ -132,6 +132,33 @@ def main() -> int:
         raise SystemExit(f"regime holdout produced empty splits: {missing}")
 
     out.to_csv(args.out, index=False)
+    # Keep the corpus manifest useful as the single provenance record even
+    # when the generator is rerun (the generator itself knows nothing about
+    # downstream split assignments).
+    manifest_path = Path(args.events).with_name("dataset_manifest.json")
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text())
+        manifest["split_definition"] = {
+            "type": "synthetic_parameter_holdout",
+            "producer": "scripts/make_split_assignment.py",
+            "default_split": "regime_holdout",
+            "method": "scenario_family_regime_split",
+            "seed": int(cfg.get("seed", validation_config().get("seed", 42))),
+            "split_column": "split",
+            "event_counts": {str(k): int(v) for k, v in counts.items()},
+            "parameter_counts": {
+                str(k): int(out.loc[out["split"] == k, "generation_parameter_id"].nunique())
+                for k in SPLIT_ORDER
+            },
+            "test_range": {
+                "scenario_types": sorted(
+                    event_meta.loc[event_meta["scenario_family"].isin(test_families), "type"].astype(str).unique()
+                )
+            },
+            "train_range": {"note": "assigned by event split"},
+        }
+        manifest["split_assignment_sha256"] = hashlib.sha256(Path(args.out).read_bytes()).hexdigest()
+        manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out}: {n} events")
     print("regime split counts:", counts)
     print("legacy family-balanced counts:", out[LEGACY_COLUMN].value_counts().to_dict())

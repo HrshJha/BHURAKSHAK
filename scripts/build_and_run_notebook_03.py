@@ -11,6 +11,7 @@ Idempotent: rebuilds and re-executes the notebook in place.
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -173,6 +174,26 @@ def main() -> int:
     )
     client.execute()
     nbformat.write(notebook, NOTEBOOK_PATH)
+    manifest_path = REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json"
+    report_path = REPO_ROOT / "data" / "features" / "feature_store_report.json"
+    if manifest_path.exists() and report_path.exists():
+        manifest = json.loads(manifest_path.read_text())
+        report = json.loads(report_path.read_text())
+        manifest["feature_schema_version"] = report["feature_schema_version"]
+        manifest["windows_produced"] = int(report["n_windows"])
+        manifest["feature_store"] = {
+            "path": "data/features/features_v2.parquet",
+            "n_windows": int(report["n_windows"]),
+            "n_features": int(report["n_features"]),
+            "window_steps": int(report["windowing"]["window_steps"]),
+            "stride_steps": int(report["windowing"]["stride"]),
+            "center_mode": report["center_mode"],
+        }
+        manifest["sequence_count_note"] = (
+            "Windows are overlapping windows, not independent sequences; count is "
+            "per source event/node series and follows floor((timesteps-window)/stride)+1."
+        )
+        manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     print(f"executed OK → {NOTEBOOK_PATH.relative_to(REPO_ROOT)}")
     return 0
 

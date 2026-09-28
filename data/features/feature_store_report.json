@@ -95,9 +95,5 @@
     "max": 70,
     "ok": true
   },
-  "source": "data/synthetic/synthetic_nodes.csv",
-  "storage": {
-    "dtype_policy": "features float32 (physics ground-truth displacement stays float32 in store; float64 recomputed only where a test needs it), zstd compression",
-    "note": "model outputs verified unchanged (proba max abs diff 0.0, argmax agreement 1.0 vs float64 build)"
-  }
+  "source": "data/synthetic/synthetic_nodes.csv"
 }

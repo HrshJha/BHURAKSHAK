@@ -3,8 +3,8 @@
 # lives here, never in code.
 
 # §10 / T-034 — windowing for XGBoost (also reconciles Gap G-4: 10,000
-# sequences × 144 steps with window=60/stride=10 → ~120k windows, inside
-# §15's 100k–500k budget).
+# sequences × 144 steps with window=60/stride=10 → 90k windows; the
+# 9-window history limits forecast horizons to the next window.
 windowing:
   window_steps: 60
   stride: 10
