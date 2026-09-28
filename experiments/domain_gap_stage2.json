@@ -30,14 +30,14 @@
     "model": "A/B feature set (tilt/displacement/strain/vibration + temporal), trained on synthetic",
     "risk_state_confusion": {
       "NORMAL": {
-        "NORMAL": 10341,
-        "WARNING": 14,
+        "NORMAL": 10355,
+        "WARNING": 0,
         "CRITICAL": 0
       },
       "WARNING": {
-        "NORMAL": 3543,
-        "WARNING": 113,
-        "CRITICAL": 220
+        "NORMAL": 3496,
+        "WARNING": 380,
+        "CRITICAL": 0
       },
       "CRITICAL": {
         "NORMAL": 321,
@@ -46,19 +46,19 @@
       }
     },
     "per_state_recall": {
-      "NORMAL": 0.9986479961371318,
-      "WARNING": 0.029153766769865842,
+      "NORMAL": 1.0,
+      "WARNING": 0.09803921568627451,
       "CRITICAL": 0.0
     },
     "detection": {
-      "precision": 0.9596541786743515,
-      "recall": 0.07934238741958542,
-      "f1": 0.14656690140845072,
-      "tp": 333,
-      "fp": 14,
-      "fn": 3864,
-      "tn": 10341,
-      "pr_auc": 0.9026203761353676
+      "precision": 1.0,
+      "recall": 0.09054086252084823,
+      "f1": 0.16604762945160587,
+      "tp": 380,
+      "fp": 0,
+      "fn": 3817,
+      "tn": 10355,
+      "pr_auc": 0.8663494492076707
     },
     "displacement_error": {
       "n_windows": 7276,
@@ -68,9 +68,9 @@
       "bias_mm": -0.4024700842953977
     },
     "p_critical_stats": {
-      "mean": 0.016872096806764603,
-      "max": 0.8677636384963989,
-      "n_above_alert_threshold": 122
+      "mean": 0.0016264267032966018,
+      "max": 0.18759797513484955,
+      "n_above_alert_threshold": 0
     },
     "diagnostic_full_contract_nanfill": {
       "note": "full \u00a715 feature contract with C/D/E/F modalities fed as NaN \u2014 measures modality scarcity, NOT the sensor domain gap; informational only",
@@ -78,16 +78,16 @@
         "NORMAL": 14552
       },
       "p_critical_stats": {
-        "mean": 0.0020847637206315994,
-        "max": 0.20461004972457886,
+        "mean": 0.0001160199026344344,
+        "max": 0.010607754811644554,
         "n_above_alert_threshold": 0
       }
     }
   },
   "in_regime_reference": {
     "source": "experiments/ablation_a_to_f.json arm E_add_physics (test split)",
-    "f1": 0.39816556914393225,
-    "pr_auc": 0.4826248636071405,
-    "brier": 0.055816675140326365
+    "f1": 0.46182254639460807,
+    "pr_auc": 0.604385010029335,
+    "brier": 0.5728917512038315
   }
 }

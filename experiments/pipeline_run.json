@@ -12,19 +12,19 @@
   "n_features": 61,
   "if_features": 23,
   "xgb_features": 42,
-  "test_windows_scored": 18000,
+  "test_windows_scored": 16875,
   "predicted_level_counts": {
-    "NORMAL": 13346,
-    "WARNING": 3211,
-    "CRITICAL": 1443
+    "NORMAL": 10158,
+    "WARNING": 6042,
+    "CRITICAL": 675
   },
   "alert_level_counts": {
-    "GREEN": 14994,
-    "WATCH": 1668,
-    "WARNING": 878,
-    "CRITICAL": 460
+    "GREEN": 10094,
+    "WARNING": 4596,
+    "WATCH": 2133,
+    "CRITICAL": 52
   },
-  "explanations_emitted": 18000,
+  "explanations_emitted": 16875,
   "provenance": {
     "validation": "src.preprocessing.validation.validate_packets",
     "features": "src.features.build_feature_store.build_feature_store",

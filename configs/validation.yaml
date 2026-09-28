@@ -28,6 +28,18 @@ event_split:
   # validation draws from the train-side families at this fraction of events
   validation_fraction: 0.2
 
+regime_split:
+  # §35 unseen-parameter-regime holdout (fixall Phase 1.2): the TEST split is
+  # whole scenario REGIMES the model never sees in train/validation — the two
+  # growth regimes (rapid, accelerating) and the no-deformation regime
+  # (stable). stable_ground is included so P(NORMAL) has held-out support;
+  # this makes the operational test harder and more honest, not easier.
+  # Validation is a deterministic 1-in-N sample WITHIN each remaining family,
+  # so every class keeps validation support. Both the regime holdout and the
+  # legacy family-balanced 60/20/20 are produced by scripts/make_split_assignment.py.
+  test_families: ["E_rapid_subsidence", "E_accelerating_subsidence", "E_stable_ground"]
+  validation_fraction: 0.2
+
 synthetic_split:
   # §23 example: train σ=5–20, test σ=22–30 → hold out the TOP fraction of the
   # subsidence-magnitude range (a complete parameter regime, never sampled in

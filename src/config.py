@@ -32,6 +32,7 @@ _CONFIG_FILES = {
     "risk_model": "risk_model.yaml",
     "environmental": "environmental.yaml",
     "forecasting": "forecasting.yaml",
+    "model_params": "model_params.yaml",
 }
 
 
@@ -98,6 +99,11 @@ def environmental_config() -> dict[str, Any]:
 def forecasting_config() -> dict[str, Any]:
     """PRD §16 temporal-forecasting parameters (T-076/T-078)."""
     return load_config("forecasting")
+
+
+def model_params_config() -> dict[str, Any]:
+    """Tuned model parameters and provenance (NFR-6/NFR-7)."""
+    return load_config("model_params")
 
 
 def escalation_thresholds() -> dict[str, dict[str, Any]]:

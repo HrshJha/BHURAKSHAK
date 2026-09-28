@@ -32,6 +32,7 @@ __all__ = [
     "spatial_split",
     "node_split",
     "event_split",
+    "regime_split",
     "synthetic_split",
     "assert_no_leakage",
     "random_row_split",
@@ -161,6 +162,38 @@ def event_split(df: pd.DataFrame) -> pd.Series:
     for f in test_like:
         fam_split[f] = "test"
     return families.map(fam_split)
+
+
+def regime_split(df: pd.DataFrame) -> pd.Series:
+    """§35 unseen-parameter-regime holdout (fixall Phase 1.2).
+
+    TEST = whole scenario regimes the model never sees in train/validation:
+    the ``regime_split.test_families`` from configs/validation.yaml (the two
+    growth regimes — rapid and accelerating subsidence — plus the
+    no-deformation regime, so P(NORMAL) has held-out support). VALIDATION is
+    a deterministic 1-in-N sample WITHIN each remaining family (stride from
+    the configured fraction, no rng). Everything else is TRAIN.
+
+    Whole units only: no event, node or time block appears on two sides
+    (asserted by :func:`assert_no_leakage`).
+    """
+    cfg = validation_config()["regime_split"]
+    test_families = tuple(cfg["test_families"])
+    val_frac = float(cfg["validation_fraction"])
+    if val_frac <= 0 or val_frac >= 1:
+        raise SplitsError("regime_split.validation_fraction must be in (0, 1)")
+
+    families = df["event_id"].str.rsplit("_", n=2).str[0]
+    split = pd.Series("train", index=df.index, dtype=object)
+    is_test = families.isin(test_families)
+    split[is_test] = "test"
+
+    # deterministic within-family validation sample (1-in-N, no rng)
+    stride = max(2, int(round(1.0 / val_frac)))
+    for fam, idx in df[~is_test].groupby(families[~is_test]).groups.items():
+        order = sorted(idx)
+        split.loc[order[::stride]] = "validation"
+    return split
 
 
 def synthetic_split(df: pd.DataFrame, events_meta: pd.DataFrame) -> pd.Series:

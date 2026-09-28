@@ -130,6 +130,16 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
         if verbose:
             print(msg, flush=True)
 
+    # ---- 0. §23 split file must exist BEFORE any compute (fail fast) -------
+    repo = Path(__file__).resolve().parent.parent
+    splits_path = repo / "data" / "features" / "split_assignment.csv"
+    if not splits_path.is_file():
+        raise PipelineError(
+            f"{splits_path.relative_to(repo)} is missing — produce it first with "
+            "`python scripts/make_split_assignment.py` (the split file's single producer)"
+        )
+    splits = pd.read_csv(splits_path)
+
     # ---- 1. validation (§9/§11) -------------------------------------------
     vr = validate_packets(raw)
     vsum = vr.summary()
@@ -140,9 +150,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     model, report = build_feature_store(raw, coords, center_mode="oracle")
     log(f"[2/8] features: {report.n_windows:,} windows, {len(report.features)} features (§13 budget OK)")
 
-    # §23 split at event level (T-068) — before any fitting
-    repo = Path(__file__).resolve().parent.parent
-    splits = pd.read_csv(repo / "data" / "features" / "split_assignment.csv")
+    # §23 split at event level (T-068) — read at stage 0, merged before any fitting
     model = model.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
     if model["split"].isna().any():
         raise PipelineError("events missing from split_assignment.csv — refusing an unsplit run")

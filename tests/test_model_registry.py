@@ -15,6 +15,8 @@ from src.risk.model_registry import (
     REPO_ROOT,
 )
 
+REAL_DATASET_VERSION = json.loads((REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json").read_text())["dataset_version"]
+
 
 @pytest.fixture()
 def registry(tmp_path) -> ModelRegistry:
@@ -31,7 +33,7 @@ def entry_kwargs(**kw) -> dict:
         model_name="xgboost_risk",
         model_version="0.1.0",
         feature_version="v1",
-        training_dataset_version="v0.1.0",  # the real repo dataset version
+        training_dataset_version=REAL_DATASET_VERSION,
     )
     base.update(kw)
     return base
@@ -61,7 +63,7 @@ def test_dataset_version_must_resolve_to_an_existing_manifest(registry: ModelReg
         predictions_path=tmp_path / "p2.jsonl",
     )
     with pytest.raises(ModelRegistryError, match="does not resolve"):
-        empty.resolve_training_dataset("v0.1.0")
+        empty.resolve_training_dataset(REAL_DATASET_VERSION)
 
 
 def test_feature_version_must_match_the_manifest_schema_version(registry: ModelRegistry) -> None:
@@ -80,7 +82,7 @@ def test_every_logged_prediction_carries_the_five_fr14_fields(registry: ModelReg
     for field in FR14_FIELDS:
         assert field in rec, f"FR-14 field {field} missing"
     assert rec["timestamp"] == "2026-09-27T13:30:00+00:00"
-    assert rec["training_dataset_version"] == "v0.1.0"
+    assert rec["training_dataset_version"] == REAL_DATASET_VERSION
     assert rec["feature_version"] == "v1"
     assert rec["model_name"] == "xgboost_risk"
 
@@ -106,7 +108,7 @@ def test_registry_reloads_entries_from_disk(tmp_path) -> None:
     reg1.register_model(**entry_kwargs(model_version="0.2.0"))
     reg2 = ModelRegistry(path=path, manifest_paths=DEFAULT_MANIFEST_PATHS, predictions_path=tmp_path / "p.jsonl")
     entry = reg2.get_entry("xgboost_risk", "0.2.0")  # survived the reload
-    assert entry.training_dataset_version == "v0.1.0"
+    assert entry.training_dataset_version == REAL_DATASET_VERSION
     assert len(reg2.list_models()) == 1
 
 

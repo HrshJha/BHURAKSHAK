@@ -15,12 +15,12 @@
         "displacement",
         "strain"
       ],
-      "n_training_windows": 30349,
-      "threshold": 0.6792426618619772,
+      "n_training_windows": 35964,
+      "threshold": 0.6793505799665303,
       "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
-      "test_far_healthy": 0.010365251727541954,
-      "test_detection_anomalous": 0.23074908328968047,
-      "test_auc": 0.7917372924709452
+      "test_far_healthy": 0.0033399602385685884,
+      "test_detection_anomalous": 0.3023255813953488,
+      "test_auc": 0.9709750890008786
     },
     "B_add_temporal": {
       "feature_groups": [
@@ -45,12 +45,12 @@
         "persistence",
         "change_point_score"
       ],
-      "n_training_windows": 30349,
-      "threshold": 0.7213510014338542,
+      "n_training_windows": 35964,
+      "threshold": 0.7135970648983125,
       "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
-      "test_far_healthy": 0.013115216471583698,
-      "test_detection_anomalous": 0.3672079622839183,
-      "test_auc": 0.8049991101979733
+      "test_far_healthy": 0.006998011928429424,
+      "test_detection_anomalous": 0.5511627906976744,
+      "test_auc": 0.9907336908779879
     },
     "C_add_spatial": {
       "feature_groups": [
@@ -84,23 +84,23 @@
         "hotspot_density",
         "distance_to_subsidence_center"
       ],
-      "n_training_windows": 30349,
-      "threshold": 0.721536911494156,
+      "n_training_windows": 35964,
+      "threshold": 0.714243313677879,
       "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
-      "test_far_healthy": 0.011563954308278099,
-      "test_detection_anomalous": 0.42221058145625984,
-      "test_auc": 0.9412772677781077
+      "test_far_healthy": 0.006918489065606362,
+      "test_detection_anomalous": 0.6804651162790698,
+      "test_auc": 0.9948310231633456
     }
   },
   "verdict": {
     "question": "does adding spatial coherence reduce false alarms?",
-    "far_A_physical": 0.010365251727541954,
-    "far_B_add_temporal": 0.013115216471583698,
-    "far_C_add_spatial": 0.011563954308278099,
+    "far_A_physical": 0.0033399602385685884,
+    "far_B_add_temporal": 0.006998011928429424,
+    "far_C_add_spatial": 0.006918489065606362,
     "far_reduced_B_over_A": false,
     "far_reduced_C_over_B": true,
-    "auc_A": 0.7917372924709452,
-    "auc_B": 0.8049991101979733,
-    "auc_C": 0.9412772677781077
+    "auc_A": 0.9709750890008786,
+    "auc_B": 0.9907336908779879,
+    "auc_C": 0.9948310231633456
   }
 }

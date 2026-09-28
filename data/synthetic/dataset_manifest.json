@@ -1,5 +1,5 @@
 {
-  "dataset_version": "v0.1.0",
+  "dataset_version": "v1.1",
   "fault_parameters": {
     "fault_types": [
       "BIAS",
@@ -82,12 +82,37 @@
     "sentinel1": null
   },
   "split_definition": {
-    "test_range": {
-      "note": "assigned in Phase 4 (T-068)"
+    "producer": "scripts/make_split_assignment.py",
+    "default_split": "regime_holdout",
+    "splits": {
+      "regime_holdout": {
+        "column": "split",
+        "function": "src/evaluation/splits.py:regime_split",
+        "method": "unseen-parameter-regime holdout (\u00a735): test = whole scenario regimes E_rapid_subsidence + E_accelerating_subsidence + E_stable_ground; validation = deterministic 1-in-5 within each remaining family (no rng); rest = train",
+        "config": "configs/validation.yaml:regime_split",
+        "counts_events": {
+          "train": 6500,
+          "validation": 1625,
+          "test": 1875
+        },
+        "test_class_support_windows": {
+          "NORMAL": 5625,
+          "WARNING": 5625,
+          "CRITICAL": 5625
+        }
+      },
+      "family_balanced": {
+        "column": "split_family_balanced",
+        "function": "scripts/make_split_assignment.py:family_balanced_split",
+        "method": "legacy 60/20/20 within each scenario family (sorted-order, deterministic); kept for comparability with pre-fixall results",
+        "counts_events": {
+          "train": 6000,
+          "validation": 2000,
+          "test": 2000
+        }
+      }
     },
-    "train_range": {
-      "note": "assigned in Phase 4 (T-068)"
-    },
-    "type": "synthetic_parameter_holdout"
+    "note": "pre-fixall split assignment (exact per-event) preserved at git tag pre-fixall; distribution reproduced, per-event assignment superseded",
+    "dataset_version_note": "v1.0 -> v1.1: split_assignment.csv regenerated with two named splits; synthetic_nodes/events CSVs byte-unchanged (same seed 42)"
   }
 }

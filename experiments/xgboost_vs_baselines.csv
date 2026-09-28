@@ -1,5 +1,5 @@
 model,macro_F1,PR-AUC_macro,recall_NORMAL,recall_WARNING,recall_CRITICAL
-XGBoost,0.778,0.964,0.9347,1.0,0.8667
-RandomForest,0.8426,,0.9502,0.9021,1.0
-Logistic,0.6764,,0.9156,0.7778,0.7667
+XGBoost,0.7841,0.9614,0.937,0.9944,0.8704
+RandomForest,0.8509,,0.9497,0.9623,1.0
+Logistic,0.6818,,0.9177,0.7815,0.7704
 ThresholdRule,0.3701,,0.8323,0.4557,0.0296
