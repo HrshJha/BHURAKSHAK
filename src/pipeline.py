@@ -155,8 +155,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     def log(msg: str) -> None:
         if verbose:
             print(msg, flush=True)
-
-    # ---- 0. §23 split file must exist BEFORE any compute (fail fast) -------
+# 
     repo = Path(__file__).resolve().parent.parent
     splits_path = repo / "data" / "features" / "split_assignment.csv"
     if not splits_path.is_file():
@@ -165,14 +164,12 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
             "`python scripts/make_split_assignment.py` (the split file's single producer)"
         )
     splits = pd.read_csv(splits_path)
-
-    # ---- 1. validation (§9/§11) -------------------------------------------
+# 
     vr = validate_packets(raw)
     vsum = vr.summary()
     log(f"[1/8] validation: {len(vr.df):,} rows → {vsum['flagged_rows']:,} DQ-flagged "
         f"{ {k: v for k, v in vsum.items() if k != 'flagged_rows'} }")
-
-    # ---- 2. features (§10 windows → Groups A–F, §13 budget) ----------------
+# 
     model, report = build_feature_store(raw, coords, center_mode="detected")
     log(f"[2/8] features: {report.n_windows:,} windows, {len(report.features)} features (§13 budget OK)")
 
@@ -188,8 +185,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     model["if_flag"] = if_model.flags(model)
     log(f"[3/8] isolation forest: {len(if_model.features)} features, "
         f"threshold {if_model.threshold:.4f} ({if_model.threshold_rule})")
-
-    # ---- 4. spatial fusion evidence (§20/§21.1) ----------------------------
+# 
     # A confirmation is valid only among nodes observed in the same event and
     # window. Reused node IDs in unrelated single-node events never confirm.
     from src.features.group_c_spatial import neighbour_radius_m
@@ -199,8 +195,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     log(f"[4/8] spatial fusion: co-temporal graph radius {radius:g} m (config); "
         f"median confirmations {int(np.median(model['neighbour_confirmations']))}; "
         "single-node events cannot satisfy §21.1 neighbor confirmation")
-
-    # ---- 5. physics check (§21) ---------------------------------------------
+# 
     model = _physics_residuals(model, coords)
     # §21/§22 semantics: "physics_residual_low" is judged on the NORMALISED
     # residual (|z| <= 1.0, RESIDUAL_Z_OK in src/risk/explainability.py) —
@@ -213,8 +208,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     model["physics_residual_z"] = (model["physics_residual"] - mu) / sd
     log("[5/8] physics check: §21 residuals computed for every window "
         f"(z-standardised on train: mu={mu:.3f}, sd={sd:.3f})")
-
-    # ---- 6. XGBoost (§15) ----------------------------------------------------
+# 
     risk_model = train_risk_model(model)
     log(f"[6/8] xgboost: {len(risk_model.features)} §15 inputs, classes {risk_model.classes}")
 
@@ -226,8 +220,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     for i, c in enumerate(classes):
         validation[f"p_{c}"] = proba[:, i]
     validation["predicted_level"] = np.asarray(classes)[np.argmax(proba, axis=1)]
-
-    # ---- 7. alert engine (§21.1, in window order) ---------------------------
+# 
     engine = AlertEngine()
     levels: list[str] = []
     for _, row in validation.iterrows():

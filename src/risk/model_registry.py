@@ -96,9 +96,7 @@ class ModelRegistry:
         self._lock = threading.Lock()
         self._entries: dict[str, ModelEntry] = {}
         self._load()
-
-    # --- registry entries ---------------------------------------------------------
-
+# 
     def _load(self) -> None:
         if self.path.exists():
             data = json.loads(self.path.read_text(encoding="utf-8"))
@@ -123,9 +121,7 @@ class ModelRegistry:
     def _flush(self) -> None:
         payload = {"models": [e.to_dict() for e in self._entries.values()]}
         self.path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
-    # --- §10.1 manifest resolution --------------------------------------------------
-
+# 
     def _manifests(self) -> dict[str, tuple[dict[str, Any], Path]]:
         found: dict[str, tuple[dict[str, Any], Path]] = {}
         for p in self.manifest_paths:
@@ -147,9 +143,7 @@ class ModelRegistry:
                 f"(available: {available})"
             )
         return found[str(version)]
-
-    # --- registration ----------------------------------------------------------------
-
+# 
     def register_model(
         self,
         *,

@@ -180,8 +180,7 @@ def main() -> int:
         raise SystemExit("events metadata carries duplicate ids")
     events = events.assign(family=events["id"].str.rsplit("_", n=2).str[0])
     defa = events.set_index("id")["max_deformation"]
-
-    # ---- axis 1: the literal §23 synthetic_split ---------------------------
+# 
     literal = synthetic_split(store, events)
     if literal.isna().any():
         missing = sorted(store.loc[literal.isna(), "event_id"].unique())[:5]

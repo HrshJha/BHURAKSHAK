@@ -42,8 +42,7 @@ from src.simulator.comms_degradation import link_outage, random_packet_loss
 from src.simulator.deformation_field import DeformationField, FieldParams
 from src.simulator.faults import FaultType, inject_fault
 from src.simulator.temporal_model import subsidence_growth
-
-# ---- §12 label vocabularies -------------------------------------------------
+# 
 PROGRESSION_STABLE = "STABLE"
 PROGRESSION_SLOW = "SLOW"
 PROGRESSION_ACCELERATING = "ACCELERATING"
@@ -230,8 +229,7 @@ def generate_scenario(
     steps = int(cfg["steps_per_day"] * cfg["duration_days"])
     t_hours = np.arange(steps, dtype=float) * (24.0 / float(cfg["steps_per_day"]))
     t_days = t_hours / 24.0
-
-    # ---- true ground subsidence (mm) ---------------------------------------
+# 
     profile = _temporal_profile(scenario, t_days, fld.params.time_coefficient)
     weight = _spatial_weight(scenario, node_x, node_y, fld)
     subsidence = profile * weight
@@ -242,12 +240,10 @@ def generate_scenario(
     tilt_std = float(physics_config()["noise"]["tilt_noise_std_deg"])
     tilt_x = np.degrees(gx / 1000.0) + rng.normal(0.0, tilt_std, steps)
     tilt_y = np.degrees(gy / 1000.0) + rng.normal(0.0, tilt_std, steps)
-
-    # ---- displacement: observed vertical displacement -----------------------
+# 
     disp_noise = float(physics_config()["noise"]["displacement_noise_std_mm"])
     displacement = subsidence + rng.normal(0.0, disp_noise, steps)
-
-    # ---- strain: edge strain toward a fixed reference node ------------------
+# 
     strain = edge_strain_series(fld, node_x, node_y, reference_node[0], reference_node[1], t_days)
 
     # ---- vibration: supporting-only channel (T-015) --------------------------
@@ -256,16 +252,14 @@ def generate_scenario(
     vibration_rms = np.asarray(vib.rms)
     vibration_peak = np.asarray(vib.peak)
     vibration_crest = np.asarray(vib.crest_factor)
-
-    # ---- telemetry piggyback channels (§8.3) --------------------------------
+# 
     tcfg = physics_config()["telemetry"]
     battery = np.linspace(float(tcfg["battery_start_v"]), float(tcfg["battery_end_v"]), steps) + rng.normal(
         0.0, 0.01, steps
     )
     rssi = rng.normal(float(tcfg["rssi_mean_dbm"]), float(tcfg["rssi_std_dbm"]), steps)
     snr = rng.normal(float(tcfg["snr_mean_db"]), float(tcfg["snr_std_db"]), steps)
-
-    # ---- labels: defaults -----------------------------------------------------
+# 
     progression, risk = _SUBSIDENCE_SCENARIOS.get(scenario, (PROGRESSION_STABLE, RISK_NORMAL))
     anomaly_flag = ""
 
@@ -326,8 +320,7 @@ def generate_scenario(
         period = float(cfg["temperature_period_days"])
         displacement += amp_mm * np.sin(2.0 * np.pi * t_days / period)
         meta["temperature_drift_amplitude_deg"] = float(cfg["temperature_drift_amplitude_deg"])
-
-    # ---- anomaly_label for genuine deformation --------------------------------
+# 
     threshold_mm = float(cfg["anomaly_subsidence_threshold_mm"])
     deformation_mask = subsidence > threshold_mm
     anomaly[deformation_mask] = 1

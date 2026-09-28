@@ -267,8 +267,7 @@ def main() -> int:
     )
     print(f"IF separation on validation: AUC={auc_val:.4f} | "
           f"stable median={np.median(stable_scores):.4f} vs non-stable median={np.median(val_nonstable):.4f}")
-
-    # ---- Random Forest: tune on validation, CV on training trials -----------
+# 
     params = tune_rf(val_split)
     print(f"\nRF hyperparameters chosen on validation: {params}")
     cv = cross_validate_rf(win, params)
@@ -310,8 +309,7 @@ def main() -> int:
     lead_base = lead_time_seconds(test_split, base_pred)
     print("\nlead time to critical (median): RF =", lead_rf["median_lead_time_s"], "s |",
           "baseline =", lead_base["median_lead_time_s"], "s")
-
-    # ---- figures -------------------------------------------------------------
+# 
     fig, axes = plt.subplots(1, 2, figsize=(13, 4.6))
     axes[0].hist(test_if[yte == 0], bins=50, alpha=0.6, label="Stable", density=True)
     axes[0].hist(test_if[yte > 0], bins=50, alpha=0.6, label="non-Stable", density=True)

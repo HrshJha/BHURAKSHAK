@@ -150,8 +150,7 @@ def build_feature_store(
     model = _prefix_merge(model, group_d, list(GROUP_D_FEATURES))
     model = _prefix_merge(model, group_e, list(GROUP_E_FEATURES))
     model = _prefix_merge(model, group_f, list(GROUP_F_FEATURES))
-
-    # ---- §12 labels per window (kept separate, never collapsed) ------------
+# 
     present_labels = [lab for lab in MODEL_LABELS if lab in raw.columns]
     if present_labels:
         label_rows = raw[["event_id", "node_id", "timestamp", *present_labels]].copy()
