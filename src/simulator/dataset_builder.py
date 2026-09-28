@@ -23,6 +23,7 @@ its sequence so referential integrity is checkable.
 from __future__ import annotations
 
 import json
+import hashlib
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
@@ -79,6 +80,7 @@ def build_dataset(
     seed: int = 42,
     dataset_version: str = "v0.1.0",
     nodes_limit: int | None = None,
+    scenario_names: tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
     """Generate the synthetic dataset and write all three gate artefacts.
 
@@ -98,7 +100,9 @@ def build_dataset(
     ref = (float(grid.x.max()) + spacing, float(grid.y.max()) + spacing)
 
     rng = make_rng(seed)
-    scenarios = list(Scenario)
+    scenarios = list(Scenario) if scenario_names is None else [Scenario(name) for name in scenario_names]
+    if not scenarios:
+        raise ValueError("scenario_names must select at least one scenario")
     steps = int(cfg["scenarios"]["steps_per_day"] * cfg["scenarios"]["duration_days"])
 
     nodes_rows: list[pd.DataFrame] = []
@@ -166,18 +170,21 @@ def build_dataset(
 
     nodes_path = out / "synthetic_nodes.csv"
     events_path = out / "synthetic_events.csv"
-    nodes_df.to_csv(nodes_path, index=False)
-    events_df.to_csv(events_path, index=False)
+    nodes_bytes = nodes_df.to_csv(index=False).encode("utf-8")
+    events_bytes = events_df.to_csv(index=False).encode("utf-8")
+    nodes_path.write_bytes(nodes_bytes)
+    events_path.write_bytes(events_bytes)
 
     manifest = build_manifest(
         dataset_version=dataset_version,
         random_seed=seed,
         counts_per_scenario=counts,
         split_definition={
-            "type": "synthetic_parameter_holdout",
-            "train_range": {"note": "assigned in Phase 4 (T-068)"},
-            "test_range": {"note": "assigned in Phase 4 (T-068)"},
+            "type": "fresh_seed_regime_holdout" if scenario_names is not None else "synthetic_parameter_holdout",
+            "train_range": {"note": "development corpus only" if scenario_names is not None else "assigned by event split"},
+            "test_range": {"scenario_types": [scenario.value for scenario in scenarios]},
         },
+        scenario_types=[scenario.value for scenario in scenarios],
     )
     manifest["row_counts"] = {
         "synthetic_nodes_rows": int(len(nodes_df)),
@@ -186,6 +193,11 @@ def build_dataset(
         "sequences_planned": int(len(scenarios) * sequences_per_scenario * grid.n_nodes),
         "timesteps_per_sequence": steps,
     }
+    hashes = {
+        "synthetic_nodes.csv": hashlib.sha256(nodes_bytes).hexdigest(),
+        "synthetic_events.csv": hashlib.sha256(events_bytes).hexdigest(),
+    }
+    manifest["artifact_sha256"] = hashes
     write_manifest(manifest, out / "dataset_manifest.json")
 
     return {
@@ -195,4 +207,5 @@ def build_dataset(
         "rows": int(len(nodes_df)),
         "events": int(len(events_df)),
         "counts": counts,
+        "artifact_sha256": hashes,
     }

@@ -43,6 +43,7 @@ def build_manifest(
     random_seed: int,
     counts_per_scenario: dict[str, int],
     split_definition: dict[str, Any] | None = None,
+    scenario_types: list[str] | None = None,
 ) -> dict[str, Any]:
     """Assemble a §10.1 manifest from the live config + generation facts."""
     cfg = physics_config()
@@ -62,7 +63,7 @@ def build_manifest(
             "injection_rate": cfg["scenarios"]["fault_injection_rate"],
         },
         "scenario_parameters": {
-            "scenario_types": [s.value for s in Scenario],
+            "scenario_types": list(scenario_types) if scenario_types is not None else [s.value for s in Scenario],
             "counts_per_scenario": dict(counts_per_scenario),
             "taxonomy_rows": 12,
         },

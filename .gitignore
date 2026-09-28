@@ -9,6 +9,7 @@ __pycache__/
 venv/
 ENV/
 env/
+.venv-retune/
 .env
 
 # Testing & Linting
@@ -22,6 +23,9 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Single-use final evaluation corpus; regenerate from the locked seed only.
+/data/heldout_locked/
 
 # macOS / OS Files
 .DS_Store

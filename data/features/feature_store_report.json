@@ -89,6 +89,7 @@
     "hotspot_density",
     "distance_to_subsidence_center"
   ],
+  "spatial_gate_reason": "single-node events, no co-temporal neighbours",
   "budget": {
     "min": 40,
     "max": 70,

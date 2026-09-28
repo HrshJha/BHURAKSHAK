@@ -105,7 +105,7 @@ def main() -> None:
         "| Group F physics expectation/residuals | configuration prior from `configs/physics.yaml`, not per-event sampled truth | same configured prior in v2 | Classified `config_derived`; deployment requires the same site configuration to be available. No per-event truth is read. |",
         "| Group G DGPS residual and Groups G/H/I absent deployment feeds | not in the current first-iteration feature store | provenance gated from model inputs | DGPS agreement is evaluation-only; synthetic terrain and unavailable modalities stay gated. |",
         "",
-        "The script reads only the development feature store and the split metadata. It does not read `data/heldout_locked/` or any test predictions.",
+        "The script reads only the development feature store and the split metadata. It does not read the locked evaluation directory or any test predictions.",
         "",
     ])
     OUT.write_text("\n".join(lines), encoding="utf-8")

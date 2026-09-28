@@ -1,5 +1,9 @@
 {
-  "dataset_version": "v1.1",
+  "artifact_sha256": {
+    "synthetic_events.csv": "58e3fbf5ab5d026e1cfc4b0cd881543a5831ce273ff9608bb93a0e4a342ec1a3",
+    "synthetic_nodes.csv": "24aa984332e9d7dd0f6fd81b981c8daa1e63c4a14d09f3319e984683664483bb"
+  },
+  "dataset_version": "synthetic-v2-label-blind",
   "fault_parameters": {
     "fault_types": [
       "BIAS",
@@ -84,6 +88,7 @@
   "split_definition": {
     "producer": "scripts/make_split_assignment.py",
     "default_split": "regime_holdout",
+    "type": "unseen_parameter_regime_holdout",
     "splits": {
       "regime_holdout": {
         "column": "split",
@@ -112,8 +117,13 @@
         }
       }
     },
-    "note": "pre-fixall split assignment (exact per-event) preserved at git tag pre-fixall; distribution reproduced, per-event assignment superseded",
-    "dataset_version_note": "v1.0 -> v1.1: split_assignment.csv regenerated with two named splits; synthetic_nodes/events CSVs byte-unchanged (same seed 42)"
+    "test_range": {
+      "note": "superseded by the regime holdout above (kept for v1 compatibility)"
+    },
+    "train_range": {
+      "note": "superseded by the regime holdout above (kept for v1 compatibility)"
+    }
   },
-  "dataset_version_note": "; feature_schema_version aligned to the live v2 schema (configs/feature_schema_v2.yaml)"
+  "windows_produced": 90000,
+  "sequence_count_note": "sequences_generated=10000 meets the PRD \u00a710 floor (10k); the resulting \u00a710 window count (90,000 at window=60/stride=10) is BELOW \u00a715's 100k-500k band - recorded honestly; 'sequences_planned' 4,000,000 was the generator's scaling ceiling, never attempted"
 }
