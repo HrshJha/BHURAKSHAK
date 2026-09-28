@@ -609,12 +609,12 @@ Generated from `prd.md` on 2026-09-13. Total tasks: **85**. Do not hand-edit sta
 - **Acceptance check:** the notebook measures p50/p95 inference latency and peak RSS for the Isolation Forest + XGBoost artifacts on a single feature window and records them against the documented edge budget. *(Portable profiling only — executing on actual Raspberry Pi 5 hardware is out of workstream scope; see Gap G-8 on the missing numeric budget.)*
 - **Status:** done
 
-### [ ] T-081 — Assemble the final end-to-end Data+ML pipeline and verify §35
+### [x] T-081 — Assemble the final end-to-end Data+ML pipeline and verify §35
 - **PRD ref:** §35, §7 (layered pipeline)
 - **Depends on:** T-055, T-071, T-075
 - **Output:** `src/pipeline.py`, `scripts/run_pipeline.py`, `reports/acceptance_criteria.md`
 - **Acceptance check:** `python scripts/run_pipeline.py` runs the full chain (validation → features → Isolation Forest → spatial fusion → physics check → XGBoost → alert engine → explainability) on held-out data, and `reports/acceptance_criteria.md` marks each §35 criterion within Data+ML scope as met with a pointer to the artifact proving it.
-- **Status:** pending
+- **Status:** done
 
 ---
 
