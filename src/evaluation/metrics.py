@@ -95,9 +95,7 @@ def _paired(a, b, name: str) -> tuple[np.ndarray, np.ndarray]:
     return a, b
 
 
-# ---------------------------------------------------------------------------
 # Detection family
-# ---------------------------------------------------------------------------
 
 def confusion_counts(y_true, y_pred) -> dict[str, int]:
     """Binary confusion counts (1 = alert/event, 0 = quiet)."""
@@ -180,9 +178,7 @@ def classification_metrics(y_true, y_pred, y_score=None) -> dict[str, float]:
     return out
 
 
-# ---------------------------------------------------------------------------
 # Displacement-error family
-# ---------------------------------------------------------------------------
 
 def regression_metrics(y_true, y_pred) -> dict[str, float]:
     """MAE, RMSE, max-abs-error and signed bias of displacement errors.
@@ -205,9 +201,7 @@ def regression_metrics(y_true, y_pred) -> dict[str, float]:
     }
 
 
-# ---------------------------------------------------------------------------
 # Spatial family
-# ---------------------------------------------------------------------------
 
 def iou_hotspots(pred_mask, true_mask) -> float:
     """IoU of flagged hotspot node sets.
@@ -268,9 +262,7 @@ def hotspot_localisation_error(
     }
 
 
-# ---------------------------------------------------------------------------
 # Operational / temporal family
-# ---------------------------------------------------------------------------
 
 def false_alarms_per_day(y_true, y_pred, *, n_days: float) -> float:
     """False alerts on quiet windows, per day of the observation span.
