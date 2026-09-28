@@ -82,18 +82,11 @@ def forecast_feature_names(channels: tuple[str, ...], horizons: tuple[int, ...])
 def forecast_all_origins(fc: TemporalForecaster, windowed: pd.DataFrame) -> pd.DataFrame:
     """Forecast every horizon from EVERY valid history position of every series.
 
-    Origin ``o`` (a ``window_index``) is valid for the series when it has a
-    full ``fc.history_steps`` window history behind it; each horizon ``h`` is
-    emitted only when its target window ``o + h`` exists. Rows carry
-    ``window_index`` (the origin), ``target_window_index`` (= origin + horizon)
-    and the physical-unit ``predicted_value`` — the same columns as
-    :meth:`TemporalForecaster.predict` plus the origin/target keys, and never
-    any risk-like column (the
-    :class:`~src.forecasting.temporal_model.Forecast` guard still applies
-    upstream; this frame is a pure physical-quantity table).
-
-    Series shorter than the history, or origins with non-finite history
-    values, yield no rows — never an invented forecast.
+    Origin ``o`` needs a full ``fc.history_steps`` history behind it; horizon
+    ``h`` is emitted only when target window ``o + h`` exists. Rows carry the
+    origin/target keys plus physical-unit ``predicted_value`` — a pure
+    physical-quantity table, never a risk column. Short series and non-finite
+    history values yield no rows — never an invented forecast.
     """
     import torch  # lazy (T-076 discipline); threading caps already applied
 

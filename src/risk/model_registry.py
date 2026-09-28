@@ -218,6 +218,10 @@ class ModelRegistry:
             "training_dataset_version": entry.training_dataset_version,
             "timestamp": ts,
         }
+        for field in ("split_name", "seed", "provenance_hash"):
+            value = getattr(entry, field)
+            if value is not None:
+                record[field] = value
         record.update(payload)
         with self._lock:
             self.predictions_path.parent.mkdir(parents=True, exist_ok=True)

@@ -8,6 +8,7 @@ never loaded into the training/evaluation frames here.
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 import time
 from pathlib import Path
@@ -242,6 +243,17 @@ def main() -> int:
             "sd": fitted.sd,
             "state_dict": fitted.torch_module.state_dict(),
         }, artifact)
+        digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        artifact.with_suffix(artifact.suffix + ".sha256").write_text(digest + "\n", encoding="utf-8")
+        from src.risk.model_registry import ModelRegistry
+        provenance_hash = hashlib.sha256((ROOT / "configs/feature_provenance.yaml").read_bytes()).hexdigest()
+        ModelRegistry().register_model(
+            model_name="subsense_temporal_forecaster", model_version="1.0.0-tuned-dev",
+            feature_version=str(manifest["feature_schema_version"]),
+            training_dataset_version=str(manifest["dataset_version"]), artifact_path=str(artifact),
+            split_name="train+validation development groups", seed=int(final["seed"]),
+            provenance_hash=provenance_hash,
+        )
         payload["artifact"] = str(artifact.relative_to(ROOT))
         (OUT / "forecaster_study.json").write_text(json.dumps(payload, indent=2, default=str) + "\n")
     print(f"Best CV MSE={best['mean_normalized_mse']:.5f}; persistence={best['mean_persistence_normalized_mse']:.5f}; beats={beats}")

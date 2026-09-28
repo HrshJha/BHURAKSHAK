@@ -243,17 +243,24 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     # FR-14: every prediction is logged with the five traceability fields,
     # copied from the REGISTERED model entry (never hand-assembled). The
     # dataset/schema versions come from the §10.1 manifest itself.
+    import hashlib
     import json
 
+    from src.config import risk_model_config
     from src.risk.model_registry import ModelRegistry
 
     manifest = json.loads((repo / "data" / "synthetic" / "dataset_manifest.json").read_text())
+    provenance_hash = hashlib.sha256((repo / "configs" / "feature_provenance.yaml").read_bytes()).hexdigest()
+    risk_cfg = risk_model_config()["xgboost"]
     registry = ModelRegistry()
     registry.register_model(
         model_name="subsense_xgboost_risk",
         model_version="1.0.0",
         feature_version=str(manifest["feature_schema_version"]),
         training_dataset_version=str(manifest["dataset_version"]),
+        split_name="train; validation used for early stopping",
+        seed=int(risk_cfg["random_state"]),
+        provenance_hash=provenance_hash,
         artifact_path=None,  # in-process model; artifact dump is the runner's choice
     )
     explanations = []
