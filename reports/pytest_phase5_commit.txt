@@ -1,0 +1,36 @@
+...........................................F............................ [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 34%]
+........................................................................ [ 46%]
+........................................................................ [ 57%]
+........................................................................ [ 69%]
+........................................................................ [ 80%]
+........................................................................ [ 92%]
+.................................................                        [100%]
+=================================== FAILURES ===================================
+______ test_pipeline_prediction_log_carries_fr14_and_training_provenance _______
+
+    def test_pipeline_prediction_log_carries_fr14_and_training_provenance() -> None:
+        """Check the latest append-only pipeline record and its registry metadata."""
+        from src.risk.model_registry import ModelRegistry
+    
+        log_path = REPO / "models" / "predictions.jsonl"
+        if not log_path.is_file():
+            pytest.skip("predictions.jsonl not produced yet — run scripts/run_pipeline.py")
+        latest = json.loads(log_path.read_text().splitlines()[-1])
+        for field in ("model_name", "model_version", "feature_version", "training_dataset_version", "timestamp",
+                      "split_name", "seed", "provenance_hash"):
+>           assert field in latest, f"traceability field {field} missing from the latest prediction record"
+E           AssertionError: traceability field split_name missing from the latest prediction record
+E           assert 'split_name' in {'alert_level': 'GREEN', 'event_id': 'E_vibration_only_0619_0335', 'feature_version': 'v2', 'model_name': 'subsense_xgboost_risk', ...}
+
+tests/test_artifacts_and_registry.py:106: AssertionError
+=============================== warnings summary ===============================
+tests/test_baselines.py::test_baselines_use_the_same_feature_matrix_as_xgboost
+tests/test_baselines.py::test_logistic_and_rf_predict_on_test
+  /private/tmp/subsense-retune-venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:451: DeprecationWarning: scipy.optimize: The `disp` and `iprint` options of the L-BFGS-B solver are deprecated and will be removed in SciPy 1.18.0.
+    opt_res = optimize.minimize(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_artifacts_and_registry.py::test_pipeline_prediction_log_carries_fr14_and_training_provenance

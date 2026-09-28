@@ -25,7 +25,7 @@ direction-neutral bullet rather than a guessed influence.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Mapping
+from typing import Mapping
 
 from src.risk.alert_engine import AlertEngineError, MODEL_CLASSES, probability_of
 
