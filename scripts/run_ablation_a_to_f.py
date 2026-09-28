@@ -208,6 +208,7 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
 
 
 def main() -> int:
+    raise SystemExit("Legacy ablation reads the burned test split; rerun only through the Phase 9 report workflow.")
     store = pd.read_parquet(STORE)
     splits = pd.read_csv(SPLITS)
     store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")

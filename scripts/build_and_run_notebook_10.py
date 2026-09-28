@@ -291,6 +291,7 @@ print("panels → reports/nb10_latency_panels.png")"""
 
 
 def main() -> int:
+    raise SystemExit("Legacy notebook 10 profiles a pre-leakfix model and burned test path; rerun after model freeze.")
     notebook = new_notebook(
         cells=CELLS,
         metadata={

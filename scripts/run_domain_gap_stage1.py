@@ -173,6 +173,7 @@ def run_axis(name: str, store: pd.DataFrame, defa: pd.Series) -> dict:
 
 
 def main() -> int:
+    raise SystemExit("Legacy domain-gap evaluation reads the burned test split; rerun only through the Phase 9 workflow.")
     store = pd.read_parquet(STORE)
     events = pd.read_csv(EVENTS_META)
     if not events["id"].is_unique:

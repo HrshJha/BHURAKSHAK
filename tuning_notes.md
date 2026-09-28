@@ -5,6 +5,7 @@
 - Group C read `anomaly_label` in both `neighbor_anomaly_fraction` and `hotspot_density`; the old `hotspot_density` had Pearson r **0.9176** and ROC-AUC **0.9663** against `anomaly_label`. Group C now uses only an observable robust-z deformation-rate proxy when a same-time neighbor graph exists. The current corpus has one node per event, so all eight Group C features are NaN and provenance-gated out of XGBoost and Isolation Forest. See `reports/leakage_audit.md`.
 - `center_mode="detected"` also used `anomaly_label`, while the feature store and pipeline explicitly requested `oracle`. Center estimation now uses current-snapshot observable displacement only; model builds reject oracle mode. The stored artifact records detected/gated mode.
 - Group B persistence and change-point values were computed once from the entire event and copied to earlier windows. They now use only the prefix through each current window; future truncation tests verify the invariant.
+- Pipeline neighbor confirmations previously grouped flagged nodes globally by reused node ID. Counts are now restricted to same-event, same-window neighbors, and alert persistence is isolated by event; the current data yields zero valid confirmations.
 - Group F's expected deformation comes from fixed `configs/physics.yaml` parameters, not per-event sampled simulator values. It is marked `config_derived`; deployment must provide the same static site parameters.
 - DGPS, InSAR, and synthetic terrain features without a deployable source remain gated. DGPS residuals are evaluation-only.
 

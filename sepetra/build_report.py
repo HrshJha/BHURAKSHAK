@@ -69,6 +69,10 @@ def _fmt(x: float) -> str:
 
 
 def main() -> int:
+    raise SystemExit(
+        "This legacy report scores the burned unlocked test split. It is disabled; Phase 9 will rebuild "
+        "from scripts/final_eval.py outputs."
+    )
     GRAPHS.mkdir(parents=True, exist_ok=True)
 
     # ---- data + model (identical to the T-070 arm-E convention) -----------

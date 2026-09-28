@@ -315,6 +315,7 @@ print("  §25: six arms re-scored through the same pipeline as the T-070 JSON")"
 
 
 def main() -> int:
+    raise SystemExit("Legacy notebook 07 reads the burned test split; regenerate after Phase 8 from final_eval outputs.")
     notebook = new_notebook(
         cells=CELLS,
         metadata={

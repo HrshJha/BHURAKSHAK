@@ -115,7 +115,7 @@ def test_local_gradient_and_strain_use_distance_scaling() -> None:
 
 
 def test_distance_to_center_detected_mode_is_inference_safe() -> None:
-    """G-5 rule: 'detected' uses only pipeline-visible anomalies, not the oracle."""
+    """The observable displacement-weighted center uses no label or oracle."""
     windowed, coords = _small_mesh({"V0012"})
     out = emit_group_c(windowed, coords)
     assert (out["center_mode"] == "detected").all()
@@ -132,8 +132,8 @@ def test_oracle_mode_is_refused_for_model_features() -> None:
         emit_group_c(windowed, coords, center_mode="oracle")
 
 
-def test_no_anomaly_falls_back_to_max_displacement_node() -> None:
-    windowed, coords = _small_mesh(set())  # nothing flagged
+def test_center_is_available_without_label_anomalies() -> None:
+    windowed, coords = _small_mesh(set())
     out = emit_group_c(windowed, coords)
     last = out[out["window_index"] == 8]
     assert last["distance_to_subsidence_center"].notna().all()

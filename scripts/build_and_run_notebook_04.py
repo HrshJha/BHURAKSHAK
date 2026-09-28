@@ -140,6 +140,7 @@ assert separated"""
 
 
 def main() -> int:
+    raise SystemExit("Legacy notebook 04 scores the burned test split; use grouped development-only tuning.")
     notebook = new_notebook(
         cells=CELLS,
         metadata={
