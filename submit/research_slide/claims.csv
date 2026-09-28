@@ -2,7 +2,7 @@ claim,value,unit,source_file,key,data_origin,split,tag
 Sentinel-1 orbit repeat,12,days per orbit,docs/insar_study_region.md,repeat cycle,literature/project context,not a model split,GAP
 Interleaved Sentinel-1 pair interval,6,days,docs/insar_study_region.md,repeat cycle note,literature/project context,not a model split,GAP
 Raniganj maximum LOS subsidence rate,−21.18,mm/year,docs/insar_references.md,abstract-level reported rate,literature,not applicable,GAP
-Korba cited deformation rate,~30,mm/year,user comparison table; reference metadata in refs_verified.csv,user-supplied table claim,literature,not applicable,GAP
+Korba cited deformation rate,~30,mm/year,https://doi.org/10.5194/isprs-archives-XLII-5-427-2018,user-supplied table claim,literature,not applicable,GAP
 PRD tilt sensor options,2,"models (MPU-6050, MPU-9250)",PRD.md,§8 component options,PRD design,not applicable,HW
 Evaluation count,1,locked evaluation,reports/test_lock.json,evals_run,synthetic corpus,unseen scenario-regime holdout,SW
 Locked evaluation seed,20260929,seed,reports/test_lock.json,seed,synthetic corpus,unseen scenario-regime holdout,SW
