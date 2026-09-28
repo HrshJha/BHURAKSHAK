@@ -1,0 +1,13 @@
+# Confusion Matrix
+
+| true_class | predicted_class | count | split | source_file | source_key |
+| --- | --- | --- | --- | --- | --- |
+| NORMAL | NORMAL | 4777 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[0][0] |
+| NORMAL | WARNING | 691 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[0][1] |
+| NORMAL | CRITICAL | 157 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[0][2] |
+| WARNING | NORMAL | 1328 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[1][0] |
+| WARNING | WARNING | 2984 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[1][1] |
+| WARNING | CRITICAL | 1313 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[1][2] |
+| CRITICAL | NORMAL | 865 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[2][0] |
+| CRITICAL | WARNING | 4235 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[2][1] |
+| CRITICAL | CRITICAL | 525 | locked_test | reports/final_eval.json | risk_models.tuned_xgboost.confusion_matrix[2][2] |

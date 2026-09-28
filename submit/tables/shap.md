@@ -1,0 +1,7 @@
+# Shap
+
+| feature | mean_abs_shap | unit | source_file | source_key | split |
+| --- | --- | --- | --- | --- | --- |
+| physics_residual | 1.115539074 | mean_abs_shap | reports/tuning/robustness.json | tree_shap.top3.0.mean_abs_shap | development_validation |
+| physics_residual_velocity | 0.6957067251 | mean_abs_shap | reports/tuning/robustness.json | tree_shap.top3.1.mean_abs_shap | development_validation |
+| rolling_min | 0.5179250836 | mean_abs_shap | reports/tuning/robustness.json | tree_shap.top3.2.mean_abs_shap | development_validation |
