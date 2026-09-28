@@ -23,6 +23,6 @@ Interpreter: Python 3.14.3. `pip freeze` is preserved in `reports/env_before.txt
 | pytest | 8.4.2 | 9.0.3 |
 | tqdm | 4.67.1 | 4.67.3 |
 
-The most relevant drift is NumPy 2.4.3, pandas 3.0.3, scikit-learn 1.8.0, XGBoost 2.1.4, and PyTorch 2.11.0 versus the pins. This environment differs substantially from the repo lock and could explain some version-sensitive behavior; source changes still need bisect evidence.
+The most relevant drift is NumPy 2.4.3, pandas 3.0.3, scikit-learn 1.8.0, XGBoost 2.1.4, and PyTorch 2.11.0 versus the pins. The 17 baseline failures are reproduced on that environment. A fresh Python 3.12.13 venv with the exact `requirements.txt` pins passed all **585 baseline tests** before source changes. The failures therefore reflected real compatibility assumptions activated by newer dependencies, rather than an intervening source commit. `src/anomaly/isolation_forest.py` and `src/preprocessing/validation.py` mutated read-only views exposed by newer pandas/NumPy; `src/features/group_g_dgps.py` interpreted datetime ticks as nanoseconds even when newer pandas returned microsecond timestamps. The affected source files have identical blobs at `pre-fixall` and the leak-fix start, so there is no intervening commit to bisect as the cause.
 
-Baseline `python3 -m pytest tests/ -q --tb=short`: 17 failures, captured verbatim in `reports/pytest_before.txt`.
+Baseline `python3 -m pytest tests/ -q --tb=short`: 17 failures, captured verbatim in `reports/pytest_before.txt`. Pinned baseline: **585 passed**, captured in `reports/pytest_pinned_before.txt`.
