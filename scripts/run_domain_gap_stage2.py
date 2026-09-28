@@ -59,7 +59,7 @@ OUT_JSON = REPO_ROOT / "experiments" / "domain_gap_stage2.json"
 RAW_LOG = REPO_ROOT / "data" / "recorded" / "tabletop" / "raw_sensor_log.csv"
 METADATA = REPO_ROOT / "data" / "recorded" / "tabletop" / "trial_metadata.csv"
 WINDOWED_REF = REPO_ROOT / "data" / "recorded" / "tabletop" / "processed_windowed_dataset.csv"
-STORE = REPO_ROOT / "data" / "features" / "features_v1.parquet"
+STORE = REPO_ROOT / "data" / "features" / "features_v2.parquet"
 SPLITS = REPO_ROOT / "data" / "features" / "split_assignment.csv"
 
 BRIDGE_CHANNELS = ("tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain", "vibration_rms")
@@ -135,6 +135,7 @@ def reference_state_at_windows(windowed: pd.DataFrame, ref: pd.DataFrame) -> pd.
 
 
 def main() -> int:
+    raise SystemExit("Legacy domain-gap evaluation reads the burned test split; rerun only through the Phase 9 workflow.")
     raw = pd.read_csv(RAW_LOG)
     meta = pd.read_csv(METADATA)
     ref = pd.read_csv(WINDOWED_REF)
@@ -169,8 +170,7 @@ def main() -> int:
     # the rig cannot provide (C/D/E/F). Measures the modality-scarcity effect,
     # NOT the sensor domain gap — reported separately, never as the headline.
     model_full = train_risk_model(store)
-
-    # ---- bridge the tabletop series through the §10 pipeline ---------------
+# 
     series = bridge_raw_to_series(raw)
     windowed = build_windows(series, channels=BRIDGE_CHANNELS, labels=()).df
     print(f"bridged windows: {len(windowed):,} (60-sample §10 windows over {windowed.event_id.nunique()} trials)")
@@ -199,8 +199,7 @@ def main() -> int:
     n_scored = int(scored["known_displacement_mm"].notna().sum())
     n_dropped = int(len(scored) - n_scored)
     print(f"reference-matched windows: {n_scored:,} ({n_dropped} unmatched excluded)")
-
-    # ---- UNMODIFIED inference ----------------------------------------------
+# 
     proba = model.predict_proba(scored)
     pred_labels = np.asarray(classes)[proba.argmax(axis=1)]
     p_crit = proba[:, classes.index("CRITICAL")]

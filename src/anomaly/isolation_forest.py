@@ -35,6 +35,7 @@ import pandas as pd
 from sklearn.ensemble import IsolationForest
 
 from src.config import anomaly_config
+from src.features.provenance import model_input_allowlist
 
 __all__ = [
     "IsolationForestError",
@@ -82,10 +83,12 @@ def healthy_baseline_mask(df: pd.DataFrame) -> np.ndarray:
     for col in ("anomaly_label", "fault_label"):
         if col not in df.columns:
             raise IsolationForestError(f"healthy-baseline mask needs the §12 column {col!r}")
-    mask = (pd.to_numeric(df["anomaly_label"], errors="coerce") == 0).to_numpy()
-    mask &= (df["fault_label"] == "NONE").to_numpy()
+    # pandas 3 / Arrow-backed frames may expose read-only NumPy views. Build
+    # new boolean arrays instead of mutating a view owned by the Series.
+    mask = (pd.to_numeric(df["anomaly_label"], errors="coerce") == 0).to_numpy(dtype=bool, copy=True)
+    mask = mask & (df["fault_label"] == "NONE").to_numpy(dtype=bool, copy=True)
     if "risk_label" in df.columns:
-        mask &= (df["risk_label"] == "NORMAL").to_numpy()
+        mask = mask & (df["risk_label"] == "NORMAL").to_numpy(dtype=bool, copy=True)
     return mask
 
 
@@ -101,7 +104,8 @@ def _resolve_features(groups: list[str] | None) -> list[str]:
         for name in cfg[g]:
             if name not in features:
                 features.append(str(name))
-    return features
+    allowed = model_input_allowlist(features)
+    return [name for name in features if name in allowed]
 
 
 def train_isolation_forest(
@@ -121,6 +125,8 @@ def train_isolation_forest(
     df = df.reset_index(drop=True)  # boolean masks are positional; never trust index labels
 
     features = _resolve_features(feature_groups)
+    if not features:
+        raise IsolationForestError("no allow-listed features remain after provenance gates")
     missing = [c for c in features if c not in df.columns]
     if missing:
         raise IsolationForestError(f"feature columns missing: {missing}")

@@ -9,6 +9,7 @@ __pycache__/
 venv/
 ENV/
 env/
+.venv-retune/
 .env
 
 # Testing & Linting
@@ -22,6 +23,9 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Single-use final evaluation corpus; regenerate from the locked seed only.
+/data/heldout_locked/
 
 # macOS / OS Files
 .DS_Store
@@ -44,3 +48,8 @@ Thumbs.db
 .claude/
 .freebuff/
 .gemini/
+
+# Large regenerable data (fixall phase 5): regenerate via scripts, do not track
+data/synthetic/synthetic_nodes.csv
+data/features/features_v2.parquet
+data/raw/sensors/tabletop/raw_sensor_log.csv

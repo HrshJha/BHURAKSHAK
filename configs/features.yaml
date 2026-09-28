@@ -1,0 +1,8 @@
+# Feature thresholds and spatial gates (NFR-6).
+group_c:
+  gated: true
+  gate_reason: "single-node events, no co-temporal neighbours"
+  minimum_cotemporal_nodes: 2
+  robust_z_threshold: 3.5
+  mad_epsilon: 1.0e-12
+  hotspot_radius_multiplier: 2.0

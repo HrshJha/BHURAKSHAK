@@ -100,6 +100,16 @@ def test_velocity_and_acceleration_are_point_trend_terms() -> None:
     assert vel[0] == pytest.approx(-0.375 * 365.25, rel=0.01)
 
 
+def test_datetime_microsecond_resolution_keeps_velocity_units() -> None:
+    survey = _survey()
+    survey["observation_timestamp"] = pd.to_datetime(
+        survey["observation_timestamp"]
+    ).astype("datetime64[us]")
+    win = _windowed(["V_A"], ["Mar09", "Mar21", "Apr02"])
+    out = emit_group_g(survey, win, _nodes(), epoch=EPOCH).sort_values("window_index")
+    assert out["velocity"].iloc[0] == pytest.approx(-0.375 * 365.25, rel=0.01)
+
+
 def test_residual_rides_the_window_mesh_estimate() -> None:
     win = _windowed(["V_A", "V_B"], ["Mar21"])
     win.loc[win.node_id == "V_A", "displacement_mean"] = -4.6  # mesh estimate

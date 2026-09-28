@@ -117,10 +117,10 @@ def validate_packets(df: pd.DataFrame) -> ValidationResult:
     channels = [c for c in _NUMERIC_CHANNELS if c in df.columns]
     if channels:
         num = df[channels].apply(pd.to_numeric, errors="coerce")
-        corrupted = num.isna().any(axis=1).to_numpy()
+        corrupted = np.array(num.isna().any(axis=1).to_numpy(), dtype=bool, copy=True)
     for channel in ("node_id", "event_id"):
         if channel in df.columns:
-            corrupted |= df[channel].isna().to_numpy()
+            corrupted = corrupted | df[channel].isna().to_numpy(dtype=bool, copy=True)
 
     for _e, _n, g in _series_groups(df):
         idx = g.index.to_numpy()

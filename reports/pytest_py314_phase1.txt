@@ -1,0 +1,24 @@
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 48%]
+........................................................................ [ 61%]
+........................................................................ [ 73%]
+........................................................................ [ 85%]
+........................................................................ [ 97%]
+..............                                                           [100%]
+=============================== warnings summary ===============================
+tests/test_isolation_forest.py::test_healthy_mask_accepts_arrow_backed_copy_on_write_frame
+tests/test_isolation_forest.py::test_healthy_mask_accepts_arrow_backed_copy_on_write_frame
+tests/test_validation.py::test_validator_accepts_arrow_backed_copy_on_write_frame
+tests/test_validation.py::test_validator_accepts_arrow_backed_copy_on_write_frame
+  /Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/contextlib.py:141: Pandas4Warning: The 'mode.copy_on_write' option is deprecated. Copy-on-Write can no longer be disabled (it is always enabled with pandas >= 3.0), and setting the option has no impact. This option will be removed in pandas 4.0.
+    return next(self.gen)
+
+tests/test_isolation_forest.py::test_healthy_mask_accepts_arrow_backed_copy_on_write_frame
+tests/test_validation.py::test_validator_accepts_arrow_backed_copy_on_write_frame
+  /Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/contextlib.py:148: Pandas4Warning: The 'mode.copy_on_write' option is deprecated. Copy-on-Write can no longer be disabled (it is always enabled with pandas >= 3.0), and setting the option has no impact. This option will be removed in pandas 4.0.
+    next(self.gen)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+590 passed, 6 warnings in 10.90s

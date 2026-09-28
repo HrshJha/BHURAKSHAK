@@ -35,30 +35,30 @@
         "CRITICAL": 0
       },
       "WARNING": {
-        "NORMAL": 3496,
-        "WARNING": 380,
+        "NORMAL": 817,
+        "WARNING": 3059,
         "CRITICAL": 0
       },
       "CRITICAL": {
-        "NORMAL": 321,
-        "WARNING": 0,
+        "NORMAL": 1,
+        "WARNING": 320,
         "CRITICAL": 0
       }
     },
     "per_state_recall": {
       "NORMAL": 1.0,
-      "WARNING": 0.09803921568627451,
+      "WARNING": 0.7892156862745098,
       "CRITICAL": 0.0
     },
     "detection": {
       "precision": 1.0,
-      "recall": 0.09054086252084823,
-      "f1": 0.16604762945160587,
-      "tp": 380,
+      "recall": 0.8050988801524899,
+      "f1": 0.8920274551214361,
+      "tp": 3379,
       "fp": 0,
-      "fn": 3817,
+      "fn": 818,
       "tn": 10355,
-      "pr_auc": 0.8663494492076707
+      "pr_auc": 0.96671759418505
     },
     "displacement_error": {
       "n_windows": 7276,
@@ -68,8 +68,8 @@
       "bias_mm": -0.4024700842953977
     },
     "p_critical_stats": {
-      "mean": 0.0016264267032966018,
-      "max": 0.18759797513484955,
+      "mean": 0.0013374912086874247,
+      "max": 0.04530446603894234,
       "n_above_alert_threshold": 0
     },
     "diagnostic_full_contract_nanfill": {
@@ -78,16 +78,16 @@
         "NORMAL": 14552
       },
       "p_critical_stats": {
-        "mean": 0.0001160199026344344,
-        "max": 0.010607754811644554,
+        "mean": 0.022873686626553535,
+        "max": 0.23071248829364777,
         "n_above_alert_threshold": 0
       }
     }
   },
   "in_regime_reference": {
     "source": "experiments/ablation_a_to_f.json arm E_add_physics (test split)",
-    "f1": 0.46182254639460807,
-    "pr_auc": 0.604385010029335,
-    "brier": 0.5728917512038315
+    "f1": 0.6725890356142457,
+    "pr_auc": 0.665608278780572,
+    "brier": 0.6588874708748256
   }
 }

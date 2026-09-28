@@ -19,9 +19,7 @@ from src.config import (
 )
 
 
-# ---------------------------------------------------------------------------
 # T-003 — configs/sampling.yaml must match PRD §8.3 exactly
-# ---------------------------------------------------------------------------
 
 
 def test_sampling_matches_prd() -> None:
@@ -52,9 +50,7 @@ def test_sampling_node_metadata_piggybacks() -> None:
     assert cfg["node_metadata"]["attach_to"] == "every_uplink_packet"
 
 
-# ---------------------------------------------------------------------------
 # T-004 — configs/alerts.yaml must match PRD §21.1 exactly
-# ---------------------------------------------------------------------------
 
 
 def test_alerts_match_prd() -> None:
@@ -85,9 +81,7 @@ def test_alerts_match_prd() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
 # T-005 — configs/physics.yaml must carry the full §10 parameter set
-# ---------------------------------------------------------------------------
 
 
 def test_physics_params() -> None:
@@ -112,14 +106,12 @@ def test_physics_params() -> None:
     assert raw["grid"]["nodes_per_side"] == 20, "§10: 20×20 = 400 virtual nodes"
 
 
-# ---------------------------------------------------------------------------
 # T-006 — configs/feature_schema_v1.yaml must enumerate §11 fields and §13 groups
-# ---------------------------------------------------------------------------
 
 
 def test_feature_schema() -> None:
     cfg = feature_schema_config()
-    assert cfg["feature_schema_version"] == "v1", "§10.1 manifest field: feature_schema_version v1"
+    assert cfg["feature_schema_version"] in ("v1", "v2"), "§10.1 manifest field: feature_schema_version (live schema)"
 
     # §11 dataset schema — exact field list
     expected_fields = [

@@ -8,24 +8,24 @@
     "cpu_count": 10
   },
   "latency_single_window_ms": {
-    "if_p50": 4.493854000000001,
-    "if_p95": 4.83169825,
-    "xgb_p50": 0.237854,
-    "xgb_p95": 0.26273094999999996,
-    "chain_p50": 4.8635625000000005,
-    "chain_p95": 5.0330827
+    "if_p50": 4.4226045,
+    "if_p95": 5.6661774,
+    "xgb_p50": 0.242166,
+    "xgb_p95": 0.26146010000000003,
+    "chain_p50": 4.7613544999999995,
+    "chain_p95": 4.86415625
   },
   "memory": {
-    "peak_rss_after_training_mb": 650.3125,
-    "inference_delta_mb": 0.15625,
+    "peak_rss_after_training_mb": 620.859375,
+    "inference_delta_mb": 0.0,
     "artifact_mb": {
-      "isolation_forest": 2.4088239669799805,
-      "xgboost_risk": 1.699568748474121
+      "isolation_forest": 2.3168344497680664,
+      "xgboost_risk": 2.36953067779541
     }
   },
   "cadence_context": {
     "window_stride_h": 1.6666999999999987,
-    "chain_p95_pct_of_period": 8.388303400598661e-05
+    "chain_p95_pct_of_period": 8.106764948034379e-05
   },
   "gap_g8": "NFR-2 states no numeric edge budget; measurements recorded, no pass/fail claimed",
   "n_calls": 2000

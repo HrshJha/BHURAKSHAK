@@ -48,7 +48,7 @@ from src.evaluation.splits import assert_no_leakage, synthetic_split  # noqa: E4
 from src.risk.xgboost_model import train_risk_model  # noqa: E402
 
 OUT_JSON = REPO_ROOT / "experiments" / "domain_gap_stage1.json"
-STORE = REPO_ROOT / "data" / "features" / "features_v1.parquet"
+STORE = REPO_ROOT / "data" / "features" / "features_v2.parquet"
 EVENTS_META = REPO_ROOT / "data" / "synthetic" / "synthetic_events.csv"
 STRIDE_HOURS = 0.6
 EVENT_DAYS = 1.0
@@ -173,14 +173,14 @@ def run_axis(name: str, store: pd.DataFrame, defa: pd.Series) -> dict:
 
 
 def main() -> int:
+    raise SystemExit("Legacy domain-gap evaluation reads the burned test split; rerun only through the Phase 9 workflow.")
     store = pd.read_parquet(STORE)
     events = pd.read_csv(EVENTS_META)
     if not events["id"].is_unique:
         raise SystemExit("events metadata carries duplicate ids")
     events = events.assign(family=events["id"].str.rsplit("_", n=2).str[0])
     defa = events.set_index("id")["max_deformation"]
-
-    # ---- axis 1: the literal §23 synthetic_split ---------------------------
+# 
     literal = synthetic_split(store, events)
     if literal.isna().any():
         missing = sorted(store.loc[literal.isna(), "event_id"].unique())[:5]

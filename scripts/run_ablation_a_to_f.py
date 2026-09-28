@@ -58,7 +58,7 @@ from src.risk.xgboost_model import train_risk_model
 from src.simulator.grid import build_grid
 
 OUT_JSON = REPO_ROOT / "experiments" / "ablation_a_to_f.json"
-STORE = REPO_ROOT / "data" / "features" / "features_v1.parquet"
+STORE = REPO_ROOT / "data" / "features" / "features_v2.parquet"
 SPLITS = REPO_ROOT / "data" / "features" / "split_assignment.csv"
 INSAR_CSV = REPO_ROOT / "experiments" / "nb08_mesh_aligned_insar.csv"
 
@@ -135,16 +135,14 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
     model = train_risk_model(store, feature_groups=features)
     test = store[store["split"] == "test"].reset_index(drop=True)
     af = alert_frame(model, test)
-
-    # ---- detection (§24) ----------------------------------------------------
+# 
     y_true = (af["anomaly_label"] > 0).astype(int).to_numpy()
     y_pred = (af["pred_label"] != "NORMAL").astype(int).to_numpy()
     det = classification_metrics(y_true, y_pred, y_score=af["alarm_score"].to_numpy())
     det["macro_f1_risk3"] = float(
         sk_f1(af["risk_label"], af["pred_label"], average="macro", labels=sorted(af["risk_label"].unique()))
     )
-
-    # ---- calibration of P(CRITICAL) ----------------------------------------
+# 
     p_crit = af["p_critical"].to_numpy()
     two_col = np.stack([p_crit, 1.0 - p_crit], axis=1)  # class 0 = CRITICAL
     y_idx = (af["risk_label"] != "CRITICAL").astype(int).to_numpy()
@@ -153,8 +151,7 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
 
     # ---- deformation error (model-invariant; §24 honesty) -------------------
     defo = regression_metrics(test["displacement"], test["expected_displacement"])
-
-    # ---- spatial family ------------------------------------------------------
+# 
     ious: list[float] = []
     true_pts: list[tuple[float, float]] = []
     pred_pts: list[tuple[float, float]] = []
@@ -175,8 +172,7 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
         **hotspot_localisation_error(np.array(true_pts), np.array(pred_pts) if pred_pts else np.zeros((0, 2)),
                                      match_radius_m=HOTSPOT_RADIUS_M),
     }
-
-    # ---- operational / temporal ----------------------------------------------
+# 
     alerts: dict[str, float] = {}
     onsets: dict[str, float] = {}
     for ev, g in af.groupby("event_id", sort=False):
@@ -208,6 +204,7 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
 
 
 def main() -> int:
+    raise SystemExit("Legacy ablation reads the burned test split; rerun only through the Phase 9 report workflow.")
     store = pd.read_parquet(STORE)
     splits = pd.read_csv(SPLITS)
     store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")

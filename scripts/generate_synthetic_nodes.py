@@ -20,6 +20,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from src.simulator.dataset_builder import DEFAULT_SEQUENCES_PER_SCENARIO, build_dataset
+from src.simulator.scenarios import Scenario
 
 
 def main() -> int:
@@ -29,6 +30,7 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--dataset-version", default="v0.1.0")
     parser.add_argument("--nodes-limit", type=int, default=None, help="smoke-test only")
+    parser.add_argument("--scenarios", nargs="+", choices=[s.value for s in Scenario], default=None)
     args = parser.parse_args()
 
     result = build_dataset(
@@ -37,6 +39,7 @@ def main() -> int:
         seed=args.seed,
         dataset_version=args.dataset_version,
         nodes_limit=args.nodes_limit,
+        scenario_names=tuple(args.scenarios) if args.scenarios else None,
     )
     print(f"rows    : {result['rows']:,}")
     print(f"events  : {result['events']:,}")

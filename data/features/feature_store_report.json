@@ -1,5 +1,6 @@
 {
-  "feature_schema_version": "v1",
+  "feature_schema_version": "v2",
+  "dataset_version": "synthetic-v2-label-blind",
   "windowing": {
     "window_steps": 60,
     "stride": 10
@@ -77,6 +78,18 @@
     "E_sensor_health": 7,
     "F_physics": 4
   },
+  "center_mode": "detected",
+  "gated_features": [
+    "neighbor_mean",
+    "neighbor_std",
+    "neighbor_anomaly_fraction",
+    "spatial_coherence",
+    "local_gradient",
+    "local_strain",
+    "hotspot_density",
+    "distance_to_subsidence_center"
+  ],
+  "spatial_gate_reason": "single-node events, no co-temporal neighbours",
   "budget": {
     "min": 40,
     "max": 70,

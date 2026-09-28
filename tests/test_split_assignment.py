@@ -84,11 +84,18 @@ def test_regime_test_split_holds_out_whole_families(split_csv: pd.DataFrame) -> 
 
 def test_regime_test_split_has_all_three_classes(split_csv: pd.DataFrame) -> None:
     """Class support: the holdout must exercise NORMAL, WARNING and CRITICAL."""
-    store = pd.read_parquet(REPO / "data" / "features" / "features_v1.parquet", columns=["event_id", "risk_label"])
+    store = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet", columns=["event_id", "risk_label"])
     merged = store.merge(split_csv[["event_id", "split"]], on="event_id", validate="many_to_one")
     test_counts = merged[merged["split"] == "test"]["risk_label"].value_counts().to_dict()
     assert set(test_counts) == {"NORMAL", "WARNING", "CRITICAL"}
     assert all(v >= 1000 for v in test_counts.values()), f"thin class support in regime test: {test_counts}"
+
+
+def test_regime_split_is_disjoint_by_generation_parameters(split_csv: pd.DataFrame) -> None:
+    from src.evaluation.splits import assert_no_leakage
+
+    assert "generation_parameter_id" in split_csv
+    assert_no_leakage(split_csv, split_csv["split"], "generation_parameter_id")
 
 
 def test_manifest_records_the_producer() -> None:

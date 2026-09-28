@@ -252,8 +252,7 @@ def generate_trial(trial, rng) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
                 }
             )
         )
-
-        # ---- 2 s windows, 1 s step (plan §2.2/§5.2) -------------------------
+# 
         tof_base = float(tof[ts_ms < 2000].mean())
         ultra_base = float(ultra[ts_ms < 2000].mean())
         amag = np.sqrt(ax**2 + ay**2 + az**2)

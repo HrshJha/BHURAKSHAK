@@ -56,6 +56,28 @@ feature_groups:
     - trend
     - persistence
     - change_point_score
+    # per-channel expansions actually emitted by the §10 windowing engine
+    # (fixall 3.1: every emitted column is declared — closes the schema drift)
+    - tilt_x_rolling_mean
+    - tilt_x_rolling_std
+    - tilt_x_rolling_min
+    - tilt_x_rolling_max
+    - tilt_x_trend
+    - tilt_x_persistence
+    - tilt_x_change_point_score
+    - tilt_y_rolling_mean
+    - tilt_y_rolling_std
+    - tilt_y_rolling_min
+    - tilt_y_rolling_max
+    - tilt_y_trend
+    - tilt_y_persistence
+    - tilt_y_change_point_score
+    - tilt_x_slope
+    - tilt_x_velocity
+    - tilt_x_acceleration
+    - tilt_y_slope
+    - tilt_y_velocity
+    - tilt_y_acceleration
   C_spatial:
     - neighbor_mean
     - neighbor_std
@@ -120,6 +142,23 @@ feature_groups:
     gate: ablation_required
 
 # §13 target budget for the first model iteration
+# Gated groups (fixall 3.1): declared in the schema but intentionally absent
+# from the default feature store, with the reason. The drift guard
+# (src/features/schema_guard.py) treats these as allowed-absent.
+gates:
+  G_dgps:
+    gated: true
+    gate_reason: "Phase-4 modality — ablation-gated per §13/§25 (T-070); no real DGPS feed exists (Gap G-7); synthetic DGPS only in notebook 09"
+  H_insar:
+    gated: true
+    gate_reason: "Phase-4 modality — ablation-gated per §13/§25 (T-070); joined per-node in arm F via enrich_with_insar, not part of the default store"
+  I_terrain:
+    gated: true
+    gate_reason: "G-10: no real DEM/mine survey in MVP scope; synthetic terrain only, gate closed pending real source"
+  J_environmental:
+    gated: true
+    gate_reason: "Environmental ablation gate (§13/§38, T-067): adopt only if the ablation shows a measured operational improvement — currently CLOSED"
+
 model_input_budget:
   min: 40
   max: 70

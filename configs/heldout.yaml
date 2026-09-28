@@ -1,0 +1,7 @@
+dataset_version: synthetic-heldout-v3-20260929
+seed: 20260929
+sequences_per_scenario: 625
+scenarios:
+  - stable_ground
+  - accelerating_subsidence
+  - rapid_subsidence

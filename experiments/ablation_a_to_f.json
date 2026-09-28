@@ -1,7 +1,7 @@
 {
   "metadata": {
     "task": "T-070 (\u00a725 mandatory ablation A\u2013F)",
-    "store": "data/features/features_v1.parquet",
+    "store": "data/features/features_v2.parquet",
     "n_store_rows": 90000,
     "splits": {
       "train": 58500,
@@ -115,19 +115,19 @@
       ],
       "insar_nan_fraction": null,
       "detection": {
-        "precision": 0.4171211370021484,
-        "recall": 0.5869767441860465,
-        "f1": 0.4876823495314463,
-        "tp": 2524,
-        "fp": 3527,
-        "fn": 1776,
-        "tn": 9048,
-        "pr_auc": 0.6706938192429117,
-        "macro_f1_risk3": 0.4928609546522041
+        "precision": 0.5176947652985991,
+        "recall": 0.9797674418604652,
+        "f1": 0.6774401029104358,
+        "tp": 4213,
+        "fp": 3925,
+        "fn": 87,
+        "tn": 8650,
+        "pr_auc": 0.8286182730838179,
+        "macro_f1_risk3": 0.5109183478021311
       },
       "calibration": {
-        "brier": 0.3740246957763936,
-        "ece": 0.14218227752756188
+        "brier": 0.5537423054931951,
+        "ece": 0.2475103762803254
       },
       "deformation_error": {
         "mae": 44.98313784150662,
@@ -137,21 +137,21 @@
         "n_used": 16875
       },
       "spatial": {
-        "mean_iou_hotspots": 0.32105263157894737,
-        "windows_any_hot": 5130,
-        "mean_localisation_error_m": 8.514425005730912,
+        "mean_iou_hotspots": 0.5216901408450704,
+        "windows_any_hot": 5325,
+        "mean_localisation_error_m": 7.95532069132512,
         "max_localisation_error_m": 75.0,
         "n_true_hotspots": 4300,
-        "n_unmatched": 24,
-        "matched_fraction": 0.9944186046511628
+        "n_unmatched": 22,
+        "matched_fraction": 0.9948837209302326
       },
       "temporal": {
-        "median_lead_time_hours": 0.0,
+        "median_lead_time_hours": 0.6,
         "p10_lead_time_hours": 0.0,
-        "n_events_with_lead": 207,
-        "n_missed_events": 426,
-        "missed_event_rate": 0.6729857819905213,
-        "false_alarms_per_day": 1.8810666666666667
+        "n_events_with_lead": 395,
+        "n_missed_events": 238,
+        "missed_event_rate": 0.37598736176935227,
+        "false_alarms_per_day": 2.0933333333333333
       }
     },
     "C_add_spatial": {
@@ -205,19 +205,19 @@
       ],
       "insar_nan_fraction": null,
       "detection": {
-        "precision": 0.4097165991902834,
-        "recall": 0.5883720930232558,
-        "f1": 0.4830548926014319,
-        "tp": 2530,
-        "fp": 3645,
-        "fn": 1770,
-        "tn": 8930,
-        "pr_auc": 0.6551422476007603,
-        "macro_f1_risk3": 0.5030350427612977
+        "precision": 0.5176947652985991,
+        "recall": 0.9797674418604652,
+        "f1": 0.6774401029104358,
+        "tp": 4213,
+        "fp": 3925,
+        "fn": 87,
+        "tn": 8650,
+        "pr_auc": 0.8286182730838179,
+        "macro_f1_risk3": 0.5109183478021311
       },
       "calibration": {
-        "brier": 0.3505639583409239,
-        "ece": 0.13542100863633333
+        "brier": 0.5537423054931951,
+        "ece": 0.2475103762803254
       },
       "deformation_error": {
         "mae": 44.98313784150662,
@@ -227,21 +227,21 @@
         "n_used": 16875
       },
       "spatial": {
-        "mean_iou_hotspots": 0.3512846865364851,
-        "windows_any_hot": 4865,
-        "mean_localisation_error_m": 7.233637142673571,
-        "max_localisation_error_m": 55.90169943749474,
+        "mean_iou_hotspots": 0.5216901408450704,
+        "windows_any_hot": 5325,
+        "mean_localisation_error_m": 7.95532069132512,
+        "max_localisation_error_m": 75.0,
         "n_true_hotspots": 4300,
-        "n_unmatched": 0,
-        "matched_fraction": 1.0
+        "n_unmatched": 22,
+        "matched_fraction": 0.9948837209302326
       },
       "temporal": {
-        "median_lead_time_hours": 0.0,
+        "median_lead_time_hours": 0.6,
         "p10_lead_time_hours": 0.0,
-        "n_events_with_lead": 211,
-        "n_missed_events": 422,
-        "missed_event_rate": 0.6666666666666666,
-        "false_alarms_per_day": 1.944
+        "n_events_with_lead": 395,
+        "n_missed_events": 238,
+        "missed_event_rate": 0.37598736176935227,
+        "false_alarms_per_day": 2.0933333333333333
       }
     },
     "D_add_vibration_health": {
@@ -309,19 +309,19 @@
       ],
       "insar_nan_fraction": null,
       "detection": {
-        "precision": 0.36275921658986177,
-        "recall": 0.5858139534883721,
-        "f1": 0.4480611881892565,
-        "tp": 2519,
-        "fp": 4425,
-        "fn": 1781,
-        "tn": 8150,
-        "pr_auc": 0.6766821002698975,
-        "macro_f1_risk3": 0.5274684631384375
+        "precision": 0.4890723087654034,
+        "recall": 0.9783720930232558,
+        "f1": 0.6521469539606263,
+        "tp": 4207,
+        "fp": 4395,
+        "fn": 93,
+        "tn": 8180,
+        "pr_auc": 0.8719082706426837,
+        "macro_f1_risk3": 0.5217727292374801
       },
       "calibration": {
-        "brier": 0.343757721769279,
-        "ece": 0.12524299918987136
+        "brier": 0.5479214680797597,
+        "ece": 0.24393780745400329
       },
       "deformation_error": {
         "mae": 44.98313784150662,
@@ -331,21 +331,21 @@
         "n_used": 16875
       },
       "spatial": {
-        "mean_iou_hotspots": 0.33718572587185724,
-        "windows_any_hot": 4932,
-        "mean_localisation_error_m": 8.69982182979028,
-        "max_localisation_error_m": 55.90169943749474,
+        "mean_iou_hotspots": 0.5235840121235082,
+        "windows_any_hot": 5279,
+        "mean_localisation_error_m": 7.87786112460101,
+        "max_localisation_error_m": 75.0,
         "n_true_hotspots": 4300,
-        "n_unmatched": 0,
-        "matched_fraction": 1.0
+        "n_unmatched": 22,
+        "matched_fraction": 0.9948837209302326
       },
       "temporal": {
-        "median_lead_time_hours": 0.0,
+        "median_lead_time_hours": 0.6,
         "p10_lead_time_hours": 0.0,
-        "n_events_with_lead": 228,
-        "n_missed_events": 405,
-        "missed_event_rate": 0.6398104265402843,
-        "false_alarms_per_day": 2.36
+        "n_events_with_lead": 374,
+        "n_missed_events": 259,
+        "missed_event_rate": 0.40916271721958924,
+        "false_alarms_per_day": 2.344
       }
     },
     "E_add_physics": {
@@ -417,19 +417,19 @@
       ],
       "insar_nan_fraction": null,
       "detection": {
-        "precision": 0.3829428877660389,
-        "recall": 0.5816279069767442,
-        "f1": 0.46182254639460807,
-        "tp": 2501,
-        "fp": 4030,
-        "fn": 1799,
-        "tn": 8545,
-        "pr_auc": 0.604385010029335,
-        "macro_f1_risk3": 0.3548522049005141
+        "precision": 0.512751677852349,
+        "recall": 0.9772093023255813,
+        "f1": 0.6725890356142457,
+        "tp": 4202,
+        "fp": 3993,
+        "fn": 98,
+        "tn": 8582,
+        "pr_auc": 0.665608278780572,
+        "macro_f1_risk3": 0.42806291455515827
       },
       "calibration": {
-        "brier": 0.5728917512038315,
-        "ece": 0.26625747970298486
+        "brier": 0.6588874708748256,
+        "ece": 0.3073673148190534
       },
       "deformation_error": {
         "mae": 44.98313784150662,
@@ -439,21 +439,21 @@
         "n_used": 16875
       },
       "spatial": {
-        "mean_iou_hotspots": 0.060030561012879284,
-        "windows_any_hot": 4581,
-        "mean_localisation_error_m": 42.54248546903222,
+        "mean_iou_hotspots": 0.05675442382391023,
+        "windows_any_hot": 4634,
+        "mean_localisation_error_m": 44.08263865234478,
         "max_localisation_error_m": 75.0,
         "n_true_hotspots": 4300,
-        "n_unmatched": 997,
-        "matched_fraction": 0.7681395348837209
+        "n_unmatched": 1228,
+        "matched_fraction": 0.7144186046511628
       },
       "temporal": {
-        "median_lead_time_hours": 0.0,
-        "p10_lead_time_hours": 0.0,
-        "n_events_with_lead": 41,
-        "n_missed_events": 592,
-        "missed_event_rate": 0.9352290679304898,
-        "false_alarms_per_day": 2.1493333333333333
+        "median_lead_time_hours": 1.2,
+        "p10_lead_time_hours": 0.6,
+        "n_events_with_lead": 263,
+        "n_missed_events": 370,
+        "missed_event_rate": 0.584518167456556,
+        "false_alarms_per_day": 2.1296
       }
     },
     "F_add_sentinel1": {
@@ -532,19 +532,19 @@
       ],
       "insar_nan_fraction": 0.0,
       "detection": {
-        "precision": 0.37963101844907754,
-        "recall": 0.5886046511627907,
-        "f1": 0.4615665177350232,
-        "tp": 2531,
-        "fp": 4136,
-        "fn": 1769,
-        "tn": 8439,
-        "pr_auc": 0.6194088569943067,
-        "macro_f1_risk3": 0.3816040613430156
+        "precision": 0.512751677852349,
+        "recall": 0.9772093023255813,
+        "f1": 0.6725890356142457,
+        "tp": 4202,
+        "fp": 3993,
+        "fn": 98,
+        "tn": 8582,
+        "pr_auc": 0.665608278780572,
+        "macro_f1_risk3": 0.42806291455515827
       },
       "calibration": {
-        "brier": 0.5594857518991851,
-        "ece": 0.25657323451571995
+        "brier": 0.6588874708748256,
+        "ece": 0.3073673148190534
       },
       "deformation_error": {
         "mae": 44.98313784150662,
@@ -554,21 +554,21 @@
         "n_used": 16875
       },
       "spatial": {
-        "mean_iou_hotspots": 0.09049380030454644,
-        "windows_any_hot": 4597,
-        "mean_localisation_error_m": 30.806874423816762,
+        "mean_iou_hotspots": 0.05675442382391023,
+        "windows_any_hot": 4634,
+        "mean_localisation_error_m": 44.08263865234478,
         "max_localisation_error_m": 75.0,
         "n_true_hotspots": 4300,
-        "n_unmatched": 209,
-        "matched_fraction": 0.9513953488372093
+        "n_unmatched": 1228,
+        "matched_fraction": 0.7144186046511628
       },
       "temporal": {
         "median_lead_time_hours": 1.2,
-        "p10_lead_time_hours": 0.0,
-        "n_events_with_lead": 40,
-        "n_missed_events": 593,
-        "missed_event_rate": 0.9368088467614534,
-        "false_alarms_per_day": 2.2058666666666666
+        "p10_lead_time_hours": 0.6,
+        "n_events_with_lead": 263,
+        "n_missed_events": 370,
+        "missed_event_rate": 0.584518167456556,
+        "false_alarms_per_day": 2.1296
       }
     }
   }

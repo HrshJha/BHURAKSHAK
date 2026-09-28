@@ -1,0 +1,17 @@
+{
+  "created_at": "2026-09-28T07:12:30+00:00",
+  "dataset_version": "synthetic-heldout-v3-20260929",
+  "evals_run": 0,
+  "feature_schema_version": "v2",
+  "files": {
+    "synthetic_events.csv": "49f249aa818869f7344af282cc2b6d9118f5786a11efa759e492d9632daa2162",
+    "synthetic_nodes.csv": "868b78cfaa910e76bea5825dd6ca3528e6ddfa290ab34912fd01417a56204f94"
+  },
+  "scenario_types": [
+    "stable_ground",
+    "accelerating_subsidence",
+    "rapid_subsidence"
+  ],
+  "seed": 20260929,
+  "sha256": "e49000ce6142a6c5e59a9743d8551526da62997b03edbb48173b7d4d03377cbb"
+}

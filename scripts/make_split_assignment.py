@@ -21,6 +21,8 @@ and by the Phase-0 sha256 discipline).
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -78,13 +80,44 @@ def main() -> int:
     if n == 0:
         raise SystemExit("no events found in the generator output")
 
-    regimes = regime_split(pd.DataFrame({"event_id": events}))
+    families = events.str.rsplit("_", n=2).str[0]
+    meta_path = Path(args.events).with_name("synthetic_events.csv")
+    event_meta = pd.read_csv(meta_path).rename(columns={"id": "event_id"})
+    required = {"event_id", "type", "center", "max_deformation", "rate"}
+    if not required <= set(event_meta.columns):
+        raise SystemExit(f"event metadata missing generating parameters: {sorted(required - set(event_meta.columns))}")
+    event_meta = event_meta.set_index("event_id").loc[events.to_list()].reset_index()
+    event_meta["scenario_family"] = families.to_numpy()
+    event_meta["generation_parameter_id"] = [
+        hashlib.sha256(json.dumps(
+            [fam, typ, center, float(max_d), float(rate)],
+            ensure_ascii=False,
+            separators=(",", ":"),
+        ).encode("utf-8")).hexdigest()
+        for fam, typ, center, max_d, rate in zip(
+            event_meta["scenario_family"], event_meta["type"], event_meta["center"],
+            event_meta["max_deformation"], event_meta["rate"],
+        )
+    ]
+    cfg = validation_config()["regime_split"]
+    test_families = set(cfg["test_families"])
+    val_frac = float(cfg["validation_fraction"])
+    stride = max(2, int(round(1.0 / val_frac)))
+    regimes = pd.Series("train", index=event_meta.index, dtype=object)
+    regimes[event_meta["scenario_family"].isin(test_families)] = "test"
+    for family, family_rows in event_meta[~event_meta["scenario_family"].isin(test_families)].groupby("scenario_family", sort=True):
+        unique_params = sorted(family_rows["generation_parameter_id"].unique())
+        validation_params = set(unique_params[::stride])
+        val_mask = family_rows["generation_parameter_id"].isin(validation_params)
+        regimes.loc[family_rows.index[val_mask]] = "validation"
+
     legacy = family_balanced_split(events)
 
     out = pd.DataFrame(
         {
             "event_id": events,
-            "scenario_family": events.str.rsplit("_", n=2).str[0],
+            "scenario_family": event_meta["scenario_family"],
+            "generation_parameter_id": event_meta["generation_parameter_id"],
             "split": regimes,
             LEGACY_COLUMN: legacy,
         }
@@ -92,12 +125,40 @@ def main() -> int:
 
     # §23 unit-exclusivity on the primary (regime) split
     assert_no_leakage(out, out["split"], "event_id")
+    assert_no_leakage(out, out["split"], "generation_parameter_id")
     counts = out["split"].value_counts().to_dict()
     missing = [s for s in SPLIT_ORDER if counts.get(s, 0) == 0]
     if missing:
         raise SystemExit(f"regime holdout produced empty splits: {missing}")
 
     out.to_csv(args.out, index=False)
+    # Keep the corpus manifest useful as the single provenance record even
+    # when the generator is rerun (the generator itself knows nothing about
+    # downstream split assignments).
+    manifest_path = Path(args.events).with_name("dataset_manifest.json")
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text())
+        manifest["split_definition"] = {
+            "type": "synthetic_parameter_holdout",
+            "producer": "scripts/make_split_assignment.py",
+            "default_split": "regime_holdout",
+            "method": "scenario_family_regime_split",
+            "seed": int(cfg.get("seed", validation_config().get("seed", 42))),
+            "split_column": "split",
+            "event_counts": {str(k): int(v) for k, v in counts.items()},
+            "parameter_counts": {
+                str(k): int(out.loc[out["split"] == k, "generation_parameter_id"].nunique())
+                for k in SPLIT_ORDER
+            },
+            "test_range": {
+                "scenario_types": sorted(
+                    event_meta.loc[event_meta["scenario_family"].isin(test_families), "type"].astype(str).unique()
+                )
+            },
+            "train_range": {"note": "assigned by event split"},
+        }
+        manifest["split_assignment_sha256"] = hashlib.sha256(Path(args.out).read_bytes()).hexdigest()
+        manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     print(f"wrote {args.out}: {n} events")
     print("regime split counts:", counts)
     print("legacy family-balanced counts:", out[LEGACY_COLUMN].value_counts().to_dict())

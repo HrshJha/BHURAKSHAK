@@ -100,7 +100,7 @@ print(f"peak RSS after imports: {RSS_AFTER_IMPORTS:.1f} MB")"""
         "## 1 — Train the two §15 artifacts §23-safe (IF → anomaly_score → XGBoost)"
     ),
     new_code_cell(
-        """store = pd.read_parquet(REPO / "data" / "features" / "features_v1.parquet")
+        """store = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
 splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
 store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
 assert store["split"].notna().all()
@@ -291,6 +291,7 @@ print("panels → reports/nb10_latency_panels.png")"""
 
 
 def main() -> int:
+    raise SystemExit("Legacy notebook 10 profiles a pre-leakfix model and burned test path; rerun after model freeze.")
     notebook = new_notebook(
         cells=CELLS,
         metadata={

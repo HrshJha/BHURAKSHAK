@@ -34,7 +34,10 @@ __all__ = ["ModelRegistryError", "ModelEntry", "ModelRegistry", "REPO_ROOT", "DE
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REGISTRY_PATH = REPO_ROOT / "models" / "registry.json"
-DEFAULT_MANIFEST_PATHS: tuple[Path, ...] = (REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json",)
+DEFAULT_MANIFEST_PATHS: tuple[Path, ...] = (
+    REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json",
+    REPO_ROOT / "data" / "recorded" / "tabletop" / "dataset_manifest.json",
+)
 
 #: the FR-14 traceability fields every logged prediction must carry
 FR14_FIELDS = ("model_name", "model_version", "feature_version", "training_dataset_version", "timestamp")
@@ -54,6 +57,9 @@ class ModelEntry:
     training_dataset_version: str
     registered_at: str
     artifact_path: str | None = None
+    provenance_hash: str | None = None
+    split_name: str | None = None
+    seed: int | None = None
 
     def to_dict(self) -> dict[str, Any]:
         out = {
@@ -65,6 +71,12 @@ class ModelEntry:
         }
         if self.artifact_path is not None:
             out["artifact_path"] = self.artifact_path
+        if self.provenance_hash is not None:
+            out["provenance_hash"] = self.provenance_hash
+        if self.split_name is not None:
+            out["split_name"] = self.split_name
+        if self.seed is not None:
+            out["seed"] = self.seed
         return out
 
 
@@ -84,9 +96,7 @@ class ModelRegistry:
         self._lock = threading.Lock()
         self._entries: dict[str, ModelEntry] = {}
         self._load()
-
-    # --- registry entries ---------------------------------------------------------
-
+# 
     def _load(self) -> None:
         if self.path.exists():
             data = json.loads(self.path.read_text(encoding="utf-8"))
@@ -98,6 +108,9 @@ class ModelRegistry:
                     training_dataset_version=raw["training_dataset_version"],
                     registered_at=raw["registered_at"],
                     artifact_path=raw.get("artifact_path"),
+                    provenance_hash=raw.get("provenance_hash"),
+                    split_name=raw.get("split_name"),
+                    seed=int(raw["seed"]) if raw.get("seed") is not None else None,
                 )
                 self._entries[self._key(entry.model_name, entry.model_version)] = entry
 
@@ -108,9 +121,7 @@ class ModelRegistry:
     def _flush(self) -> None:
         payload = {"models": [e.to_dict() for e in self._entries.values()]}
         self.path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
-    # --- §10.1 manifest resolution --------------------------------------------------
-
+# 
     def _manifests(self) -> dict[str, tuple[dict[str, Any], Path]]:
         found: dict[str, tuple[dict[str, Any], Path]] = {}
         for p in self.manifest_paths:
@@ -132,9 +143,7 @@ class ModelRegistry:
                 f"(available: {available})"
             )
         return found[str(version)]
-
-    # --- registration ----------------------------------------------------------------
-
+# 
     def register_model(
         self,
         *,
@@ -143,6 +152,9 @@ class ModelRegistry:
         feature_version: str,
         training_dataset_version: str,
         artifact_path: str | None = None,
+        provenance_hash: str | None = None,
+        split_name: str | None = None,
+        seed: int | None = None,
         now: datetime | None = None,
     ) -> ModelEntry:
         """Register a model; the dataset version must resolve (§10.1/§30)."""
@@ -163,6 +175,9 @@ class ModelRegistry:
             training_dataset_version=str(training_dataset_version),
             registered_at=ts,
             artifact_path=artifact_path,
+            provenance_hash=str(provenance_hash) if provenance_hash else None,
+            split_name=str(split_name) if split_name else None,
+            seed=int(seed) if seed is not None else None,
         )
         with self._lock:
             self._entries[self._key(entry.model_name, entry.model_version)] = entry

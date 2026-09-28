@@ -25,6 +25,7 @@ import pandas as pd
 from xgboost import XGBClassifier
 
 from src.config import risk_model_config
+from src.features.provenance import model_input_allowlist
 
 __all__ = ["XGBoostModelError", "RiskModel", "MODEL_INPUT_GROUPS", "train_risk_model"]
 
@@ -112,6 +113,10 @@ def _resolve_features(df: pd.DataFrame) -> list[str]:
         if signal in schema_cols and signal not in seen:
             group_features.append(signal)
             seen.add(signal)
+    # Provenance is an executable boundary, not documentation. Gated C and
+    # any oracle/label-derived candidate are excluded from every model path.
+    allowed = model_input_allowlist(group_features)
+    group_features = [name for name in group_features if name in allowed]
     if not group_features:
         raise XGBoostModelError("no §15 model inputs found in the frame")
     return group_features

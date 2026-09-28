@@ -6,6 +6,7 @@ import json
 
 import pytest
 
+from src.config import feature_schema_config
 from src.simulator.manifest import (
     REQUIRED_FIELDS,
     build_manifest,
@@ -42,7 +43,7 @@ def test_build_manifest_has_all_fields() -> None:
     m = _manifest()
     assert validate_manifest(m) == [], "built manifest must satisfy §10.1"
     assert m["random_seed"] == 42
-    assert m["feature_schema_version"] == "v1"
+    assert m["feature_schema_version"] == feature_schema_config()["feature_schema_version"]
     assert len(m["physics_parameters"]) == 10, "§10 ten parameters"
     assert set(m["fault_parameters"]["fault_types"]) >= {"BIAS", "STUCK", "DROPOUT", "SPIKE", "DRIFT"}
     assert m["source_data_versions"] == {"sentinel1": None, "dgps": None, "hardware": None}

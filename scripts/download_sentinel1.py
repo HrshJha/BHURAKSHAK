@@ -195,8 +195,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--download", action="store_true", help="download scenes (requires credentials)")
     ap.add_argument("--limit", type=int, default=None, help="download only the first N scenes")
-    ap.add_argument("--username", default=os.environ.get("CDSE_USERNAME", ""))
-    ap.add_argument("--password", default=os.environ.get("CDSE_PASSWORD", ""))
+    # Credentials are env-only (fixall 2.3): argv values are visible in process
+    # listings. CDSE_USERNAME / CDSE_PASSWORD are read at call time.
+    username = os.environ.get("CDSE_USERNAME", "")
+    password = os.environ.get("CDSE_PASSWORD", "")
     args = ap.parse_args()
 
     geom = load_geometry()
@@ -212,10 +214,10 @@ def main() -> int:
     )
 
     if args.download:
-        if not (args.username and args.password):
+        if not (username and password):
             print("ERROR: download requires CDSE credentials — set CDSE_USERNAME/CDSE_PASSWORD", file=sys.stderr)
             return 2
-        paths = download_scenes(manifest, args.username, args.password, args.limit)
+        paths = download_scenes(manifest, username, password, args.limit)
         for p in paths:
             entry = next(x for x in manifest["products"] if x["product_name"] == p.name)
             entry["downloaded"] = True

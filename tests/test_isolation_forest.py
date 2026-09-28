@@ -117,10 +117,20 @@ def test_ablation_feature_sets_resolve_in_order() -> None:
 
     full = _resolve_features(["A_physical", "B_add_temporal", "C_add_spatial"])
     assert full[:5] == ["tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain"]
-    assert "spatial_coherence" in full and "rolling_mean" in full
-    assert len(full) == 23  # 5 + 10 + 8 (§14 ablation groups, deduplicated)
+    assert "rolling_mean" in full
+    assert not any(name in full for name in (
+        "neighbor_mean", "neighbor_std", "neighbor_anomaly_fraction", "spatial_coherence",
+        "local_gradient", "local_strain", "hotspot_density", "distance_to_subsidence_center",
+    )), "Group C is gated because this corpus has no co-temporal neighbours"
+    assert len(full) == 15  # 5 + 10; Group C is gated on this corpus (Phase 2, §13/§14)
     a_only = _resolve_features(["A_physical"])
     assert a_only == ["tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain"]
+
+
+def test_gated_spatial_only_ablation_fails_clearly() -> None:
+    from src.anomaly.isolation_forest import _resolve_features
+
+    assert _resolve_features(["C_add_spatial"]) == []
 
 
 def test_unknown_feature_group_raises() -> None:
@@ -143,3 +153,31 @@ def test_missing_feature_columns_raise() -> None:
 
 def test_ablation_steps_order_documented() -> None:
     assert ABLATION_STEPS == ("A_physical", "B_add_temporal", "C_add_spatial")
+
+
+def test_healthy_mask_handles_read_only_series_views(monkeypatch) -> None:
+    df = pd.DataFrame({
+        "anomaly_label": [0, 0, 1],
+        "fault_label": ["NONE", "BIAS", "NONE"],
+        "risk_label": ["NORMAL", "NORMAL", "WARNING"],
+    })
+    original = pd.Series.to_numpy
+
+    def readonly_to_numpy(series, *args, **kwargs):
+        values = original(series, *args, **kwargs)
+        if isinstance(values, np.ndarray):
+            values.setflags(write=False)
+        return values
+
+    monkeypatch.setattr(pd.Series, "to_numpy", readonly_to_numpy)
+    assert healthy_baseline_mask(df).tolist() == [True, False, False]
+
+
+def test_healthy_mask_accepts_arrow_backed_copy_on_write_frame() -> None:
+    frame = pd.DataFrame({
+        "anomaly_label": [0, 0, 1],
+        "fault_label": ["NONE", "BIAS", "NONE"],
+        "risk_label": ["NORMAL", "NORMAL", "WARNING"],
+    }).convert_dtypes(dtype_backend="pyarrow")
+    with pd.option_context("mode.copy_on_write", True):
+        assert healthy_baseline_mask(frame).tolist() == [True, False, False]

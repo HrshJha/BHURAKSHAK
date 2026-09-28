@@ -70,7 +70,7 @@ from src.risk.calibration import brier_score, expected_calibration_error, fit_pr
 from src.risk.xgboost_model import train_risk_model
 
 REPO = Path.cwd().parent
-df = pd.read_parquet(REPO / "data" / "features" / "features_v1.parquet")
+df = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
 splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
 # keep the T-045 EVENT-FAMILY split for the Isolation Forest
 df = df.merge(splits.rename(columns={"split": "split_family"}), on="event_id", how="left")
@@ -248,6 +248,7 @@ assert verdict"""
 
 
 def main() -> int:
+    raise SystemExit("Legacy notebook 05 scores the burned test split; use grouped development-only tuning.")
     notebook = new_notebook(
         cells=CELLS,
         metadata={

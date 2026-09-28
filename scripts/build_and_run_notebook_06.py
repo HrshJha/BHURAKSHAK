@@ -88,7 +88,7 @@ print("torch", torch.__version__, "| forecastable channels:", FORECASTABLE_CHANN
         "## 1 — Load the §23 store, measure the stride, resolve the §16 horizons"
     ),
     new_code_cell(
-        """store = pd.read_parquet(REPO / "data" / "features" / "features_v1.parquet")
+        """store = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
 splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
 store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
 assert store["split"].notna().all(), "every event must carry a §23 split"
@@ -285,7 +285,7 @@ print("panels → reports/nb06_forecast_panels.png")"""
     new_markdown_cell(
         """## Provenance & honest notes
 
-- Store: `data/features/features_v1.parquet` (§10 windows over the §12
+- Store: `data/features/features_v2.parquet` (§10 windows over the §12
   synthetic corpus); splits: `data/features/split_assignment.csv` (T-068,
   event-level). Horizons: `configs/forecasting.yaml` resolved on the
   **measured** corpus stride (the §9.1 10-minute grid is a raw cadence; the

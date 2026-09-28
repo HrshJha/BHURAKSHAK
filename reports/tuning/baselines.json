@@ -1,0 +1,222 @@
+{
+  "protocol": {
+    "folds": 3,
+    "grouping": "event_id",
+    "splitter": "StratifiedGroupKFold",
+    "seed": 42,
+    "development_rows": 73125,
+    "development_events": 8125,
+    "test_touched": false,
+    "features": [
+      "missing_ratio",
+      "rolling_mean",
+      "crest_factor",
+      "strain",
+      "change_point_score",
+      "vibration_rms",
+      "tilt_x",
+      "rolling_std",
+      "battery",
+      "tilt_y",
+      "rolling_min",
+      "band_energy_high",
+      "physics_residual_velocity",
+      "displacement",
+      "velocity",
+      "trend",
+      "vibration_peak",
+      "band_energy_mid",
+      "rolling_max",
+      "band_energy_low",
+      "acceleration",
+      "slope",
+      "stuck_sensor_flag",
+      "expected_displacement",
+      "SNR",
+      "RSSI",
+      "drift_score",
+      "spectral_centroid",
+      "tilt_magnitude",
+      "expected_tilt",
+      "packet_loss",
+      "physics_residual",
+      "persistence"
+    ]
+  },
+  "models": {
+    "threshold_rule": {
+      "folds": [
+        {
+          "pr_auc_macro": 0.36999544631927317,
+          "recall_critical": 0.04410517387616624,
+          "f1_macro": 0.40720930579755876,
+          "false_alarm_rate_normal": 0.20169545745361483
+        },
+        {
+          "pr_auc_macro": 0.3724769045850848,
+          "recall_critical": 0.061447811447811446,
+          "f1_macro": 0.4161600735575937,
+          "false_alarm_rate_normal": 0.2041480059714225
+        },
+        {
+          "pr_auc_macro": 0.3683467344296398,
+          "recall_critical": 0.06874500399680256,
+          "f1_macro": 0.4101665608156162,
+          "false_alarm_rate_normal": 0.20354360123812573
+        }
+      ],
+      "mean": {
+        "false_alarm_rate_normal": {
+          "mean": 0.2031290215543877,
+          "std": 0.0012777541992403652
+        },
+        "recall_critical": {
+          "mean": 0.05809932977359342,
+          "std": 0.012656601211833478
+        },
+        "pr_auc_macro": {
+          "mean": 0.370273028444666,
+          "std": 0.002079029883259349
+        },
+        "f1_macro": {
+          "mean": 0.41117864672358956,
+          "std": 0.004560405605574899
+        }
+      }
+    },
+    "logistic": {
+      "folds": [
+        {
+          "pr_auc_macro": 0.5458298785850243,
+          "recall_critical": 0.6157760814249363,
+          "f1_macro": 0.4786375349799045,
+          "false_alarm_rate_normal": 0.3919812326722116
+        },
+        {
+          "pr_auc_macro": 0.5491451616694274,
+          "recall_critical": 0.5269360269360269,
+          "f1_macro": 0.4869065325400231,
+          "false_alarm_rate_normal": 0.3795052249946684
+        },
+        {
+          "pr_auc_macro": 0.5829500410483937,
+          "recall_critical": 0.6866506794564349,
+          "f1_macro": 0.4859472921350258,
+          "false_alarm_rate_normal": 0.404258725584374
+        }
+      ],
+      "mean": {
+        "false_alarm_rate_normal": {
+          "mean": 0.39191506108375135,
+          "std": 0.012376882962623442
+        },
+        "recall_critical": {
+          "mean": 0.6097875959391327,
+          "std": 0.08002555233323244
+        },
+        "pr_auc_macro": {
+          "mean": 0.5593083604342818,
+          "std": 0.02054128944777292
+        },
+        "f1_macro": {
+          "mean": 0.4838304532183178,
+          "std": 0.004522702224531126
+        }
+      }
+    },
+    "xgboost_default": {
+      "folds": [
+        {
+          "pr_auc_macro": 0.9027109476620375,
+          "recall_critical": 0.6564885496183206,
+          "f1_macro": 0.8301579999819303,
+          "false_alarm_rate_normal": 0.020260183407976116
+        },
+        {
+          "pr_auc_macro": 0.8918318854373273,
+          "recall_critical": 0.6111111111111112,
+          "f1_macro": 0.8210665603960772,
+          "false_alarm_rate_normal": 0.02329921091917253
+        },
+        {
+          "pr_auc_macro": 0.9080359015425635,
+          "recall_critical": 0.7202238209432454,
+          "f1_macro": 0.8379820461673271,
+          "false_alarm_rate_normal": 0.021080157967766036
+        }
+      ],
+      "mean": {
+        "false_alarm_rate_normal": {
+          "mean": 0.021546517431638226,
+          "std": 0.0015722723732259423
+        },
+        "recall_critical": {
+          "mean": 0.6626078272242257,
+          "std": 0.05481313739005898
+        },
+        "pr_auc_macro": {
+          "mean": 0.9008595782139762,
+          "std": 0.008259128955864557
+        },
+        "f1_macro": {
+          "mean": 0.8297355355151116,
+          "std": 0.008465652478612199
+        }
+      }
+    },
+    "isolation_forest_default": {
+      "folds": [
+        {
+          "pr_auc_anomaly": 0.5504346698913447,
+          "recall_at_validation_healthy_threshold": 0.22425350396099938,
+          "threshold": 0.6554811245710314,
+          "healthy_train_rows": 29967
+        },
+        {
+          "pr_auc_anomaly": 0.548554412474208,
+          "recall_at_validation_healthy_threshold": 0.2554788961038961,
+          "threshold": 0.64484712949287,
+          "healthy_train_rows": 29961
+        },
+        {
+          "pr_auc_anomaly": 0.5692552857116406,
+          "recall_at_validation_healthy_threshold": 0.28094381123775247,
+          "threshold": 0.6505746006925176,
+          "healthy_train_rows": 29984
+        }
+      ],
+      "mean": {
+        "threshold": {
+          "mean": 0.6503009515854731,
+          "std": 0.005322276365046212
+        },
+        "healthy_train_rows": {
+          "mean": 29970.666666666668,
+          "std": 11.930353445448853
+        },
+        "recall_at_validation_healthy_threshold": {
+          "mean": 0.25355873710088267,
+          "std": 0.028393890059849342
+        },
+        "pr_auc_anomaly": {
+          "mean": 0.5560814560257311,
+          "std": 0.011447540497141192
+        }
+      }
+    },
+    "forecaster_persistence": {
+      "folds": [
+        {
+          "status": "measured_in_forecaster_study"
+        },
+        {
+          "status": "measured_in_forecaster_study"
+        },
+        {
+          "status": "measured_in_forecaster_study"
+        }
+      ],
+      "mean": {}
+    }
+  }
+}

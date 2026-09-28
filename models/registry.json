@@ -1,0 +1,37 @@
+{
+  "models": [
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tabletop/isolation_forest.joblib",
+      "feature_version": "v2",
+      "model_name": "tabletop_isolation_forest",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T07:23:26.262133+00:00",
+      "training_dataset_version": "tabletop-recorded-v1"
+    },
+    {
+      "artifact_path": "/Users/harshkumarjha/mine/models/tabletop/random_forest.joblib",
+      "feature_version": "v2",
+      "model_name": "tabletop_random_forest",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T07:23:26.285662+00:00",
+      "training_dataset_version": "tabletop-recorded-v1"
+    },
+    {
+      "feature_version": "v2",
+      "model_name": "subsense_xgboost_risk",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T07:51:43.363796+00:00",
+      "training_dataset_version": "synthetic-v2-label-blind"
+    },
+    {
+      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-133/test_load_refuses_schema_misma0/m.joblib",
+      "feature_version": "v2",
+      "model_name": "test_model",
+      "model_version": "1.0.0",
+      "registered_at": "2026-09-28T08:20:02.793300+00:00",
+      "seed": 42,
+      "split_name": "regime_holdout",
+      "training_dataset_version": "synthetic-v2-label-blind"
+    }
+  ]
+}

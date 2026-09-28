@@ -1,0 +1,17 @@
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 49%]
+........................................................................ [ 61%]
+........................................................................ [ 73%]
+........................................................................ [ 86%]
+........................................................................ [ 98%]
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/test_baselines.py::test_baselines_use_the_same_feature_matrix_as_xgboost
+tests/test_baselines.py::test_logistic_and_rf_predict_on_test
+  /private/tmp/subsense-retune-venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:451: DeprecationWarning: scipy.optimize: The `disp` and `iprint` options of the L-BFGS-B solver are deprecated and will be removed in SciPy 1.18.0.
+    opt_res = optimize.minimize(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+585 passed, 2 warnings in 9.17s

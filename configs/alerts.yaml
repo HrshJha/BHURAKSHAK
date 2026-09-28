@@ -30,6 +30,17 @@ de_escalation:
   # Hysteresis: recovery is deliberately slower than alarm (§21.1)
   persistence_multiplier: 1.5      # × the escalation persistence window at each level
 
+condition_thresholds:
+  spatial_coherence_min: 0.5
+  physics_residual_abs_z_max: 1.0
+risk_decision_targets:
+  WARNING:
+    minimum_recall: 0.8
+    maximum_false_positive_rate: 0.1
+  CRITICAL:
+    minimum_recall: 0.9
+    maximum_false_positive_rate: 0.05
+
 spatial_aggregation:
   rule: max                        # region state = max over constituent node states
   single_node_critical_requires_neighbour_confirmation: true

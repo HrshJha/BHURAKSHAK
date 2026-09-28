@@ -1,0 +1,163 @@
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+............................................F........................... [ 49%]
+.......................................................F.FFFFF.......... [ 61%]
+........................................................................ [ 73%]
+........................................................................ [ 86%]
+.................................................FFFFFFFFFF............. [ 98%]
+.........                                                                [100%]
+=================================== FAILURES ===================================
+_____________ test_velocity_and_acceleration_are_point_trend_terms _____________
+tests/test_group_g.py:100: in test_velocity_and_acceleration_are_point_trend_terms
+    assert vel[0] == pytest.approx(-0.375 * 365.25, rel=0.01)
+E   assert np.float64(-1...8.74999995172) == -136.96875 ± 1.36969
+E     
+E     comparison failed
+E     Obtained: -136968.74999995172
+E     Expected: -136.96875 ± 1.36969
+_________________ test_healthy_mask_is_the_triple_conjunction __________________
+tests/test_isolation_forest.py:53: in test_healthy_mask_is_the_triple_conjunction
+    mask = healthy_baseline_mask(df)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:86: in healthy_baseline_mask
+    mask &= (df["fault_label"] == "NONE").to_numpy()
+E   ValueError: output array is read-only
+________________ test_training_uses_only_healthy_baseline_rows _________________
+tests/test_isolation_forest.py:68: in test_training_uses_only_healthy_baseline_rows
+    fitted = train_isolation_forest(df)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:133: in train_isolation_forest
+    train_healthy = train[healthy_baseline_mask(train)]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:86: in healthy_baseline_mask
+    mask &= (df["fault_label"] == "NONE").to_numpy()
+E   ValueError: output array is read-only
+_________________ test_anomaly_score_is_negative_score_samples _________________
+tests/test_isolation_forest.py:76: in test_anomaly_score_is_negative_score_samples
+    fitted = train_isolation_forest(df)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:133: in train_isolation_forest
+    train_healthy = train[healthy_baseline_mask(train)]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:86: in healthy_baseline_mask
+    mask &= (df["fault_label"] == "NONE").to_numpy()
+E   ValueError: output array is read-only
+_______________ test_anomalous_windows_score_higher_than_healthy _______________
+tests/test_isolation_forest.py:85: in test_anomalous_windows_score_higher_than_healthy
+    fitted = train_isolation_forest(df)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:133: in train_isolation_forest
+    train_healthy = train[healthy_baseline_mask(train)]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:86: in healthy_baseline_mask
+    mask &= (df["fault_label"] == "NONE").to_numpy()
+E   ValueError: output array is read-only
+___________________ test_flags_fire_on_anomalies_not_healthy ___________________
+tests/test_isolation_forest.py:95: in test_flags_fire_on_anomalies_not_healthy
+    fitted = train_isolation_forest(df)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:133: in train_isolation_forest
+    train_healthy = train[healthy_baseline_mask(train)]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:86: in healthy_baseline_mask
+    mask &= (df["fault_label"] == "NONE").to_numpy()
+E   ValueError: output array is read-only
+__________________ test_threshold_set_on_validation_not_train __________________
+tests/test_isolation_forest.py:107: in test_threshold_set_on_validation_not_train
+    fitted = train_isolation_forest(df)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:133: in train_isolation_forest
+    train_healthy = train[healthy_baseline_mask(train)]
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/anomaly/isolation_forest.py:86: in healthy_baseline_mask
+    mask &= (df["fault_label"] == "NONE").to_numpy()
+E   ValueError: output array is read-only
+________________________ test_clean_series_has_no_flags ________________________
+tests/test_validation.py:38: in test_clean_series_has_no_flags
+    res = validate_packets(_frame(_base_rows()))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+______________________ test_missing_row_detected_on_grid _______________________
+tests/test_validation.py:49: in test_missing_row_detected_on_grid
+    res = validate_packets(_frame(rows))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+_______________________ test_duplicate_timestamp_flagged _______________________
+tests/test_validation.py:61: in test_duplicate_timestamp_flagged
+    res = validate_packets(_frame(rows))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+__________________________ test_out_of_order_flagged ___________________________
+tests/test_validation.py:69: in test_out_of_order_flagged
+    res = validate_packets(_frame(rows))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+________________________ test_nan_payload_is_corrupted _________________________
+tests/test_validation.py:77: in test_nan_payload_is_corrupted
+    res = validate_packets(_frame(rows))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+____________________ test_non_numeric_payload_is_corrupted _____________________
+tests/test_validation.py:85: in test_non_numeric_payload_is_corrupted
+    res = validate_packets(_frame(rows))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+_________________________ test_series_are_independent __________________________
+tests/test_validation.py:93: in test_series_are_independent
+    res = validate_packets(_frame(rows + rows_b))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+_________________________ test_events_are_independent __________________________
+tests/test_validation.py:104: in test_events_are_independent
+    res = validate_packets(_frame(rows + rows_c))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+_____________________ test_flags_never_modify_or_drop_rows _____________________
+tests/test_validation.py:110: in test_flags_never_modify_or_drop_rows
+    res = validate_packets(df_in)
+          ^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+_________________ test_multiple_states_can_coexist_on_one_row __________________
+tests/test_validation.py:120: in test_multiple_states_can_coexist_on_one_row
+    res = validate_packets(_frame(rows))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/preprocessing/validation.py:123: in validate_packets
+    corrupted |= df[channel].isna().to_numpy()
+E   ValueError: output array is read-only
+=========================== short test summary info ============================
+FAILED tests/test_group_g.py::test_velocity_and_acceleration_are_point_trend_terms
+FAILED tests/test_isolation_forest.py::test_healthy_mask_is_the_triple_conjunction
+FAILED tests/test_isolation_forest.py::test_training_uses_only_healthy_baseline_rows
+FAILED tests/test_isolation_forest.py::test_anomaly_score_is_negative_score_samples
+FAILED tests/test_isolation_forest.py::test_anomalous_windows_score_higher_than_healthy
+FAILED tests/test_isolation_forest.py::test_flags_fire_on_anomalies_not_healthy
+FAILED tests/test_isolation_forest.py::test_threshold_set_on_validation_not_train
+FAILED tests/test_validation.py::test_clean_series_has_no_flags - ValueError:...
+FAILED tests/test_validation.py::test_missing_row_detected_on_grid - ValueErr...
+FAILED tests/test_validation.py::test_duplicate_timestamp_flagged - ValueErro...
+FAILED tests/test_validation.py::test_out_of_order_flagged - ValueError: outp...
+FAILED tests/test_validation.py::test_nan_payload_is_corrupted - ValueError: ...
+FAILED tests/test_validation.py::test_non_numeric_payload_is_corrupted - Valu...
+FAILED tests/test_validation.py::test_series_are_independent - ValueError: ou...
+FAILED tests/test_validation.py::test_events_are_independent - ValueError: ou...
+FAILED tests/test_validation.py::test_flags_never_modify_or_drop_rows - Value...
+FAILED tests/test_validation.py::test_multiple_states_can_coexist_on_one_row

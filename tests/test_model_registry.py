@@ -15,6 +15,7 @@ from src.risk.model_registry import (
     REPO_ROOT,
 )
 
+REAL_SCHEMA_VERSION = __import__("src.config", fromlist=["feature_schema_config"]).feature_schema_config()["feature_schema_version"]
 REAL_DATASET_VERSION = json.loads((REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json").read_text())["dataset_version"]
 
 
@@ -32,7 +33,7 @@ def entry_kwargs(**kw) -> dict:
     base = dict(
         model_name="xgboost_risk",
         model_version="0.1.0",
-        feature_version="v1",
+        feature_version=REAL_SCHEMA_VERSION,
         training_dataset_version=REAL_DATASET_VERSION,
     )
     base.update(kw)
@@ -53,6 +54,17 @@ def test_registered_models_persist_in_the_registry_file(registry: ModelRegistry)
     assert entry.model_version == "0.1.0"
 
 
+def test_provenance_hash_is_persisted_with_registered_artifact(registry: ModelRegistry) -> None:
+    entry = registry.register_model(**entry_kwargs(), provenance_hash="a" * 64, split_name="train", seed=42)
+    reloaded = ModelRegistry(path=registry.path, manifest_paths=DEFAULT_MANIFEST_PATHS,
+                             predictions_path=registry.predictions_path)
+    assert entry.provenance_hash == "a" * 64
+    loaded = reloaded.get_entry(entry.model_name, entry.model_version)
+    assert loaded.provenance_hash == "a" * 64
+    assert loaded.split_name == "train"
+    assert loaded.seed == 42
+
+
 def test_dataset_version_must_resolve_to_an_existing_manifest(registry: ModelRegistry, tmp_path) -> None:
     with pytest.raises(ModelRegistryError, match="does not resolve"):
         registry.register_model(**entry_kwargs(training_dataset_version="v999.0.0"))
@@ -68,7 +80,7 @@ def test_dataset_version_must_resolve_to_an_existing_manifest(registry: ModelReg
 
 def test_feature_version_must_match_the_manifest_schema_version(registry: ModelRegistry) -> None:
     with pytest.raises(ModelRegistryError, match="feature_schema_version"):
-        registry.register_model(**entry_kwargs(feature_version="v2"))
+        registry.register_model(**entry_kwargs(feature_version="vX-wrong"))
 
 
 def test_every_logged_prediction_carries_the_five_fr14_fields(registry: ModelRegistry) -> None:
@@ -83,7 +95,7 @@ def test_every_logged_prediction_carries_the_five_fr14_fields(registry: ModelReg
         assert field in rec, f"FR-14 field {field} missing"
     assert rec["timestamp"] == "2026-09-27T13:30:00+00:00"
     assert rec["training_dataset_version"] == REAL_DATASET_VERSION
-    assert rec["feature_version"] == "v1"
+    assert rec["feature_version"] == REAL_SCHEMA_VERSION
     assert rec["model_name"] == "xgboost_risk"
 
 

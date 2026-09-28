@@ -31,6 +31,7 @@ from src.features.group_c_spatial import GROUP_C_FEATURES, emit_group_c
 from src.features.group_d_vibration import GROUP_D_FEATURES, emit_group_d
 from src.features.group_e_health import GROUP_E_FEATURES, emit_group_e
 from src.features.group_f_physics import GROUP_F_FEATURES, emit_group_f
+from src.features.provenance import assert_registered
 from src.features.windowing import WINDOW_TIMESTAMP, assert_windowed, build_windows
 
 __all__ = [
@@ -61,6 +62,8 @@ class FeatureStoreReport:
     features: list[str]
     per_group: dict[str, list[str]]
     budget_ok: bool
+    center_mode: str
+    gated_features: list[str]
 
 
 def feature_names(b_channels: tuple[str, ...] = B_PER_CHANNEL) -> list[str]:
@@ -102,24 +105,37 @@ def build_feature_store(
     node_coords: pd.DataFrame,
     *,
     window_channels: tuple[str, ...] | None = None,
-    center_mode: str = "oracle",
+    center_mode: str = "detected",
 ) -> tuple[pd.DataFrame, FeatureStoreReport]:
     """Build the model-input feature store from a raw node table.
 
-    Returns ``(model_input, report)`` where ``model_input`` carries the window
-    keys, all first-iteration features, and the §12 majority labels per
-    window. ``center_mode`` defaults to ``"oracle"``: on §10 synthetic data
-    the panel centre is config-defined (the G-5 'detected' mode is the
-    inference-time default, see src/features/group_c_spatial.py).
+    Returns ``(model_input, report)`` where ``model_input`` carries structural
+    keys, features, and labels separately. Emitters receive a label-blind copy
+    of the input. Oracle geometry is refused for feature builds; diagnostics
+    must use the separate diagnostic tooling, never a model store.
     """
-    windowed = build_windows(raw, channels=window_channels).df
+    if center_mode == "oracle":
+        raise ValueError("center_mode='oracle' is forbidden for model feature stores")
+    if center_mode != "detected":
+        raise ValueError(f"unsupported center_mode {center_mode!r}")
+    # Keep only structural grouping keys and observable channels. Labels,
+    # scenario descriptors, simulator truth, and injected parameters never
+    # reach a feature emitter.
+    structural = [c for c in ("event_id", "node_id", "timestamp") if c in raw.columns]
+    known_channels = (
+        "tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain",
+        "vibration_rms", "vibration_peak", "battery", "RSSI", "SNR", "packet_loss",
+    )
+    observable = [c for c in known_channels if c in raw.columns]
+    feature_raw = raw[structural + observable].copy()
+    windowed = build_windows(feature_raw, channels=window_channels, labels=()).df
 
     # ---- per-group emission -------------------------------------------------
     group_a = emit_group_a(windowed)
     group_b = emit_group_b(windowed)
     group_c = emit_group_c(windowed, node_coords, center_mode=center_mode)
     group_d = emit_group_d(windowed)
-    group_e = emit_group_e(windowed, raw)
+    group_e = emit_group_e(windowed, feature_raw)
     group_f = emit_group_f(windowed, node_coords)
 
     keys = ["event_id", "node_id", "window_index", WINDOW_TIMESTAMP]
@@ -130,33 +146,37 @@ def build_feature_store(
         return base.merge(add[cols], on=keys, how="left")
 
     model = _prefix_merge(model, group_b, feature_names())
-    model = _prefix_merge(model, group_c, list(GROUP_C_FEATURES) + ["center_mode"])
+    model = _prefix_merge(model, group_c, list(GROUP_C_FEATURES) + ["center_mode", "spatial_gate_reason"])
     model = _prefix_merge(model, group_d, list(GROUP_D_FEATURES))
     model = _prefix_merge(model, group_e, list(GROUP_E_FEATURES))
     model = _prefix_merge(model, group_f, list(GROUP_F_FEATURES))
-
-    # ---- §12 labels per window (kept separate, never collapsed) ------------
-    label_frame = (
-        raw.assign(window_index=_window_index_of(raw))
-        .groupby(["event_id", "node_id", "window_index"], sort=False)
-        .agg({lab: _majority for lab in ("anomaly_label", "risk_label", "progression_label")})
-        .reset_index()
-    )
-    model = model.merge(label_frame, on=["event_id", "node_id", "window_index"], how="left")
-    # fault_label: the windowing engine carries the first value in the window —
-    # a majority would HIDE a 12-step stuck run inside a clean window, and the
-    # per-window sensor-fault flag must stay visible for Group E/§12 discipline.
-    model = model.merge(
-        windowed[keys + ["fault_label"]], on=keys, how="left", suffixes=("", "_windowed")
-    )
+# 
+    present_labels = [lab for lab in MODEL_LABELS if lab in raw.columns]
+    if present_labels:
+        label_rows = raw[["event_id", "node_id", "timestamp", *present_labels]].copy()
+        label_rows["window_index"] = _window_index_of(label_rows)
+        label_rows = label_rows[label_rows["window_index"] >= 0]
+        aggregations = {
+            lab: (_majority if lab != "fault_label" else "first") for lab in present_labels
+        }
+        label_frame = (
+            label_rows.groupby(["event_id", "node_id", "window_index"], sort=False)
+            .agg(aggregations)
+            .reset_index()
+        )
+        model = model.merge(label_frame, on=["event_id", "node_id", "window_index"], how="left")
 
     names = feature_names()
+    assert_registered(names)
     missing = [f for f in names if f not in model.columns]
     if missing:
         raise FeatureBudgetError(f"feature store assembly failed — features not emitted: {missing}")
 
     assert_windowed(model)  # guard: model input must be window-level, never raw
     check_feature_budget(names)
+    from src.features.schema_guard import assert_schema_drift
+
+    assert_schema_drift(model.columns)
     report = FeatureStoreReport(
         n_windows=len(model),
         features=names,
@@ -170,12 +190,15 @@ def build_feature_store(
             "F_physics": list(GROUP_F_FEATURES),
         },
         budget_ok=True,
+        center_mode=center_mode,
+        gated_features=[name for name in GROUP_C_FEATURES],
     )
     return model, report
 
 
 def _window_index_of(raw: pd.DataFrame) -> np.ndarray:
     """Recompute each raw row's window index from the §10 windowing params."""
+    raw = raw.reset_index(drop=True)
     from src.features.windowing import windowing_params
 
     window, stride = windowing_params()

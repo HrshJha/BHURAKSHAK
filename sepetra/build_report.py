@@ -69,10 +69,14 @@ def _fmt(x: float) -> str:
 
 
 def main() -> int:
+    raise SystemExit(
+        "This legacy report scores the burned unlocked test split. It is disabled; Phase 9 will rebuild "
+        "from scripts/final_eval.py outputs."
+    )
     GRAPHS.mkdir(parents=True, exist_ok=True)
 
     # ---- data + model (identical to the T-070 arm-E convention) -----------
-    store = pd.read_parquet(REPO_ROOT / "data" / "features" / "features_v1.parquet")
+    store = pd.read_parquet(REPO_ROOT / "data" / "features" / "features_v2.parquet")
     splits = pd.read_csv(REPO_ROOT / "data" / "features" / "split_assignment.csv")
     store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
     if store["split"].isna().any():

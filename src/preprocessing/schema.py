@@ -4,7 +4,7 @@ The PRD defines one canonical dataset schema (§11). This module is the single
 authority for it:
 
 - ``dataset_schema_fields()`` returns the exact §11 field list, read from
-  ``configs/feature_schema_v1.yaml`` (config-driven, NFR-6/NFR-7) — never
+  current ``configs/feature_schema_v*.yaml`` (config-driven, NFR-6/NFR-7) — never
   re-typed in code.
 - ``validate_schema`` accepts a dataframe only when its columns are exactly
   the §11 fields (modulo the ``require_all``/``forbid_unknown`` switches) and
@@ -60,10 +60,10 @@ class SchemaReport:
 
 
 def dataset_schema_fields() -> list[str]:
-    """The exact §11 field list, in PRD order, from configs/feature_schema_v1.yaml."""
+    """The exact §11 field list, in PRD order, from the active feature schema."""
     fields = feature_schema_config()["dataset_fields"]
     if not isinstance(fields, list) or not fields:
-        raise SchemaError("feature_schema_v1.yaml:dataset_fields must be a non-empty list")
+        raise SchemaError("active feature schema:dataset_fields must be a non-empty list")
     return [str(f) for f in fields]
 
 

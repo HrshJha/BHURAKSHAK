@@ -1,0 +1,98 @@
+# Every feature emitted by the model feature store is registered here.
+# Only observable and deployable config_derived entries pass the model gate.
+version: 1
+allowed_classes: [observable, config_derived]
+patterns:
+  - pattern: "^forecast_.+_h[0-9]+$"
+    sources: [observable_history, deployed_forecaster]
+    class: observable
+features:
+  tilt_x: {sources: [tilt_x], class: observable}
+  tilt_y: {sources: [tilt_y], class: observable}
+  tilt_magnitude: {sources: [tilt_magnitude], class: observable}
+  displacement: {sources: [displacement], class: observable}
+  strain: {sources: [strain], class: observable}
+  tilt_x_rolling_mean: {sources: [tilt_x], class: observable}
+  tilt_x_rolling_std: {sources: [tilt_x], class: observable}
+  tilt_x_rolling_min: {sources: [tilt_x], class: observable}
+  tilt_x_rolling_max: {sources: [tilt_x], class: observable}
+  tilt_x_slope: {sources: [tilt_x], class: observable}
+  tilt_x_velocity: {sources: [tilt_x, timestamp], class: observable}
+  tilt_x_acceleration: {sources: [tilt_x, timestamp], class: observable}
+  tilt_x_trend: {sources: [tilt_x, timestamp], class: observable}
+  tilt_x_persistence: {sources: [tilt_x], class: observable}
+  tilt_x_change_point_score: {sources: [tilt_x], class: observable}
+  tilt_y_rolling_mean: {sources: [tilt_y], class: observable}
+  tilt_y_rolling_std: {sources: [tilt_y], class: observable}
+  tilt_y_rolling_min: {sources: [tilt_y], class: observable}
+  tilt_y_rolling_max: {sources: [tilt_y], class: observable}
+  tilt_y_slope: {sources: [tilt_y], class: observable}
+  tilt_y_velocity: {sources: [tilt_y, timestamp], class: observable}
+  tilt_y_acceleration: {sources: [tilt_y, timestamp], class: observable}
+  tilt_y_trend: {sources: [tilt_y, timestamp], class: observable}
+  tilt_y_persistence: {sources: [tilt_y], class: observable}
+  tilt_y_change_point_score: {sources: [tilt_y], class: observable}
+  rolling_mean: {sources: [displacement], class: observable}
+  rolling_std: {sources: [displacement], class: observable}
+  rolling_min: {sources: [displacement], class: observable}
+  rolling_max: {sources: [displacement], class: observable}
+  slope: {sources: [displacement], class: observable}
+  velocity: {sources: [displacement, timestamp], class: observable}
+  acceleration: {sources: [displacement, timestamp], class: observable}
+  trend: {sources: [displacement, timestamp], class: observable}
+  persistence: {sources: [displacement], class: observable}
+  change_point_score: {sources: [displacement], class: observable}
+  neighbor_mean: {sources: [displacement, node_coordinates], class: observable, gated: true}
+  neighbor_std: {sources: [displacement, node_coordinates], class: observable, gated: true}
+  neighbor_anomaly_fraction: {sources: [displacement_slope, node_coordinates], class: observable, gated: true}
+  spatial_coherence: {sources: [displacement_slope, node_coordinates], class: observable, gated: true}
+  local_gradient: {sources: [displacement, node_coordinates], class: observable, gated: true}
+  local_strain: {sources: [displacement, node_coordinates], class: observable, gated: true}
+  hotspot_density: {sources: [displacement_slope, node_coordinates], class: observable, gated: true}
+  distance_to_subsidence_center: {sources: [displacement, node_coordinates], class: observable, gated: true}
+  vibration_rms: {sources: [vibration_rms], class: observable}
+  vibration_peak: {sources: [vibration_peak], class: observable}
+  crest_factor: {sources: [vibration_rms, vibration_peak], class: observable}
+  band_energy_low: {sources: [vibration_rms], class: observable}
+  band_energy_mid: {sources: [vibration_rms], class: observable}
+  band_energy_high: {sources: [vibration_rms], class: observable}
+  spectral_centroid: {sources: [vibration_rms], class: observable}
+  battery: {sources: [battery], class: observable}
+  RSSI: {sources: [RSSI], class: observable}
+  SNR: {sources: [SNR], class: observable}
+  packet_loss: {sources: [packet_loss], class: observable}
+  missing_ratio: {sources: [sensor_channel_presence], class: observable}
+  stuck_sensor_flag: {sources: [displacement], class: observable}
+  drift_score: {sources: [displacement], class: observable}
+  expected_displacement: {sources: [node_coordinates, configs/physics.yaml], class: config_derived}
+  expected_tilt: {sources: [node_coordinates, configs/physics.yaml], class: config_derived}
+  physics_residual: {sources: [displacement, node_coordinates, configs/physics.yaml], class: config_derived}
+  physics_residual_velocity: {sources: [displacement, timestamp, node_coordinates, configs/physics.yaml], class: config_derived}
+  anomaly_score: {sources: [observable_feature_model_score], class: observable}
+  vertical_displacement: {sources: [DGPS_vertical], class: observable, gated: true}
+  horizontal_displacement: {sources: [DGPS_horizontal], class: observable, gated: true}
+  velocity_dgps: {sources: [DGPS_vertical, timestamp], class: observable, gated: true}
+  acceleration_dgps: {sources: [DGPS_vertical, timestamp], class: observable, gated: true}
+  mesh_vs_dgps_residual: {sources: [displacement, DGPS_vertical], class: observable, gated: true}
+  LOS_displacement: {sources: [InSAR_LOS], class: observable, gated: true}
+  LOS_velocity: {sources: [InSAR_LOS, timestamp], class: observable, gated: true}
+  LOS_acceleration: {sources: [InSAR_LOS, timestamp], class: observable, gated: true}
+  cumulative_displacement: {sources: [InSAR_LOS], class: observable, gated: true}
+  coherence: {sources: [InSAR_coherence], class: observable, gated: true}
+  spatial_gradient: {sources: [InSAR_LOS, node_coordinates], class: observable, gated: true}
+  local_hotspot_density: {sources: [InSAR_LOS, node_coordinates], class: observable, gated: true}
+  elevation: {sources: [synthetic_terrain_config], class: config_derived, gated: true}
+  slope_terrain: {sources: [synthetic_terrain_config], class: config_derived, gated: true}
+  aspect: {sources: [synthetic_terrain_config], class: config_derived, gated: true}
+  curvature: {sources: [synthetic_terrain_config], class: config_derived, gated: true}
+  mine_depth: {sources: [synthetic_site_configuration], class: config_derived, gated: true}
+  panel_distance: {sources: [synthetic_site_configuration, node_coordinates], class: config_derived, gated: true}
+  panel_geometry: {sources: [synthetic_site_configuration], class: config_derived, gated: true}
+  overburden: {sources: [synthetic_site_configuration, synthetic_terrain_config], class: config_derived, gated: true}
+  "G_dgps.velocity": {sources: [DGPS_vertical, observation_timestamp], class: observable, gated: true}
+  "G_dgps.acceleration": {sources: [DGPS_vertical, observation_timestamp], class: observable, gated: true}
+  "I_terrain.slope": {sources: [synthetic_terrain_config], class: config_derived, gated: true}
+  rainfall: {sources: [weather_sensor], class: observable}
+  temperature: {sources: [weather_sensor], class: observable}
+  land_surface_temperature: {sources: [thermal_sensor], class: observable}
+  land_cover: {sources: [surveyed_land_cover], class: observable}

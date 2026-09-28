@@ -80,6 +80,25 @@ def test_anomaly_score_is_a_model_input() -> None:
     assert "physics_residual" in fitted.features
 
 
+def test_gated_group_c_candidates_are_excluded_from_model_inputs() -> None:
+    from src.risk.xgboost_model import _resolve_features
+
+    df = _frame()
+    df["spatial_coherence"] = 1.0
+    df["neighbor_anomaly_fraction"] = 0.0
+    features = _resolve_features(df)
+    assert "spatial_coherence" not in features
+    assert "neighbor_anomaly_fraction" not in features
+
+
+def test_forecast_features_resolve_through_registered_pattern() -> None:
+    from src.risk.xgboost_model import _resolve_features
+
+    df = _frame()
+    df["forecast_displacement_h2"] = df["displacement"]
+    assert "forecast_displacement_h2" in _resolve_features(df)
+
+
 def test_missing_split_or_label_raises() -> None:
     df = _frame()
     with pytest.raises(XGBoostModelError):

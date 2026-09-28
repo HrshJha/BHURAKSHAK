@@ -114,11 +114,7 @@ class InSARConfig:
             min_observations=int(ps["min_observations"]),
             max_ref_rate_mm_yr=float(proc["reference_point"]["max_displacement_rate_mm_yr"]),
         )
-
-
-# --- step 1: coarseregistration --------------------------------------------------
-
-
+# 
 def coarseregister(secondary: np.ndarray, dr: int, da: int) -> np.ndarray:
     """Integer-pixel shift of ``secondary`` onto the master grid (orbit accuracy).
 
@@ -215,11 +211,7 @@ def power_spectrum_filter(ifg: np.ndarray, alpha: float = 1 / 2, block: int = 32
             filtered = np.fft.ifft2(np.abs(spec) ** alpha * spec)
             out[r0 : min(r0 + block, n_r), a0 : min(a0 + block, n_a)] = filtered[: tile.shape[0], : tile.shape[1]]
     return out
-
-
-# --- step 5: coherence ------------------------------------------------------------
-
-
+# 
 def _boxcar(sum_sqi: np.ndarray, sum_prod: np.ndarray, window: tuple[int, int]) -> tuple[np.ndarray, np.ndarray]:
     from scipy.ndimage import uniform_filter
 
@@ -243,11 +235,7 @@ def coherence(master: np.ndarray, secondary: np.ndarray, window: tuple[int, int]
     with np.errstate(invalid="ignore", divide="ignore"):
         coh = np.abs(num) / np.sqrt(np.maximum(den, np.finfo(float).eps))
     return np.clip(coh, 0.0, 1.0)
-
-
-# --- PS selection ------------------------------------------------------------------
-
-
+# 
 def amplitude_dispersion(stack_amplitudes: np.ndarray) -> np.ndarray:
     """Amplitude dispersion σ_A/μ_A per pixel across the stack (PS gate).
 
@@ -276,11 +264,7 @@ def select_reference_point(
         raise InSARError("no reference-point candidate: no stable PS below the configured rate cap")
     order = sorted(eligible, key=lambda i: (-stack_coherence[i], abs(rates_mm_yr[i])))
     return int(order[0])
-
-
-# --- stack machinery ---------------------------------------------------------------
-
-
+# 
 def small_baseline_pairs(dates: list[str], cfg: InSARConfig) -> list[tuple[int, int]]:
     """All (master, secondary) index pairs within the temporal-baseline window."""
     from datetime import date

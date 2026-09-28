@@ -120,3 +120,27 @@ def test_multiple_states_can_coexist_on_one_row() -> None:
     res = validate_packets(_frame(rows))
     dup_rows = res.df[res.df[DQ_DUPLICATE]]
     assert bool(dup_rows[DQ_CORRUPTED].any()), "duplicate row may also be corrupted"
+
+
+def test_validator_handles_read_only_series_views(monkeypatch) -> None:
+    df = _frame(_base_rows())
+    original = pd.Series.to_numpy
+
+    def readonly_to_numpy(series, *args, **kwargs):
+        values = original(series, *args, **kwargs)
+        if isinstance(values, np.ndarray):
+            values.setflags(write=False)
+        return values
+
+    monkeypatch.setattr(pd.Series, "to_numpy", readonly_to_numpy)
+    result = validate_packets(df)
+    assert result.n_corrupted == 0
+    assert len(result.df) == len(df)
+
+
+def test_validator_accepts_arrow_backed_copy_on_write_frame() -> None:
+    frame = _frame(_base_rows()).convert_dtypes(dtype_backend="pyarrow")
+    with pd.option_context("mode.copy_on_write", True):
+        result = validate_packets(frame)
+    assert result.n_corrupted == 0
+    assert len(result.df) == len(frame)

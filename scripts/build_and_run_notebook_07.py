@@ -92,7 +92,7 @@ print(f"alert threshold P(CRITICAL) >= {ALERT_THRESHOLD}; hotspot radius {HOTSPO
     ),
     new_markdown_cell("## 1 — Load the store, assert the §23 split discipline"),
     new_code_cell(
-        """store = pd.read_parquet(REPO / "data" / "features" / "features_v1.parquet")
+        """store = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
 splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
 store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
 assert store["split"].notna().all(), "every event must carry a §23 split"
@@ -219,26 +219,51 @@ plt.show()"""
     new_markdown_cell(
         """## 4 — Split-level reading (§23): where does generalisation hold?
 
-The train split shows what the model CAN fit; validation is what the
-threshold/calibration machinery is allowed to see; test is the one-look
-honesty number. §24's rule: a metric that collapses from validation to
-test is a leakage smell — here the gaps are checked explicitly."""
+Two questions, two controls:
+
+1. **Leakage control (family-balanced column):** the `split_family_balanced`
+   assignment draws every scenario family into every split, so a large
+   validation→test gap there WOULD be a leakage smell — asserted small.
+2. **Regime-shift reading (default `split`):** the §35 regime holdout puts
+   whole regimes (rapid/accelerating/stable) only in test. A large
+   validation→test gap here is the honest regime-shift effect, not leakage —
+   it is REPORTED, never asserted away."""
     ),
     new_code_cell(
-        """gaps = []
-for arm_id, per_split in arm_summaries.items():
-    val_f1 = per_split["validation"]["detection"]["f1"]
-    test_f1 = per_split["test"]["detection"]["f1"]
-    val_b = per_split["validation"]["calibration"]["brier"]
-    test_b = per_split["test"]["calibration"]["brier"]
-    gaps.append({"arm": arm_id, "f1_val": val_f1, "f1_test": test_f1,
-                 "f1_gap": test_f1 - val_f1,
-                 "brier_val": val_b, "brier_test": test_b, "brier_gap": test_b - val_b})
-gaps_df = pd.DataFrame(gaps).set_index("arm")
-print(gaps_df.round(3).to_string())
-assert (gaps_df["brier_gap"].abs() < 0.02).all(), "brier validation→test gap must stay small"
-assert (gaps_df["f1_gap"].abs() < 0.05).all(), "f1 validation→test gap must stay small"
-print("\\n§23 verdict: validation→test gaps are within noise — no split-leakage signature")"""
+        """def _gap_table(split_col: str) -> pd.DataFrame:
+    rows = []
+    for arm_id, features in ARMS.items():
+        arm_store = store.copy()
+        arm_store["split"] = arm_store["event_id"].map(splits.set_index("event_id")[split_col])
+        model_arm = train_risk_model(arm_store, feature_groups=list(features))
+        out = {}
+        for sp in ("validation", "test"):
+            af = alert_frame(model_arm, arm_store[arm_store.split == sp])
+            y_true = (af["anomaly_label"] > 0).astype(int).to_numpy()
+            y_pred = (af["pred_label"] != "NORMAL").astype(int).to_numpy()
+            det = classification_metrics(y_true, y_pred, y_score=af["alarm_score"].to_numpy())
+            p_crit = af["p_critical"].to_numpy()
+            two_col = np.stack([p_crit, 1.0 - p_crit], axis=1)
+            y_idx = (af["risk_label"] != "CRITICAL").astype(int).to_numpy()
+            out[sp] = {"f1": det["f1"], "brier": brier_score(two_col, y_idx)}
+        rows.append({"arm": arm_id,
+                     "f1_val": out["validation"]["f1"], "f1_test": out["test"]["f1"],
+                     "f1_gap": out["test"]["f1"] - out["validation"]["f1"],
+                     "brier_val": out["validation"]["brier"], "brier_test": out["test"]["brier"],
+                     "brier_gap": out["test"]["brier"] - out["validation"]["brier"]})
+    return pd.DataFrame(rows).set_index("arm")
+
+gaps_balanced = _gap_table("split_family_balanced")
+print("=== family-balanced (leakage control — gaps MUST be small) ===")
+print(gaps_balanced.round(3).to_string())
+assert (gaps_balanced["brier_gap"].abs() < 0.02).all(), "family-balanced brier gap must stay small — a large gap here is a leakage signature"
+assert (gaps_balanced["f1_gap"].abs() < 0.05).all(), "family-balanced f1 gap must stay small"
+
+gaps_regime = _gap_table("split")
+print("\\n=== regime holdout (§35 — gaps are the regime-shift effect, reported not asserted) ===")
+print(gaps_regime.round(3).to_string())
+print("\\n§23 verdict: no split-leakage signature (family-balanced gaps within noise); "
+      "the regime holdout gap quantifies the honest cost of unseen regimes")"""
     ),
     new_markdown_cell(
         """## 5 — §25 gate reading and honest deviations
@@ -290,6 +315,7 @@ print("  §25: six arms re-scored through the same pipeline as the T-070 JSON")"
 
 
 def main() -> int:
+    raise SystemExit("Legacy notebook 07 reads the burned test split; regenerate after Phase 8 from final_eval outputs.")
     notebook = new_notebook(
         cells=CELLS,
         metadata={

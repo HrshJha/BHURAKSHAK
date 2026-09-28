@@ -1,0 +1,1479 @@
+{
+  "study": {
+    "seed": 20260928,
+    "sampler": "seeded random sample without replacement",
+    "search_space": {
+      "architecture": [
+        "tcn",
+        "gru",
+        "lstm"
+      ],
+      "width": [
+        8,
+        16
+      ],
+      "history_steps": [
+        3,
+        5
+      ],
+      "depth": [
+        1
+      ],
+      "learning_rate": [
+        0.001,
+        0.003
+      ]
+    },
+    "candidates": 8,
+    "grouping": "event_id",
+    "folds": 3,
+    "repeat_seeds": [
+      42,
+      43,
+      44
+    ],
+    "epochs": 30,
+    "batch_size": 2048,
+    "horizons": [
+      1
+    ],
+    "test_touched": false
+  },
+  "candidate_results": [
+    {
+      "params": {
+        "architecture": "lstm",
+        "width": 16,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.02566980827281285,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 1.1535271024034335,
+            "tilt_x": 0.001699342079201684,
+            "tilt_y": 0.0015470029751540318
+          },
+          "rmse_by_channel": {
+            "displacement": 4.393505479838112,
+            "tilt_x": 0.004747663562384823,
+            "tilt_y": 0.0035916903164182755
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.029553503046132436,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 1.1724947605692504,
+            "tilt_x": 0.0017598609934807827,
+            "tilt_y": 0.0016684346412524254
+          },
+          "rmse_by_channel": {
+            "displacement": 4.537101373438881,
+            "tilt_x": 0.005178051520026761,
+            "tilt_y": 0.0038611464799072253
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.026833656252918163,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 1.362958979988042,
+            "tilt_x": 0.0016502779905420678,
+            "tilt_y": 0.001611953002065242
+          },
+          "rmse_by_channel": {
+            "displacement": 4.886868320088392,
+            "tilt_x": 0.0039782023094901585,
+            "tilt_y": 0.003768552720398848
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.027352322523954486,
+      "mean_persistence_normalized_mse": 0.03720146007549597
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.029221127891470466,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 1.8184821270625275,
+            "tilt_x": 0.002819422013188518,
+            "tilt_y": 0.003067833697333686
+          },
+          "rmse_by_channel": {
+            "displacement": 4.6789274616339345,
+            "tilt_x": 0.004602314526324889,
+            "tilt_y": 0.004413698266479059
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.039887418873600415,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 2.22141347831502,
+            "tilt_x": 0.0030118097180053863,
+            "tilt_y": 0.0029633895732747765
+          },
+          "rmse_by_channel": {
+            "displacement": 5.904513767964559,
+            "tilt_x": 0.004483659700730298,
+            "tilt_y": 0.004308621628110625
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.034278269488238575,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 2.310537922592437,
+            "tilt_x": 0.0025916670180630534,
+            "tilt_y": 0.0031585683585324455
+          },
+          "rmse_by_channel": {
+            "displacement": 5.48012738812873,
+            "tilt_x": 0.00381663406010764,
+            "tilt_y": 0.004996693872910715
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.03446227208443649,
+      "mean_persistence_normalized_mse": 0.03720146007549597
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 5,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 10836,
+          "normalized_mse": 0.037229444989005274,
+          "persistence_normalized_mse": 0.03705356016844493,
+          "mae_by_channel": {
+            "displacement": 2.001463751854,
+            "tilt_x": 0.003172984243547443,
+            "tilt_y": 0.0033449582118653723
+          },
+          "rmse_by_channel": {
+            "displacement": 5.244185920683781,
+            "tilt_x": 0.005278083145849673,
+            "tilt_y": 0.004818131677990965
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8653743890016825,
+            "tilt_x": 0.00235648807311234,
+            "tilt_y": 0.0024170033605980137
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.05591862207317676,
+          "persistence_normalized_mse": 0.0422363707655812,
+          "mae_by_channel": {
+            "displacement": 2.6803442777162436,
+            "tilt_x": 0.003368847795943004,
+            "tilt_y": 0.003334444021272082
+          },
+          "rmse_by_channel": {
+            "displacement": 6.832003573680848,
+            "tilt_x": 0.005541597698181831,
+            "tilt_y": 0.005128631558670024
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9684229679018896,
+            "tilt_x": 0.0023988378150903954,
+            "tilt_y": 0.002347823970995557
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.05782602181798173,
+          "persistence_normalized_mse": 0.040332577439762055,
+          "mae_by_channel": {
+            "displacement": 3.1298453967384607,
+            "tilt_x": 0.0031007152548094405,
+            "tilt_y": 0.004207184907962145
+          },
+          "rmse_by_channel": {
+            "displacement": 6.739602779410591,
+            "tilt_x": 0.004814420890683043,
+            "tilt_y": 0.007292832478663876
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9505221252826122,
+            "tilt_x": 0.002407788061814075,
+            "tilt_y": 0.0025306470705085886
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.05032469629338793,
+      "mean_persistence_normalized_mse": 0.0398741694579294
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 16,
+        "history_steps": 5,
+        "depth": 1,
+        "learning_rate": 0.001
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 10836,
+          "normalized_mse": 0.045269041913949044,
+          "persistence_normalized_mse": 0.03705356016844493,
+          "mae_by_channel": {
+            "displacement": 2.760594210106857,
+            "tilt_x": 0.0031260691896889646,
+            "tilt_y": 0.0033613808817118903
+          },
+          "rmse_by_channel": {
+            "displacement": 5.741764826011894,
+            "tilt_x": 0.005672359303298543,
+            "tilt_y": 0.005581075361750474
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8653743890016825,
+            "tilt_x": 0.00235648807311234,
+            "tilt_y": 0.0024170033605980137
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.043714729104561076,
+          "persistence_normalized_mse": 0.0422363707655812,
+          "mae_by_channel": {
+            "displacement": 2.3989497582248727,
+            "tilt_x": 0.0028243497866164767,
+            "tilt_y": 0.0026211118906311294
+          },
+          "rmse_by_channel": {
+            "displacement": 6.257400384215032,
+            "tilt_x": 0.004367482656109765,
+            "tilt_y": 0.004318638792322866
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9684229679018896,
+            "tilt_x": 0.0023988378150903954,
+            "tilt_y": 0.002347823970995557
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.06979985738897533,
+          "persistence_normalized_mse": 0.040332577439762055,
+          "mae_by_channel": {
+            "displacement": 3.3199705576317915,
+            "tilt_x": 0.004008950660936073,
+            "tilt_y": 0.0034130610529404214
+          },
+          "rmse_by_channel": {
+            "displacement": 7.41374203215841,
+            "tilt_x": 0.006655863558113869,
+            "tilt_y": 0.00687893765057911
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9505221252826122,
+            "tilt_x": 0.002407788061814075,
+            "tilt_y": 0.0025306470705085886
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.05292787613582848,
+      "mean_persistence_normalized_mse": 0.0398741694579294
+    },
+    {
+      "params": {
+        "architecture": "lstm",
+        "width": 8,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.08427220787882003,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 1.9228459727441285,
+            "tilt_x": 0.00306764945406284,
+            "tilt_y": 0.002664676634424576
+          },
+          "rmse_by_channel": {
+            "displacement": 7.601533687290264,
+            "tilt_x": 0.008763732319317817,
+            "tilt_y": 0.007293573457390296
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.10426428945566647,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 2.090471653570732,
+            "tilt_x": 0.0028122109666794564,
+            "tilt_y": 0.0022907001913295985
+          },
+          "rmse_by_channel": {
+            "displacement": 9.014661429502672,
+            "tilt_x": 0.00861233590445238,
+            "tilt_y": 0.007180493230379431
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.06058892673804618,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 1.7716463608850321,
+            "tilt_x": 0.002272067285721138,
+            "tilt_y": 0.0020862833849224064
+          },
+          "rmse_by_channel": {
+            "displacement": 7.199916923162961,
+            "tilt_x": 0.0061554365195700695,
+            "tilt_y": 0.005887957652013352
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.08304180802417756,
+      "mean_persistence_normalized_mse": 0.03720146007549597
+    },
+    {
+      "params": {
+        "architecture": "gru",
+        "width": 8,
+        "history_steps": 5,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 10836,
+          "normalized_mse": 0.2035135046449523,
+          "persistence_normalized_mse": 0.03705356016844493,
+          "mae_by_channel": {
+            "displacement": 3.2616109648245164,
+            "tilt_x": 0.004435701672998813,
+            "tilt_y": 0.004676633277893345
+          },
+          "rmse_by_channel": {
+            "displacement": 13.132037677774836,
+            "tilt_x": 0.010795557338636333,
+            "tilt_y": 0.010415509727137886
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8653743890016825,
+            "tilt_x": 0.00235648807311234,
+            "tilt_y": 0.0024170033605980137
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.23402119770099192,
+          "persistence_normalized_mse": 0.0422363707655812,
+          "mae_by_channel": {
+            "displacement": 3.1002474706869023,
+            "tilt_x": 0.004779131477701098,
+            "tilt_y": 0.00444596477602817
+          },
+          "rmse_by_channel": {
+            "displacement": 13.833230658776893,
+            "tilt_x": 0.011778889694487874,
+            "tilt_y": 0.010480109795460536
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9684229679018896,
+            "tilt_x": 0.0023988378150903954,
+            "tilt_y": 0.002347823970995557
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.16030472452897163,
+          "persistence_normalized_mse": 0.040332577439762055,
+          "mae_by_channel": {
+            "displacement": 3.0418951604301623,
+            "tilt_x": 0.004310995905949262,
+            "tilt_y": 0.004169284826272059
+          },
+          "rmse_by_channel": {
+            "displacement": 11.422077469183183,
+            "tilt_x": 0.01036013446443514,
+            "tilt_y": 0.009651840831682057
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9505221252826122,
+            "tilt_x": 0.002407788061814075,
+            "tilt_y": 0.0025306470705085886
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.1992798089583053,
+      "mean_persistence_normalized_mse": 0.0398741694579294
+    },
+    {
+      "params": {
+        "architecture": "gru",
+        "width": 16,
+        "history_steps": 5,
+        "depth": 1,
+        "learning_rate": 0.001
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 10836,
+          "normalized_mse": 0.2802742414490533,
+          "persistence_normalized_mse": 0.03705356016844493,
+          "mae_by_channel": {
+            "displacement": 3.8191777664863267,
+            "tilt_x": 0.006474356257326328,
+            "tilt_y": 0.00613079177251726
+          },
+          "rmse_by_channel": {
+            "displacement": 14.440102863144142,
+            "tilt_x": 0.014380164272602584,
+            "tilt_y": 0.013194572762560404
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8653743890016825,
+            "tilt_x": 0.00235648807311234,
+            "tilt_y": 0.0024170033605980137
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.3531526797684223,
+          "persistence_normalized_mse": 0.0422363707655812,
+          "mae_by_channel": {
+            "displacement": 4.17314075212351,
+            "tilt_x": 0.0070115301951824026,
+            "tilt_y": 0.006529570206244965
+          },
+          "rmse_by_channel": {
+            "displacement": 16.61278340706706,
+            "tilt_x": 0.014768318878524672,
+            "tilt_y": 0.013825848002043502
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9684229679018896,
+            "tilt_x": 0.0023988378150903954,
+            "tilt_y": 0.002347823970995557
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.27507830299819747,
+          "persistence_normalized_mse": 0.040332577439762055,
+          "mae_by_channel": {
+            "displacement": 4.230833171505206,
+            "tilt_x": 0.006609978193858277,
+            "tilt_y": 0.006286635156780157
+          },
+          "rmse_by_channel": {
+            "displacement": 14.291523296543033,
+            "tilt_x": 0.014361857798564777,
+            "tilt_y": 0.013531341453889033
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9505221252826122,
+            "tilt_x": 0.002407788061814075,
+            "tilt_y": 0.0025306470705085886
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.3028350747385577,
+      "mean_persistence_normalized_mse": 0.0398741694579294
+    },
+    {
+      "params": {
+        "architecture": "gru",
+        "width": 8,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.001
+      },
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.32246093067707654,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 4.376739786189905,
+            "tilt_x": 0.006867356620250384,
+            "tilt_y": 0.006944051499733333
+          },
+          "rmse_by_channel": {
+            "displacement": 14.715506796569002,
+            "tilt_x": 0.01606700093795307,
+            "tilt_y": 0.015856599791452094
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.3505165639672755,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 4.0180139425856405,
+            "tilt_x": 0.007268113063889647,
+            "tilt_y": 0.006670871951620754
+          },
+          "rmse_by_channel": {
+            "displacement": 15.597104413641144,
+            "tilt_x": 0.017068101052852724,
+            "tilt_y": 0.01442970547005702
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.26179106928408374,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 3.666694992366539,
+            "tilt_x": 0.006440229339112676,
+            "tilt_y": 0.00666659063844698
+          },
+          "rmse_by_channel": {
+            "displacement": 13.118185740362486,
+            "tilt_x": 0.014599518026980113,
+            "tilt_y": 0.014793019728594212
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ],
+      "mean_normalized_mse": 0.3115895213094786,
+      "mean_persistence_normalized_mse": 0.03720146007549597
+    }
+  ],
+  "top3_repeated_cv": [
+    {
+      "params": {
+        "architecture": "lstm",
+        "width": 16,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 42,
+      "mean_normalized_mse": 0.02951599505839976,
+      "mean_persistence_normalized_mse": 0.03720146007549597,
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.02566980827281285,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 1.1535271024034335,
+            "tilt_x": 0.001699342079201684,
+            "tilt_y": 0.0015470029751540318
+          },
+          "rmse_by_channel": {
+            "displacement": 4.393505479838112,
+            "tilt_x": 0.004747663562384823,
+            "tilt_y": 0.0035916903164182755
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 42,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.03648405473275085,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 1.1585423820119845,
+            "tilt_x": 0.0017314018597553574,
+            "tilt_y": 0.001649452181796376
+          },
+          "rmse_by_channel": {
+            "displacement": 5.102506107557312,
+            "tilt_x": 0.005450177842098751,
+            "tilt_y": 0.004519072698743393
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 42,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.02639412216963558,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 1.2017094209788655,
+            "tilt_x": 0.0017262199871554927,
+            "tilt_y": 0.001604493511380509
+          },
+          "rmse_by_channel": {
+            "displacement": 4.772104774448042,
+            "tilt_x": 0.004040241503948378,
+            "tilt_y": 0.0038534603784813226
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "lstm",
+        "width": 16,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 43,
+      "mean_normalized_mse": 0.02419339871776481,
+      "mean_persistence_normalized_mse": 0.03720146007549597,
+      "folds": [
+        {
+          "seed": 43,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.021921987740676642,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 1.2020399989882626,
+            "tilt_x": 0.0016589067228743645,
+            "tilt_y": 0.001658291532720033
+          },
+          "rmse_by_channel": {
+            "displacement": 4.0070958966789,
+            "tilt_x": 0.004381671934587828,
+            "tilt_y": 0.003481313846181314
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.029553503046132436,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 1.1724947605692504,
+            "tilt_x": 0.0017598609934807827,
+            "tilt_y": 0.0016684346412524254
+          },
+          "rmse_by_channel": {
+            "displacement": 4.537101373438881,
+            "tilt_x": 0.005178051520026761,
+            "tilt_y": 0.0038611464799072253
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.021104705366485354,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 1.1491280638902666,
+            "tilt_x": 0.0016672734318794284,
+            "tilt_y": 0.0017479452025583
+          },
+          "rmse_by_channel": {
+            "displacement": 4.063933838884038,
+            "tilt_x": 0.003916002442698725,
+            "tilt_y": 0.0036670484315466496
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "lstm",
+        "width": 16,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 44,
+      "mean_normalized_mse": 0.030594590135936007,
+      "mean_persistence_normalized_mse": 0.03720146007549597,
+      "folds": [
+        {
+          "seed": 44,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.02627453896824412,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 1.1793318324753823,
+            "tilt_x": 0.001592443600407867,
+            "tilt_y": 0.001572715488508781
+          },
+          "rmse_by_channel": {
+            "displacement": 4.62781867094717,
+            "tilt_x": 0.004373877561978231,
+            "tilt_y": 0.0036295767435297736
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.038675575186645744,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 1.4731669154967275,
+            "tilt_x": 0.001744270834854792,
+            "tilt_y": 0.0016333523867151688
+          },
+          "rmse_by_channel": {
+            "displacement": 5.55001448121946,
+            "tilt_x": 0.005083093716749234,
+            "tilt_y": 0.004378949342113973
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.026833656252918163,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 1.362958979988042,
+            "tilt_x": 0.0016502779905420678,
+            "tilt_y": 0.001611953002065242
+          },
+          "rmse_by_channel": {
+            "displacement": 4.886868320088392,
+            "tilt_x": 0.0039782023094901585,
+            "tilt_y": 0.003768552720398848
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 42,
+      "mean_normalized_mse": 0.03204489707076084,
+      "mean_persistence_normalized_mse": 0.03720146007549597,
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.029221127891470466,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 1.8184821270625275,
+            "tilt_x": 0.002819422013188518,
+            "tilt_y": 0.003067833697333686
+          },
+          "rmse_by_channel": {
+            "displacement": 4.6789274616339345,
+            "tilt_x": 0.004602314526324889,
+            "tilt_y": 0.004413698266479059
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 42,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.03208367569874511,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 1.8010557563959566,
+            "tilt_x": 0.0027668441033534157,
+            "tilt_y": 0.0031295550972656218
+          },
+          "rmse_by_channel": {
+            "displacement": 4.9272740000903426,
+            "tilt_x": 0.0044098157688020724,
+            "tilt_y": 0.004636739435952452
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 42,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.03482988762206695,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 1.9806755992298688,
+            "tilt_x": 0.002725979945884799,
+            "tilt_y": 0.0031180617257618973
+          },
+          "rmse_by_channel": {
+            "displacement": 5.492345938460802,
+            "tilt_x": 0.0044706137058473025,
+            "tilt_y": 0.004572670455108009
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 43,
+      "mean_normalized_mse": 0.04014308175630131,
+      "mean_persistence_normalized_mse": 0.03720146007549597,
+      "folds": [
+        {
+          "seed": 43,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.03692311849047617,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 2.191026339016782,
+            "tilt_x": 0.0031824767431330577,
+            "tilt_y": 0.0030849967127925225
+          },
+          "rmse_by_channel": {
+            "displacement": 5.575918351948065,
+            "tilt_x": 0.004715875255637051,
+            "tilt_y": 0.004564929107434507
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.039887418873600415,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 2.22141347831502,
+            "tilt_x": 0.0030118097180053863,
+            "tilt_y": 0.0029633895732747765
+          },
+          "rmse_by_channel": {
+            "displacement": 5.904513767964559,
+            "tilt_x": 0.004483659700730298,
+            "tilt_y": 0.004308621628110625
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.043618707904827345,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 2.382364388939392,
+            "tilt_x": 0.003114718354523916,
+            "tilt_y": 0.003174689489161551
+          },
+          "rmse_by_channel": {
+            "displacement": 6.358434733611126,
+            "tilt_x": 0.004666126130549953,
+            "tilt_y": 0.00483726633999729
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 3,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 44,
+      "mean_normalized_mse": 0.031676100437867595,
+      "mean_persistence_normalized_mse": 0.03720146007549597,
+      "folds": [
+        {
+          "seed": 44,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 16254,
+          "normalized_mse": 0.02738108041645177,
+          "persistence_normalized_mse": 0.034585026238157936,
+          "mae_by_channel": {
+            "displacement": 2.089155034198646,
+            "tilt_x": 0.0026144237919668726,
+            "tilt_y": 0.003211753807536984
+          },
+          "rmse_by_channel": {
+            "displacement": 4.436905473409946,
+            "tilt_x": 0.003802337721157254,
+            "tilt_y": 0.005081425988561426
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.768734102462482,
+            "tilt_x": 0.0024082133327332123,
+            "tilt_y": 0.0024633394076600725
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.03336895140891243,
+          "persistence_normalized_mse": 0.0393067452865095,
+          "mae_by_channel": {
+            "displacement": 2.069918063346867,
+            "tilt_x": 0.002607160184402289,
+            "tilt_y": 0.0033051326855927186
+          },
+          "rmse_by_channel": {
+            "displacement": 4.98175198235025,
+            "tilt_x": 0.003751643483027159,
+            "tilt_y": 0.005496919821042792
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8710103517698549,
+            "tilt_x": 0.0024521128516161476,
+            "tilt_y": 0.0024027582320177063
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 16248,
+          "normalized_mse": 0.034278269488238575,
+          "persistence_normalized_mse": 0.03771260870182048,
+          "mae_by_channel": {
+            "displacement": 2.310537922592437,
+            "tilt_x": 0.0025916670180630534,
+            "tilt_y": 0.0031585683585324455
+          },
+          "rmse_by_channel": {
+            "displacement": 5.48012738812873,
+            "tilt_x": 0.00381663406010764,
+            "tilt_y": 0.004996693872910715
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.85647749530466,
+            "tilt_x": 0.0024600311455094,
+            "tilt_y": 0.00258720448677267
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 5,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 42,
+      "mean_normalized_mse": 0.04068979614611261,
+      "mean_persistence_normalized_mse": 0.0398741694579294,
+      "folds": [
+        {
+          "seed": 42,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 10836,
+          "normalized_mse": 0.037229444989005274,
+          "persistence_normalized_mse": 0.03705356016844493,
+          "mae_by_channel": {
+            "displacement": 2.001463751854,
+            "tilt_x": 0.003172984243547443,
+            "tilt_y": 0.0033449582118653723
+          },
+          "rmse_by_channel": {
+            "displacement": 5.244185920683781,
+            "tilt_x": 0.005278083145849673,
+            "tilt_y": 0.004818131677990965
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8653743890016825,
+            "tilt_x": 0.00235648807311234,
+            "tilt_y": 0.0024170033605980137
+          }
+        },
+        {
+          "seed": 42,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.041276771647793316,
+          "persistence_normalized_mse": 0.0422363707655812,
+          "mae_by_channel": {
+            "displacement": 2.0272041979249336,
+            "tilt_x": 0.0030704506655575897,
+            "tilt_y": 0.003421137238610013
+          },
+          "rmse_by_channel": {
+            "displacement": 5.589465000444089,
+            "tilt_x": 0.004993678818257187,
+            "tilt_y": 0.005071261819572223
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9684229679018896,
+            "tilt_x": 0.0023988378150903954,
+            "tilt_y": 0.002347823970995557
+          }
+        },
+        {
+          "seed": 42,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.043563171801539236,
+          "persistence_normalized_mse": 0.040332577439762055,
+          "mae_by_channel": {
+            "displacement": 2.1902165957228723,
+            "tilt_x": 0.0029886732566705046,
+            "tilt_y": 0.0034095097044688433
+          },
+          "rmse_by_channel": {
+            "displacement": 6.131963458209723,
+            "tilt_x": 0.004944154847161938,
+            "tilt_y": 0.005011391706796868
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9505221252826122,
+            "tilt_x": 0.002407788061814075,
+            "tilt_y": 0.0025306470705085886
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 5,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 43,
+      "mean_normalized_mse": 0.0539282117069291,
+      "mean_persistence_normalized_mse": 0.0398741694579294,
+      "folds": [
+        {
+          "seed": 43,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 10836,
+          "normalized_mse": 0.050258712792534556,
+          "persistence_normalized_mse": 0.03705356016844493,
+          "mae_by_channel": {
+            "displacement": 2.648989782945783,
+            "tilt_x": 0.0033750489401540287,
+            "tilt_y": 0.0033631484956222744
+          },
+          "rmse_by_channel": {
+            "displacement": 6.37861720952445,
+            "tilt_x": 0.005526755637271407,
+            "tilt_y": 0.005451268941396961
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8653743890016825,
+            "tilt_x": 0.00235648807311234,
+            "tilt_y": 0.0024170033605980137
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.05591862207317676,
+          "persistence_normalized_mse": 0.0422363707655812,
+          "mae_by_channel": {
+            "displacement": 2.6803442777162436,
+            "tilt_x": 0.003368847795943004,
+            "tilt_y": 0.003334444021272082
+          },
+          "rmse_by_channel": {
+            "displacement": 6.832003573680848,
+            "tilt_x": 0.005541597698181831,
+            "tilt_y": 0.005128631558670024
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9684229679018896,
+            "tilt_x": 0.0023988378150903954,
+            "tilt_y": 0.002347823970995557
+          }
+        },
+        {
+          "seed": 43,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.055607300255075987,
+          "persistence_normalized_mse": 0.040332577439762055,
+          "mae_by_channel": {
+            "displacement": 2.77899885194805,
+            "tilt_x": 0.0032887720928603263,
+            "tilt_y": 0.003428861522139572
+          },
+          "rmse_by_channel": {
+            "displacement": 7.130784733510921,
+            "tilt_x": 0.005314354854504099,
+            "tilt_y": 0.005331882478224009
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9505221252826122,
+            "tilt_x": 0.002407788061814075,
+            "tilt_y": 0.0025306470705085886
+          }
+        }
+      ]
+    },
+    {
+      "params": {
+        "architecture": "tcn",
+        "width": 8,
+        "history_steps": 5,
+        "depth": 1,
+        "learning_rate": 0.003
+      },
+      "seed": 44,
+      "mean_normalized_mse": 0.05566005399812809,
+      "mean_persistence_normalized_mse": 0.0398741694579294,
+      "folds": [
+        {
+          "seed": 44,
+          "n_train_sequences": 48744,
+          "n_validation_sequences": 10836,
+          "normalized_mse": 0.04950014540578347,
+          "persistence_normalized_mse": 0.03705356016844493,
+          "mae_by_channel": {
+            "displacement": 3.004272302134863,
+            "tilt_x": 0.0031984644725608397,
+            "tilt_y": 0.004223564383352574
+          },
+          "rmse_by_channel": {
+            "displacement": 5.75281669824453,
+            "tilt_x": 0.004918128806277156,
+            "tilt_y": 0.007260075618738267
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.8653743890016825,
+            "tilt_x": 0.00235648807311234,
+            "tilt_y": 0.0024170033605980137
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.05965399477061906,
+          "persistence_normalized_mse": 0.0422363707655812,
+          "mae_by_channel": {
+            "displacement": 3.00125973563347,
+            "tilt_x": 0.00321383035341549,
+            "tilt_y": 0.004361272148980665
+          },
+          "rmse_by_channel": {
+            "displacement": 6.380031995688523,
+            "tilt_x": 0.004978135581995984,
+            "tilt_y": 0.007845601668239508
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9684229679018896,
+            "tilt_x": 0.0023988378150903954,
+            "tilt_y": 0.002347823970995557
+          }
+        },
+        {
+          "seed": 44,
+          "n_train_sequences": 48753,
+          "n_validation_sequences": 10832,
+          "normalized_mse": 0.05782602181798173,
+          "persistence_normalized_mse": 0.040332577439762055,
+          "mae_by_channel": {
+            "displacement": 3.1298453967384607,
+            "tilt_x": 0.0031007152548094405,
+            "tilt_y": 0.004207184907962145
+          },
+          "rmse_by_channel": {
+            "displacement": 6.739602779410591,
+            "tilt_x": 0.004814420890683043,
+            "tilt_y": 0.007292832478663876
+          },
+          "persistence_mae_by_channel": {
+            "displacement": 1.9505221252826122,
+            "tilt_x": 0.002407788061814075,
+            "tilt_y": 0.0025306470705085886
+          }
+        }
+      ]
+    }
+  ],
+  "best": {
+    "params": {
+      "architecture": "lstm",
+      "width": 16,
+      "history_steps": 3,
+      "depth": 1,
+      "learning_rate": 0.003
+    },
+    "folds": [
+      {
+        "seed": 42,
+        "n_train_sequences": 48744,
+        "n_validation_sequences": 16254,
+        "normalized_mse": 0.02566980827281285,
+        "persistence_normalized_mse": 0.034585026238157936,
+        "mae_by_channel": {
+          "displacement": 1.1535271024034335,
+          "tilt_x": 0.001699342079201684,
+          "tilt_y": 0.0015470029751540318
+        },
+        "rmse_by_channel": {
+          "displacement": 4.393505479838112,
+          "tilt_x": 0.004747663562384823,
+          "tilt_y": 0.0035916903164182755
+        },
+        "persistence_mae_by_channel": {
+          "displacement": 1.768734102462482,
+          "tilt_x": 0.0024082133327332123,
+          "tilt_y": 0.0024633394076600725
+        }
+      },
+      {
+        "seed": 43,
+        "n_train_sequences": 48753,
+        "n_validation_sequences": 16248,
+        "normalized_mse": 0.029553503046132436,
+        "persistence_normalized_mse": 0.0393067452865095,
+        "mae_by_channel": {
+          "displacement": 1.1724947605692504,
+          "tilt_x": 0.0017598609934807827,
+          "tilt_y": 0.0016684346412524254
+        },
+        "rmse_by_channel": {
+          "displacement": 4.537101373438881,
+          "tilt_x": 0.005178051520026761,
+          "tilt_y": 0.0038611464799072253
+        },
+        "persistence_mae_by_channel": {
+          "displacement": 1.8710103517698549,
+          "tilt_x": 0.0024521128516161476,
+          "tilt_y": 0.0024027582320177063
+        }
+      },
+      {
+        "seed": 44,
+        "n_train_sequences": 48753,
+        "n_validation_sequences": 16248,
+        "normalized_mse": 0.026833656252918163,
+        "persistence_normalized_mse": 0.03771260870182048,
+        "mae_by_channel": {
+          "displacement": 1.362958979988042,
+          "tilt_x": 0.0016502779905420678,
+          "tilt_y": 0.001611953002065242
+        },
+        "rmse_by_channel": {
+          "displacement": 4.886868320088392,
+          "tilt_x": 0.0039782023094901585,
+          "tilt_y": 0.003768552720398848
+        },
+        "persistence_mae_by_channel": {
+          "displacement": 1.85647749530466,
+          "tilt_x": 0.0024600311455094,
+          "tilt_y": 0.00258720448677267
+        }
+      }
+    ],
+    "mean_normalized_mse": 0.027352322523954486,
+    "mean_persistence_normalized_mse": 0.03720146007549597
+  },
+  "beats_persistence": true,
+  "artifact": "models/temporal_model/forecaster_tuned.pt"
+}
