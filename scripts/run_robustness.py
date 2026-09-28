@@ -98,6 +98,11 @@ def main() -> int:
     result: dict = {"protocol": {"train_events": int(train.event_id.nunique()),
                                   "validation_events": int(val.event_id.nunique()),
                                   "features": feature_set, "test_touched": False}}
+    output_path = ROOT / "reports/tuning/robustness.json"
+
+    def checkpoint() -> None:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(result, indent=2, default=float) + "\n", encoding="utf-8")
 
     # Label permutation control: shuffle train targets after the grouped split.
     shuffle_records = []
@@ -117,6 +122,7 @@ def main() -> int:
                                            "mean_macro_pr_auc": float(np.mean([m["pr_auc_macro"] for m in shuffle_records])),
                                            "mean_macro_f1": float(np.mean([m["f1_macro"] for m in shuffle_records])),
                                            "chance_reference": "macro PR-AUC near 1/3; interpretation depends on class prevalence"}
+    checkpoint()
 
     # Learning curve on event-disjoint train/validation partitions. Fractions
     # are sampled within event-level risk strata, never at the window level.
@@ -140,6 +146,7 @@ def main() -> int:
                                "train_metrics": m_train, "validation_metrics": m_val,
                                "macro_pr_auc_gap_train_minus_validation": m_train["pr_auc_macro"] - m_val["pr_auc_macro"]})
     result["learning_curve"] = learning_curve
+    checkpoint()
 
     # Full feature-group ablations using only active, provenance-approved inputs.
     groups = yaml.safe_load((ROOT / "configs/feature_schema_v2.yaml").read_text(encoding="utf-8"))["feature_groups"]
@@ -155,6 +162,7 @@ def main() -> int:
         pred = _pred(prob, thresholds)
         group_results[group] = {"dropped": dropped, "metrics": _metrics(y_val, pred, prob, list(CLASSES))}
     result["feature_group_ablations"] = group_results
+    checkpoint()
 
     # Isolation Forest input-group ablation: fit only healthy training rows and
     # choose each comparison threshold from healthy validation rows.
@@ -183,6 +191,7 @@ def main() -> int:
             "threshold": threshold,
         }
     result["isolation_forest_feature_group_ablations"] = if_ablation
+    checkpoint()
 
     # Native XGBoost TreeSHAP contributions and permutation importance.
     rng = np.random.default_rng(42)
@@ -212,6 +221,7 @@ def main() -> int:
     result["tree_shap"] = {"method": "XGBoost pred_contribs (TreeSHAP)", "sample_rows": len(sample),
                            "top3": top_features}
     result["permutation_importance"] = permutation
+    checkpoint()
 
     # Drop the top SHAP features one at a time and refit.
     top_ablation = []
@@ -222,6 +232,7 @@ def main() -> int:
         p = _prob(fitted, val, kept)
         top_ablation.append({"dropped": dropped_feature, "metrics": _metrics(y_val, _pred(p, thresholds), p, list(CLASSES))})
     result["top_shap_feature_ablations"] = top_ablation
+    checkpoint()
 
     # Repeated grouped CV for the three highest-scoring feasible trial configs.
     study = json.loads((ROOT / "reports/tuning/xgboost_study.json").read_text(encoding="utf-8"))
@@ -253,6 +264,7 @@ def main() -> int:
                             "mean": {k: float(np.mean([f[k] for f in fold_results])
                                              ) for k in ("pr_auc_macro", "recall_critical", "f1_macro", "false_alarm_rate_normal")}})
     result["top3_repeated_grouped_cv"] = repeats
+    checkpoint()
 
     # Scenario recall on validation events. Family IDs are generator metadata, not features.
     pred_val = _pred(p_val, thresholds)
@@ -284,6 +296,7 @@ def main() -> int:
         "note": "Sentinel-1 and DGPS source channels are not present in this development corpus.",
     }
     result["required_scenario_category_recall"] = category_recall
+    checkpoint()
 
     # Workstation-only inference latency and process RSS on a single window.
     probe = val[feature_set].iloc[[0]].to_numpy(dtype=float)
@@ -325,7 +338,9 @@ def main() -> int:
         fframe = pd.read_parquet(ROOT / "data/features/features_v2.parquet")
         first_event = fframe.event_id.iloc[0]
         series = fframe[fframe.event_id == first_event].sort_values("window_index")
-        raw_sequence = series[[f"{c}_mean" for c in channels]].tail(int(fp["history_steps"])).to_numpy(dtype=np.float32)
+        # The persisted feature store already carries Group A's window means
+        # under their canonical names (displacement, tilt_x, tilt_y).
+        raw_sequence = series[list(channels)].tail(int(fp["history_steps"])).to_numpy(dtype=np.float32)
         x = torch.tensor(((raw_sequence - checkpoint["mu"]) / checkpoint["sd"])[None, ...], dtype=torch.float32)
         with torch.no_grad():
             profile_models["forecaster_tuned"] = _latency_profile(lambda: forecaster(x))
@@ -336,9 +351,7 @@ def main() -> int:
         "models": profile_models,
         "note": "workstation CPU/process RSS; sampled RSS is not device peak; no numeric edge budget is defined in PRD NFR-2",
     }
-    OUT = ROOT / "reports/tuning/robustness.json"
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(result, indent=2, default=float) + "\n", encoding="utf-8")
+    checkpoint()
     print(f"wrote {OUT.relative_to(ROOT)}; shuffled macro PR-AUC={result['shuffled_label_control']['mean_macro_pr_auc']:.4f}")
     return 0
 
