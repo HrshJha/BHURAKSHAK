@@ -118,6 +118,9 @@ def save_model_artifact(
             feature_version=fr14["feature_version"],
             training_dataset_version=fr14["training_dataset_version"],
             artifact_path=str(path),
+            provenance_hash=str(extra["provenance_hash"]) if extra and extra.get("provenance_hash") else None,
+            split_name=fr14["split_name"],
+            seed=fr14["seed"],
         )
     except ModelRegistryError as exc:
         # the sidecar + bundle exist; the registry refusal is surfaced, not swallowed
@@ -185,5 +188,6 @@ def load_model_artifact(path: str | Path, *, expected_schema_version: str | None
         "features": list(payload["features"]),
         "preprocessing": preprocessing,
         "fr14": fr14,
+        "extras": {k: v for k, v in payload.items() if k not in {"fr14", "preprocessing", "features", "model", "scaler"}},
         "transform": transform,
     }

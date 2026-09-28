@@ -20,15 +20,17 @@
       "feature_version": "v2",
       "model_name": "subsense_xgboost_risk",
       "model_version": "1.0.0",
-      "registered_at": "2026-09-28T07:28:43.049447+00:00",
+      "registered_at": "2026-09-28T07:51:43.363796+00:00",
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-111/test_load_refuses_schema_misma0/m.joblib",
+      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-128/test_load_refuses_schema_misma0/m.joblib",
       "feature_version": "v2",
       "model_name": "test_model",
       "model_version": "1.0.0",
-      "registered_at": "2026-09-28T07:28:49.172560+00:00",
+      "registered_at": "2026-09-28T08:15:08.660786+00:00",
+      "seed": 42,
+      "split_name": "regime_holdout",
       "training_dataset_version": "synthetic-v2-label-blind"
     }
   ]

@@ -190,8 +190,9 @@ def main() -> int:
             "center_mode": report["center_mode"],
         }
         manifest["sequence_count_note"] = (
-            "Windows are overlapping windows, not independent sequences; count is "
-            "per source event/node series and follows floor((timesteps-window)/stride)+1."
+            "10,000 generated events produce 90,000 overlapping windows at window=60/stride=10, "
+            "below PRD §15's 100,000-500,000 window band. The 4,000,000 planned sequence "
+            "capacity is not achieved data; §10's nine windows per event cap forecasting to horizon 1."
         )
         manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     print(f"executed OK → {NOTEBOOK_PATH.relative_to(REPO_ROOT)}")

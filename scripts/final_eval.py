@@ -70,7 +70,14 @@ def _aligned_prob(model, x: np.ndarray) -> np.ndarray:
 
 
 def _calibrate(prob: np.ndarray, calibration: dict) -> np.ndarray:
-    out = np.column_stack([calibration["models"][c].predict(prob[:, i]) for i, c in enumerate(CLASSES)])
+    columns = []
+    for i, c in enumerate(CLASSES):
+        model = calibration["models"][c]
+        if calibration["method"] == "sigmoid":
+            columns.append(model.predict_proba(prob[:, i].reshape(-1, 1))[:, 1])
+        else:
+            columns.append(model.predict(prob[:, i]))
+    out = np.column_stack(columns)
     out = np.clip(out, 1e-8, 1.0)
     return out / out.sum(axis=1, keepdims=True)
 
@@ -109,7 +116,7 @@ def _class_metrics(y: np.ndarray, prob: np.ndarray, pred: np.ndarray) -> dict:
     }
 
 
-def _alerts(frame: pd.DataFrame, prob: np.ndarray) -> dict:
+def _alerts(frame: pd.DataFrame, prob: np.ndarray, residual_norm: dict, condition_thresholds: dict) -> dict:
     from src.risk.alert_engine import AlertEngine
 
     ordered = frame.reset_index(drop=True).copy()
@@ -123,9 +130,9 @@ def _alerts(frame: pd.DataFrame, prob: np.ndarray) -> dict:
             f"{row.event_id}/{row.node_id}",
             dict(zip(CLASSES, p, strict=True)),
             conditions={
-                "spatial_coherence_above_threshold": bool(np.isfinite(getattr(row, "spatial_coherence", np.nan)) and row.spatial_coherence > 0.5),
+                "spatial_coherence_above_threshold": bool(np.isfinite(getattr(row, "spatial_coherence", np.nan)) and row.spatial_coherence > float(condition_thresholds["spatial_coherence_min"])),
                 "displacement_trend_positive": bool(np.isfinite(row.velocity) and row.velocity > 0),
-                "physics_residual_low": bool(np.isfinite(row.physics_residual) and abs(row.physics_residual) <= 1.0),
+                "physics_residual_low": bool(np.isfinite(row.physics_residual) and abs((row.physics_residual - residual_norm["physics_residual_train_mean"]) / max(residual_norm["physics_residual_train_std"], 1e-12)) <= float(condition_thresholds["physics_residual_abs_z_max"])) ,
                 "neighbour_confirmations": 0,
             },
         )
@@ -218,7 +225,8 @@ def main() -> int:
             "threshold_rule": _class_metrics(y, rule_prob, rule_pred),
         },
         "anomaly_models": {},
-        "alert_engine": _alerts(features, tuned_prob),
+        "alert_engine": _alerts(features, tuned_prob, params["alert_conditions"],
+                                yaml.safe_load((ROOT / "configs/alerts.yaml").read_text(encoding="utf-8"))["condition_thresholds"]),
     }
     for name, artifact_name in (("default", "iforest_default"), ("tuned", "iforest_tuned")):
         artifact = load_model_artifact(model_dir / f"{artifact_name}.joblib", expected_schema_version="v2")

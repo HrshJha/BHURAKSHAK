@@ -32,6 +32,11 @@ matplotlib==3.10.6
 # --- Config & testing (NFR-6, NFR-4) ---
 PyYAML==6.0.3
 pytest==8.4.2
+optuna==5.0.0
+alembic==1.20.0
+colorlog==6.12.0
+Mako==1.4.3
+SQLAlchemy==2.1.1
 
 # --- Used by scripts/ (T-057 downloader; T-080 profiling) ---
 requests==2.34.2

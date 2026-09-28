@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Grouped, development-only hyperparameter search for the physical forecaster.
 
-Risk and anomaly models are intentionally excluded: their current spatial
-feature inputs contain target-derived anomaly labels (see tuning_notes.md).
-The held-out regime test groups are never loaded into the training/evaluation
-frames here.
+Risk and anomaly tuning run in ``scripts/tune_models.py`` using the same
+provenance-approved feature allow-list. The held-out regime test groups are
+never loaded into the training/evaluation frames here.
 """
 from __future__ import annotations
 
@@ -193,7 +192,7 @@ def main() -> int:
         "forecaster": {
             "status": "tuned_on_development_groups" if beats else "search_complete_did_not_beat_persistence",
             **best["params"], "channels": list(CHANNELS), "horizons": list(HORIZONS),
-            "seed": 42, "epochs": EPOCHS, "batch_size": BATCH_SIZE,
+            "seed": 42, "epochs": EPOCHS, "batch_size": int(best["params"]["batch_size"]),
             "cv_mean_normalized_mse": best["mean_normalized_mse"],
             "cv_mean_persistence_normalized_mse": best["mean_persistence_normalized_mse"],
             "search_artifact": "reports/tuning/forecaster_study.json",

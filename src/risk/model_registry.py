@@ -57,6 +57,9 @@ class ModelEntry:
     training_dataset_version: str
     registered_at: str
     artifact_path: str | None = None
+    provenance_hash: str | None = None
+    split_name: str | None = None
+    seed: int | None = None
 
     def to_dict(self) -> dict[str, Any]:
         out = {
@@ -68,6 +71,12 @@ class ModelEntry:
         }
         if self.artifact_path is not None:
             out["artifact_path"] = self.artifact_path
+        if self.provenance_hash is not None:
+            out["provenance_hash"] = self.provenance_hash
+        if self.split_name is not None:
+            out["split_name"] = self.split_name
+        if self.seed is not None:
+            out["seed"] = self.seed
         return out
 
 
@@ -101,6 +110,9 @@ class ModelRegistry:
                     training_dataset_version=raw["training_dataset_version"],
                     registered_at=raw["registered_at"],
                     artifact_path=raw.get("artifact_path"),
+                    provenance_hash=raw.get("provenance_hash"),
+                    split_name=raw.get("split_name"),
+                    seed=int(raw["seed"]) if raw.get("seed") is not None else None,
                 )
                 self._entries[self._key(entry.model_name, entry.model_version)] = entry
 
@@ -146,6 +158,9 @@ class ModelRegistry:
         feature_version: str,
         training_dataset_version: str,
         artifact_path: str | None = None,
+        provenance_hash: str | None = None,
+        split_name: str | None = None,
+        seed: int | None = None,
         now: datetime | None = None,
     ) -> ModelEntry:
         """Register a model; the dataset version must resolve (§10.1/§30)."""
@@ -166,6 +181,9 @@ class ModelRegistry:
             training_dataset_version=str(training_dataset_version),
             registered_at=ts,
             artifact_path=artifact_path,
+            provenance_hash=str(provenance_hash) if provenance_hash else None,
+            split_name=str(split_name) if split_name else None,
+            seed=int(seed) if seed is not None else None,
         )
         with self._lock:
             self._entries[self._key(entry.model_name, entry.model_version)] = entry

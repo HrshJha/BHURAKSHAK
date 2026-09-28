@@ -239,6 +239,11 @@ def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
             pred[mask_crit & (aligned[:, warning_i] >= params["warning_threshold"])] = "WARNING"
             m = _metrics(yv, pred, aligned, labels)
             far_values.append(m["false_alarm_rate_normal"])
+            if far_values[-1] > lr_far[fi] + 1e-12:
+                trial.set_user_attr("fold_false_alarm_rates", far_values)
+                trial.set_user_attr("lr_false_alarm_rates", lr_far)
+                trial.set_user_attr("false_alarm_constraint_pass", False)
+                raise optuna.TrialPruned("validation NORMAL false-alarm rate exceeded logistic baseline")
             score = 0.5 * m["pr_auc_macro"] + 0.3 * m["recall_critical"] + 0.2 * m["f1_macro"]
             fold_scores.append(score)
             trial.report(float(np.mean(fold_scores)), step=fi)
@@ -247,8 +252,7 @@ def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
         trial.set_user_attr("fold_false_alarm_rates", far_values)
         trial.set_user_attr("best_iterations", best_iterations)
         trial.set_user_attr("false_alarm_constraint_pass", bool(np.all(np.array(far_values) <= np.array(lr_far) + 1e-12)))
-        if not trial.user_attrs["false_alarm_constraint_pass"]:
-            return -1.0
+        trial.set_user_attr("false_alarm_constraint_pass", True)
         trial.set_user_attr("lr_false_alarm_rates", lr_far)
         return float(np.mean(fold_scores))
 

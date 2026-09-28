@@ -54,6 +54,17 @@ def test_registered_models_persist_in_the_registry_file(registry: ModelRegistry)
     assert entry.model_version == "0.1.0"
 
 
+def test_provenance_hash_is_persisted_with_registered_artifact(registry: ModelRegistry) -> None:
+    entry = registry.register_model(**entry_kwargs(), provenance_hash="a" * 64, split_name="train", seed=42)
+    reloaded = ModelRegistry(path=registry.path, manifest_paths=DEFAULT_MANIFEST_PATHS,
+                             predictions_path=registry.predictions_path)
+    assert entry.provenance_hash == "a" * 64
+    loaded = reloaded.get_entry(entry.model_name, entry.model_version)
+    assert loaded.provenance_hash == "a" * 64
+    assert loaded.split_name == "train"
+    assert loaded.seed == 42
+
+
 def test_dataset_version_must_resolve_to_an_existing_manifest(registry: ModelRegistry, tmp_path) -> None:
     with pytest.raises(ModelRegistryError, match="does not resolve"):
         registry.register_model(**entry_kwargs(training_dataset_version="v999.0.0"))

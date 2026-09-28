@@ -269,6 +269,8 @@ def train_temporal_forecaster(
     epochs: int = 30,
     batch_size: int = 256,
     learning_rate: float = 1e-3,
+    dropout: float = 0.0,
+    weight_decay: float = 0.0,
     seed: int = 42,
 ) -> TemporalForecaster:
     """Fit a TCN/GRU/LSTM forecaster for PHYSICAL channel values.
@@ -328,6 +330,7 @@ def train_temporal_forecaster(
             self.architecture = architecture
             self.backbone = _build_torch(architecture, n_ch, width, depth)
             self.head = nn.Linear(width if architecture != "tcn" else width, len(horizons) * n_ch)
+            self.dropout = nn.Dropout(float(dropout))
             if architecture == "tcn":
                 self.tcn_proj = nn.Linear(width, width)  # (N, width, T) → last-step head
 
@@ -338,10 +341,10 @@ def train_temporal_forecaster(
             else:
                 out, _ = self.backbone(x)
                 last = out[:, -1, :]
-            return self.head(last).reshape(-1, len(horizons), n_ch)  # (N, H, C)
+            return self.head(self.dropout(last)).reshape(-1, len(horizons), n_ch)  # (N, H, C)
 
     module = ForecasterModule()
-    opt = torch.optim.Adam(module.parameters(), lr=learning_rate)
+    opt = torch.optim.Adam(module.parameters(), lr=learning_rate, weight_decay=weight_decay)
     loss_fn = nn.MSELoss()
 
     x_va_t = torch.tensor((x_va - mu) / sd, dtype=torch.float32) if len(x_va) else None
