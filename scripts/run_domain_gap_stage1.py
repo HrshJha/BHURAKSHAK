@@ -48,7 +48,7 @@ from src.evaluation.splits import assert_no_leakage, synthetic_split  # noqa: E4
 from src.risk.xgboost_model import train_risk_model  # noqa: E402
 
 OUT_JSON = REPO_ROOT / "experiments" / "domain_gap_stage1.json"
-STORE = REPO_ROOT / "data" / "features" / "features_v1.parquet"
+STORE = REPO_ROOT / "data" / "features" / "features_v2.parquet"
 EVENTS_META = REPO_ROOT / "data" / "synthetic" / "synthetic_events.csv"
 STRIDE_HOURS = 0.6
 EVENT_DAYS = 1.0

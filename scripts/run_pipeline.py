@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""T-081 — run the full §7 chain end-to-end on held-out (test-split) data.
+"""T-081 — run the full §7 chain on development (train/validation) data.
 
 Acceptance (TASKS.md T-081): `python scripts/run_pipeline.py` runs the full
 chain (validation → features → Isolation Forest → spatial fusion → physics
-check → XGBoost → alert engine → explainability) on held-out data. Every
-stage is the module that owns it (provenance recorded in the result); the
-TEST split is scored exactly once, after all fitting is done.
+check → XGBoost → alert engine → explainability) on development data. The old
+test split is burned; the new locked corpus is read only by final_eval.py.
 """
 
 from __future__ import annotations
@@ -29,23 +28,23 @@ def main() -> int:
 
     result = run_pipeline(raw, coords)
 
-    test = result.scored_test
+    validation = result.scored_validation
     summary = {
         "validation": result.validation,
         "n_windows": int(result.feature_report.n_windows),
         "n_features": len(result.feature_report.features),
         "if_features": len(result.if_model.features),
         "xgb_features": len(result.risk_model.features),
-        "test_windows_scored": int(len(test)),
-        "predicted_level_counts": test["predicted_level"].value_counts().to_dict(),
-        "alert_level_counts": test["alert_level"].value_counts().to_dict(),
+        "validation_windows_scored": int(len(validation)),
+        "predicted_level_counts": validation["predicted_level"].value_counts().to_dict(),
+        "alert_level_counts": validation["alert_level"].value_counts().to_dict(),
         "explanations_emitted": len(result.explanations),
         "provenance": result.provenance,
     }
 
     OUT_JSON.parent.mkdir(exist_ok=True)
     OUT_JSON.write_text(json.dumps(summary, indent=2, default=str))
-    print("\n=== held-out (test) summary ===")
+    print("\n=== development validation summary (not test evidence) ===")
     for k, v in summary.items():
         if k != "provenance":
             print(f"{k}: {v}")

@@ -46,11 +46,11 @@
         "change_point_score"
       ],
       "n_training_windows": 35964,
-      "threshold": 0.7135970648983125,
+      "threshold": 0.7136874540540569,
       "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
       "test_far_healthy": 0.006998011928429424,
-      "test_detection_anomalous": 0.5511627906976744,
-      "test_auc": 0.9907336908779879
+      "test_detection_anomalous": 0.5716279069767441,
+      "test_auc": 0.9918229044338619
     },
     "C_add_spatial": {
       "feature_groups": [
@@ -58,7 +58,7 @@
         "B_add_temporal",
         "C_add_spatial"
       ],
-      "n_features": 23,
+      "n_features": 15,
       "features": [
         "tilt_x",
         "tilt_y",
@@ -74,33 +74,25 @@
         "acceleration",
         "trend",
         "persistence",
-        "change_point_score",
-        "neighbor_mean",
-        "neighbor_std",
-        "neighbor_anomaly_fraction",
-        "spatial_coherence",
-        "local_gradient",
-        "local_strain",
-        "hotspot_density",
-        "distance_to_subsidence_center"
+        "change_point_score"
       ],
       "n_training_windows": 35964,
-      "threshold": 0.714243313677879,
+      "threshold": 0.7136874540540569,
       "threshold_rule": "p0.99 of validation healthy scores (false-alarm \u2248 0.01)",
-      "test_far_healthy": 0.006918489065606362,
-      "test_detection_anomalous": 0.6804651162790698,
-      "test_auc": 0.9948310231633456
+      "test_far_healthy": 0.006998011928429424,
+      "test_detection_anomalous": 0.5716279069767441,
+      "test_auc": 0.9918229044338619
     }
   },
   "verdict": {
     "question": "does adding spatial coherence reduce false alarms?",
     "far_A_physical": 0.0033399602385685884,
     "far_B_add_temporal": 0.006998011928429424,
-    "far_C_add_spatial": 0.006918489065606362,
+    "far_C_add_spatial": 0.006998011928429424,
     "far_reduced_B_over_A": false,
-    "far_reduced_C_over_B": true,
+    "far_reduced_C_over_B": false,
     "auc_A": 0.9709750890008786,
-    "auc_B": 0.9907336908779879,
-    "auc_C": 0.9948310231633456
+    "auc_B": 0.9918229044338619,
+    "auc_C": 0.9918229044338619
   }
 }

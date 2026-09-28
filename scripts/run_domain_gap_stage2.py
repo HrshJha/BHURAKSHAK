@@ -59,7 +59,7 @@ OUT_JSON = REPO_ROOT / "experiments" / "domain_gap_stage2.json"
 RAW_LOG = REPO_ROOT / "data" / "recorded" / "tabletop" / "raw_sensor_log.csv"
 METADATA = REPO_ROOT / "data" / "recorded" / "tabletop" / "trial_metadata.csv"
 WINDOWED_REF = REPO_ROOT / "data" / "recorded" / "tabletop" / "processed_windowed_dataset.csv"
-STORE = REPO_ROOT / "data" / "features" / "features_v1.parquet"
+STORE = REPO_ROOT / "data" / "features" / "features_v2.parquet"
 SPLITS = REPO_ROOT / "data" / "features" / "split_assignment.csv"
 
 BRIDGE_CHANNELS = ("tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain", "vibration_rms")

@@ -111,10 +111,17 @@ def emit_group_b(
 
             # trend: the window slope re-expressed as total change over the window
             block[f"{ch}_trend"] = g[slope_col].to_numpy(dtype=float) * (window_steps - 1.0)
-            # persistence: autocorrelation-like stickiness of the in-window level
-            block[f"{ch}_persistence"] = _persistence(series_means)
-            # change-point score: |level now − median history| in window-std units
-            block[f"{ch}_change_point_score"] = _change_point(series_means, rolled_std)
+            # Both features are causal: the value for window i can only use
+            # windows through i. A full-series scalar repeated on every row
+            # leaks later windows into earlier predictions.
+            block[f"{ch}_persistence"] = np.asarray(
+                [_persistence(series_means[: i + 1]) for i in range(len(series_means))],
+                dtype=float,
+            )
+            block[f"{ch}_change_point_score"] = np.asarray(
+                [_change_point(series_means[: i + 1], rolled_std[: i + 1]) for i in range(len(series_means))],
+                dtype=float,
+            )
 
         out_frames.append(block)
 

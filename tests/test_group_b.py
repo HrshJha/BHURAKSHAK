@@ -93,6 +93,22 @@ def test_persistence_and_change_point_bounded() -> None:
     assert (out["displacement_change_point_score"] >= 0).all()
 
 
+def test_temporal_features_are_causal_under_future_truncation() -> None:
+    full = emit_group_b(_multi_series())
+    prefix_input = _multi_series()
+    prefix_input = prefix_input[prefix_input["window_index"] <= 4]
+    prefix = emit_group_b(prefix_input)
+    causal = [
+        "displacement_persistence",
+        "displacement_change_point_score",
+        "displacement_rolling_mean",
+        "displacement_rolling_std",
+    ]
+    left = full[full["window_index"] <= 4].sort_values(["event_id", "node_id", "window_index"])
+    right = prefix.sort_values(["event_id", "node_id", "window_index"])
+    pd.testing.assert_frame_equal(left[causal].reset_index(drop=True), right[causal].reset_index(drop=True))
+
+
 def test_grouped_by_series_even_when_input_shuffled() -> None:
     windowed = _multi_series().sample(frac=1.0, random_state=0)
     out = emit_group_b(windowed)

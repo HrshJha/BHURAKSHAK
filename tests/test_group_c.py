@@ -126,15 +126,10 @@ def test_distance_to_center_detected_mode_is_inference_safe() -> None:
     )
 
 
-def test_distance_to_center_oracle_mode_uses_panel_centre() -> None:
+def test_oracle_mode_is_refused_for_model_features() -> None:
     windowed, coords = _small_mesh({"V0012"})
-    out = emit_group_c(windowed, coords, center_mode="oracle")
-    assert (out["center_mode"] == "oracle").all()
-    last = out[out["window_index"] == 8]
-    row = last[last["node_id"] == "V0012"].iloc[0]
-    assert row["distance_to_subsidence_center"] == pytest.approx(0.0), (
-        "V0012 sits at the configured panel centre (0, 0)"
-    )
+    with pytest.raises(SpatialFeatureError, match="oracle"):
+        emit_group_c(windowed, coords, center_mode="oracle")
 
 
 def test_no_anomaly_falls_back_to_max_displacement_node() -> None:
@@ -143,6 +138,25 @@ def test_no_anomaly_falls_back_to_max_displacement_node() -> None:
     last = out[out["window_index"] == 8]
     assert last["distance_to_subsidence_center"].notna().all()
     assert (out["center_mode"] == "detected").all()
+
+
+def test_single_node_snapshot_gates_all_spatial_context() -> None:
+    windowed, coords = _small_mesh({"V0012"})
+    one = windowed[windowed["node_id"] == "V0012"]
+    one_coord = coords[coords["node_id"] == "V0012"]
+    out = emit_group_c(one, one_coord)
+    assert out[list(GROUP_C_FEATURES)].isna().all().all()
+    assert out["center_mode"].eq("gated_no_cotemporal_neighbors").all()
+    assert out["spatial_gate_reason"].eq("single-node events, no co-temporal neighbours").all()
+
+
+def test_group_c_ignores_permuted_anomaly_labels() -> None:
+    windowed, coords = _small_mesh({"V0012"})
+    first = emit_group_c(windowed, coords)
+    changed = windowed.copy()
+    changed["anomaly_label"] = np.random.default_rng(81).permutation(changed["anomaly_label"].to_numpy())
+    second = emit_group_c(changed, coords)
+    pd.testing.assert_frame_equal(first, second)
 
 
 def test_invalid_center_mode_raises() -> None:

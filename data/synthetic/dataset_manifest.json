@@ -10,7 +10,7 @@
     ],
     "injection_rate": 0.35
   },
-  "feature_schema_version": "v1",
+  "feature_schema_version": "v2",
   "generator_version": "sim-0.1.0",
   "noise_parameters": {
     "displacement_noise_std": 0.5,
@@ -114,5 +114,6 @@
     },
     "note": "pre-fixall split assignment (exact per-event) preserved at git tag pre-fixall; distribution reproduced, per-event assignment superseded",
     "dataset_version_note": "v1.0 -> v1.1: split_assignment.csv regenerated with two named splits; synthetic_nodes/events CSVs byte-unchanged (same seed 42)"
-  }
+  },
+  "dataset_version_note": "; feature_schema_version aligned to the live v2 schema (configs/feature_schema_v2.yaml)"
 }

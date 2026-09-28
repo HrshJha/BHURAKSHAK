@@ -1,0 +1,38 @@
+{
+  "validation": {
+    "n_rows": 1440000,
+    "missing": 0,
+    "duplicate": 0,
+    "out_of_order": 0,
+    "corrupted": 39829,
+    "flagged_rows": 39829,
+    "series": 10000
+  },
+  "n_windows": 90000,
+  "n_features": 61,
+  "if_features": 23,
+  "xgb_features": 42,
+  "test_windows_scored": 16875,
+  "predicted_level_counts": {
+    "NORMAL": 10158,
+    "WARNING": 6042,
+    "CRITICAL": 675
+  },
+  "alert_level_counts": {
+    "GREEN": 10094,
+    "WARNING": 4596,
+    "WATCH": 2133,
+    "CRITICAL": 52
+  },
+  "explanations_emitted": 16875,
+  "provenance": {
+    "validation": "src.preprocessing.validation.validate_packets",
+    "features": "src.features.build_feature_store.build_feature_store",
+    "isolation_forest": "src.anomaly.isolation_forest.train_isolation_forest",
+    "spatial_fusion": "src.features.group_c_spatial.emit_group_c (fused in build_feature_store)",
+    "physics_check": "src.physics.consistency.physics_engine",
+    "xgboost": "src.risk.xgboost_model.train_risk_model",
+    "alert_engine": "src.risk.alert_engine.AlertEngine.update",
+    "explainability": "src.risk.explainability.emit_risk_output"
+  }
+}

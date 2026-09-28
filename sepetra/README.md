@@ -6,17 +6,17 @@
 
 | metric | value |
 |---|---|
-| accuracy | 0.437 |
-| precision (binary alert) | 0.383 |
-| recall (binary alert) | 0.582 |
-| F1 (binary alert) | 0.462 |
-| precision (macro) | 0.418 |
-| recall (macro) | 0.437 |
-| F1 (macro) | 0.355 |
-| PR-AUC (CRITICAL vs rest) | 0.455 |
-| ROC-AUC (CRITICAL vs rest) | 0.687 |
-| Brier (P-CRITICAL) | 0.5729 |
-| ECE (P-CRITICAL) | 0.2663 |
+| accuracy | 0.530 |
+| precision (binary alert) | 0.500 |
+| recall (binary alert) | 0.978 |
+| F1 (binary alert) | 0.662 |
+| precision (macro) | 0.423 |
+| recall (macro) | 0.530 |
+| F1 (macro) | 0.441 |
+| PR-AUC (CRITICAL vs rest) | 0.339 |
+| ROC-AUC (CRITICAL vs rest) | 0.562 |
+| Brier (P-CRITICAL) | 0.6436 |
+| ECE (P-CRITICAL) | 0.2985 |
 
 **Why two precisions?** The *binary* view scores the operational question “did the mesh raise an alert on a disturbed window?”; the *macro* view scores the 3-class risk grading. Both are reported — accuracy alone would flatter a model that never warns (NORMAL dominates this mesh), which is why the repo's §24 headline set omits it while this report shows it with context.
 
@@ -24,9 +24,9 @@
 
 | class | support | precision | recall | F1 |
 |---|---|---|---|---|
-| CRITICAL | 5,625 | 0.443 | 0.053 | 0.094 |
-| NORMAL | 5,625 | 0.517 | 0.950 | 0.669 |
-| WARNING | 5,625 | 0.295 | 0.307 | 0.301 |
+| CRITICAL | 5,625 | 0.187 | 0.026 | 0.046 |
+| NORMAL | 5,625 | 0.645 | 0.971 | 0.775 |
+| WARNING | 5,625 | 0.437 | 0.591 | 0.502 |
 
 ## Graphs (`graphs/`)
 
@@ -42,9 +42,9 @@
 
 ## Operational summary
 
-- Median lead time on alerted events: 0.0 h (P10 0.0 h).
-- Events alerted: 199 of 1875.
-- Mean false-alarm windows per event: 0.15.
+- Median lead time on alerted events: 0.6 h (P10 0.6 h).
+- Events alerted: 380 of 1875.
+- Mean false-alarm windows per event: 0.20.
 
 ## Reproduce
 

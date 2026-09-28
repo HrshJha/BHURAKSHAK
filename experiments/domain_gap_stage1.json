@@ -1,7 +1,7 @@
 {
   "metadata": {
     "task": "T-073 (\u00a723.2 domain-gap Stage 1: synthetic \u2192 synthetic)",
-    "store": "data/features/features_v1.parquet",
+    "store": "data/features/features_v2.parquet",
     "alert_threshold_p_critical": 0.5,
     "axes": {
       "literal_synthetic_split": {
@@ -64,16 +64,16 @@
           "recall": 0.0,
           "f1": 0.0,
           "tp": 0,
-          "fp": 130,
+          "fp": 61,
           "fn": 10625,
-          "tn": 59823,
-          "pr_auc": 0.11057942722167827,
-          "macro_f1_risk3": 0.3267576639932855,
+          "tn": 59892,
+          "pr_auc": 0.12569526479057994,
+          "macro_f1_risk3": 0.3180970377408207,
           "critical_prevalence": 0.03583269574088243
         },
         "calibration": {
-          "brier": 0.056870414723122105,
-          "ece": 0.024244564090630045
+          "brier": 0.058564726281244955,
+          "ece": 0.022302906332452684
         },
         "temporal": {
           "median_lead_time_hours": NaN,
@@ -81,7 +81,7 @@
           "n_events_with_lead": 0,
           "n_missed_events": 3125,
           "missed_event_rate": 1.0,
-          "false_alarms_per_day": 0.016577403723539913
+          "false_alarms_per_day": 0.007778627901045652
         }
       },
       "validation": {
@@ -101,8 +101,8 @@
           "critical_prevalence": 0.3291139240506329
         },
         "calibration": {
-          "brier": 0.49884727850312655,
-          "ece": 0.2206024035455138
+          "brier": 0.4954836334894684,
+          "ece": 0.21791957987344046
         },
         "temporal": {
           "median_lead_time_hours": null,
@@ -122,16 +122,16 @@
           "recall": 0.0,
           "f1": 0.0,
           "tp": 0,
-          "fp": 9,
+          "fp": 2,
           "fn": 8527,
-          "tn": 9464,
-          "pr_auc": 0.4843170205335422,
-          "macro_f1_risk3": 0.0,
+          "tn": 9471,
+          "pr_auc": 0.4828404126697714,
+          "macro_f1_risk3": 0.00011341726210729273,
           "critical_prevalence": 0.347
         },
         "calibration": {
-          "brier": 0.6764937371624498,
-          "ece": 0.33406911305586506
+          "brier": 0.6757363089998865,
+          "ece": 0.33242463271485434
         },
         "temporal": {
           "median_lead_time_hours": NaN,
@@ -139,7 +139,7 @@
           "n_events_with_lead": 0,
           "n_missed_events": 1389,
           "missed_event_rate": 1.0,
-          "false_alarms_per_day": 0.0045
+          "false_alarms_per_day": 0.001
         }
       }
     }
@@ -177,13 +177,13 @@
           "fp": 0,
           "fn": 11375,
           "tn": 67735,
-          "pr_auc": 0.11604396738650616,
+          "pr_auc": 0.13971218730559495,
           "macro_f1_risk3": 0.29258431748058306,
           "critical_prevalence": 0.07463026166097839
         },
         "calibration": {
-          "brier": 0.10962519215978371,
-          "ece": 0.0683207888689705
+          "brier": 0.13044237995552024,
+          "ece": 0.04176085776285766
         },
         "temporal": {
           "median_lead_time_hours": NaN,
@@ -205,13 +205,13 @@
           "fp": 0,
           "fn": 3194,
           "tn": 2179,
-          "pr_auc": 0.6452804277160447,
+          "pr_auc": 0.5462549964810386,
           "macro_f1_risk3": 0.0,
           "critical_prevalence": 0.2897822445561139
         },
         "calibration": {
-          "brier": 0.42331082939404324,
-          "ece": 0.25332380645705094
+          "brier": 0.49714128989690803,
+          "ece": 0.20602899412635806
         },
         "temporal": {
           "median_lead_time_hours": NaN,
@@ -233,13 +233,13 @@
           "fp": 0,
           "fn": 4583,
           "tn": 934,
-          "pr_auc": 0.8643806971562727,
+          "pr_auc": 0.8009225754741932,
           "macro_f1_risk3": 0.0,
           "critical_prevalence": 0.32300163132137033
         },
         "calibration": {
-          "brier": 0.5108758311564716,
-          "ece": 0.30861367095914766
+          "brier": 0.5631080958176391,
+          "ece": 0.25122118672534605
         },
         "temporal": {
           "median_lead_time_hours": NaN,

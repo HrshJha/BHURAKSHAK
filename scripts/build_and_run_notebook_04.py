@@ -61,7 +61,7 @@ sys.path.insert(0, str(Path.cwd().parent))
 from src.anomaly.isolation_forest import train_isolation_forest
 from src.config import anomaly_config
 
-FEATURES_PATH = Path.cwd().parent / "data" / "features" / "features_v1.parquet"
+FEATURES_PATH = Path.cwd().parent / "data" / "features" / "features_v2.parquet"
 SPLIT_PATH = Path.cwd().parent / "data" / "features" / "split_assignment.csv"
 
 df = pd.read_parquet(FEATURES_PATH)

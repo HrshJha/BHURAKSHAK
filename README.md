@@ -2,11 +2,11 @@
 
 **Team:** zero chill · **SIH 2026 PS 26025** (Ministry of Coal / Coal India Limited) · Category: Hardware · Theme: Smart Automation
 
-SubSense is a low-cost, distributed IoT + ML system that continuously monitors surface deformation above underground coal-mine panels, detects abnormal ground behavior, estimates a calibrated subsidence-risk state (GREEN / WATCH / WARNING / CRITICAL), and issues early warnings before deformation becomes hazardous.
+SubSense is a prototype repository for mine-subsidence sensing and modeling. Its current pipeline uses a synthetic corpus; it has no valid post-leakfix risk-model results or demonstrated real-mine performance.
 
 This repository contains the **Data + ML workstream**: the physics-coupled synthetic-data generator, feature store, Isolation Forest anomaly detection, XGBoost risk classification, physics-consistency engine, and the alert state machine. Hardware, LoRa networking, the Raspberry Pi gateway, MQTT, the FastAPI backend, databases, the GIS dashboard, OTA and alert hardware are separate workstreams (see `TASKS.md` → "Excluded by Scope").
 
-> The primary AI claim, stated precisely to avoid overclaiming: the system detects abnormal, spatially coherent deformation and estimates a calibrated subsidence-risk state from multimodal sensor and geodetic observations. It does **not** claim exact time-to-collapse prediction.
+> Current status: leakage remediation and re-tuning are in progress. Previous risk-model, ablation, domain-gap, and test-set numbers are archived as `superseded_leaky` and are not results. Group C spatial features are gated because the current corpus has one node per event.
 
 ## Honesty Statement
 
@@ -41,7 +41,7 @@ python3 scripts/check_tree.py
 ## Repository layout
 
 ```text
-configs/       sampling.yaml, alerts.yaml, physics.yaml, feature_schema_v1.yaml (NFR-6: nothing hard-coded)
+configs/       sampling.yaml, alerts.yaml, physics.yaml, feature_schema_v2.yaml (NFR-6: nothing hard-coded)
 src/simulator/ physics-coupled synthetic-data generator (PRD §10)
 src/preprocessing/  schema, labels, validation, resampling, clock drift (PRD §9, §11, §12)
 src/features/  windowing + feature groups A–J (PRD §13)
@@ -62,3 +62,8 @@ models/        isolation_forest | xgboost | temporal_model
 - `PROGRESS_LOG.md` — append-only execution log, one entry per pass.
 
 All risk thresholds, sampling rates and escalation rules are configuration-driven (NFR-6) and asserted by test: `tests/test_config_loader.py` fails if §21.1 threshold literals appear under `src/` outside the loader.
+
+
+## Current model status
+
+No model-performance table is active until the leakage-free baselines, grouped tuning, robustness checks, and one-time locked evaluation are complete. Results from this repository remain synthetic-corpus results.

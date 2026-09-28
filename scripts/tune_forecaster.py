@@ -25,7 +25,7 @@ sys.path.insert(0, str(ROOT))
 from src.config import model_params_config
 from src.forecasting.temporal_model import _build_multi_horizon, train_temporal_forecaster
 
-STORE = ROOT / "data/features/features_v1.parquet"
+STORE = ROOT / "data/features/features_v2.parquet"
 SPLITS = ROOT / "data/features/split_assignment.csv"
 OUT = ROOT / "reports/tuning"
 PARAMS_PATH = ROOT / "configs/model_params.yaml"

@@ -71,6 +71,14 @@ def test_sampling_config_reachable_through_loader() -> None:
     assert "channels" in sampling_config()
 
 
+def test_velocity_and_acceleration_units_are_explicit() -> None:
+    units = load_config("feature_schema")["units"]
+    assert units["B_temporal"]["velocity"] == "mm/hour"
+    assert units["B_temporal"]["acceleration"] == "mm/hour^2"
+    assert units["G_dgps"]["velocity"] == "mm/year"
+    assert units["G_dgps"]["acceleration"] == "mm/year^2"
+
+
 def test_preprocessing_config_reachable_through_loader() -> None:
     prep = load_config("preprocessing")
     assert prep["windowing"]["window_steps"] == 60  # §10 windowing

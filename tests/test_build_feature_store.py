@@ -12,6 +12,8 @@ from src.features.build_feature_store import (
     check_feature_budget,
     feature_names,
 )
+from src.features.group_c_spatial import GROUP_C_FEATURES
+from src.features.provenance import assert_group_registered, assert_registered, model_input_allowlist
 from src.features.windowing import build_windows
 
 INTERVAL = 10.0 / 60.0
@@ -102,10 +104,86 @@ def test_group_f_residual_consistent_with_inputs() -> None:
     assert (first["physics_residual_velocity"] == 0.0).all()
 
 
-def test_group_c_distance_uses_oracle_on_synthetic() -> None:
+def test_group_c_mode_is_recorded_in_artifact(tmp_path) -> None:
     raw, coords = _raw()
-    model, _ = build_feature_store(raw, coords)
-    assert (model["center_mode"] == "oracle").all()
+    model, report = build_feature_store(raw, coords)
+    artifact = tmp_path / "features.parquet"
+    model.to_parquet(artifact, index=False)
+    restored = pd.read_parquet(artifact)
+    assert report.center_mode == "detected"
+    assert restored["center_mode"].isin(["detected", "gated_no_cotemporal_neighbors"]).all()
+    assert set(report.gated_features) == set(GROUP_C_FEATURES)
+
+
+def test_model_feature_build_refuses_oracle_mode() -> None:
+    raw, coords = _raw()
+    with pytest.raises(ValueError, match="oracle"):
+        build_feature_store(raw, coords, center_mode="oracle")
+
+
+def test_label_blind_and_permuted_labels_leave_features_identical() -> None:
+    raw, coords = _raw()
+    raw["scenario_family"] = "train_only_metadata"
+    raw["true_panel_amplitude"] = 999.0
+    baseline, _ = build_feature_store(raw, coords)
+    feature_cols = feature_names()
+
+    blind_raw = raw.drop(columns=[c for c in raw if c.endswith("_label") or c in {"scenario_family", "true_panel_amplitude"}])
+    blind, _ = build_feature_store(blind_raw, coords)
+    pd.testing.assert_frame_equal(
+        baseline[feature_cols].reset_index(drop=True), blind[feature_cols].reset_index(drop=True)
+    )
+
+    shuffled = raw.copy()
+    rng = np.random.default_rng(20260929)
+    for label in ("anomaly_label", "risk_label", "progression_label", "fault_label"):
+        shuffled[label] = rng.permutation(shuffled[label].to_numpy())
+    changed, _ = build_feature_store(shuffled, coords)
+    pd.testing.assert_frame_equal(
+        baseline[feature_cols].reset_index(drop=True), changed[feature_cols].reset_index(drop=True)
+    )
+
+
+def test_all_feature_store_columns_have_provenance_and_gated_c_is_not_allowed() -> None:
+    names = feature_names()
+    assert_registered(names)
+    allowlist = model_input_allowlist(names)
+    assert not (set(names) - allowlist - {name for name in names if name.startswith(("neighbor_", "spatial_", "local_", "hotspot_", "distance_to_subsidence_center"))})
+
+
+def test_every_group_emitter_feature_has_group_provenance() -> None:
+    from src.features.group_a_physical import GROUP_A_FEATURES
+    from src.features.group_b_temporal import GROUP_B_FEATURES
+    from src.features.group_d_vibration import GROUP_D_FEATURES
+    from src.features.group_e_health import GROUP_E_FEATURES
+    from src.features.group_f_physics import GROUP_F_FEATURES
+    from src.features.group_g_dgps import GROUP_G_FEATURES
+    from src.features.group_h_insar import GROUP_H_FEATURES
+    from src.features.group_i_terrain import GROUP_I_FEATURES
+    from src.features.group_j_environmental import GROUP_J_FEATURES
+
+    for group, names in (
+        ("A_physical", GROUP_A_FEATURES), ("B_temporal", GROUP_B_FEATURES),
+        ("C_spatial", GROUP_C_FEATURES), ("D_vibration", GROUP_D_FEATURES),
+        ("E_sensor_health", GROUP_E_FEATURES), ("F_physics", GROUP_F_FEATURES),
+        ("G_dgps", GROUP_G_FEATURES), ("H_insar", GROUP_H_FEATURES),
+        ("I_terrain", GROUP_I_FEATURES), ("J_environmental", GROUP_J_FEATURES),
+    ):
+        assert_group_registered(group, names)
+
+
+def test_feature_store_is_causal_when_future_rows_are_truncated() -> None:
+    raw, coords = _raw()
+    full, _ = build_feature_store(raw, coords)
+    prefix_raw = raw.groupby(["event_id", "node_id"], sort=False, group_keys=False).head(80)
+    prefix, _ = build_feature_store(prefix_raw, coords)
+    cols = feature_names()
+    prefix_end = int(prefix["window_index"].max())
+    full_prefix = full[full["window_index"] <= prefix_end].sort_values(["event_id", "node_id", "window_index"])
+    prefix = prefix.sort_values(["event_id", "node_id", "window_index"])
+    pd.testing.assert_frame_equal(
+        full_prefix[cols].reset_index(drop=True), prefix[cols].reset_index(drop=True)
+    )
 
 
 def test_missing_feature_raises_loudly(monkeypatch: pytest.MonkeyPatch) -> None:

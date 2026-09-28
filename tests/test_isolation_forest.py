@@ -117,10 +117,20 @@ def test_ablation_feature_sets_resolve_in_order() -> None:
 
     full = _resolve_features(["A_physical", "B_add_temporal", "C_add_spatial"])
     assert full[:5] == ["tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain"]
-    assert "spatial_coherence" in full and "rolling_mean" in full
-    assert len(full) == 23  # 5 + 10 + 8 (§14 ablation groups, deduplicated)
+    assert "rolling_mean" in full
+    assert not any(name in full for name in (
+        "neighbor_mean", "neighbor_std", "neighbor_anomaly_fraction", "spatial_coherence",
+        "local_gradient", "local_strain", "hotspot_density", "distance_to_subsidence_center",
+    )), "Group C is gated because this corpus has no co-temporal neighbours"
+    assert len(full) == 15  # 5 + 10; Group C is gated on this corpus (Phase 2, §13/§14)
     a_only = _resolve_features(["A_physical"])
     assert a_only == ["tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain"]
+
+
+def test_gated_spatial_only_ablation_fails_clearly() -> None:
+    from src.anomaly.isolation_forest import _resolve_features
+
+    assert _resolve_features(["C_add_spatial"]) == []
 
 
 def test_unknown_feature_group_raises() -> None:

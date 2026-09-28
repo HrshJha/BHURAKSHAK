@@ -7,7 +7,7 @@
     "raw_log_rows": 1200000,
     "windows": 14552
   },
-  "feature_schema_version": "v1",
+  "feature_schema_version": "v2",
   "split_definition": {
     "type": "trial_holdout",
     "note": "TRAIN_TRIALS/VAL_TRIALS/TEST_TRIALS in scripts/train_tabletop_models.py (trial-level, no trial spans splits)"
@@ -16,5 +16,6 @@
     "raw_sensor_log.csv": "b02861b9ed79b6cde255c5b5dc0cdf7513b3dded80c80598b7f0d6715722b49c",
     "trial_metadata.csv": "9e91d4ad4d95d5cb7ae15f85e454038ed47d63e51b6ba83e2ecfb360611a6fd1",
     "processed_windowed_dataset.csv": "a305a902a12ab2dd43480c71cec601c88e17eb69e7f5be33db83248c3acf9fd1"
-  }
+  },
+  "dataset_version_note": "feature_schema_version aligned to live v2 schema; corpus files unchanged"
 }

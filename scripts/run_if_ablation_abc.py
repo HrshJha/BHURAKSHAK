@@ -31,7 +31,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from src.anomaly.isolation_forest import ABLATION_STEPS, train_isolation_forest
 
-FEATURES_PATH = REPO_ROOT / "data" / "features" / "features_v1.parquet"
+FEATURES_PATH = REPO_ROOT / "data" / "features" / "features_v2.parquet"
 SPLIT_PATH = REPO_ROOT / "data" / "features" / "split_assignment.csv"
 OUT_JSON = REPO_ROOT / "experiments" / "if_ablation_abc.json"
 OUT_MD = REPO_ROOT / "reports" / "if_ablation_abc.md"

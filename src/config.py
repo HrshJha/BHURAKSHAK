@@ -25,7 +25,9 @@ _CONFIG_FILES = {
     "sampling": "sampling.yaml",
     "alerts": "alerts.yaml",
     "physics": "physics.yaml",
-    "feature_schema": "feature_schema_v1.yaml",
+    "feature_schema": "feature_schema_v2.yaml",
+    "features": "features.yaml",
+    "feature_provenance": "feature_provenance.yaml",
     "preprocessing": "preprocessing.yaml",
     "anomaly": "anomaly.yaml",
     "validation": "validation.yaml",
@@ -72,7 +74,7 @@ def physics_config() -> dict[str, Any]:
 
 
 def feature_schema_config() -> dict[str, Any]:
-    """PRD §11/§13 feature schema v1 (T-006)."""
+    """PRD §11/§13 current feature schema (T-006)."""
     return load_config("feature_schema")
 
 

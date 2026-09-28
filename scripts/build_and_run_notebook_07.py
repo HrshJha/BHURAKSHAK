@@ -92,7 +92,7 @@ print(f"alert threshold P(CRITICAL) >= {ALERT_THRESHOLD}; hotspot radius {HOTSPO
     ),
     new_markdown_cell("## 1 — Load the store, assert the §23 split discipline"),
     new_code_cell(
-        """store = pd.read_parquet(REPO / "data" / "features" / "features_v1.parquet")
+        """store = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
 splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
 store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
 assert store["split"].notna().all(), "every event must carry a §23 split"

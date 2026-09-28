@@ -58,7 +58,7 @@ from src.risk.xgboost_model import train_risk_model
 from src.simulator.grid import build_grid
 
 OUT_JSON = REPO_ROOT / "experiments" / "ablation_a_to_f.json"
-STORE = REPO_ROOT / "data" / "features" / "features_v1.parquet"
+STORE = REPO_ROOT / "data" / "features" / "features_v2.parquet"
 SPLITS = REPO_ROOT / "data" / "features" / "split_assignment.csv"
 INSAR_CSV = REPO_ROOT / "experiments" / "nb08_mesh_aligned_insar.csv"
 

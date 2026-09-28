@@ -35,6 +35,7 @@ import pandas as pd
 from sklearn.ensemble import IsolationForest
 
 from src.config import anomaly_config
+from src.features.provenance import model_input_allowlist
 
 __all__ = [
     "IsolationForestError",
@@ -103,7 +104,8 @@ def _resolve_features(groups: list[str] | None) -> list[str]:
         for name in cfg[g]:
             if name not in features:
                 features.append(str(name))
-    return features
+    allowed = model_input_allowlist(features)
+    return [name for name in features if name in allowed]
 
 
 def train_isolation_forest(
@@ -123,6 +125,8 @@ def train_isolation_forest(
     df = df.reset_index(drop=True)  # boolean masks are positional; never trust index labels
 
     features = _resolve_features(feature_groups)
+    if not features:
+        raise IsolationForestError("no allow-listed features remain after provenance gates")
     missing = [c for c in features if c not in df.columns]
     if missing:
         raise IsolationForestError(f"feature columns missing: {missing}")
