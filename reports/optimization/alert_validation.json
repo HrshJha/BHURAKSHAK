@@ -1,0 +1,40 @@
+{
+  "original": {
+    "watch_threshold": 0.5,
+    "persistence_windows": 3,
+    "normal_event_alert_fraction": 0.0332522303325223,
+    "critical_event_watch_recall": 0.9193548387096774,
+    "critical_events": 62,
+    "detected_critical_events": 57,
+    "median_watch_delay_from_scenario_start_hours": 13.1667,
+    "lead_time_hours": null,
+    "lead_time_reason": "risk is constant over an event; no collapse/onset timestamp is available",
+    "false_alert_episodes": 41,
+    "false_alerts_per_observed_normal_event_day": 0.05985371532996244,
+    "state_counts": {
+      "GREEN": 12459,
+      "WATCH": 2022
+    },
+    "higher_escalation": "gated: no co-temporal neighbors",
+    "recovery": "unsupported by current AlertEngine"
+  },
+  "optimized": {
+    "watch_threshold": 0.5,
+    "persistence_windows": 3,
+    "normal_event_alert_fraction": 0.0340632603406326,
+    "critical_event_watch_recall": 0.9193548387096774,
+    "critical_events": 62,
+    "detected_critical_events": 57,
+    "median_watch_delay_from_scenario_start_hours": 13.1667,
+    "lead_time_hours": null,
+    "lead_time_reason": "risk is constant over an event; no collapse/onset timestamp is available",
+    "false_alert_episodes": 42,
+    "false_alerts_per_observed_normal_event_day": 0.06131356204532738,
+    "state_counts": {
+      "GREEN": 12360,
+      "WATCH": 2121
+    },
+    "higher_escalation": "gated: no co-temporal neighbors",
+    "recovery": "unsupported by current AlertEngine"
+  }
+}

@@ -1,0 +1,116 @@
+[
+  {
+    "experiment": "original_config_refit",
+    "scope": "independent_synthetic_test",
+    "critical_recall": 0.19555555555555557,
+    "macro_pr_auc": 0.5343888107364159,
+    "macro_f1": 0.39202144029926905,
+    "normal_fpr": 0.04888888888888889,
+    "normal_critical_fpr": 0.04888888888888889,
+    "brier": 0.7605900168418884,
+    "ece": 0.28865261414536725,
+    "rows": 2700,
+    "confusion_matrix": [
+      [
+        856,
+        0,
+        44
+      ],
+      [
+        392,
+        178,
+        330
+      ],
+      [
+        325,
+        399,
+        176
+      ]
+    ]
+  },
+  {
+    "experiment": "optimized_risk",
+    "scope": "independent_synthetic_test",
+    "critical_recall": 0.2922222222222222,
+    "macro_pr_auc": 0.5807484971475386,
+    "macro_f1": 0.5171887322674241,
+    "normal_fpr": 0.07444444444444444,
+    "normal_critical_fpr": 0.06888888888888889,
+    "brier": 0.7165641065556072,
+    "ece": 0.300705286490734,
+    "rows": 2700,
+    "confusion_matrix": [
+      [
+        833,
+        5,
+        62
+      ],
+      [
+        200,
+        370,
+        330
+      ],
+      [
+        200,
+        437,
+        263
+      ]
+    ]
+  },
+  {
+    "experiment": "original_if_refit",
+    "scope": "independent_synthetic_test",
+    "anomaly_recall": 0.9868073878627969,
+    "anomaly_fpr": 0.04479917610710608,
+    "anomaly_pr_auc": 0.9854437238273496,
+    "anomaly_macro_f1": 0.9568146100181201,
+    "rows": 2700
+  },
+  {
+    "experiment": "optimized_if",
+    "scope": "independent_synthetic_test",
+    "anomaly_recall": 0.9802110817941952,
+    "anomaly_fpr": 0.04582904222451081,
+    "anomaly_pr_auc": 0.9844834846198449,
+    "anomaly_macro_f1": 0.9536473035210221,
+    "rows": 2700
+  },
+  {
+    "experiment": "original_frozen_artifact",
+    "scope": "independent_synthetic_test",
+    "critical_recall": 0.10666666666666667,
+    "macro_pr_auc": 0.5206450439958632,
+    "macro_f1": 0.46076866204137223,
+    "normal_fpr": 0.13111111111111112,
+    "normal_critical_fpr": 0.01888888888888889,
+    "brier": 0.8245366134554748,
+    "ece": 0.35072224828419796,
+    "rows": 2700,
+    "confusion_matrix": [
+      [
+        782,
+        101,
+        17
+      ],
+      [
+        207,
+        490,
+        203
+      ],
+      [
+        147,
+        657,
+        96
+      ]
+    ]
+  },
+  {
+    "experiment": "original_frozen_if_artifact",
+    "scope": "independent_synthetic_test",
+    "anomaly_recall": 0.9432717678100264,
+    "anomaly_fpr": 0.021112255406797117,
+    "anomaly_pr_auc": 0.9859557322039377,
+    "anomaly_macro_f1": 0.9614508879553401,
+    "rows": 2700
+  }
+]

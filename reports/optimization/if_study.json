@@ -1,0 +1,807 @@
+[
+  {
+    "number": 0,
+    "state": "COMPLETE",
+    "value": 0.4728923630061689,
+    "params": {
+      "n_estimators": 150,
+      "max_samples": 128,
+      "max_features": 0.5779972601681014,
+      "bootstrap": true,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4367846686185787,
+          "anomaly_fpr": 0.053095069743523814,
+          "anomaly_pr_auc": 0.5490296071669625,
+          "anomaly_macro_f1": 0.7182611821702167,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.36344863190500776,
+          "anomaly_fpr": 0.041312888100367505,
+          "anomaly_pr_auc": 0.5510358930047073,
+          "anomaly_macro_f1": 0.6905692984141392,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.3718295986210293,
+          "anomaly_fpr": 0.04310510472042529,
+          "anomaly_pr_auc": 0.5440290989876032,
+          "anomaly_macro_f1": 0.69313713712288,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.39068763304820525,
+        "anomaly_fpr": 0.04583768752143887,
+        "anomaly_pr_auc": 0.5480315330530909,
+        "anomaly_macro_f1": 0.7006558725690786,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 1,
+    "state": "COMPLETE",
+    "value": 0.47681148768272863,
+    "params": {
+      "n_estimators": 100,
+      "max_samples": 128,
+      "max_features": 0.5917022549267169,
+      "bootstrap": true,
+      "feature_set": "displacement_health"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4479638009049774,
+          "anomaly_fpr": 0.052387992543549526,
+          "anomaly_pr_auc": 0.5524008361093677,
+          "anomaly_macro_f1": 0.7244442311038575,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.3701600413009809,
+          "anomaly_fpr": 0.04055252819667976,
+          "anomaly_pr_auc": 0.48218324067725404,
+          "anomaly_macro_f1": 0.6949319067614486,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.3772469835016006,
+          "anomaly_fpr": 0.04310510472042529,
+          "anomaly_pr_auc": 0.5325068388175582,
+          "anomaly_macro_f1": 0.6960991975891455,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.3984569419025196,
+        "anomaly_fpr": 0.04534854182021819,
+        "anomaly_pr_auc": 0.5223636385347267,
+        "anomaly_macro_f1": 0.705158445151484,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 2,
+    "state": "COMPLETE",
+    "value": 0.5128362783489768,
+    "params": {
+      "n_estimators": 250,
+      "max_samples": 1024,
+      "max_features": 0.8925879806965068,
+      "bootstrap": true,
+      "feature_set": "displacement_health"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.45861059355869044,
+          "anomaly_fpr": 0.05521630134344668,
+          "anomaly_pr_auc": 0.6228072983243366,
+          "anomaly_macro_f1": 0.7270108954627514,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.4019101703665462,
+          "anomaly_fpr": 0.039538714991762765,
+          "anomaly_pr_auc": 0.5850951291053224,
+          "anomaly_macro_f1": 0.7129266019183931,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.4065501108101453,
+          "anomaly_fpr": 0.04598731826042401,
+          "anomaly_pr_auc": 0.6016839746473317,
+          "anomaly_macro_f1": 0.7092531637831013,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.42235695824512726,
+        "anomaly_fpr": 0.04691411153187782,
+        "anomaly_pr_auc": 0.6031954673589969,
+        "anomaly_macro_f1": 0.7163968870547487,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 3,
+    "state": "COMPLETE",
+    "value": 0.5122378075992098,
+    "params": {
+      "n_estimators": 250,
+      "max_samples": 1024,
+      "max_features": 0.9041986740582306,
+      "bootstrap": false,
+      "feature_set": "displacement_health"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.45754591429331914,
+          "anomaly_fpr": 0.056051938034325385,
+          "anomaly_pr_auc": 0.6259391613166486,
+          "anomaly_macro_f1": 0.7257196014082824,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.399586990191017,
+          "anomaly_fpr": 0.03991889494360664,
+          "anomaly_pr_auc": 0.5876514424588641,
+          "anomaly_macro_f1": 0.7113454490824958,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.406796355577444,
+          "anomaly_fpr": 0.046115416639979506,
+          "anomaly_pr_auc": 0.6049704811301491,
+          "anomaly_macro_f1": 0.7092693499281049,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.42130975335392673,
+        "anomaly_fpr": 0.04736208320597051,
+        "anomaly_pr_auc": 0.6061870283018872,
+        "anomaly_macro_f1": 0.7154448001396277,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 4,
+    "state": "COMPLETE",
+    "value": 0.5063378347207582,
+    "params": {
+      "n_estimators": 100,
+      "max_samples": 512,
+      "max_features": 0.831261142176991,
+      "bootstrap": true,
+      "feature_set": "displacement_health"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.45275485759914824,
+          "anomaly_fpr": 0.05495918236163785,
+          "anomaly_pr_auc": 0.5821767286428985,
+          "anomaly_macro_f1": 0.7244030018049348,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.399586990191017,
+          "anomaly_fpr": 0.038524901786845776,
+          "anomaly_pr_auc": 0.5779132346095077,
+          "anomaly_macro_f1": 0.7126385379753477,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.40211770499876875,
+          "anomaly_fpr": 0.04445013770575802,
+          "anomaly_pr_auc": 0.6036030459031985,
+          "anomaly_macro_f1": 0.7082751297943353,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.418153184262978,
+        "anomaly_fpr": 0.04597807395141388,
+        "anomaly_pr_auc": 0.5878976697185349,
+        "anomaly_macro_f1": 0.7151055565248726,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 5,
+    "state": "PRUNED",
+    "value": 0.4921142255838654,
+    "params": {
+      "n_estimators": 300,
+      "max_samples": 256,
+      "max_features": 0.9609371175115584,
+      "bootstrap": true,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.43784934788394997,
+          "anomaly_fpr": 0.05386642668895031,
+          "anomaly_pr_auc": 0.5803488470431468,
+          "anomaly_macro_f1": 0.7180802362698435,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.37635518843572535,
+          "anomaly_fpr": 0.04150297807628944,
+          "anomaly_pr_auc": 0.5531439186105569,
+          "anomaly_macro_f1": 0.6974511240972093,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 6,
+    "state": "PRUNED",
+    "value": 0.49442717727434843,
+    "params": {
+      "n_estimators": 150,
+      "max_samples": 256,
+      "max_features": 0.7713480415791243,
+      "bootstrap": true,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.44476976310886346,
+          "anomaly_fpr": 0.05483062287073343,
+          "anomaly_pr_auc": 0.588434489523619,
+          "anomaly_macro_f1": 0.7206111878670074,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.3711925658234383,
+          "anomaly_fpr": 0.042009884678747944,
+          "anomaly_pr_auc": 0.5641790145856823,
+          "anomaly_macro_f1": 0.694189568854539,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 7,
+    "state": "PRUNED",
+    "value": 0.5125938452078815,
+    "params": {
+      "n_estimators": 250,
+      "max_samples": 512,
+      "max_features": 0.8645035840204937,
+      "bootstrap": false,
+      "feature_set": "displacement_health"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4522225179664626,
+          "anomaly_fpr": 0.05515202159799447,
+          "anomaly_pr_auc": 0.6129276212586517,
+          "anomaly_macro_f1": 0.7239648116305066,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.3939081053175013,
+          "anomaly_fpr": 0.03960207831707008,
+          "anomaly_pr_auc": 0.5807861596200088,
+          "anomaly_macro_f1": 0.7086209349668238,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 8,
+    "state": "PRUNED",
+    "value": 0.48579993547740696,
+    "params": {
+      "n_estimators": 300,
+      "max_samples": 128,
+      "max_features": 0.6625916610133735,
+      "bootstrap": false,
+      "feature_set": "displacement_health"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4343891402714932,
+          "anomaly_fpr": 0.05123095712540978,
+          "anomaly_pr_auc": 0.5844015442052358,
+          "anomaly_macro_f1": 0.718787317586123,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.36551368094992254,
+          "anomaly_fpr": 0.04277024458243569,
+          "anomaly_pr_auc": 0.560245454017419,
+          "anomaly_macro_f1": 0.690409004395373,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 9,
+    "state": "COMPLETE",
+    "value": 0.5151207175903935,
+    "params": {
+      "n_estimators": 100,
+      "max_samples": 1024,
+      "max_features": 0.7468977981821954,
+      "bootstrap": false,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4631354804365185,
+          "anomaly_fpr": 0.05592337854342097,
+          "anomaly_pr_auc": 0.6102042075490076,
+          "anomaly_macro_f1": 0.7285396929931677,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.4013939081053175,
+          "anomaly_fpr": 0.03991889494360664,
+          "anomaly_pr_auc": 0.5582931701394875,
+          "anomaly_macro_f1": 0.7123011465057757,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.41886234917508003,
+          "anomaly_fpr": 0.044962531223980015,
+          "anomaly_pr_auc": 0.5779720560066014,
+          "anomaly_macro_f1": 0.7165921560757827,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.42779724590563867,
+        "anomaly_fpr": 0.04693493490366921,
+        "anomaly_pr_auc": 0.5821564778983656,
+        "anomaly_macro_f1": 0.7191443318582421,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 10,
+    "state": "COMPLETE",
+    "value": 0.5205853092404744,
+    "params": {
+      "n_estimators": 100,
+      "max_samples": 1024,
+      "max_features": 0.5208761718993881,
+      "bootstrap": false,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4649986691509183,
+          "anomaly_fpr": 0.055666259561612134,
+          "anomaly_pr_auc": 0.588492927552632,
+          "anomaly_macro_f1": 0.7296762279552816,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.4101703665462055,
+          "anomaly_fpr": 0.03795463185907996,
+          "anomaly_pr_auc": 0.5675001068439312,
+          "anomaly_macro_f1": 0.7187562902637656,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.4257572026594435,
+          "anomaly_fpr": 0.045603023121757506,
+          "anomaly_pr_auc": 0.5828715613691433,
+          "anomaly_macro_f1": 0.7195807254506283,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.43364207945218913,
+        "anomaly_fpr": 0.046407971514149875,
+        "anomaly_pr_auc": 0.5796215319219021,
+        "anomaly_macro_f1": 0.7226710812232252,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 11,
+    "state": "COMPLETE",
+    "value": 0.5205853092404744,
+    "params": {
+      "n_estimators": 100,
+      "max_samples": 1024,
+      "max_features": 0.511318638639258,
+      "bootstrap": false,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4649986691509183,
+          "anomaly_fpr": 0.055666259561612134,
+          "anomaly_pr_auc": 0.588492927552632,
+          "anomaly_macro_f1": 0.7296762279552816,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.4101703665462055,
+          "anomaly_fpr": 0.03795463185907996,
+          "anomaly_pr_auc": 0.5675001068439312,
+          "anomaly_macro_f1": 0.7187562902637656,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.4257572026594435,
+          "anomaly_fpr": 0.045603023121757506,
+          "anomaly_pr_auc": 0.5828715613691433,
+          "anomaly_macro_f1": 0.7195807254506283,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.43364207945218913,
+        "anomaly_fpr": 0.046407971514149875,
+        "anomaly_pr_auc": 0.5796215319219021,
+        "anomaly_macro_f1": 0.7226710812232252,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 12,
+    "state": "COMPLETE",
+    "value": 0.5239065293646615,
+    "params": {
+      "n_estimators": 150,
+      "max_samples": 1024,
+      "max_features": 0.5019474065380636,
+      "bootstrap": false,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4642001597018898,
+          "anomaly_fpr": 0.0553448608343511,
+          "anomaly_pr_auc": 0.5917930977798875,
+          "anomaly_macro_f1": 0.7295915886867247,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.41300980898296336,
+          "anomaly_fpr": 0.03770117855785072,
+          "anomaly_pr_auc": 0.5608483755560875,
+          "anomaly_macro_f1": 0.7204829239488147,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.4348682590494952,
+          "anomaly_fpr": 0.046115416639979506,
+          "anomaly_pr_auc": 0.5783009290616008,
+          "anomaly_macro_f1": 0.7237829018380307,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.4373594092447828,
+        "anomaly_fpr": 0.04638715201072711,
+        "anomaly_pr_auc": 0.5769808007991919,
+        "anomaly_macro_f1": 0.7246191381578567,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 13,
+    "state": "PRUNED",
+    "value": 0.5114318603005228,
+    "params": {
+      "n_estimators": 200,
+      "max_samples": 1024,
+      "max_features": 0.6768805571335,
+      "bootstrap": false,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.45807825392600476,
+          "anomaly_fpr": 0.05585909879796876,
+          "anomaly_pr_auc": 0.580887414284729,
+          "anomaly_macro_f1": 0.7261562170308412,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.39519876097057305,
+          "anomaly_fpr": 0.038651628437460395,
+          "anomaly_pr_auc": 0.5496906237450563,
+          "anomaly_macro_f1": 0.7101870065803146,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 14,
+    "state": "PRUNED",
+    "value": 0.48769533144024546,
+    "params": {
+      "n_estimators": 200,
+      "max_samples": 256,
+      "max_features": 0.5432244273894205,
+      "bootstrap": false,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.4413095554964067,
+          "anomaly_fpr": 0.05418782541621135,
+          "anomaly_pr_auc": 0.5829499240092129,
+          "anomaly_macro_f1": 0.7194975639707588,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.36396489416623645,
+          "anomaly_fpr": 0.04118616144975288,
+          "anomaly_pr_auc": 0.5511581641097725,
+          "anomaly_macro_f1": 0.6909662589036656,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 15,
+    "state": "PRUNED",
+    "value": 0.49938932221061844,
+    "params": {
+      "n_estimators": 100,
+      "max_samples": 512,
+      "max_features": 0.6410424165789129,
+      "bootstrap": false,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.443971253659835,
+          "anomaly_fpr": 0.05495918236163785,
+          "anomaly_pr_auc": 0.5996427824691526,
+          "anomaly_macro_f1": 0.7200999638485609,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.38229220443985545,
+          "anomaly_fpr": 0.040299074895450517,
+          "anomaly_pr_auc": 0.5504584596744908,
+          "anomaly_macro_f1": 0.7017523223702935,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 16,
+    "state": "PRUNED",
+    "value": 0.5179782757781465,
+    "params": {
+      "n_estimators": 150,
+      "max_samples": 1024,
+      "max_features": 0.5531687888994453,
+      "bootstrap": false,
+      "feature_set": "displacement_health"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.45648123502794785,
+          "anomaly_fpr": 0.05463778363437681,
+          "anomaly_pr_auc": 0.6105443719422301,
+          "anomaly_macro_f1": 0.7265154256004935,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.40165203923593185,
+          "anomaly_fpr": 0.03903180838930427,
+          "anomaly_pr_auc": 0.5749441433405257,
+          "anomaly_macro_f1": 0.7132611580321127,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 17,
+    "state": "COMPLETE",
+    "value": 0.5214478012994,
+    "params": {
+      "n_estimators": 150,
+      "max_samples": 1024,
+      "max_features": 0.5155285471343724,
+      "bootstrap": true,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.47165291455948893,
+          "anomaly_fpr": 0.05418782541621135,
+          "anomaly_pr_auc": 0.6062296682778255,
+          "anomaly_macro_f1": 0.7342548454174513,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.40939597315436244,
+          "anomaly_fpr": 0.039538714991762765,
+          "anomaly_pr_auc": 0.5716002554889149,
+          "anomaly_macro_f1": 0.7168652943300831,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.4198473282442748,
+          "anomaly_fpr": 0.04368154742842503,
+          "anomaly_pr_auc": 0.57848466250042,
+          "anomaly_macro_f1": 0.7182528641571195,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.43363207198604203,
+        "anomaly_fpr": 0.04580269594546638,
+        "anomaly_pr_auc": 0.5854381954223867,
+        "anomaly_macro_f1": 0.7231243346348846,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 18,
+    "state": "COMPLETE",
+    "value": 0.5214478012994,
+    "params": {
+      "n_estimators": 150,
+      "max_samples": 1024,
+      "max_features": 0.5110916071376792,
+      "bootstrap": true,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.47165291455948893,
+          "anomaly_fpr": 0.05418782541621135,
+          "anomaly_pr_auc": 0.6062296682778255,
+          "anomaly_macro_f1": 0.7342548454174513,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.40939597315436244,
+          "anomaly_fpr": 0.039538714991762765,
+          "anomaly_pr_auc": 0.5716002554889149,
+          "anomaly_macro_f1": 0.7168652943300831,
+          "rows": 19656,
+          "fold": 1
+        },
+        {
+          "anomaly_recall": 0.4198473282442748,
+          "anomaly_fpr": 0.04368154742842503,
+          "anomaly_pr_auc": 0.57848466250042,
+          "anomaly_macro_f1": 0.7182528641571195,
+          "rows": 19674,
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "anomaly_recall": 0.43363207198604203,
+        "anomaly_fpr": 0.04580269594546638,
+        "anomaly_pr_auc": 0.5854381954223867,
+        "anomaly_macro_f1": 0.7231243346348846,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 19,
+    "state": "PRUNED",
+    "value": 0.5156605710486862,
+    "params": {
+      "n_estimators": 100,
+      "max_samples": 1024,
+      "max_features": 0.6392495456537224,
+      "bootstrap": true,
+      "feature_set": "displacement_physics"
+    },
+    "attrs": {
+      "fold_metrics": [
+        {
+          "anomaly_recall": 0.46845887676337505,
+          "anomaly_fpr": 0.05495918236163785,
+          "anomaly_pr_auc": 0.6026443854110547,
+          "anomaly_macro_f1": 0.7319995824365528,
+          "rows": 19314,
+          "fold": 0
+        },
+        {
+          "anomaly_recall": 0.3895198760970573,
+          "anomaly_fpr": 0.0397288049676847,
+          "anomaly_pr_auc": 0.5529715428352134,
+          "anomaly_macro_f1": 0.7061593038887503,
+          "rows": 19656,
+          "fold": 1
+        }
+      ]
+    }
+  }
+]

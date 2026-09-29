@@ -53,3 +53,7 @@ Thumbs.db
 data/synthetic/synthetic_nodes.csv
 data/features/features_v2.parquet
 data/raw/sensors/tabletop/raw_sensor_log.csv
+
+# Additional one-use optimization evaluation corpus; never train on this directory.
+/data/optimization_independent_v1/
+/data/optimization_reproduction_independent_v1/

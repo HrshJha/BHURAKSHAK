@@ -1,0 +1,26 @@
+# Pipeline audit and disposition
+
+This audit uses source code, development rows and previous aggregate reports. The existing locked corpus and its predictions were not opened. Tests inspect label-support metadata for the old development-store regime split; those rows are excluded from model fitting, selection and diagnostics.
+
+| Finding | Evidence | Disposition |
+|---|---|---|
+| Prior target-derived Group C leak already repaired | `build_feature_store` restricts emitters to observable columns; provenance gates C/G/H/I; existing label-blind and future-truncation tests | Reused v2; no leaky v1 artifacts used |
+| Shared generating parameters crossed old tuning folds | `grouped_folds` used event IDs as groups despite repeated `generation_parameter_id` | Fixed canonical loader/folds; new search checks disjoint parameters for outer and inner partitions |
+| Calibration and selection formerly grouped only by event | `freeze_models.py` partitions validation events without grouping common generating parameters | New workflow uses separate fit/calibration/decision groups; historical freeze script and artifacts remain historical |
+| Threshold override could not suppress argmax Critical/Warning | Old `_threshold_predictions` starts with argmax and only promotes | New strict Normal→Warning→Critical rule; joint Normal FPR budget. Historical evaluator retains old semantics to compare the exact original artifact |
+| Silent fallback from requested gated/unavailable feature subset | `train_risk_model` used `filtered_features or features` | Now raises, rather than silently fitting all available inputs; regression test added |
+| Probability objective varied between runtime and tuning | Runtime used `multi:softmax`, tuning `multi:softprob` | Explicit `multi:softprob` throughout the risk-training entry point; softmax itself was not proof of incorrect XGBoost probabilities |
+| Main pipeline trains defaults; frozen models are separate | `src/pipeline.py` calls `train_risk_model`; it does not load `model_params.yaml` frozen model | New explicit experimental inference CLI loads the frozen bundle, verifies digests, preserves feature order and applies calibration/thresholds. No automatic deployment promotion |
+| Risk class order differed across wrappers | Runtime sorts labels; frozen experiments use NORMAL/WARNING/CRITICAL | New wrapper verifies model numeric classes [0,1,2] and uses explicit semantic order; label/order regression tests |
+| Synthetic label gap | Only multiple-zone development events contain Critical; rapid and accelerating regimes are absent | No label relabeling or test-driven augmentation; independently evaluate unseen families |
+| Risk is a scenario-wide tag | `generate_scenario` returns one risk label for all timestamps; multiple-zone label depends on primary/secondary geometry | Scenario identification is not collapse-onset forecasting. Lead time unavailable; report detection delay and miss counts |
+| Tilt/strain do not share scenario displacement profile | Tilt gradients and strain use base `DeformationField`; displacement uses `_temporal_profile(scenario)` and multi-zone weights | Excluded these channels from every optimized candidate. Existing datasets preserved. Full physically coupled regeneration remains required before multimodal claims |
+| Unsupported anomaly labels | `SINGLE_NODE_DISTURBANCE` changes anomaly flags without injecting configured displacement; `VIBRATION_ONLY` flags a row without using `vibration_event` to modify vibration | No artificial signal invented. Optimized candidates exclude vibration; development anomaly recall includes these imperfect labels and must be interpreted accordingly |
+| Missing-endpoint velocity bias | `_velocity` divides first/last finite displacement difference by the full window duration, even if finite endpoints are interior | Existing feature definition retained for comparable artifacts; unresolved preprocessing limitation on missing-endpoint windows. A corrected schema/rebuild is required before deployment |
+| Group F prior is site-dependent | Expectations use configured geometry, not sampled label truth | Allowed but sensitivity/generalization limited; displacement-only ablation measured |
+| Sensor gaps | Group E preserves missingness/health signals; current development candidate inputs are all finite | New inference rejects missing columns/nonfinite values instead of silently changing feature schema |
+| No neighbor validation | One node per event; no co-temporal graph | WARNING/CRITICAL alert escalation remains gated; one-trapdoor scope unchanged |
+| Recovery unsupported | AlertEngine is escalation-only despite de-escalation configuration | Reported as unavailable; no recovery performance claimed |
+| Tests mutated production registry | Artifact tests registered a test model in `models/registry.json` | Isolated tests to a copied temporary registry; restored the original file |
+
+The physics/generator limitations are not repaired by hyperparameters. They constrain the interpretation of this experiment. Baselines retain their original inputs for comparison; optimized candidates quarantine the known uncoupled channels. No real-world efficacy, exact collapse timing, or additional physical components are claimed.

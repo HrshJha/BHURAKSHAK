@@ -1,0 +1,16 @@
+{
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.6.1",
+    "xgboost": "3.2.0",
+    "optuna": "5.0.0",
+    "pyarrow": "21.0.0",
+    "joblib": "1.5.2",
+    "matplotlib": "3.10.6",
+    "PyYAML": "6.0.3"
+  }
+}

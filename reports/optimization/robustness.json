@@ -1,0 +1,89 @@
+{
+  "note": "feature-noise sensitivity, not physically coupled raw-sensor simulation",
+  "results": [
+    {
+      "perturbation_std_fraction": 0.01,
+      "critical_recall": 0.8297491039426523,
+      "macro_pr_auc": 0.8911606563823181,
+      "macro_f1": 0.7552514931099331,
+      "normal_fpr": 0.03235108587906641,
+      "normal_critical_fpr": 0.024961701360728124,
+      "brier": 0.16271442789771623,
+      "ece": 0.041398316311808445,
+      "rows": 14481,
+      "confusion_matrix": [
+        [
+          10738,
+          82,
+          277
+        ],
+        [
+          1030,
+          1605,
+          191
+        ],
+        [
+          71,
+          24,
+          463
+        ]
+      ]
+    },
+    {
+      "perturbation_std_fraction": 0.05,
+      "critical_recall": 0.5842293906810035,
+      "macro_pr_auc": 0.7616101506895566,
+      "macro_f1": 0.6944534079142842,
+      "normal_fpr": 0.03604577813823556,
+      "normal_critical_fpr": 0.017482202397044247,
+      "brier": 0.2513894113433859,
+      "ece": 0.07631809347850117,
+      "rows": 14481,
+      "confusion_matrix": [
+        [
+          10697,
+          206,
+          194
+        ],
+        [
+          1395,
+          1352,
+          79
+        ],
+        [
+          126,
+          106,
+          326
+        ]
+      ]
+    },
+    {
+      "perturbation_std_fraction": 0.1,
+      "critical_recall": 0.482078853046595,
+      "macro_pr_auc": 0.6896276445233398,
+      "macro_f1": 0.6400227211653559,
+      "normal_fpr": 0.0649725150941696,
+      "normal_critical_fpr": 0.016581057943588356,
+      "brier": 0.3204605007671146,
+      "ece": 0.11018301431826091,
+      "rows": 14481,
+      "confusion_matrix": [
+        [
+          10376,
+          537,
+          184
+        ],
+        [
+          1432,
+          1290,
+          104
+        ],
+        [
+          137,
+          152,
+          269
+        ]
+      ]
+    }
+  ]
+}

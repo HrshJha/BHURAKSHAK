@@ -1,0 +1,26 @@
+[
+  {
+    "model": "original_config_refit",
+    "median_ms": 0.5491039919434115,
+    "p95_ms": 0.5785836561699398,
+    "scope": "one feature row including calibration and pandas; excludes extraction and transport"
+  },
+  {
+    "model": "optimized_risk",
+    "median_ms": 0.34708299790509045,
+    "p95_ms": 0.36258719919715077,
+    "scope": "one feature row including calibration and pandas; excludes extraction and transport"
+  },
+  {
+    "model": "original_if_refit",
+    "median_ms": 3.0093124805716798,
+    "p95_ms": 3.0717768211616203,
+    "scope": "one prepared feature row, score only; excludes extraction and transport"
+  },
+  {
+    "model": "optimized_if",
+    "median_ms": 2.3659580037929118,
+    "p95_ms": 2.4351243308046833,
+    "scope": "one prepared feature row, score only; excludes extraction and transport"
+  }
+]
