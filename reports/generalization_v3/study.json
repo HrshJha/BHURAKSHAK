@@ -1,0 +1,2191 @@
+[
+  {
+    "number": 0,
+    "state": "COMPLETE",
+    "value": 1.2761361726741738,
+    "params": {
+      "model": "xgboost",
+      "n_estimators": 250,
+      "max_depth": 5,
+      "learning_rate": 0.08,
+      "critical_weight": 1.5,
+      "weight_power": 0.0,
+      "calibration": "sigmoid",
+      "feature_set": "movement",
+      "alpha": 1.0,
+      "min_child_weight": 7.699104278088062,
+      "reg_lambda": 1.3199449745980831,
+      "colsample_bytree": 0.7367318232711927
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9959514170040485,
+          "macro_pr_auc": 0.9960397658123993,
+          "macro_f1": 0.9284551976067957,
+          "normal_fpr": 0.004575960951799878,
+          "normal_critical_fpr": 0.004270896888346553,
+          "brier": 0.006972345681881364,
+          "ece": 0.017908115642250137,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3263,
+              1,
+              14
+            ],
+            [
+              0,
+              57,
+              23
+            ],
+            [
+              2,
+              0,
+              492
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9994260240923505,
+          "macro_f1": 0.7616595469756543,
+          "normal_fpr": 0.0018879798615481435,
+          "normal_critical_fpr": 0.0015733165512901196,
+          "brier": 0.0054839137628629134,
+          "ece": 0.019803782911840973,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3172,
+              1,
+              5
+            ],
+            [
+              0,
+              36,
+              112
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9983221476510067,
+          "macro_pr_auc": 0.9984996274211776,
+          "macro_f1": 0.9835773135919204,
+          "normal_fpr": 0.001326259946949602,
+          "normal_critical_fpr": 0.0009946949602122016,
+          "brier": 0.005103878977065939,
+          "ece": 0.018178512962482265,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3012,
+              1,
+              3
+            ],
+            [
+              10,
+              207,
+              5
+            ],
+            [
+              0,
+              1,
+              595
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9980911882183516,
+        "macro_pr_auc": 0.9979884724419757,
+        "macro_f1": 0.8912306860581234,
+        "normal_fpr": 0.0025967335867658745,
+        "normal_critical_fpr": 0.002279636133282958,
+        "brier": 0.0058533794739367385,
+        "ece": 0.018630137172191127,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 1,
+    "state": "COMPLETE",
+    "value": 1.2234370505702397,
+    "params": {
+      "model": "random_forest",
+      "n_estimators": 250,
+      "max_depth": 5,
+      "learning_rate": 0.08,
+      "critical_weight": 1.5,
+      "weight_power": 0.0,
+      "calibration": "sigmoid",
+      "feature_set": "movement",
+      "alpha": 1.0,
+      "min_samples_leaf": 2
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9959514170040485,
+          "macro_pr_auc": 0.9940314581274204,
+          "macro_f1": 0.6470250572230521,
+          "normal_fpr": 0.0024405125076266015,
+          "normal_critical_fpr": 0.0018303843807199512,
+          "brier": 0.007204389441199629,
+          "ece": 0.015174655822586668,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3270,
+              2,
+              6
+            ],
+            [
+              0,
+              1,
+              79
+            ],
+            [
+              0,
+              2,
+              492
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9990074604365202,
+          "macro_f1": 0.6156836679623109,
+          "normal_fpr": 0.009125235997482694,
+          "normal_critical_fpr": 0.009125235997482694,
+          "brier": 0.010779028884184362,
+          "ece": 0.017969884694834258,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3149,
+              0,
+              29
+            ],
+            [
+              0,
+              0,
+              148
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9994510390477173,
+          "macro_f1": 0.6128449695421577,
+          "normal_fpr": 0.0023209549071618036,
+          "normal_critical_fpr": 0.0023209549071618036,
+          "brier": 0.004301084481498491,
+          "ece": 0.01765119934159789,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3009,
+              0,
+              7
+            ],
+            [
+              2,
+              0,
+              220
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9986504723346828,
+        "macro_pr_auc": 0.9974966525372193,
+        "macro_f1": 0.6251845649091736,
+        "normal_fpr": 0.0046289011374236995,
+        "normal_critical_fpr": 0.004425525095121483,
+        "brier": 0.007428167602294161,
+        "ece": 0.016931913286339608,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 2,
+    "state": "COMPLETE",
+    "value": 1.260256891374829,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 250,
+      "max_depth": 5,
+      "learning_rate": 0.08,
+      "critical_weight": 1.5,
+      "weight_power": 0.0,
+      "calibration": "sigmoid",
+      "feature_set": "movement",
+      "alpha": 1.0
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.995746769836321,
+          "macro_f1": 0.6378921338524456,
+          "normal_fpr": 0.0036607687614399025,
+          "normal_critical_fpr": 0.0036607687614399025,
+          "brier": 0.008772911050503134,
+          "ece": 0.015477661356751979,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3266,
+              0,
+              12
+            ],
+            [
+              1,
+              0,
+              79
+            ],
+            [
+              0,
+              0,
+              494
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9993205638773826,
+          "macro_f1": 0.7806938532130167,
+          "normal_fpr": 0.0012586532410320957,
+          "normal_critical_fpr": 0.0006293266205160479,
+          "brier": 0.006373208263716154,
+          "ece": 0.017246621352223598,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3174,
+              2,
+              2
+            ],
+            [
+              2,
+              42,
+              104
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9981685635766105,
+          "macro_f1": 0.988649434911819,
+          "normal_fpr": 0.000663129973474801,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0069782213144218294,
+          "ece": 0.017856880203289526,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3014,
+              2,
+              0
+            ],
+            [
+              8,
+              211,
+              3
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 1.0,
+        "macro_pr_auc": 0.9977452990967713,
+        "macro_f1": 0.8024118073257603,
+        "normal_fpr": 0.001860850658648933,
+        "normal_critical_fpr": 0.0014300317939853167,
+        "brier": 0.0073747802095470395,
+        "ece": 0.016860387637421703,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 3,
+    "state": "COMPLETE",
+    "value": 1.2577558455444475,
+    "params": {
+      "model": "xgboost",
+      "n_estimators": 250,
+      "max_depth": 8,
+      "learning_rate": 0.04860221669882137,
+      "critical_weight": 2.665473265546586,
+      "weight_power": 0.5,
+      "calibration": "sigmoid",
+      "feature_set": "full",
+      "alpha": 1.0,
+      "min_child_weight": 7.779470950258221,
+      "reg_lambda": 5.633118019738694,
+      "colsample_bytree": 0.9274956337715581
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9939271255060729,
+          "macro_pr_auc": 0.9943979150204173,
+          "macro_f1": 0.9603716684393683,
+          "normal_fpr": 0.006406345332519829,
+          "normal_critical_fpr": 0.003355704697986577,
+          "brier": 0.011209879561308044,
+          "ece": 0.019227577695547803,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3257,
+              10,
+              11
+            ],
+            [
+              0,
+              75,
+              5
+            ],
+            [
+              2,
+              1,
+              491
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.986394221215492,
+          "macro_f1": 0.6211754738527965,
+          "normal_fpr": 0.003461296412838263,
+          "normal_critical_fpr": 0.003461296412838263,
+          "brier": 0.017749964545529243,
+          "ece": 0.01027114062198148,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3167,
+              0,
+              11
+            ],
+            [
+              1,
+              0,
+              147
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9987960990948425,
+          "macro_f1": 0.8253607956788085,
+          "normal_fpr": 0.0016578249336870027,
+          "normal_critical_fpr": 0.0016578249336870027,
+          "brier": 0.006777668663802374,
+          "ece": 0.017746639924094993,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3011,
+              0,
+              5
+            ],
+            [
+              6,
+              90,
+              126
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9979757085020243,
+        "macro_pr_auc": 0.9931960784435839,
+        "macro_f1": 0.8023026459903244,
+        "normal_fpr": 0.0038418222263483653,
+        "normal_critical_fpr": 0.002824942014837281,
+        "brier": 0.011912504256879888,
+        "ece": 0.015748452747208094,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 4,
+    "state": "COMPLETE",
+    "value": 1.2799046927861857,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 450,
+      "max_depth": 8,
+      "learning_rate": 0.04260642112574674,
+      "critical_weight": 2.7404230466542385,
+      "weight_power": 0.0,
+      "calibration": "isotonic",
+      "feature_set": "displacement",
+      "alpha": 0.7
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9615384615384616,
+          "macro_pr_auc": 0.9729885977773335,
+          "macro_f1": 0.9571036741683218,
+          "normal_fpr": 0.0018303843807199512,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.007224247325211763,
+          "ece": 0.002107202743691719,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3272,
+              6,
+              0
+            ],
+            [
+              4,
+              76,
+              0
+            ],
+            [
+              11,
+              8,
+              475
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 0.9960629921259843,
+          "macro_pr_auc": 0.9955502224414355,
+          "macro_f1": 0.9924213528679311,
+          "normal_fpr": 0.0006293266205160479,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.005642939358949661,
+          "ece": 0.004106045437779461,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3176,
+              2,
+              0
+            ],
+            [
+              2,
+              146,
+              0
+            ],
+            [
+              0,
+              2,
+              506
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9983221476510067,
+          "macro_pr_auc": 0.9977877801833914,
+          "macro_f1": 0.9862640579781871,
+          "normal_fpr": 0.004973474801061008,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.006021193228662014,
+          "ece": 0.002227622842689166,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3001,
+              15,
+              0
+            ],
+            [
+              0,
+              221,
+              1
+            ],
+            [
+              0,
+              1,
+              595
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.985307867105151,
+        "macro_pr_auc": 0.9887755334673868,
+        "macro_f1": 0.9785963616714799,
+        "normal_fpr": 0.0024777286007656688,
+        "normal_critical_fpr": 0.0,
+        "brier": 0.006296126637607813,
+        "ece": 0.0028136236747201156,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 5,
+    "state": "COMPLETE",
+    "value": 1.2798732873973708,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 250,
+      "max_depth": 8,
+      "learning_rate": 0.10801515953465915,
+      "critical_weight": 2.4439689597935,
+      "weight_power": 1.0,
+      "calibration": "none",
+      "feature_set": "movement",
+      "alpha": 1.0
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.995105088372874,
+          "macro_f1": 0.9666309604098027,
+          "normal_fpr": 0.003965832824893227,
+          "normal_critical_fpr": 0.003355704697986577,
+          "brier": 0.005556424148380756,
+          "ece": 0.0012099540803044019,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3265,
+              2,
+              11
+            ],
+            [
+              2,
+              70,
+              8
+            ],
+            [
+              0,
+              0,
+              494
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9996502709373054,
+          "macro_f1": 0.8967795358088377,
+          "normal_fpr": 0.0015733165512901196,
+          "normal_critical_fpr": 0.0006293266205160479,
+          "brier": 0.004683643113821745,
+          "ece": 0.0017634155884595337,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3173,
+              3,
+              2
+            ],
+            [
+              0,
+              90,
+              58
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9968539595283593,
+          "macro_f1": 0.838884155322651,
+          "normal_fpr": 0.01226790450928382,
+          "normal_critical_fpr": 0.007957559681697613,
+          "brier": 0.004459375981241465,
+          "ece": 0.0018545687975955378,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              2979,
+              13,
+              24
+            ],
+            [
+              3,
+              107,
+              112
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 1.0,
+        "macro_pr_auc": 0.9972031062795129,
+        "macro_f1": 0.9007648838470971,
+        "normal_fpr": 0.005935684628489056,
+        "normal_critical_fpr": 0.003980863666733413,
+        "brier": 0.004899814414481322,
+        "ece": 0.0016093128221198246,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 6,
+    "state": "COMPLETE",
+    "value": 1.2795247894228197,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 450,
+      "max_depth": 3,
+      "learning_rate": 0.04455126715230277,
+      "critical_weight": 2.7375671221700335,
+      "weight_power": 0.5,
+      "calibration": "none",
+      "feature_set": "full",
+      "alpha": 1.0
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9979757085020243,
+          "macro_pr_auc": 0.9947168596095416,
+          "macro_f1": 0.9844954024555251,
+          "normal_fpr": 0.0003050640634533252,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.005693359300494194,
+          "ece": 0.0026628720348745027,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3277,
+              1,
+              0
+            ],
+            [
+              5,
+              75,
+              0
+            ],
+            [
+              0,
+              1,
+              493
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9984699482445608,
+          "macro_f1": 0.8419521436967597,
+          "normal_fpr": 0.0009439899307740718,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.011486982926726341,
+          "ece": 0.005926301035336291,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3175,
+              3,
+              0
+            ],
+            [
+              0,
+              65,
+              83
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9967269318313027,
+          "macro_f1": 0.8815888828371857,
+          "normal_fpr": 0.0009946949602122016,
+          "normal_critical_fpr": 0.0009946949602122016,
+          "brier": 0.003584380494430661,
+          "ece": 0.0009715230936300247,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3013,
+              0,
+              3
+            ],
+            [
+              4,
+              125,
+              93
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9993252361673415,
+        "macro_pr_auc": 0.9966379132284683,
+        "macro_f1": 0.9026788096631568,
+        "normal_fpr": 0.0007479163181465329,
+        "normal_critical_fpr": 0.0003315649867374005,
+        "brier": 0.006921574240550399,
+        "ece": 0.0031868987212802726,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 7,
+    "state": "COMPLETE",
+    "value": 1.289331935329573,
+    "params": {
+      "model": "xgboost",
+      "n_estimators": 350,
+      "max_depth": 4,
+      "learning_rate": 0.03978438514995239,
+      "critical_weight": 1.7679197044600885,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "full",
+      "alpha": 0.7,
+      "min_child_weight": 4.964073307308378,
+      "reg_lambda": 3.3424225380539756,
+      "colsample_bytree": 0.7142543334167666
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9979757085020243,
+          "macro_pr_auc": 0.980086650306618,
+          "macro_f1": 0.983494362829524,
+          "normal_fpr": 0.0024405125076266015,
+          "normal_critical_fpr": 0.0012202562538133007,
+          "brier": 0.004359154496341944,
+          "ece": 0.0025134051174142483,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3270,
+              4,
+              4
+            ],
+            [
+              2,
+              78,
+              0
+            ],
+            [
+              0,
+              1,
+              493
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 0.9921259842519685,
+          "macro_pr_auc": 0.99342303424411,
+          "macro_f1": 0.9864326323642313,
+          "normal_fpr": 0.0009439899307740718,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.005502576008439064,
+          "ece": 0.0029413265739185964,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3175,
+              3,
+              0
+            ],
+            [
+              0,
+              145,
+              3
+            ],
+            [
+              0,
+              4,
+              504
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9916107382550335,
+          "macro_pr_auc": 0.991643600547358,
+          "macro_f1": 0.9789132371556636,
+          "normal_fpr": 0.006631299734748011,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.007982992567121983,
+          "ece": 0.004853254939095684,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              2996,
+              20,
+              0
+            ],
+            [
+              1,
+              221,
+              0
+            ],
+            [
+              0,
+              5,
+              591
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9939041436696755,
+        "macro_pr_auc": 0.9883844283660287,
+        "macro_f1": 0.982946744116473,
+        "normal_fpr": 0.0033386007243828945,
+        "normal_critical_fpr": 0.00040675208460443356,
+        "brier": 0.005948241023967664,
+        "ece": 0.003435995543476176,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 8,
+    "state": "COMPLETE",
+    "value": 1.2777511698657398,
+    "params": {
+      "model": "xgboost",
+      "n_estimators": 150,
+      "max_depth": 6,
+      "learning_rate": 0.047685719125088635,
+      "critical_weight": 2.7168247716476848,
+      "weight_power": 1.0,
+      "calibration": "none",
+      "feature_set": "full",
+      "alpha": 0.7,
+      "min_child_weight": 3.805425082342804,
+      "reg_lambda": 9.284694067950502,
+      "colsample_bytree": 0.8213523020455791
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9959514170040485,
+          "macro_pr_auc": 0.9921903547219834,
+          "macro_f1": 0.9731748666261905,
+          "normal_fpr": 0.0006101281269066504,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.008013376034796238,
+          "ece": 0.005011397451626548,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3276,
+              2,
+              0
+            ],
+            [
+              8,
+              72,
+              0
+            ],
+            [
+              0,
+              2,
+              492
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9980537957464294,
+          "macro_f1": 0.8773025262739246,
+          "normal_fpr": 0.0022026431718061676,
+          "normal_critical_fpr": 0.0022026431718061676,
+          "brier": 0.003905122634023428,
+          "ece": 0.00549622543105617,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3171,
+              0,
+              7
+            ],
+            [
+              0,
+              80,
+              68
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9965853971269043,
+          "macro_f1": 0.8426182962680789,
+          "normal_fpr": 0.023541114058355437,
+          "normal_critical_fpr": 0.023541114058355437,
+          "brier": 0.005815770477056503,
+          "ece": 0.005111511277853932,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              2945,
+              0,
+              71
+            ],
+            [
+              2,
+              112,
+              108
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9986504723346828,
+        "macro_pr_auc": 0.995609849198439,
+        "macro_f1": 0.8976985630560647,
+        "normal_fpr": 0.008784628452356084,
+        "normal_critical_fpr": 0.008581252410053869,
+        "brier": 0.00591142304862539,
+        "ece": 0.005206378053512217,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 9,
+    "state": "COMPLETE",
+    "value": 1.2812401994702838,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 450,
+      "max_depth": 8,
+      "learning_rate": 0.051842009892205845,
+      "critical_weight": 2.008020355269262,
+      "weight_power": 0.0,
+      "calibration": "none",
+      "feature_set": "full",
+      "alpha": 1.0
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9962683249101606,
+          "macro_f1": 0.9676683432294316,
+          "normal_fpr": 0.003965832824893227,
+          "normal_critical_fpr": 0.0006101281269066504,
+          "brier": 0.007821265608072281,
+          "ece": 0.0035653198495708208,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3265,
+              11,
+              2
+            ],
+            [
+              1,
+              76,
+              3
+            ],
+            [
+              0,
+              0,
+              494
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.99630087041436,
+          "macro_f1": 0.7894273173935135,
+          "normal_fpr": 0.0031466331025802393,
+          "normal_critical_fpr": 0.0018879798615481435,
+          "brier": 0.018551839515566826,
+          "ece": 0.009585649023842076,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3168,
+              4,
+              6
+            ],
+            [
+              2,
+              46,
+              100
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9983221476510067,
+          "macro_pr_auc": 0.9984221714368257,
+          "macro_f1": 0.9744009097956022,
+          "normal_fpr": 0.007957559681697613,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.006008526310324669,
+          "ece": 0.002414740074035305,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              2992,
+              24,
+              0
+            ],
+            [
+              0,
+              216,
+              6
+            ],
+            [
+              0,
+              1,
+              595
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.999440715883669,
+        "macro_pr_auc": 0.9969971222537821,
+        "macro_f1": 0.9104988568061825,
+        "normal_fpr": 0.005023341869723693,
+        "normal_critical_fpr": 0.0008327026628182646,
+        "brier": 0.010793877144654592,
+        "ece": 0.0051885696491494005,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 10,
+    "state": "COMPLETE",
+    "value": 1.2942003842046326,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 350,
+      "max_depth": 3,
+      "learning_rate": 0.05488837181224907,
+      "critical_weight": 2.120840710044267,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "full",
+      "alpha": 0.7
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9979757085020243,
+          "macro_pr_auc": 0.9841238324388306,
+          "macro_f1": 0.9912792682818271,
+          "normal_fpr": 0.0006101281269066504,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0037655082996934652,
+          "ece": 0.0020660730475329466,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3276,
+              2,
+              0
+            ],
+            [
+              1,
+              79,
+              0
+            ],
+            [
+              0,
+              1,
+              493
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 0.9940944881889764,
+          "macro_pr_auc": 0.9971964718074909,
+          "macro_f1": 0.9945159365869364,
+          "normal_fpr": 0.00031466331025802394,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0037363728042691946,
+          "ece": 0.0030165378103420007,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3177,
+              1,
+              0
+            ],
+            [
+              0,
+              148,
+              0
+            ],
+            [
+              0,
+              3,
+              505
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9938564843369688,
+          "macro_f1": 0.9792711804540762,
+          "normal_fpr": 0.0029840848806366046,
+          "normal_critical_fpr": 0.0003315649867374005,
+          "brier": 0.00769474171102047,
+          "ece": 0.005165407184392934,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3007,
+              8,
+              1
+            ],
+            [
+              3,
+              208,
+              11
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9973567322303336,
+        "macro_pr_auc": 0.9917255961944301,
+        "macro_f1": 0.9883554617742799,
+        "normal_fpr": 0.0013029587726004262,
+        "normal_critical_fpr": 0.00011052166224580017,
+        "brier": 0.00506554093832771,
+        "ece": 0.0034160060140892936,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 11,
+    "state": "COMPLETE",
+    "value": 1.293602320321975,
+    "params": {
+      "model": "xgboost",
+      "n_estimators": 350,
+      "max_depth": 4,
+      "learning_rate": 0.043701681963596105,
+      "critical_weight": 1.862169589419874,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "movement",
+      "alpha": 0.7,
+      "min_child_weight": 1.0552595600293233,
+      "reg_lambda": 0.6337048983030549,
+      "colsample_bytree": 0.9737295570077801
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9959514170040485,
+          "macro_pr_auc": 0.9867251140218416,
+          "macro_f1": 0.9752853944223404,
+          "normal_fpr": 0.002745576571079927,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0038584815338253975,
+          "ece": 0.002769311067966428,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3269,
+              9,
+              0
+            ],
+            [
+              1,
+              79,
+              0
+            ],
+            [
+              0,
+              2,
+              492
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.997420641599215,
+          "macro_f1": 0.9881365740740741,
+          "normal_fpr": 0.0,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.004766075871884823,
+          "ece": 0.0018689918312855263,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3178,
+              0,
+              0
+            ],
+            [
+              0,
+              140,
+              8
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9966442953020134,
+          "macro_pr_auc": 0.9904601471882678,
+          "macro_f1": 0.9903313233982408,
+          "normal_fpr": 0.002652519893899204,
+          "normal_critical_fpr": 0.0009946949602122016,
+          "brier": 0.006327009294182062,
+          "ece": 0.004761183765572607,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3008,
+              5,
+              3
+            ],
+            [
+              2,
+              219,
+              1
+            ],
+            [
+              0,
+              2,
+              594
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9975319041020206,
+        "macro_pr_auc": 0.9915353009364415,
+        "macro_f1": 0.9845844306315518,
+        "normal_fpr": 0.0017993654883263772,
+        "normal_critical_fpr": 0.0003315649867374005,
+        "brier": 0.004983855566630761,
+        "ece": 0.003133162221608187,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 12,
+    "state": "PRUNED",
+    "value": 1.2529086667472025,
+    "params": {
+      "model": "xgboost",
+      "n_estimators": 250,
+      "max_depth": 5,
+      "learning_rate": 0.07476640356092396,
+      "critical_weight": 1.8263123043611345,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "movement",
+      "alpha": 0.7,
+      "min_child_weight": 11.535142227480879,
+      "reg_lambda": 0.5126456047356757,
+      "colsample_bytree": 0.9973294869538454
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9615384615384616,
+          "macro_pr_auc": 0.9837442317780404,
+          "macro_f1": 0.9673104089877823,
+          "normal_fpr": 0.0012202562538133007,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.004981944803148508,
+          "ece": 0.0030275006717611114,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3274,
+              4,
+              0
+            ],
+            [
+              1,
+              79,
+              0
+            ],
+            [
+              11,
+              8,
+              475
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9984680950380597,
+          "macro_f1": 0.762977787383884,
+          "normal_fpr": 0.0028319697923222154,
+          "normal_critical_fpr": 0.0018879798615481435,
+          "brier": 0.004217658191919327,
+          "ece": 0.003283228921467398,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3169,
+              3,
+              6
+            ],
+            [
+              0,
+              37,
+              111
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 13,
+    "state": "COMPLETE",
+    "value": 1.2914402601203159,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 350,
+      "max_depth": 4,
+      "learning_rate": 0.05620977147722004,
+      "critical_weight": 2.29057977382983,
+      "weight_power": 0.5,
+      "calibration": "isotonic",
+      "feature_set": "full",
+      "alpha": 0.7
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9898785425101214,
+          "macro_pr_auc": 0.9835874826402433,
+          "macro_f1": 0.9856518617444087,
+          "normal_fpr": 0.0012202562538133007,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.00422325637191534,
+          "ece": 0.002272278751292046,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3274,
+              4,
+              0
+            ],
+            [
+              1,
+              79,
+              0
+            ],
+            [
+              4,
+              1,
+              489
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.997887706033488,
+          "macro_f1": 0.9808518189163448,
+          "normal_fpr": 0.00031466331025802394,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.004543505609035492,
+          "ece": 0.0025490856164435763,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3177,
+              1,
+              0
+            ],
+            [
+              0,
+              136,
+              12
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9983221476510067,
+          "macro_pr_auc": 0.9921071243996967,
+          "macro_f1": 0.97730561380163,
+          "normal_fpr": 0.01293103448275862,
+          "normal_critical_fpr": 0.011273209549071617,
+          "brier": 0.006316755432635546,
+          "ece": 0.005530592763430085,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              2977,
+              5,
+              34
+            ],
+            [
+              3,
+              215,
+              4
+            ],
+            [
+              0,
+              1,
+              595
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9960668967203761,
+        "macro_pr_auc": 0.9911941043578093,
+        "macro_f1": 0.9812697648207944,
+        "normal_fpr": 0.004821984682276649,
+        "normal_critical_fpr": 0.003757736516357206,
+        "brier": 0.005027839137862126,
+        "ece": 0.003450652377055236,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 14,
+    "state": "COMPLETE",
+    "value": 1.2726577812824664,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 350,
+      "max_depth": 3,
+      "learning_rate": 0.060721722954463465,
+      "critical_weight": 1.7808621704888403,
+      "weight_power": 1.0,
+      "calibration": "none",
+      "feature_set": "full",
+      "alpha": 0.7
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9979757085020243,
+          "macro_pr_auc": 0.9948917917722898,
+          "macro_f1": 0.9815035479352966,
+          "normal_fpr": 0.0024405125076266015,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.005094917491078377,
+          "ece": 0.0035867831386385725,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3270,
+              8,
+              0
+            ],
+            [
+              0,
+              80,
+              0
+            ],
+            [
+              0,
+              1,
+              493
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.992518887913084,
+          "macro_f1": 0.8240633483827248,
+          "normal_fpr": 0.0012586532410320957,
+          "normal_critical_fpr": 0.00031466331025802394,
+          "brier": 0.009334358386695385,
+          "ece": 0.004048968518097427,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3174,
+              3,
+              1
+            ],
+            [
+              0,
+              58,
+              90
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9938926308804729,
+          "macro_f1": 0.8037696251259271,
+          "normal_fpr": 0.008952254641909815,
+          "normal_critical_fpr": 0.008289124668435014,
+          "brier": 0.0061938646249473095,
+          "ece": 0.004512888429434748,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              2989,
+              2,
+              25
+            ],
+            [
+              3,
+              82,
+              137
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9993252361673415,
+        "macro_pr_auc": 0.9937677701886156,
+        "macro_f1": 0.8697788404813162,
+        "normal_fpr": 0.004217140130189504,
+        "normal_critical_fpr": 0.0028679293262310127,
+        "brier": 0.00687438016757369,
+        "ece": 0.004049546695390249,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 15,
+    "state": "COMPLETE",
+    "value": 1.2808514834930376,
+    "params": {
+      "model": "random_forest",
+      "n_estimators": 450,
+      "max_depth": 3,
+      "learning_rate": 0.08138866690417104,
+      "critical_weight": 2.21881089523208,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "full",
+      "alpha": 0.7,
+      "min_samples_leaf": 6
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9979757085020243,
+          "macro_pr_auc": 0.9839198768907331,
+          "macro_f1": 0.9845110546132082,
+          "normal_fpr": 0.003355704697986577,
+          "normal_critical_fpr": 0.0021354484441732766,
+          "brier": 0.00451954328136269,
+          "ece": 0.003006052588065458,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3267,
+              4,
+              7
+            ],
+            [
+              1,
+              79,
+              0
+            ],
+            [
+              0,
+              1,
+              493
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.999164749665877,
+          "macro_f1": 0.7758950871019578,
+          "normal_fpr": 0.00031466331025802394,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0036913536522379282,
+          "ece": 0.002591175207101265,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3177,
+              1,
+              0
+            ],
+            [
+              1,
+              40,
+              107
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9983221476510067,
+          "macro_pr_auc": 0.9947303430440656,
+          "macro_f1": 0.9819693451149014,
+          "normal_fpr": 0.005305039787798408,
+          "normal_critical_fpr": 0.004973474801061008,
+          "brier": 0.008464369751872307,
+          "ece": 0.0045109684093355236,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3000,
+              1,
+              15
+            ],
+            [
+              1,
+              211,
+              10
+            ],
+            [
+              0,
+              1,
+              595
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9987659520510105,
+        "macro_pr_auc": 0.9926049898668919,
+        "macro_f1": 0.9141251622766892,
+        "normal_fpr": 0.0029918025986810028,
+        "normal_critical_fpr": 0.002369641081744761,
+        "brier": 0.005558422228490976,
+        "ece": 0.003369398734834082,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 16,
+    "state": "COMPLETE",
+    "value": 1.2919601824790692,
+    "params": {
+      "model": "xgboost",
+      "n_estimators": 250,
+      "max_depth": 3,
+      "learning_rate": 0.030199055978863583,
+      "critical_weight": 2.2232401091026697,
+      "weight_power": 0.5,
+      "calibration": "isotonic",
+      "feature_set": "movement",
+      "alpha": 0.7,
+      "min_child_weight": 1.30374383090661,
+      "reg_lambda": 0.5587612305508508,
+      "colsample_bytree": 0.857254907922441
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9939271255060729,
+          "macro_pr_auc": 0.9798078825702147,
+          "macro_f1": 0.9883278336721458,
+          "normal_fpr": 0.0006101281269066504,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0045591541565954685,
+          "ece": 0.002430883848407232,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3276,
+              2,
+              0
+            ],
+            [
+              2,
+              78,
+              0
+            ],
+            [
+              2,
+              1,
+              491
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.999405000698609,
+          "macro_f1": 0.9785299406789411,
+          "normal_fpr": 0.0009439899307740718,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0033168874215334654,
+          "ece": 0.0035048567912947964,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3175,
+              3,
+              0
+            ],
+            [
+              0,
+              136,
+              12
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 0.9932885906040269,
+          "macro_pr_auc": 0.9959249911808943,
+          "macro_f1": 0.9888974450595942,
+          "normal_fpr": 0.0029840848806366046,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.004861379042267799,
+          "ece": 0.0033308073730597756,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3007,
+              9,
+              0
+            ],
+            [
+              0,
+              222,
+              0
+            ],
+            [
+              0,
+              4,
+              592
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9957385720366999,
+        "macro_pr_auc": 0.9917126248165727,
+        "macro_f1": 0.9852517398035604,
+        "normal_fpr": 0.0015127343127724422,
+        "normal_critical_fpr": 0.0,
+        "brier": 0.004245806873465578,
+        "ece": 0.0030888493375872683,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 17,
+    "state": "COMPLETE",
+    "value": 1.2947391151649517,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 250,
+      "max_depth": 3,
+      "learning_rate": 0.04656517030590352,
+      "critical_weight": 2.3674229984889235,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "full",
+      "alpha": 0.7
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9979757085020243,
+          "macro_pr_auc": 0.9840652152884423,
+          "macro_f1": 0.9912792682818271,
+          "normal_fpr": 0.0006101281269066504,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.003981239628046751,
+          "ece": 0.0016626979950679853,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3276,
+              2,
+              0
+            ],
+            [
+              1,
+              79,
+              0
+            ],
+            [
+              0,
+              1,
+              493
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 0.9960629921259843,
+          "macro_pr_auc": 0.9981957443528421,
+          "macro_f1": 0.9959456040613004,
+          "normal_fpr": 0.00031466331025802394,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.003219007281586528,
+          "ece": 0.0032817689652360586,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3177,
+              1,
+              0
+            ],
+            [
+              0,
+              148,
+              0
+            ],
+            [
+              0,
+              2,
+              506
+            ]
+          ],
+          "fold": 1
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.993658209154353,
+          "macro_f1": 0.975708767593288,
+          "normal_fpr": 0.005636604774535809,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.008677572011947632,
+          "ece": 0.005354327635026314,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              2999,
+              17,
+              0
+            ],
+            [
+              2,
+              211,
+              9
+            ],
+            [
+              0,
+              0,
+              596
+            ]
+          ],
+          "fold": 2
+        }
+      ],
+      "metrics": {
+        "critical_recall": 0.9980129002093362,
+        "macro_pr_auc": 0.9919730562652124,
+        "macro_f1": 0.9876445466454719,
+        "normal_fpr": 0.0021871320705668276,
+        "normal_critical_fpr": 0.0,
+        "brier": 0.005292606307193637,
+        "ece": 0.003432931531776786,
+        "fold": 1.0
+      }
+    }
+  },
+  {
+    "number": 18,
+    "state": "PRUNED",
+    "value": 1.265960230791998,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 150,
+      "max_depth": 3,
+      "learning_rate": 0.04315889940933201,
+      "critical_weight": 2.9309444062286714,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "full",
+      "alpha": 0.7
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9838056680161943,
+          "macro_pr_auc": 0.9781354146693348,
+          "macro_f1": 0.9844740335158453,
+          "normal_fpr": 0.0012202562538133007,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.003832204733043909,
+          "ece": 0.0021017303038485136,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3274,
+              4,
+              0
+            ],
+            [
+              1,
+              79,
+              0
+            ],
+            [
+              7,
+              1,
+              486
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 1.0,
+          "macro_pr_auc": 0.9583328434103375,
+          "macro_f1": 0.7878658052833281,
+          "normal_fpr": 0.00031466331025802394,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.015710771083831787,
+          "ece": 0.0028766411073393285,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3177,
+              1,
+              0
+            ],
+            [
+              1,
+              44,
+              103
+            ],
+            [
+              0,
+              0,
+              508
+            ]
+          ],
+          "fold": 1
+        }
+      ]
+    }
+  },
+  {
+    "number": 19,
+    "state": "PRUNED",
+    "value": 1.2798587901344953,
+    "params": {
+      "model": "two_stage",
+      "n_estimators": 250,
+      "max_depth": 4,
+      "learning_rate": 0.09145754770710682,
+      "critical_weight": 2.1200931516228203,
+      "weight_power": 1.0,
+      "calibration": "isotonic",
+      "feature_set": "full",
+      "alpha": 1.0
+    },
+    "attrs": {
+      "folds": [
+        {
+          "critical_recall": 0.9838056680161943,
+          "macro_pr_auc": 0.9825058878246974,
+          "macro_f1": 0.9841695270429928,
+          "normal_fpr": 0.0006101281269066504,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.0037337439134716988,
+          "ece": 0.002089212307182278,
+          "rows": 3852,
+          "confusion_matrix": [
+            [
+              3276,
+              2,
+              0
+            ],
+            [
+              3,
+              77,
+              0
+            ],
+            [
+              7,
+              1,
+              486
+            ]
+          ],
+          "fold": 0
+        },
+        {
+          "critical_recall": 0.9862204724409449,
+          "macro_pr_auc": 0.9991385080152654,
+          "macro_f1": 0.9734654740962853,
+          "normal_fpr": 0.0,
+          "normal_critical_fpr": 0.0,
+          "brier": 0.00233974470756948,
+          "ece": 0.0008335171357753081,
+          "rows": 3834,
+          "confusion_matrix": [
+            [
+              3178,
+              0,
+              0
+            ],
+            [
+              19,
+              129,
+              0
+            ],
+            [
+              7,
+              0,
+              501
+            ]
+          ],
+          "fold": 1
+        }
+      ]
+    }
+  }
+]

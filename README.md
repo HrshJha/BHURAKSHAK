@@ -143,3 +143,9 @@ This statement is binding for how every claim in this repository should be read.
 - Building a production-scale multi-mine SaaS platform in the prototype phase (architecture should allow for it later, but MVP targets one panel).
 - Raw SAR/InSAR processing on the Raspberry Pi (done externally/offline on a workstation).
 - Mandatory GNN-based spatial modeling for MVP (reserved as future work, gated behind an ablation showing engineered spatial features are insufficient).
+
+## Versioned v3 local-severity experiment
+
+The [v3 report](reports/generalization_v3/final_report.md) records a new physically coupled generator and causal feature schema. The candidate passed a fresh synthetic test at **98.65% Critical recall and 0.014% Normal FPR**, using the existing prototype's **15/35 mm local-displacement severity policy**. This is explicitly a different target from the old scenario-wide labels; the original scenario-label target remains unmet (41.13% recall for the v3 candidate on the retained labels). The fixed physical threshold baseline also passed and had better macro F1.
+
+This is synthetic local-severity detection, not field validation or collapse prediction. The one-trapdoor hardware scope and deployed artifacts are unchanged. Code/data/label semantics, group-bootstrap intervals, delayed event detection, failed draft, model comparisons, and exact reproduction/inference commands are in the report. V3 inference is opt-in through `scripts/run_generalization_v3.py`; the existing v2 replay path is preserved.

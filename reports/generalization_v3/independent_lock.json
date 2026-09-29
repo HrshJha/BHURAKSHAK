@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "evals_run": 1,
+  "freeze_sha256": "872150e99de43f084fbab3b9ee40a6100ba2dc0e4ba6eb0fc751bb21c6cc9de0",
+  "test_spec": {
+    "seed": 974203,
+    "groups_per_scenario": 30,
+    "shapes": [
+      "sigmoid",
+      "smoothstep",
+      "two_stage"
+    ],
+    "noise_multiplier": 2.0,
+    "specification": "unseen temporal families and parameter groups; all scenarios retained without filtering by severity"
+  },
+  "result_sha256": "b49b7bd26fa5ca401ecc55407f9fad380e99e32bcf791cf7e2688925cdff453d",
+  "corpus_hashes": {
+    "independent_test_observations.parquet": "345a38bf09d5d2c55507dbceae29d2cb87086b9142d5326df13fa3128a8d38f6",
+    "independent_test_truth.parquet": "f650b62447de1947c3b9aa4167b91fbcaa71b2794bfb45a0fea347a41af338c0",
+    "independent_test_parameters.csv": "2e3a5f3365e272b455360ec7566e740d5eab941870a8b531775b0a6dbeab1f98"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "config": {
+    "dataset_version": "synthetic-v3-coupled-local-severity",
+    "feature_version": "v3",
+    "seed": 1731,
+    "trials": 20,
+    "folds": 3,
+    "bootstrap_replicates": 500,
+    "selection_normal_fpr_cap": 0.025,
+    "acceptance": {
+      "critical_recall": 0.89,
+      "normal_fpr": 0.05
+    },
+    "development_margin": {
+      "critical_recall": 0.92,
+      "normal_fpr": 0.03
+    },
+    "label_policy": {
+      "name": "local_displacement_severity_v1",
+      "source": "src/evaluation/tabletop_protocol.py::derived_risk_state",
+      "warning_mm": 15.0,
+      "critical_mm": 35.0,
+      "semantics": "true local displacement at feature-window end; strict greater-than thresholds",
+      "qualification": "existing prototype policy; not validated mine hazard thresholds",
+      "retain_legacy_scenario_label": true
+    },
+    "simulation": {
+      "steps": 144,
+      "interval_hours": 0.16666666666666666,
+      "amplitude_scale": [
+        0.6,
+        1.4
+      ],
+      "sigma_m": [
+        45.0,
+        90.0
+      ],
+      "onset_hours": [
+        0.0,
+        6.0
+      ],
+      "duration_hours": [
+        4.0,
+        24.0
+      ],
+      "rate_per_day": [
+        0.1,
+        3.0
+      ],
+      "displacement_noise_mm": [
+        0.25,
+        1.0
+      ],
+      "tilt_noise_deg": [
+        0.005,
+        0.02
+      ],
+      "strain_noise": [
+        1e-07,
+        2e-06
+      ],
+      "drift_mm_per_day": [
+        -1.5,
+        1.5
+      ],
+      "subsidence_fault_probability": 0.1,
+      "repetitions_per_parameter_group": 2,
+      "scenarios": [
+        "stable_ground",
+        "slow_subsidence",
+        "rapid_subsidence",
+        "accelerating_subsidence",
+        "irregular_subsidence",
+        "multiple_zones",
+        "sensor_bias",
+        "sensor_stuck",
+        "sensor_dropout",
+        "sensor_spike",
+        "sensor_drift",
+        "slow_drift_temperature",
+        "packet_loss",
+        "vibration_only",
+        "single_node_disturbance",
+        "communication_failure"
+      ]
+    },
+    "development": {
+      "groups_per_scenario": 40,
+      "shapes": [
+        "exponential",
+        "power",
+        "ramp"
+      ]
+    },
+    "validation": {
+      "seed": 1732,
+      "groups_per_scenario": 16,
+      "shapes": [
+        "exponential",
+        "power",
+        "ramp"
+      ],
+      "noise_multiplier": 1.5
+    },
+    "independent_test": {
+      "seed": 974203,
+      "groups_per_scenario": 30,
+      "shapes": [
+        "sigmoid",
+        "smoothstep",
+        "two_stage"
+      ],
+      "noise_multiplier": 2.0,
+      "specification": "unseen temporal families and parameter groups; all scenarios retained without filtering by severity"
+    },
+    "features": {
+      "window_steps": 60,
+      "stride_steps": 10,
+      "short_steps": 18,
+      "endpoint_steps": 3
+    }
+  },
+  "sources": {
+    "configs/generalization_v3.yaml": "2abcb0c419acabd59353ecba7955bde917508362b0dc336d384bffcb908bb817",
+    "configs/feature_schema_v3.yaml": "e7faa5ace2cc06928c2545252f040613e8400c6431bc5f696c3362c8700d9b51",
+    "src/simulator/coupled_v3.py": "b7cc4339e964cdaef3d51a32d8556732a976d676099da8bba30b45a8a9809a39",
+    "src/features/causal_v3.py": "78dbd727da4bf9f18845205637f6d43d2cc58204e5c01dbc6a5dca53f150724a",
+    "src/features/windowing.py": "2e34277020c30092b03e71e24b42d7d8d67525dabc686b885fdb51a31c0d028c",
+    "src/risk/severity_v3.py": "eccbfd35675c3cba3afae7b933230e12dec3eb1b7afddb89f9e6ac9b349ae470",
+    "src/risk/optimized.py": "affaa17c8f058df21253ad9bbd5d27b0ba9dbcf3ddf32ff3de417651ff9a37d9",
+    "scripts/run_generalization_v3.py": "ae7358e332798e9fd0b1694e019b45090eb4791725d2c8aee567fa5b0bff5532",
+    "scripts/optimize_bhurakshak.py": "b8fba6a4efcf9e4cd36e83c8fd0391f4eda90f301fcf7be1aa999b8a9b551e1c",
+    "scripts/freeze_models.py": "716c4b11b01aadb273c3ea68ebc4ef93178209510f2b7c8562f2a6e8db7ff75b",
+    "configs/physics.yaml": "1335fc141d50e155e9c40575ee012a5ffa90ad3167b51825ea6334ddf1f56008",
+    "src/simulator/faults.py": "92d81f5957878f64ae2e6ca917ed6aa3a3a66efdb74d676b91a727050fceb87f"
+  },
+  "prior_models": {
+    "models/tuned/risk_xgboost_tuned.joblib": "5a37584f9f366417f5b8600326fa0e099645354d94f6f1ceb4afb5e001154852",
+    "models/optimization/candidate.joblib": "570e78ca00e5e9feca0b2e36e33672b491255b1d3f2a5f63883693e4e2eefe6c"
+  },
+  "prior_locks": {
+    "reports/test_lock.json": "5944d8579de8e55401f2109fe58541f612b486931e5e4565843fe0e0a0abb71d",
+    "reports/optimization/independent_test_lock.json": "f14722b133c3593578f447e992e560166e41cb4f7b884ae95944eff5769cc65e"
+  }
+}

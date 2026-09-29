@@ -1,0 +1,236 @@
+Generating physically checked development corpus
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+[I 2026-09-29 20:46:27,931] A new study created in RDB with name: v3
+[I 2026-09-29 20:46:28,680] Trial 0 finished with value: 1.276682423559546 and parameters: {'model': 'xgboost', 'n_estimators': 250, 'max_depth': 5, 'learning_rate': 0.08, 'critical_weight': 1.5, 'weight_power': 0.0, 'calibration': 'sigmoid', 'feature_set': 'movement', 'alpha': 1.0, 'min_child_weight': 7.699104278088062, 'reg_lambda': 1.3199449745980831, 'colsample_bytree': 0.7367318232711927}. Best is trial 0 with value: 1.276682423559546.
+[I 2026-09-29 20:46:41,427] Trial 1 finished with value: 1.2824190615173625 and parameters: {'model': 'random_forest', 'n_estimators': 250, 'max_depth': 5, 'learning_rate': 0.08, 'critical_weight': 1.5, 'weight_power': 0.0, 'calibration': 'sigmoid', 'feature_set': 'movement', 'alpha': 1.0, 'min_samples_leaf': 2}. Best is trial 1 with value: 1.2824190615173625.
+[I 2026-09-29 20:46:42,047] Trial 2 finished with value: 1.2860535224966703 and parameters: {'model': 'two_stage', 'n_estimators': 250, 'max_depth': 5, 'learning_rate': 0.08, 'critical_weight': 1.5, 'weight_power': 0.0, 'calibration': 'sigmoid', 'feature_set': 'movement', 'alpha': 1.0}. Best is trial 2 with value: 1.2860535224966703.
+[I 2026-09-29 20:46:42,948] Trial 3 finished with value: 1.2864564098458748 and parameters: {'model': 'xgboost', 'n_estimators': 250, 'max_depth': 8, 'learning_rate': 0.04860221669882137, 'critical_weight': 2.665473265546586, 'weight_power': 0.5, 'calibration': 'sigmoid', 'feature_set': 'full', 'alpha': 1.0, 'min_child_weight': 7.779470950258221, 'reg_lambda': 5.633118019738694, 'colsample_bytree': 0.9274956337715581}. Best is trial 3 with value: 1.2864564098458748.
+[I 2026-09-29 20:46:43,512] Trial 4 finished with value: 1.284109770071538 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 8, 'learning_rate': 0.04260642112574674, 'critical_weight': 2.7404230466542385, 'weight_power': 0.0, 'calibration': 'isotonic', 'feature_set': 'displacement', 'alpha': 0.7}. Best is trial 3 with value: 1.2864564098458748.
+[I 2026-09-29 20:46:44,089] Trial 5 finished with value: 1.286490973368479 and parameters: {'model': 'two_stage', 'n_estimators': 250, 'max_depth': 8, 'learning_rate': 0.10801515953465915, 'critical_weight': 2.4439689597935, 'weight_power': 1.0, 'calibration': 'none', 'feature_set': 'movement', 'alpha': 1.0}. Best is trial 5 with value: 1.286490973368479.
+[I 2026-09-29 20:46:44,968] Trial 6 finished with value: 1.2897053572085737 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 3, 'learning_rate': 0.04455126715230277, 'critical_weight': 2.7375671221700335, 'weight_power': 0.5, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 6 with value: 1.2897053572085737.
+[I 2026-09-29 20:46:45,739] Trial 7 pruned. 
+[I 2026-09-29 20:46:46,562] Trial 8 finished with value: 1.2886798482145871 and parameters: {'model': 'xgboost', 'n_estimators': 150, 'max_depth': 6, 'learning_rate': 0.047685719125088635, 'critical_weight': 2.7168247716476848, 'weight_power': 1.0, 'calibration': 'none', 'feature_set': 'full', 'alpha': 0.7, 'min_child_weight': 3.805425082342804, 'reg_lambda': 9.284694067950502, 'colsample_bytree': 0.8213523020455791}. Best is trial 6 with value: 1.2897053572085737.
+[I 2026-09-29 20:46:47,418] Trial 9 finished with value: 1.2889346989867805 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 8, 'learning_rate': 0.051842009892205845, 'critical_weight': 2.008020355269262, 'weight_power': 0.0, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 6 with value: 1.2897053572085737.
+[I 2026-09-29 20:46:48,116] Trial 10 pruned. 
+[I 2026-09-29 20:46:48,870] Trial 11 finished with value: 1.2876069995535169 and parameters: {'model': 'two_stage', 'n_estimators': 350, 'max_depth': 7, 'learning_rate': 0.05781211844468623, 'critical_weight': 1.8274077881940745, 'weight_power': 0.0, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 6 with value: 1.2897053572085737.
+[I 2026-09-29 20:46:49,850] Trial 12 finished with value: 1.2887276033380908 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 6, 'learning_rate': 0.039422825791018384, 'critical_weight': 2.641235401768326, 'weight_power': 0.5, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 6 with value: 1.2897053572085737.
+[I 2026-09-29 20:46:50,146] Trial 13 pruned. 
+[I 2026-09-29 20:46:50,871] Trial 14 pruned. 
+[I 2026-09-29 20:46:51,651] Trial 15 pruned. 
+[I 2026-09-29 20:46:52,294] Trial 16 finished with value: 1.2878182610128646 and parameters: {'model': 'two_stage', 'n_estimators': 350, 'max_depth': 4, 'learning_rate': 0.0810241723953848, 'critical_weight': 1.1691561342485115, 'weight_power': 0.0, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 6 with value: 1.2897053572085737.
+[I 2026-09-29 20:46:53,495] Trial 17 pruned. 
+[I 2026-09-29 20:46:54,240] Trial 18 finished with value: 1.2889407614823303 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 8, 'learning_rate': 0.0801893020832031, 'critical_weight': 2.2523650437264218, 'weight_power': 0.5, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 6 with value: 1.2897053572085737.
+[I 2026-09-29 20:46:55,013] Trial 19 finished with value: 1.288580471696024 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 3, 'learning_rate': 0.06679427801909746, 'critical_weight': 2.6192884805761754, 'weight_power': 0.5, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 6 with value: 1.2897053572085737.
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+/Users/harshkumarjha/mine/.venv/lib/python3.12/site-packages/numpy/lib/_nanfunctions_impl.py:1214: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a, axis, out=out, keepdims=keepdims)
+{
+  "selected": {
+    "model": "selected",
+    "scope": "reserved_noisy_development_validation",
+    "target": "local_severity_v1",
+    "critical_recall": 1.0,
+    "macro_pr_auc": 0.9991617325006498,
+    "macro_f1": 0.9611770215681453,
+    "normal_fpr": 0.0254149377593361,
+    "normal_critical_fpr": 0.0254149377593361,
+    "brier": 0.005934213288128376,
+    "ece": 0.001960033421508093,
+    "rows": 4608,
+    "confusion_matrix": [
+      [
+        3758,
+        0,
+        98
+      ],
+      [
+        4,
+        90,
+        2
+      ],
+      [
+        0,
+        0,
+        656
+      ]
+    ]
+  },
+  "confidence_interval": {
+    "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+    "groups": 256,
+    "replicates": 500,
+    "critical_recall_95pct": [
+      1.0,
+      1.0
+    ],
+    "normal_fpr_95pct": [
+      0.012045059718982483,
+      0.03948903540551633
+    ]
+  },
+  "winner": "ablation_movement"
+}

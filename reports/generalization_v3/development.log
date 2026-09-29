@@ -1,0 +1,68 @@
+Generating physically checked development corpus
+[I 2026-09-29 20:49:47,869] A new study created in RDB with name: v3
+[I 2026-09-29 20:49:48,547] Trial 0 finished with value: 1.2761361726741738 and parameters: {'model': 'xgboost', 'n_estimators': 250, 'max_depth': 5, 'learning_rate': 0.08, 'critical_weight': 1.5, 'weight_power': 0.0, 'calibration': 'sigmoid', 'feature_set': 'movement', 'alpha': 1.0, 'min_child_weight': 7.699104278088062, 'reg_lambda': 1.3199449745980831, 'colsample_bytree': 0.7367318232711927}. Best is trial 0 with value: 1.2761361726741738.
+[I 2026-09-29 20:49:55,496] Trial 1 finished with value: 1.2234370505702397 and parameters: {'model': 'random_forest', 'n_estimators': 250, 'max_depth': 5, 'learning_rate': 0.08, 'critical_weight': 1.5, 'weight_power': 0.0, 'calibration': 'sigmoid', 'feature_set': 'movement', 'alpha': 1.0, 'min_samples_leaf': 2}. Best is trial 0 with value: 1.2761361726741738.
+[I 2026-09-29 20:49:56,041] Trial 2 finished with value: 1.260256891374829 and parameters: {'model': 'two_stage', 'n_estimators': 250, 'max_depth': 5, 'learning_rate': 0.08, 'critical_weight': 1.5, 'weight_power': 0.0, 'calibration': 'sigmoid', 'feature_set': 'movement', 'alpha': 1.0}. Best is trial 0 with value: 1.2761361726741738.
+[I 2026-09-29 20:49:56,823] Trial 3 finished with value: 1.2577558455444475 and parameters: {'model': 'xgboost', 'n_estimators': 250, 'max_depth': 8, 'learning_rate': 0.04860221669882137, 'critical_weight': 2.665473265546586, 'weight_power': 0.5, 'calibration': 'sigmoid', 'feature_set': 'full', 'alpha': 1.0, 'min_child_weight': 7.779470950258221, 'reg_lambda': 5.633118019738694, 'colsample_bytree': 0.9274956337715581}. Best is trial 0 with value: 1.2761361726741738.
+[I 2026-09-29 20:49:57,281] Trial 4 finished with value: 1.2799046927861857 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 8, 'learning_rate': 0.04260642112574674, 'critical_weight': 2.7404230466542385, 'weight_power': 0.0, 'calibration': 'isotonic', 'feature_set': 'displacement', 'alpha': 0.7}. Best is trial 4 with value: 1.2799046927861857.
+[I 2026-09-29 20:49:57,716] Trial 5 finished with value: 1.2798732873973708 and parameters: {'model': 'two_stage', 'n_estimators': 250, 'max_depth': 8, 'learning_rate': 0.10801515953465915, 'critical_weight': 2.4439689597935, 'weight_power': 1.0, 'calibration': 'none', 'feature_set': 'movement', 'alpha': 1.0}. Best is trial 4 with value: 1.2799046927861857.
+[I 2026-09-29 20:49:58,446] Trial 6 finished with value: 1.2795247894228197 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 3, 'learning_rate': 0.04455126715230277, 'critical_weight': 2.7375671221700335, 'weight_power': 0.5, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 4 with value: 1.2799046927861857.
+[I 2026-09-29 20:49:59,432] Trial 7 finished with value: 1.289331935329573 and parameters: {'model': 'xgboost', 'n_estimators': 350, 'max_depth': 4, 'learning_rate': 0.03978438514995239, 'critical_weight': 1.7679197044600885, 'weight_power': 1.0, 'calibration': 'isotonic', 'feature_set': 'full', 'alpha': 0.7, 'min_child_weight': 4.964073307308378, 'reg_lambda': 3.3424225380539756, 'colsample_bytree': 0.7142543334167666}. Best is trial 7 with value: 1.289331935329573.
+[I 2026-09-29 20:50:00,129] Trial 8 finished with value: 1.2777511698657398 and parameters: {'model': 'xgboost', 'n_estimators': 150, 'max_depth': 6, 'learning_rate': 0.047685719125088635, 'critical_weight': 2.7168247716476848, 'weight_power': 1.0, 'calibration': 'none', 'feature_set': 'full', 'alpha': 0.7, 'min_child_weight': 3.805425082342804, 'reg_lambda': 9.284694067950502, 'colsample_bytree': 0.8213523020455791}. Best is trial 7 with value: 1.289331935329573.
+[I 2026-09-29 20:50:00,899] Trial 9 finished with value: 1.2812401994702838 and parameters: {'model': 'two_stage', 'n_estimators': 450, 'max_depth': 8, 'learning_rate': 0.051842009892205845, 'critical_weight': 2.008020355269262, 'weight_power': 0.0, 'calibration': 'none', 'feature_set': 'full', 'alpha': 1.0}. Best is trial 7 with value: 1.289331935329573.
+[I 2026-09-29 20:50:01,606] Trial 10 finished with value: 1.2942003842046326 and parameters: {'model': 'two_stage', 'n_estimators': 350, 'max_depth': 3, 'learning_rate': 0.05488837181224907, 'critical_weight': 2.120840710044267, 'weight_power': 1.0, 'calibration': 'isotonic', 'feature_set': 'full', 'alpha': 0.7}. Best is trial 10 with value: 1.2942003842046326.
+[I 2026-09-29 20:50:02,704] Trial 11 finished with value: 1.293602320321975 and parameters: {'model': 'xgboost', 'n_estimators': 350, 'max_depth': 4, 'learning_rate': 0.043701681963596105, 'critical_weight': 1.862169589419874, 'weight_power': 1.0, 'calibration': 'isotonic', 'feature_set': 'movement', 'alpha': 0.7, 'min_child_weight': 1.0552595600293233, 'reg_lambda': 0.6337048983030549, 'colsample_bytree': 0.9737295570077801}. Best is trial 10 with value: 1.2942003842046326.
+[I 2026-09-29 20:50:03,172] Trial 12 pruned. 
+[I 2026-09-29 20:50:03,857] Trial 13 finished with value: 1.2914402601203159 and parameters: {'model': 'two_stage', 'n_estimators': 350, 'max_depth': 4, 'learning_rate': 0.05620977147722004, 'critical_weight': 2.29057977382983, 'weight_power': 0.5, 'calibration': 'isotonic', 'feature_set': 'full', 'alpha': 0.7}. Best is trial 10 with value: 1.2942003842046326.
+[I 2026-09-29 20:50:04,541] Trial 14 finished with value: 1.2726577812824664 and parameters: {'model': 'two_stage', 'n_estimators': 350, 'max_depth': 3, 'learning_rate': 0.060721722954463465, 'critical_weight': 1.7808621704888403, 'weight_power': 1.0, 'calibration': 'none', 'feature_set': 'full', 'alpha': 0.7}. Best is trial 10 with value: 1.2942003842046326.
+[I 2026-09-29 20:50:21,801] Trial 15 finished with value: 1.2808514834930376 and parameters: {'model': 'random_forest', 'n_estimators': 450, 'max_depth': 3, 'learning_rate': 0.08138866690417104, 'critical_weight': 2.21881089523208, 'weight_power': 1.0, 'calibration': 'isotonic', 'feature_set': 'full', 'alpha': 0.7, 'min_samples_leaf': 6}. Best is trial 10 with value: 1.2942003842046326.
+[I 2026-09-29 20:50:22,762] Trial 16 finished with value: 1.2919601824790692 and parameters: {'model': 'xgboost', 'n_estimators': 250, 'max_depth': 3, 'learning_rate': 0.030199055978863583, 'critical_weight': 2.2232401091026697, 'weight_power': 0.5, 'calibration': 'isotonic', 'feature_set': 'movement', 'alpha': 0.7, 'min_child_weight': 1.30374383090661, 'reg_lambda': 0.5587612305508508, 'colsample_bytree': 0.857254907922441}. Best is trial 10 with value: 1.2942003842046326.
+[I 2026-09-29 20:50:23,414] Trial 17 finished with value: 1.2947391151649517 and parameters: {'model': 'two_stage', 'n_estimators': 250, 'max_depth': 3, 'learning_rate': 0.04656517030590352, 'critical_weight': 2.3674229984889235, 'weight_power': 1.0, 'calibration': 'isotonic', 'feature_set': 'full', 'alpha': 0.7}. Best is trial 17 with value: 1.2947391151649517.
+[I 2026-09-29 20:50:23,785] Trial 18 pruned. 
+[I 2026-09-29 20:50:24,096] Trial 19 pruned. 
+{
+  "selected": {
+    "model": "selected",
+    "scope": "reserved_noisy_development_validation",
+    "target": "local_severity_v1",
+    "critical_recall": 0.9847560975609756,
+    "macro_pr_auc": 0.9395570975755668,
+    "macro_f1": 0.8316176091827354,
+    "normal_fpr": 0.00025933609958506224,
+    "normal_critical_fpr": 0.0,
+    "brier": 0.010980630293488503,
+    "ece": 0.0040820630060301455,
+    "rows": 4608,
+    "confusion_matrix": [
+      [
+        3855,
+        1,
+        0
+      ],
+      [
+        60,
+        36,
+        0
+      ],
+      [
+        2,
+        8,
+        646
+      ]
+    ]
+  },
+  "confidence_interval": {
+    "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+    "groups": 256,
+    "replicates": 500,
+    "critical_recall_95pct": [
+      0.9714608950038853,
+      0.9949248516384278
+    ],
+    "normal_fpr_95pct": [
+      0.0,
+      0.0007959777154538851
+    ]
+  },
+  "winner": "two_stage"
+}

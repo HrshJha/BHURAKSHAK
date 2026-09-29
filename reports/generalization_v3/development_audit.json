@@ -1,0 +1,48 @@
+{
+  "rows": 11520,
+  "events": 1280,
+  "parameter_groups": 640,
+  "class_counts": {
+    "NORMAL": 9472,
+    "CRITICAL": 1598,
+    "WARNING": 450
+  },
+  "legacy_class_counts": {
+    "NORMAL": 7920,
+    "WARNING": 2484,
+    "CRITICAL": 1116
+  },
+  "scenario_critical_but_locally_normal": 0.04479166666666667,
+  "missing_features": {
+    "displacement_endpoint": 405,
+    "displacement_mean": 80,
+    "displacement_std": 80,
+    "displacement_velocity": 80,
+    "displacement_projected": 174,
+    "displacement_acceleration": 174,
+    "tilt_x_endpoint": 240,
+    "tilt_x_mean": 80,
+    "tilt_x_std": 80,
+    "tilt_x_velocity": 80,
+    "tilt_x_projected": 160,
+    "tilt_x_acceleration": 160,
+    "tilt_y_endpoint": 240,
+    "tilt_y_mean": 80,
+    "tilt_y_std": 80,
+    "tilt_y_velocity": 80,
+    "tilt_y_projected": 160,
+    "tilt_y_acceleration": 160,
+    "strain_endpoint": 240,
+    "strain_mean": 80,
+    "strain_std": 80,
+    "strain_velocity": 80,
+    "strain_projected": 160,
+    "strain_acceleration": 160,
+    "displacement_change": 452,
+    "displacement_missing_ratio": 0,
+    "channel_missing_ratio": 0,
+    "vibration_rms": 0,
+    "vibration_peak": 0,
+    "packet_loss": 0
+  }
+}

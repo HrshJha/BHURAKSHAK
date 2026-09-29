@@ -76,14 +76,24 @@ def _slope(values: np.ndarray) -> float:
 def _velocity(values: np.ndarray, interval_hours: float) -> float:
     """Mean per-hour change across the window: (last − first finite) / duration.
 
- The duration spans the full window; only the endpoints must be finite.
+ The duration spans the first and last finite endpoints, preserving rate across missing edges.
  Returns NaN when fewer than two finite samples exist.
  """
     ok = np.flatnonzero(np.isfinite(values))
     if ok.size < 2 or interval_hours <= 0:
         return float("nan") if ok.size < 2 else 0.0
-    duration_hours = (values.size - 1) * interval_hours
+    duration_hours = (ok[-1] - ok[0]) * interval_hours
     return float((values[ok[-1]] - values[ok[0]]) / duration_hours)
+
+
+def _velocity_v2(values: np.ndarray, interval_hours: float) -> float:
+    """Historical v2 denominator, retained only for exact artifact replay."""
+    ok = np.flatnonzero(np.isfinite(values))
+    if ok.size < 2:
+        return float("nan")
+    if interval_hours <= 0:
+        return 0.0
+    return float((values[ok[-1]] - values[ok[0]]) / ((values.size - 1) * interval_hours))
 
 
 def _acceleration(velocities: np.ndarray, interval_hours: float) -> float:
@@ -183,7 +193,7 @@ def build_windows(
                 row[f"{ch}_min"] = float(np.nanmin(v)) if finite else float("nan")
                 row[f"{ch}_max"] = float(np.nanmax(v)) if finite else float("nan")
                 row[f"{ch}_slope"] = _slope(v)
-                row[f"{ch}_velocity"] = _velocity(v, interval_hours)
+                row[f"{ch}_velocity"] = _velocity_v2(v, interval_hours)
                 row[f"{ch}_acceleration"] = _acceleration(v, interval_hours)
             # first-class data quality: fraction of steps with ANY missing
             # core channel in this window (Group E's missing_ratio carries it)
