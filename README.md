@@ -13,7 +13,7 @@ This project models ground movement from sensor records and tests whether those 
 | Component | Status | Evidence |
 |---|---|---|
 | Sensors | PROTOTYPED | [Recorded tabletop data](data/recorded/tabletop/README.md) |
-| LoRa mesh | DESIGNED | [Architecture](submit/architecture/BHURAKSHAK_Complete_Architecture.mmd) |
+| LoRa mesh | OTHER WORKSTREAM | No LoRa implementation in this repository |
 | Gateway | OTHER WORKSTREAM | Not implemented in this repository |
 | ML pipeline | BUILT | [Pipeline](src/pipeline.py) |
 | Alert engine | BUILT | [Alert engine](src/risk/alert_engine.py) |
