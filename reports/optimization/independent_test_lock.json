@@ -1,0 +1,59 @@
+{
+  "status": "completed",
+  "evals_run": 1,
+  "model_sha256": "570e78ca00e5e9feca0b2e36e33672b491255b1d3f2a5f63883693e4e2eefe6c",
+  "config_sha256": "bd1dff8cebecb401a0c78341faf1c6c2ab7588dbf097dc0f9ce5752e6ea5e555",
+  "original_model_hashes": {
+    "models/tuned/risk_xgboost_tuned.joblib": "5a37584f9f366417f5b8600326fa0e099645354d94f6f1ceb4afb5e001154852",
+    "models/tuned/iforest_tuned.joblib": "9902d8f7b1bfc8e5a9f9b8ce6b0b6bfc81cef63453c6144b3c67ffb1ff88ada9"
+  },
+  "test_spec": {
+    "seed": 20261007,
+    "sequences_per_scenario": 100,
+    "scenarios": [
+      "stable_ground",
+      "accelerating_subsidence",
+      "rapid_subsidence"
+    ],
+    "dataset_version": "optimization-independent-v1",
+    "scope": "fresh_noise_seed_and_unseen_scenario_families_same_simulator"
+  },
+  "source_hashes": {
+    "src/features/group_f_physics.py": "9a32205c880bc4047fc85b67261e2a8f23c5a588842d9813363a7e71942a84f7",
+    "src/features/schema_guard.py": "0349e8e315758e58986a23f9850d42c1517d6c8a519a6d2282fc8d56be24e010",
+    "src/features/group_e_health.py": "de87c9ad08fa3cac19f816b343053574cdcf6f9664191d0a2d770e32d6fc5619",
+    "src/features/group_d_vibration.py": "e579d293664dbb5c45581dea572a11a5fde387affa9ef8549757bd3f8771ea42",
+    "src/features/build_feature_store.py": "543dc05947a0e2807af1e847e5bd78ab6a8db25b85379517c4c841225844d366",
+    "src/features/group_b_temporal.py": "6d7115f54875046d33ddc46218670b6d4b1d1d7a1993a983ec5218f0b1970c0e",
+    "src/features/windowing.py": "82f27ef7627e673e5323892c27cff8f96656b879b9bfff439aab3d2d0e37e93a",
+    "src/features/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/features/group_g_dgps.py": "32015c6f178dbd2d44823711ba54ccb1263c2e6e8f137a66e481d00ad2870881",
+    "src/features/group_i_terrain.py": "743eb61e523885e8fb5472e58a9e9a38c3d94b6568bf092db72fa6dc06ff20db",
+    "src/features/group_a_physical.py": "a6bb934c56c7ae4e687453663b98c45330b15468139a1f4b62bc6fdbbd327a32",
+    "src/features/group_c_spatial.py": "fe2a50440235f11eac6b795f199520fa3f0cdc155684895e9492cfced14cf6a3",
+    "src/features/provenance.py": "5e137c71001c7fa697abacc6900b247636c1d029242219a4f7f695b15edf102a",
+    "src/features/group_j_environmental.py": "3bbb4dc0403fc2529335dc59fc7a35087a929dca72f62ac6539b04004bab365b",
+    "src/features/group_h_insar.py": "44e3f0ded5c6ffd5b1180845738ec9d78ed48b43958440f9aae601398228a2a5",
+    "src/simulator/scenarios.py": "625a33dad49eeb08858f85d82acedbfeea38c6075c635623c72fda9d9a464159",
+    "src/simulator/grid.py": "c68ef9a497fb93003057b248f9617dea1f1bd52977930d1b432283ea704f9161",
+    "src/simulator/deformation_field.py": "79f5dba46dfd1ff8c12c9f69624aefbe08f7890690b9d0447062a8ef55c22d1f",
+    "src/simulator/comms_degradation.py": "5dd692ab0ca7b7b7d7fb00acf4a43aaff5ac9fae88d0670681e9e6ad2c0000a5",
+    "src/simulator/manifest.py": "4902416ecb50e198c99972208ac3cfce9458fd088c883848a876e0459dfc45e3",
+    "src/simulator/rng.py": "77661f322f0780b4c512ef8f6daa4903fda8c09a3fa8d3d3f84f1b0063636392",
+    "src/simulator/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/simulator/channels_tilt.py": "21a233821193351114fb158a51a2d3d2c4ebda065d826afaeb5c254626c36eb0",
+    "src/simulator/dataset_builder.py": "207bd9c3f16264488e925c8fabad07c4e38d69a441126f076f4ce15b452a7da7",
+    "src/simulator/temporal_model.py": "f6ae13b9e656c8269f790b2f9fdcf26ad014cdd83335a8ffa2425c609109a30d",
+    "src/simulator/channels_strain.py": "743acebebb119ddec1f86c532e17f343ba94d90ebaf5a81a54233d3c03110911",
+    "src/simulator/spatial_model.py": "cf88f3ff2567a79fcdbb9835bada1f0af062275579e8512f4dc04cc6129248f1",
+    "src/simulator/channels_vibration.py": "02f373451c760fe26d4161b67039a5b6b4efb54951d2b21d92d6a45aef12c860",
+    "src/simulator/faults.py": "92d81f5957878f64ae2e6ca917ed6aa3a3a66efdb74d676b91a727050fceb87f"
+  },
+  "old_lock_sha256": "5944d8579de8e55401f2109fe58541f612b486931e5e4565843fe0e0a0abb71d",
+  "corpus_hashes": {
+    "synthetic_nodes.csv": "63f9bb64ec7914a5b134a2fa10d235194a6177a7cb1074f67eb4f39301c62521",
+    "synthetic_events.csv": "e3401a269c565c2d64b4c7364330620256fa1c875705583942d0911ff4d4310f"
+  },
+  "test_feature_rows": 2700,
+  "result_sha256": "db893a1483a08514c662eb3e6235158f3024d8d37fffe1a3cfef2e1ebb763b54"
+}

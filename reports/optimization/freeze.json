@@ -1,0 +1,10 @@
+{
+  "model_sha256": "570e78ca00e5e9feca0b2e36e33672b491255b1d3f2a5f63883693e4e2eefe6c",
+  "config_sha256": "bd1dff8cebecb401a0c78341faf1c6c2ab7588dbf097dc0f9ce5752e6ea5e555",
+  "source_config_sha256": "24f560febfcd5493e556e1b41a0226bfbeeb37e2a95835af83e4c2310cea4988",
+  "feature_store_sha256": "dad8ba970f7cdcfcdb673be63b4954354d25079f473efbd02ee200b4399b58c3",
+  "split_sha256": "9ed57cf99669ab15bb4e600e4fd5a9138dbbc34ba73e46528a7c8ea546d778eb",
+  "test_generated": false,
+  "seed": 42,
+  "selection": "train parameter-grouped CV; validation excluded from all selection"
+}

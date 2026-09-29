@@ -1,0 +1,105 @@
+config:
+  version: optimization-v1
+  seed: 42
+  trials_per_model: 20
+  folds: 3
+  timeout_per_model_seconds: 1800
+  normal_fpr_cap: 0.05
+  critical_recall_target: 0.89
+  calibration_methods:
+  - none
+  - sigmoid
+  - isotonic
+  feature_sets:
+  - displacement_health
+  - displacement_physics
+  independent_test:
+    seed: 20261007
+    sequences_per_scenario: 100
+    scenarios:
+    - stable_ground
+    - accelerating_subsidence
+    - rapid_subsidence
+    dataset_version: optimization-independent-v1
+    scope: fresh_noise_seed_and_unseen_scenario_families_same_simulator
+risk:
+  n_estimators: 250
+  max_depth: 6
+  learning_rate: 0.11549300012384892
+  min_child_weight: 5.413127860165442
+  gamma: 2.3582754174375777
+  subsample: 0.8828228497738542
+  colsample_bytree: 0.8699165695041238
+  colsample_bylevel: 0.8991202431491853
+  reg_alpha: 0.00040586389695981666
+  reg_lambda: 0.6318412049604699
+  max_delta_step: 4.027861336679006
+  max_bin: 128
+  weighting: none
+  critical_weight: 1.4690072263568765
+  calibration: sigmoid
+  feature_set: displacement_physics
+isolation_forest:
+  n_estimators: 150
+  max_samples: 1024
+  max_features: 0.5019474065380636
+  bootstrap: false
+  feature_set: displacement_physics
+risk_features: &id001
+- displacement
+- rolling_mean
+- rolling_std
+- rolling_min
+- rolling_max
+- slope
+- velocity
+- acceleration
+- trend
+- persistence
+- change_point_score
+- packet_loss
+- missing_ratio
+- stuck_sensor_flag
+- drift_score
+- expected_displacement
+- physics_residual
+- physics_residual_velocity
+anomaly_features: *id001
+thresholds:
+  critical: 0.05970458975807735
+  warning: 0.8386694864228538
+anomaly_threshold: 0.5654363690457924
+operating_points:
+  '0.01':
+    critical: 0.19431145204155448
+    warning: 0.921114671299141
+  '0.05':
+    critical: 0.05970458975807735
+    warning: 0.8386694864228538
+  '0.1':
+    critical: 0.03562592265591282
+    warning: 0.8386694864228538
+  '0.2':
+    critical: 0.017606014188581705
+    warning: 0.3977445769724406
+alert:
+  watch_threshold: 0.5
+  persistence_windows: 3
+  normal_event_alert_fraction: 0.03112033195020747
+  critical_event_watch_recall: 0.7962962962962963
+  critical_events: 54
+  detected_critical_events: 43
+  median_watch_delay_from_scenario_start_hours: 13.1667
+  lead_time_hours: null
+  lead_time_reason: risk is constant over an event; no collapse/onset timestamp is
+    available
+  false_alert_episodes: 30
+  false_alerts_per_observed_normal_event_day: 0.05601631742878555
+  state_counts:
+    GREEN: 9645
+    WATCH: 1758
+  higher_escalation: 'gated: no co-temporal neighbors'
+  recovery: unsupported by current AlertEngine
+fit_rows: 35523
+calibration_rows: 11718
+threshold_rows: 11403

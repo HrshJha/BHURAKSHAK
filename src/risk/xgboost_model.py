@@ -111,7 +111,7 @@ def train_risk_model(df: pd.DataFrame, feature_groups: list[str] | None = None) 
 
  ``df`` must carry a ``split`` column and the 3-class ``risk_label``.
  Hyperparameters come from configs/risk_model.yaml; the objective is
- multi-class softmax so per-class probabilities sum to 1.
+ multi-class softprob so per-class probabilities sum to 1.
  """
     cfg = risk_model_config()["xgboost"]
     for col in ("split", "risk_label"):
@@ -121,7 +121,9 @@ def train_risk_model(df: pd.DataFrame, feature_groups: list[str] | None = None) 
     features = _resolve_features(df)
     if feature_groups is not None:
         wanted = {n for n in feature_groups}
-        features = [f for f in features if f in wanted] or features
+        features = [f for f in features if f in wanted]
+        if not features:
+            raise XGBoostModelError("requested features contain no available, allowed model inputs")
 
     train = df[df["split"] == "train"]
     val = df[df["split"] == "validation"]
@@ -144,7 +146,7 @@ def train_risk_model(df: pd.DataFrame, feature_groups: list[str] | None = None) 
         colsample_bytree=float(cfg["colsample_bytree"]),
         reg_lambda=float(cfg["reg_lambda"]),
         random_state=int(cfg["random_state"]),
-        objective="multi:softmax",
+        objective="multi:softprob",
         num_class=len(classes),
         eval_metric="mlogloss",
         early_stopping_rounds=30,

@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/Users/harshkumarjha/mine/scripts/evaluate_optimization.py", line 84, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/Users/harshkumarjha/mine/scripts/evaluate_optimization.py", line 49, in main
+    claim(lockpath,lock)
+  File "/Users/harshkumarjha/mine/scripts/evaluate_optimization.py", line 28, in claim
+    with Path(path).open('x') as f:json.dump(lock,f,indent=2)
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: '/Users/harshkumarjha/mine/reports/optimization/independent_test_lock.json'

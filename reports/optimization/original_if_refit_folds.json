@@ -1,0 +1,26 @@
+[
+  {
+    "anomaly_recall": 0.48229970721320203,
+    "anomaly_fpr": 0.0538021469434981,
+    "anomaly_pr_auc": 0.5983476232431864,
+    "anomaly_macro_f1": 0.7396905556834645,
+    "rows": 19314,
+    "fold": 0
+  },
+  {
+    "anomaly_recall": 0.40991223541559113,
+    "anomaly_fpr": 0.038651628437460395,
+    "anomaly_pr_auc": 0.5608160164268514,
+    "anomaly_macro_f1": 0.7179663532198457,
+    "rows": 19656,
+    "fold": 1
+  },
+  {
+    "anomaly_recall": 0.4501354346220143,
+    "anomaly_fpr": 0.045923269070646255,
+    "anomaly_pr_auc": 0.5778719578839417,
+    "anomaly_macro_f1": 0.7316689627118599,
+    "rows": 19674,
+    "fold": 2
+  }
+]

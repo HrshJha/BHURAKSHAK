@@ -1,0 +1,14 @@
+scenario,rows,normal_fpr,critical_recall
+E_communication_failure,1188,0.08164983164983165,
+E_irregular_subsidence,1197,,
+E_multiple_zones,1179,,0.9265232974910395
+E_packet_loss,1071,0.009337068160597572,
+E_sensor_bias,1089,0.012855831037649219,
+E_sensor_drift,1152,0.001736111111111111,
+E_sensor_dropout,1089,0.11570247933884298,
+E_sensor_spike,1170,0.06068376068376068,
+E_sensor_stuck,1152,0.024305555555555556,
+E_single_node_disturbance,1107,0.12375790424570912,
+E_slow_drift_temperature,1035,0.010628019323671498,
+E_slow_subsidence,1008,,
+E_vibration_only,1044,0.08141762452107279,

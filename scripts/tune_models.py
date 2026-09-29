@@ -41,8 +41,9 @@ from src.risk.xgboost_model import _resolve_features
 
 
 def development_frame() -> tuple[pd.DataFrame, list[str]]:
-    frame = pd.read_parquet(STORE)
-    split_map = pd.read_csv(SPLITS, usecols=["event_id", "split"])
+    split_map = pd.read_csv(SPLITS, usecols=["event_id", "split", "generation_parameter_id", "scenario_family"])
+    split_map = split_map[split_map.split.isin(("train", "validation"))]
+    frame = pd.read_parquet(STORE, filters=[("event_id", "in", split_map.event_id.tolist())])
     frame = frame.merge(split_map, on="event_id", how="inner", validate="many_to_one")
     frame = frame[frame.split.isin(("train", "validation"))].copy()
     frame = frame.dropna(subset=["risk_label", "anomaly_label"])
@@ -58,7 +59,10 @@ def grouped_folds(frame: pd.DataFrame):
     ids = events.index.to_numpy()
     y = events.to_numpy()
     splitter = StratifiedGroupKFold(n_splits=FOLDS, shuffle=True, random_state=SEED)
-    return [(ids[a], ids[b]) for a, b in splitter.split(ids, y, groups=ids)]
+    if "generation_parameter_id" not in frame:
+        raise ValueError("generating-parameter groups are required for tuning")
+    groups = frame.groupby("event_id")["generation_parameter_id"].first().reindex(ids).to_numpy()
+    return [(ids[a], ids[b]) for a, b in splitter.split(ids, y, groups=groups)]
 
 
 def _fold_frames(frame: pd.DataFrame, tr_events: np.ndarray, va_events: np.ndarray):
@@ -149,7 +153,7 @@ def run_baselines(frame: pd.DataFrame, features: list[str]) -> dict:
         records["forecaster_persistence"].append({"status": "measured_in_forecaster_study"})
 
     return {
-        "protocol": {"folds": FOLDS, "grouping": "event_id", "splitter": "StratifiedGroupKFold",
+        "protocol": {"folds": FOLDS, "grouping": "generation_parameter_id", "splitter": "StratifiedGroupKFold",
                      "seed": SEED, "development_rows": int(len(frame)), "development_events": int(frame.event_id.nunique()),
                      "test_touched": False, "features": features},
         "models": {name: {"folds": values, "mean": _mean_records(values)} for name, values in records.items()},
@@ -236,7 +240,7 @@ def tune_xgboost(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
                            "completed_trials": len(complete), "pruned_trials": sum(t.state.name == "PRUNED" for t in study.trials),
                            "failed_trials": sum(t.state.name == "FAIL" for t in study.trials), "timeout_seconds": timeout,
                            "elapsed_seconds": elapsed, "folds": FOLDS, "group_jobs": fold_jobs,
-                           "grouping": "event_id", "test_touched": False,
+                           "grouping": "generation_parameter_id", "test_touched": False,
                            "objective": "0.5*macro_PR_AUC + 0.3*recall_CRITICAL + 0.2*macro_F1",
                            "constraint": "each fold FAR_NORMAL <= selected logistic baseline FAR_NORMAL",
                            "logistic_C": float(risk_model_config()["baselines"]["logistic"]["C"])},
@@ -346,7 +350,7 @@ def tune_iforest(frame: pd.DataFrame, features: list[str], trial_limit: int, tim
                           "requested_trials": trial_limit, "actual_trials": len(study.trials),
                           "completed_trials": len(complete), "timeout_seconds": timeout,
                           "elapsed_seconds": time.monotonic() - start, "folds": FOLDS,
-                          "grouping": "event_id", "healthy_fit_only": True, "test_touched": False},
+                          "grouping": "generation_parameter_id", "healthy_fit_only": True, "test_touched": False},
                "best": best, "trials": trials}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "isolation_forest_study.json").write_text(json.dumps(payload, indent=2, default=str) + "\n")

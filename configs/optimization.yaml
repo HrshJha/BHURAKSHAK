@@ -1,0 +1,17 @@
+version: optimization-v1
+seed: 42
+trials_per_model: 20
+folds: 3
+timeout_per_model_seconds: 1800
+normal_fpr_cap: 0.05
+critical_recall_target: 0.89
+calibration_methods: [none, sigmoid, isotonic]
+feature_sets: [displacement_health, displacement_physics]
+# Uncoupled simulator tilt/strain and vibration labels are quarantined in candidates.
+# Baselines preserve their original feature sets for comparison.
+independent_test:
+  seed: 20261007
+  sequences_per_scenario: 100
+  scenarios: [stable_ground, accelerating_subsidence, rapid_subsidence]
+  dataset_version: optimization-independent-v1
+  scope: fresh_noise_seed_and_unseen_scenario_families_same_simulator

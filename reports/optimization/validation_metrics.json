@@ -1,0 +1,78 @@
+[
+  {
+    "experiment": "original_config_refit",
+    "scope": "reserved_development_validation",
+    "critical_recall": 0.946236559139785,
+    "macro_pr_auc": 0.9283825324586049,
+    "macro_f1": 0.7381223841520773,
+    "normal_fpr": 0.05235649274578715,
+    "normal_critical_fpr": 0.049202487158691535,
+    "brier": 0.1291293054819107,
+    "ece": 0.024750157985953328,
+    "rows": 14481,
+    "confusion_matrix": [
+      [
+        10516,
+        35,
+        546
+      ],
+      [
+        928,
+        1634,
+        264
+      ],
+      [
+        18,
+        12,
+        528
+      ]
+    ]
+  },
+  {
+    "experiment": "optimized_risk",
+    "scope": "reserved_development_validation",
+    "critical_recall": 0.9265232974910395,
+    "macro_pr_auc": 0.9354411407896053,
+    "macro_f1": 0.7361756696443725,
+    "normal_fpr": 0.05235649274578715,
+    "normal_critical_fpr": 0.05001351716680184,
+    "brier": 0.11891313735800609,
+    "ece": 0.035105370634926164,
+    "rows": 14481,
+    "confusion_matrix": [
+      [
+        10516,
+        26,
+        555
+      ],
+      [
+        769,
+        1709,
+        348
+      ],
+      [
+        28,
+        13,
+        517
+      ]
+    ]
+  },
+  {
+    "experiment": "original_if_refit",
+    "scope": "reserved_development_validation",
+    "anomaly_recall": 0.5015822784810127,
+    "anomaly_fpr": 0.06836851868209522,
+    "anomaly_pr_auc": 0.6089668717741478,
+    "anomaly_macro_f1": 0.7370894651375431,
+    "rows": 14481
+  },
+  {
+    "experiment": "optimized_if",
+    "scope": "reserved_development_validation",
+    "anomaly_recall": 0.5022151898734177,
+    "anomaly_fpr": 0.06960515855489798,
+    "anomaly_pr_auc": 0.6015000257164264,
+    "anomaly_macro_f1": 0.7363302922310822,
+    "rows": 14481
+  }
+]

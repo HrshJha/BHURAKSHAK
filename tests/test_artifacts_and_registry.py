@@ -20,6 +20,15 @@ REPO = Path(__file__).resolve().parent.parent
 REAL_DATASET_VERSION = json.loads((REPO / "data" / "synthetic" / "dataset_manifest.json").read_text())["dataset_version"]
 
 
+@pytest.fixture(autouse=True)
+def isolated_registry(tmp_path, monkeypatch):
+    """Artifact tests must never rewrite the real deployment registry."""
+    from src.risk import model_registry
+    path = tmp_path / "registry.json"
+    path.write_bytes(model_registry.DEFAULT_REGISTRY_PATH.read_bytes())
+    monkeypatch.setattr(model_registry, "DEFAULT_REGISTRY_PATH", path)
+
+
 @pytest.fixture()
 def tiny_frame() -> pd.DataFrame:
     rng = np.random.default_rng(0)
