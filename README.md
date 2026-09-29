@@ -65,17 +65,19 @@ The default split holds out scenario families and parameters; it assigns 6,516 t
 
 ## Results
 
-The locked evaluation uses synthetic data from unseen regimes. It does not measure performance at a real mine. The tuned model does not beat every baseline.
+The one-time locked evaluation covers unseen synthetic regimes. It does not measure performance at a real mine. Tuned XGBoost reached 0.093 critical recall, 0.503 macro PR-AUC, and 0.446 macro F1. Logistic regression reached 0.765 critical recall, with a 0.626 false-alarm rate on normal windows. The tuned model does not lead on every metric.
 
-| Model | Critical recall | Macro PR-AUC | Macro F1 | False alarms / normal event day | Median lead time | Calibration error | Workstation p50 / p95 latency | Workstation sampled memory |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Tuned XGBoost | 0.0933 | 0.5029 | 0.4458 | — | — | — | 0.317 / 0.613 ms | 550.6 MiB |
-| Default XGBoost | 0.0457 | 0.5351 | 0.4450 | — | — | — | — | — |
-| Logistic regression | 0.7650 | 0.4687 | 0.4297 | — | — | — | — | — |
-| Threshold rule | 0.0416 | 0.4146 | 0.3897 | — | — | — | — | — |
-| Alert engine, shared system result | — | — | — | 0.046 | −3.33 h | Not measured on locked test | — | — |
+![Locked synthetic test scores for the four risk-model baselines.](reports/readme_risk_model_metrics.png)
 
-Model scores are from the [locked evaluation](reports/final_eval.md). Alert timing is a system-level result, not a model-specific score. The [inference profile](reports/inference_profile.md) measures a workstation; its memory figure is sampled process memory, not an edge-device budget. Calibration error is not reported for the locked test; the development calibration result is in the [tuning report](reports/tuning_report.md).
+The tuned XGBoost confusion matrix shows where its misses occur. Most true CRITICAL windows were classified as WARNING.
+
+![Row-normalized confusion matrix for tuned XGBoost on the locked synthetic test.](reports/readme_tuned_confusion_matrix.png)
+
+The tuned Isolation Forest raises anomaly recall to 0.896 at the development healthy threshold; its normal-event false-positive rate is 0.022, compared with 0.006 for the default model.
+
+![Locked synthetic test metrics for the default and tuned Isolation Forest models.](reports/readme_anomaly_model_metrics.png)
+
+Exact locked-test scores and alert results are in the [evaluation report](reports/final_eval.md). The [inference profile](reports/inference_profile.md) measures workstation latency and sampled memory; it does not establish an edge-device budget. Development calibration results are in the [tuning report](reports/tuning_report.md).
 
 ## Quickstart
 
@@ -92,6 +94,12 @@ python3.12 -m venv .venv
 ```
 
 The three data commands create the ignored synthetic corpus and feature store required by the tests and pipeline. The pipeline prints a development validation summary and writes `experiments/pipeline_run.json`; it does not read the locked test corpus.
+
+Rebuild the result graphs embedded above from the saved evaluation record:
+
+```bash
+.venv/bin/python scripts/build_readme_model_graphs.py
+```
 
 ## Repository layout
 
