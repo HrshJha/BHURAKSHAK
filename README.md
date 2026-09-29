@@ -84,7 +84,7 @@ Use Python 3.12. From the repository root:
 ```bash
 python3.12 -m venv .venv
 .venv/bin/pip install -r requirements.txt
-.venv/bin/python scripts/generate_synthetic_nodes.py --seed 42
+.venv/bin/python scripts/generate_synthetic_nodes.py --sequences-per-scenario 625 --seed 42
 .venv/bin/python scripts/make_split_assignment.py
 .venv/bin/python scripts/build_and_run_notebook_03.py
 .venv/bin/python -m pytest tests/ -q
