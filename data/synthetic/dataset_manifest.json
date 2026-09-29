@@ -88,7 +88,7 @@
     ],
     "taxonomy_rows": 12
   },
-  "sequence_count_note": "10,000 generated events produce 90,000 overlapping windows with a 60-step window and stride 10. The current corpus has 10,000 events; forecasting is limited to horizon 1.",
+  "sequence_count_note": "10,000 generated events produce 90,000 overlapping windows at window=60/stride=10, below  's 100,000-500,000 window band. The 4,000,000 planned sequence capacity is not achieved data; 's nine windows per event cap forecasting to horizon 1.",
   "source_data_versions": {
     "dgps": null,
     "hardware": null,
