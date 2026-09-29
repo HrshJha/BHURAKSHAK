@@ -1,24 +1,4 @@
-"""De-escalation hysteresis — (de-escalation),.: de-escalation requires a *longer* persistence window than escalation
-(default: one-and-a-half times the escalation window count at each level, from
-configs/alerts.yaml ``de_escalation.persistence_multiplier``), so the system
-does not flap between states on borderline readings — recovery is
-deliberately slower than alarm.
-
-Mechanism: a node holds its current level while the condition that promoted
-it there keeps holding (the SAME aggregate ``P(target or higher) > threshold``
-gate and the SAME ``requires`` evidence as the escalation transition out of
-that level — no second set of thresholds to drift). A window that stops
-qualifying starts a de-escalation streak; ``ceil(persistence × multiplier)``
-CONSECUTIVE such windows drop the node one level. Any single qualifying
-window resets the de-escalation streak (and a non-qualifying window resets
-the escalation streak), so a borderline oscillating input can neither climb
-nor recover — it holds steady, which is the intent.
-
-Escalation and de-escalation are mutually exclusive per window: a window
-either earns escalation credit or de-escalation credit, never both. Any level
-change (either direction) resets all streaks. Like the escalation engine, level changes move AT MOST ONE level per update and a firing window
-earns no credit for further movement.
-"""
+"""Apply slower persistence when alert levels decrease."""
 
 from __future__ import annotations
 

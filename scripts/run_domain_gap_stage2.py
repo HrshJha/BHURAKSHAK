@@ -135,7 +135,7 @@ def reference_state_at_windows(windowed: pd.DataFrame, ref: pd.DataFrame) -> pd.
 
 
 def main() -> int:
-    raise SystemExit("Legacy domain-gap evaluation reads the burned test split; rerun only through the Phase 9 workflow.")
+    raise SystemExit("This legacy domain-gap script reads a previously used test split and cannot produce valid final results.")
     raw = pd.read_csv(RAW_LOG)
     meta = pd.read_csv(METADATA)
     ref = pd.read_csv(WINDOWED_REF)

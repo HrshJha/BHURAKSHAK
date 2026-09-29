@@ -1,4 +1,4 @@
-"""Fixall Phase 1.1 — split-assignment producer tests.
+"""split-assignment producer tests.
 
 Proves the audit CRITICAL is closed: data/features/split_assignment.csv has a
 single reproducible producer (scripts/make_split_assignment.py), the

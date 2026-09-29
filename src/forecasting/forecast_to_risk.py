@@ -1,40 +1,4 @@
-"""Forecast → risk-layer bridge —.
-
-'s layered, explainable design: the temporal forecaster predicts
-PHYSICAL quantities — future displacement / tilt — and those forecasts enter
-the XGBoost risk layer as FEATURES. The forecaster never emits a
-risk state, label or probability (asserted in tests/test_temporal_model_fc.py);
-the ONLY path from a forecast to "danger" runs through the risk model, whose
-splits can interrogate like any other feature.
-
-Join mechanics (leak-free by construction):
-
--:func:`forecast_all_origins` runs the fitted forecaster at EVERY history
- position of every series — not just the last one like:meth:`TemporalForecaster.predict` — so each origin window carries the
- forecast a real deployment would have had at that instant. The forecast
- input is strictly windows ≤ origin: no future information can enter the
- feature, which is what makes it a legal causal feature for the risk model.
--:func:`forecasts_to_feature_frame` pivots forecast rows into one column per
- (channel, horizon): ``forecast_{channel}_h{steps}`` (-style names).
--:func:`join_forecast_features` left-joins that frame onto a window-level
- model frame on (event_id, node_id, window_index).
--:func:`assert_no_forecast_leakage` refuses frames whose forecast columns
- contain NaN: for risk-model TRAINING the feature must be fully observed;
- series tails (whose forecast target lies beyond the data) are dropped by
- the caller, never imputed.
-
-Alignment: a forecast from origin window ``o`` (the last window of its
-history) with horizon ``h`` targets window ``o + h`` — the same convention
-``build_sequences`` uses (target = ``series[origin + h]``), so training-time
-features and evaluation share identical semantics.
-
-The resolver in ``src/risk/xgboost_model.py`` picks these columns up as the
-``I_forecast`` input group whenever they are present, so joining the bridge
-output onto a model frame is sufficient for the risk layer to use them.
-
-Pipeline discipline: when forecast features feed the risk model's held-out
-evaluation, the forecaster itself must be trained -safe (train split only).
-"""
+"""Pass physical forecasts to the risk-scoring pipeline."""
 
 from __future__ import annotations
 

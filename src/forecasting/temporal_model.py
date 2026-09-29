@@ -1,31 +1,4 @@
-"""Temporal forecasting model —.
-
- Phase 2: forecasting is implemented AFTER Isolation Forest + XGBoost are
-validated (/ done), and it predicts **a physical quantity — future
-displacement / tilt / deformation velocity — never "future danger" directly.**
-The layered design is preserved: forecasts feed the XGBoost risk layer as
-FEATURES; the forecaster has no code path to a risk state, label or
-probability (asserted by tests/test_temporal_model_fc.py).
-
-Architectures: TCN, GRU and LSTM are selectable from
-configs/forecasting.yaml; **LSTM is retained as the literature
-benchmark** — the subsidence-forecasting literature the draws on
-uses LSTM-style recurrences, so the benchmark stays in the selection set.
-
-Training discipline (mirrors /):
-- fits on TRAIN-split series only; early stopping on the VALIDATION split;
-- inputs are per-window physical channel histories (the same windows
- the feature store uses), never labels;
-- outputs are per-horizon physical values in the channel's own unit (mm or
- deg) — a:class:`Forecast` is a small table of (channel, horizon,
- predicted_value), not a class;
-- the multi-horizon head is config-driven ( horizons: next-window,
- 30 min, 1 h, 6 h, 24 h — ); horizons beyond a series' remaining
- length are simply not emitted for that series.
-
-PyTorch is the backend; the module imports it lazily so the rest of the
-repo works without torch installed.
-"""
+"""Train and apply a temporal model for physical measurements, including subsidence-related displacement."""
 
 from __future__ import annotations
 

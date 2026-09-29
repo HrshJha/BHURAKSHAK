@@ -1,12 +1,4 @@
-"""Coupled deformation field W(x, y, t) = W(t) * spatial_kernel(x, y) —.
-
-This is the simulator's latent ground truth. Every sensor channel in the
-synthetic dataset is derived from this single field — never generated
-independently (the "core principle — physical coupling").
-
-All parameters come from configs/physics.yaml via src/config.py; no physics
-literals live in code (asserted by tests).
-"""
+"""Compute the shared deformation field for simulated channels."""
 
 from __future__ import annotations
 

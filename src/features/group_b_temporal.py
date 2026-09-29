@@ -1,21 +1,4 @@
-"""Feature Group B — Temporal — Group B,.
-
- Group B: rolling mean/std/min/max, slope, velocity, acceleration, trend,
-persistence, change-point score.
-
-Two -adjacent acceptance requirements are engineered in:
-
-- **No rolling statistic crosses a train/test boundary.** Rolling statistics
- are computed *within a window's own 60 steps* (and, for the rolling
- moments, within a sub-history limited to the window itself) over each
- (event_id, node_id) series. Because windows are grouped per series and each
- window only sees its own rows, a statistic computed for one window can
- never incorporate rows from another series, event, or split block.:func:`assert_no_boundary_crossing` re-checks this property on the emitted
- frame by recomputing per-series statistics independently.
-
-- The features are emitted per window (from the windowing engine), with
- names matching exactly.
-"""
+"""Compute temporal features from each sensor window."""
 
 from __future__ import annotations
 

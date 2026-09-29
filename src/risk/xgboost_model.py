@@ -1,18 +1,4 @@
-"""XGBoost risk classifier —,.: multimodal risk classification, the primary first serious risk model.
-
-- Target: the 3-class MVP ``risk_label`` (NORMAL/WARNING/CRITICAL;
- GREEN/WATCH/WARNING/CRITICAL expansion comes after the 3-class model is
- validated — the classes are read from the data, not hard-coded).
-- Inputs: engineered feature groups A–F (as available) + the Isolation Forest
- ``anomaly_score`` + the ``physics_residual`` — the 
- "multimodal" contract.
-- Output: per-class probabilities that sum to 1 (softmax objective), consumed
- by the alert engine — the raw output never decides an action.
-
-Hyperparameters from configs/risk_model.yaml; the caller supplies the
--safe split column — this module never splits on its own and never
-shuffles rows.
-"""
+"""Train and apply the three-class risk model using development data."""
 
 from __future__ import annotations
 
@@ -45,7 +31,7 @@ MODEL_INPUT_GROUPS = (
     "I_forecast",
 )
 
-#: Cross-model signals adds on top of the feature groups.
+# Cross-model signals added on top of the feature groups.
 EXTRA_SIGNALS = ("anomaly_score", "physics_residual")
 
 

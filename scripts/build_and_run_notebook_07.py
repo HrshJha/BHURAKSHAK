@@ -278,7 +278,7 @@ constant across arms, Sentinel-1 as a node-level LOS snapshot."""
     ),
     new_code_cell(
         """abl = json.load(open(REPO / "experiments" / "ablation_a_to_f.json"))
-dev = abl["metadata"]["deviations_from_prd"]
+dev = abl["metadata"]["deviations"]
 print("recorded deviations from the  letter:")
 for i, d in enumerate(dev, 1):
     print(f"  {i}. {d}")
@@ -315,7 +315,7 @@ print("  : six arms re-scored through the same pipeline as the  JSON")"""
 
 
 def main() -> int:
-    raise SystemExit("Legacy notebook 07 reads the burned test split; regenerate after Phase 8 from final_eval outputs.")
+    raise SystemExit("This legacy notebook reads a previously used test split; use the locked evaluation report for current results.")
     notebook = new_notebook(
         cells=CELLS,
         metadata={

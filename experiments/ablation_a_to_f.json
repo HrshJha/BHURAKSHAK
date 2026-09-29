@@ -12,7 +12,7 @@
     "hotspot_match_radius_m": 75.0,
     "window_stride_hours": 0.6,
     "event_span_days": 1.0,
-    "deviations_from_prd": [
+    "deviations": [
       "No +DGPS arm:  makes DGPS sparse and evaluation-target-only ( assert_evaluation_only); it cannot be a model input at scale.",
       "No temporal-DL/GNN arms: / architectures are what this ablation gates.",
       "Isolation-Forest anomaly_score held out of every arm (constant across arms).",

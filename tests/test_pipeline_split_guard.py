@@ -1,4 +1,4 @@
-"""Fixall Phase 1.3 — the pipeline must fail with a named producer when the
+"""the pipeline must fail with a named producer when the
 split file is missing, not with a bare FileNotFoundError."""
 
 from __future__ import annotations
@@ -42,7 +42,7 @@ def test_pipeline_names_the_split_producer_when_csv_missing() -> None:
     tiny = _tiny_raw()
     coords = tiny[["node_id", "x", "y"]].drop_duplicates()
     real = Path("data/features/split_assignment.csv")
-    backup = Path("data/features/split_assignment.csv.fixall-bak")
+    backup = Path("data/features/split_assignment.csv.backup")
     existed = real.exists()
     assert existed, "the committed split file must exist for this test to be meaningful"
     real.rename(backup)

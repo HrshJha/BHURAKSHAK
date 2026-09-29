@@ -29,7 +29,7 @@ event_split:
   validation_fraction: 0.2
 
 regime_split:
-  # unseen-parameter-regime holdout (fixall Phase 1.2): the TEST split is
+  # unseen-parameter-regime holdout  the TEST split is
   # whole scenario REGIMES the model never sees in train/validation — the two
   # growth regimes (rapid, accelerating) and the no-deformation regime
   # (stable). stable_ground is included so P(NORMAL) has held-out support;

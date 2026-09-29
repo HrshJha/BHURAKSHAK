@@ -1,27 +1,4 @@
-"""Feature Group G — DGPS/GNSS — Group G,.
-
- Group G, exactly: ``vertical_displacement, horizontal_displacement,
-velocity, acceleration, mesh_vs_dgps_residual``.
-
-Group G summarises the sparse control-point survey at window level:
-
-- ``vertical_displacement`` / ``horizontal_displacement`` — the control
- point on this node's observation within the DGPS window tolerance
- (±1 h, config-driven); NaN elsewhere. Control locations are SPARSE: most
- nodes have no DGPS point, and a missing point surfaces as NaN — never as
- an interpolated or carried-forward fake reading ( honesty).
-- ``velocity`` / ``acceleration`` — the control point's per-observation
- trend terms (mm/day → mm/yr and mm/yr²), computed per point series with
- the same robust fits the mesh uses; NaN below the configured minimum
- observations.
-- ``mesh_vs_dgps_residual`` — the residual at the matched window
- (mesh − DGPS): the audit channel that tells the risk layer how much the
- mesh's own estimate disagrees with the independent reference. It is an
- EVALUATION-side construct ( ``assert_evaluation_only`` discipline);
- at scale it is NaN everywhere except control nodes.
-
-Rows align 1:1 with the input window frame (same keys, same order).
-"""
+"""Compute DGPS comparison features for validation data."""
 
 from __future__ import annotations
 

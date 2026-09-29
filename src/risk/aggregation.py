@@ -1,23 +1,4 @@
-"""Per-node → region risk roll-up — (spatial aggregation),.: risk state is tracked per-node and rolled up to a region/panel level
-as the **max over its constituent nodes' states**, so one severely affected
-node cannot be diluted by averaging with quiet neighbours — but a single
-noisy node also cannot trigger a panel-wide CRITICAL without the
-multi-node confirmation rule (the WARNING→CRITICAL requirement:
-confirmation by neighbouring nodes, ``min_confirming_neighbours`` from
-configs/alerts.yaml).
-
-Concretely, a region reads CRITICAL only when:
-- at least TWO constituent nodes are at CRITICAL (the multi-node case IS the
- confirmation), or
-- the CRITICAL node(s) report the configured number of confirming
- neighbours.
-
-A lone, unconfirmed CRITICAL node degrades the REGION one level (WARNING):
-the panel still shows elevated risk — never diluted to GREEN — while the
-node itself keeps its true state (roll-up is read-only over node states).
-The rule name and the guard flag are read from configs/alerts.yaml
-(``spatial_aggregation``), never hard-coded.
-"""
+"""Roll node risk states up to a region state."""
 
 from __future__ import annotations
 

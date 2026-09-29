@@ -1,14 +1,4 @@
-"""Dataset manifest writer —,,.
-
-Every generated synthetic dataset ships with ``dataset_manifest.json`` so any
-dataset used for training is traceable and reproducible — this is what the
-model registry points to as ``training_dataset_version``.
-
-The manifest is a HARD requirement: without it the unseen-parameter-
-regime test split and registry traceability cannot be verified
-after the fact. ``write_manifest`` refuses to emit a manifest that is missing
-any field.
-"""
+"""Write dataset versions, parameters, row counts, and file checksums."""
 
 from __future__ import annotations
 

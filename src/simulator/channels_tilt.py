@@ -1,13 +1,4 @@
-"""Tilt channels derived from the deformation field —.
-
- tilt_x ≈ ∂W/∂x, tilt_y ≈ ∂W/∂y
-
-Tilt is NEVER independently sampled: it is the analytic gradient of the same
-W(x, y, t) that drives every other channel, plus sensor noise. Units: the
-field is in mm and coordinates in metres, so ∂W/∂x is mm/m; tilt in degrees
-is degrees(∂W/∂x / 1000) for the small-angle regime of a subsidence bowl.
-Noise std comes from configs/physics.yaml (noise.tilt_noise_std_deg).
-"""
+"""Derive tilt measurements from the deformation field during subsidence."""
 
 from __future__ import annotations
 

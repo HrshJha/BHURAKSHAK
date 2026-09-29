@@ -1,31 +1,4 @@
-"""Scenario taxonomy engine —.
-
-Generates the full event/scenario taxonomy. Each scenario produces, per
-virtual node, a raw channel table plus per-row ``progression_label``,
-``fault_label``, ``risk_label``, ``anomaly_label`` and data-quality flags.
-All numeric behaviour is config-driven (configs/physics.yaml → ``scenarios``).
-
-Label vocabulary mapping (Gap, resolved as the scenario→schema mapping;
-see PROGRESS_LOG 2026-09-26):
-
- Scenario progression_label risk_label
- ---------------------- ------------------- -------------------
- stable_ground STABLE NORMAL (GREEN slot)
- slow_drift_temperature STABLE NORMAL
- sensor_* fault modes STABLE NORMAL (fault_label set)
- packet_loss STABLE NORMAL (DATA_QUALITY flag)
- single_node_disturbance STABLE NORMAL (LOCAL_ANOMALY flag)
- vibration_only STABLE NORMAL (NON_SUBSIDENCE flag)
- slow_subsidence SLOW WARNING
- accelerating_subsidence ACCELERATING WARNING
- rapid_subsidence RAPID CRITICAL
- irregular_subsidence ACCELERATING WARNING
- multiple_zones SLOW WARNING / CRITICAL by zone
- communication_failure STABLE NORMAL (COMM_FAILURE flag)
-
-``risk_label`` uses the 3-class MVP vocabulary (NORMAL / WARNING /
-CRITICAL; NORMAL fills the GREEN slot — Gaps / resolved at Phase 3).
-"""
+"""Generate labeled scenarios for synthetic sensor sequences. The set includes slow subsidence, accelerating subsidence, rapid subsidence, irregular subsidence, and multiple-zone subsidence."""
 
 from __future__ import annotations
 
@@ -47,7 +20,7 @@ PROGRESSION_SLOW = "SLOW"
 PROGRESSION_ACCELERATING = "ACCELERATING"
 PROGRESSION_RAPID = "RAPID"
 
-RISK_NORMAL = "NORMAL"      # MVP 3-class (GREEN slot; / resolved at Phase 3)
+RISK_NORMAL = "NORMAL"      # MVP 3-class (maps to NORMAL)
 RISK_WARNING = "WARNING"
 RISK_CRITICAL = "CRITICAL"
 

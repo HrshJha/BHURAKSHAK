@@ -1,16 +1,4 @@
-"""Probability calibration — (calibrated probabilities),.: Brier score, a reliability curve and expected calibration error are the
-calibration metrics; calibration is fitted on a validation split **disjoint
-from training** (: "calibrated class probabilities" are the model output).
-
-Method: **confidence calibration** — an isotonic regression maps the row's
-maximum raw probability (the model's confidence) to the observed accuracy at
-that confidence level on the validation split. At inference the top class's
-probability is replaced by the mapped value and the remainder is redistributed
-proportionally over the other classes, so rows still sum to exactly 1.
-Calibrating each class independently and renormalising would re-inflate the
-top class after the sum constraint — the known multiclass distortion this
-design avoids.
-"""
+"""Fit probability calibration and compute calibration metrics."""
 
 from __future__ import annotations
 

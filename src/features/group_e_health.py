@@ -1,22 +1,4 @@
-"""Feature Group E — Sensor health — Group E,.
-
- Group E, exactly: ``battery, RSSI, SNR, packet_loss, missing_ratio,
-stuck_sensor_flag, drift_score``.
-
-Sources (window level):
-- ``battery`` / ``RSSI`` / ``SNR`` / ``packet_loss``: window means of the raw
- telemetry channels ( names verbatim);
-- ``missing_ratio``: fraction of steps inside the window that were not
- observed on the grid (carried through from 's resampling output
- when present, else 0 when every step is present in the windowed input);
-- ``stuck_sensor_flag``: 's stuck detection re-expressed per window
- (longest near-identical run inside the window ≥ ``stuck_min_repeats``);
-- ``drift_score``: 's trend significance restricted to the window's
- 60 steps (|t|, noise-normalised), computed on the displacement channel.
-
-Group E is what lets the models treat "the sensor is dying" differently from
-"the ground is moving" — the separation, in feature space.
-"""
+"""Compute sensor-health features and data-quality indicators."""
 
 from __future__ import annotations
 

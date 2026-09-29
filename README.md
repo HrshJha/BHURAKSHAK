@@ -6,7 +6,7 @@ Built for SIH 2026, Problem Statement 26025.
 
 ## Problem
 
-Periodic surveys leave gaps between observations. A continuous sensor record can show how measured ground movement changes between surveys. This repository tests data generation and risk scoring on synthetic and tabletop data; it does not establish performance at a mine.
+This project models ground movement from sensor records and tests whether those records can support risk alerts. Evaluation uses synthetic and tabletop data; performance at a mine has not been established.
 
 ## What this repository contains
 
@@ -61,13 +61,13 @@ flowchart LR
 
 The seeded simulator couples tilt, displacement, strain, and vibration to a shared deformation field, then adds sensor noise and faults. Fault types include bias, stuck readings, dropout, spikes, and drift. Scenario families cover stable ground, communication faults, sensor faults, vibration-only events, and several rates and patterns of subsidence. The [dataset manifest](data/synthetic/dataset_manifest.json) records 10,000 generated sequences, 1,440,000 sensor rows, 90,000 windows, and 61 stored features. Labels cover anomaly, risk, progression, and fault type.
 
-The default split holds out scenario families and parameters; it assigns 6,516 training, 1,609 validation, and 1,875 test events. The locked synthetic evaluation is tracked separately in [test_lock.json](reports/test_lock.json) and was run once. The recorded tabletop files contain a physical rig's sensor log and trial metadata. They are not mine measurements.
+The default split holds out scenario families and parameters; it assigns 6,516 training, 1,609 validation, and 1,875 test events. The locked synthetic evaluation is tracked separately in [test_lock.json](reports/test_lock.json) and was run once. The [tabletop records](data/recorded/tabletop/README.md) contain a physical rig's sensor log and trial metadata. They are not mine measurements.
 
 ## Results
 
 The locked evaluation uses synthetic data from unseen regimes. It does not measure performance at a real mine. The tuned model does not beat every baseline.
 
-| Model | Critical recall | Macro PR-AUC | Macro F1 | False alarms/day | Median lead time | Calibration error | Workstation p50 / p95 latency | Workstation sampled memory |
+| Model | Critical recall | Macro PR-AUC | Macro F1 | False alarms / normal event day | Median lead time | Calibration error | Workstation p50 / p95 latency | Workstation sampled memory |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | Tuned XGBoost | 0.0933 | 0.5029 | 0.4458 | — | — | — | 0.317 / 0.613 ms | 550.6 MiB |
 | Default XGBoost | 0.0457 | 0.5351 | 0.4450 | — | — | — | — | — |
@@ -84,19 +84,14 @@ Use Python 3.12. From the repository root:
 ```bash
 python3.12 -m venv .venv
 .venv/bin/pip install -r requirements.txt
+.venv/bin/python scripts/generate_synthetic_nodes.py --seed 42
+.venv/bin/python scripts/make_split_assignment.py
+.venv/bin/python scripts/build_and_run_notebook_03.py
 .venv/bin/python -m pytest tests/ -q
 .venv/bin/python scripts/run_pipeline.py
 ```
 
-The pipeline prints a development validation summary and writes `experiments/pipeline_run.json`. It does not read the locked test corpus.
-
-Regenerate the seeded synthetic data and feature store:
-
-```bash
-.venv/bin/python scripts/generate_synthetic_nodes.py --seed 42
-.venv/bin/python scripts/make_split_assignment.py
-.venv/bin/python scripts/build_and_run_notebook_03.py
-```
+The three data commands create the ignored synthetic corpus and feature store required by the tests and pipeline. The pipeline prints a development validation summary and writes `experiments/pipeline_run.json`; it does not read the locked test corpus.
 
 ## Repository layout
 
@@ -119,6 +114,7 @@ tests/         Unit and pipeline checks
 - [Leakage audit](reports/leakage_audit.md)
 - [Workstation inference profile](reports/inference_profile.md)
 - [Dataset manifest](data/synthetic/dataset_manifest.json)
+- [Tabletop records](data/recorded/tabletop/README.md)
 - [Synthetic data notebook](notebooks/01_synthetic_data_generation.ipynb)
 
 ## Limitations and roadmap

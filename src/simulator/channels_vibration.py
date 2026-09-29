@@ -1,16 +1,4 @@
-"""Vibration channel —.
-
- vibration = normal_noise + vehicle/personnel disturbance
- + localized transient + high-frequency burst
-
-Vibration is **supporting evidence only**: `vibration alone ≠ subsidence`.
-All four components are independently toggleable and default OFF unless the
-scenario enables them — the label engine maps a vibration-only event
-to NON_SUBSIDENCE, never SUBSIDENCE.
-
-All component amplitudes/rates come from configs/physics.yaml (vibration
-block) via src/config.py — no numeric scenario literals live here.
-"""
+"""Generate vibration signals with noise and transient events. Vibration is supporting evidence when evaluating subsidence; it does not measure subsidence directly. Bursts may accompany ground movement during subsidence."""
 
 from __future__ import annotations
 

@@ -1,30 +1,4 @@
-"""Feature Group J — Environmental — Group J,.
-
- Group J, exactly: ``rainfall, temperature, land_surface_temperature,
-land_cover``.
-
-**The gate is the point.**: Group J is included in the model feature set
-**only if** an ablation shows predictive value ( repeats it). This module
-enforces that mechanically:
-
--:func:`emit_group_j` produces the four channels with explicit synthetic
- provenance (-style stand-ins — no real weather feed or satellite LST
- product exists in MVP scope; configs/environmental.yaml ``sources`` says so
- per channel). Emission is FREE — an ablation cannot study a group it
- cannot generate — but every emitted frame carries
- ``gate_status = "not_in_model"`` so it can never be mistaken for a live
- model input.
-
--:func:`model_feature_names` — the ONLY sanctioned way to add Group J to a
- model feature list — refuses unless configs/environmental.yaml records
- BOTH ``enabled: true`` AND a gate block whose ``status == "included"``
- naming the ablation that justifies it (study id, decision metric, measured
- delta ≥ ``min_pr_auc_delta``, decision maker + date). A bare flag flip is
- therefore not enough: the evidence requirement is machine-checked.
-
--:func:`assert_gate_compliant` raises if a frame marked
- ``gate_status = "not_in_model"`` is passed off as a model feature frame.
-"""
+"""Add gated environmental features from available inputs."""
 
 from __future__ import annotations
 

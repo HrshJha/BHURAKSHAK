@@ -1,32 +1,4 @@
-"""DGPS ingestion and mesh-vs-DGPS residual pipeline —,.: DGPS receivers occupy **sparse validation/control locations** — a handful
-of high-accuracy points, not an at-scale observation layer. Their -mandated
-role is **evaluation targets, not primary at-scale training labels**: the mesh
-provides coverage, DGPS independently audits it. This module therefore marks
-every emitted frame ``usage_class = "evaluation_target_only"`` and provides
-``assert_evaluation_only`` for downstream guards (the ablation reads
-DGPS only through evaluation-side metrics, never as model input columns at
-scale — Group G's five features summarise the *residual*, itself an
-evaluation construct).
-
- honesty note: names no receiver, vendor or survey partner. The
-``synthesize_dgps_survey`` fixture stands in for a real campaign (mm-level
-noise on the field at control nodes, optionally a known mesh-side bias to
-exercise bias detection); it is labelled synthetic everywhere it surfaces.
-
-Schema (ingested): ``point_id, x, y`` (mesh-local metres; ``lat, lon``
-optional — filled from the transform when absent),
-``observation_timestamp`` plus ``vertical_displacement_mm`` and
-``horizontal_displacement_mm`` (optional ``accuracy_mm``). Ingestion
-validates required columns, rejects duplicate (point, timestamp) rows and
-NaN displacements — a control point that fails QA is DROPPED and counted,
-never silently averaged away.
-
-Residuals: each point associates to its nearest mesh node; a DGPS observation
-aligns to the mesh window within the DGPS tolerance (±1 h, from the
- config — staleness explicit per ). ``mesh_vs_dgps_residual`` emits
-per matched (point, node, window): both displacements, the vertical and
-horizontal residuals (mesh − DGPS), the join distance and staleness.
-"""
+"""Validate DGPS observations and compare them with mesh estimates."""
 
 from __future__ import annotations
 

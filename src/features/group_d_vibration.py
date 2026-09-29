@@ -1,16 +1,4 @@
-"""Feature Group D — Vibration — Group D,.
-
- Group D: RMS, peak, crest_factor, low/mid/high band energy,
-spectral_centroid.
-
- acceptance-critical constraint: on-node accelerometers sample at ≥100 Hz
-but the node **summarises to 1 Hz before transmission** — the mesh only ever
-carries ``vibration_rms`` and ``vibration_peak``. Features are therefore
-computed from the summarised series **only**; the module refuses any input
-that still carries raw high-rate samples (a ``raw_samples``/``raw_waveform``
-column raises), and band energies are honestly derived from the 1 Hz-summarised
-signal (the honest ceiling of what the mesh can know — no invented spectra).
-"""
+"""Compute vibration features from windowed sensor readings."""
 
 from __future__ import annotations
 

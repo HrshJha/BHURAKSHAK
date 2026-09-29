@@ -76,7 +76,7 @@ def test_spatial_split_assigns_whole_nodes() -> None:
     assert (work.groupby("node_id")["_s"].nunique() == 1).all()
 
 
-def test_node_split_matches_prd_shape() -> None:
+def test_node_split_expected_shape() -> None:
     df = _frame(n_events=20, n_nodes=20)
     split = node_split(df)
     per_node = df.assign(_s=split).groupby("node_id")["_s"].first().value_counts()

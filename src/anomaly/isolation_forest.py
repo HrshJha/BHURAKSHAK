@@ -1,28 +1,4 @@
-"""Isolation Forest module —,.: the detector answers "does this look abnormal?" — never "is this
-subsidence?". It is trained **only on healthy-baseline windows**, unsupervised,
-and its output feeds forward as ONE input feature to XGBoost
-(``anomaly_score = -model.score_samples(X)``), never interpreted directly as a
-subsidence probability.
-
-Hyperparameters come from configs/anomaly.yaml and replicate the code
-block exactly: ``IsolationForest(n_estimators=300, contamination="auto",
-random_state=42)``.
-
-Healthy-baseline rule (Gap, resolved for the 3-class MVP): 's literal
-``df[df["risk_label"] == "GREEN"]`` is inoperable because the MVP vocabulary
-has no GREEN. The healthy mask here is the triple-healthy conjunction
-
- anomaly_label == 0 AND fault_label == "NONE" AND risk_label == "NORMAL"
-
-so sensor-faulted windows (which carry ``risk_label == NORMAL`` under a fault)
-are excluded from the baseline — keeping 's "sensor is broken ≠ ground is
-moving" separation true in the training set itself.
-
-Split discipline: the module accepts an explicit ``split`` column (produced by
-the caller from the event/parameter-regime logic); the decision threshold
-is the ``far_alpha``-quantile of **validation** healthy scores, so the
-false-alarm rate on unseen healthy data ≈ 1 − far_alpha by construction.
-"""
+"""Train and score an Isolation Forest on healthy training windows. It flags unusual sensor patterns; it does not predict subsidence. Evaluation covers synthetic subsidence scenarios."""
 
 from __future__ import annotations
 

@@ -60,7 +60,7 @@ def _df11() -> pd.DataFrame:
     return pd.DataFrame(data)
 
 
-def test_schema_fields_are_the_exact_prd_list() -> None:
+def test_schema_fields_match_expected_list() -> None:
     fields = dataset_schema_fields()
     assert len(fields) == 33, " enumerates exactly 33 fields"
     # spot-check first/last per the text block

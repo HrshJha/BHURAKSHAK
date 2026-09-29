@@ -1,20 +1,4 @@
-"""Physics engine — physics_residual —,.
-
- (via ): the pipeline runs a physics-consistency check,
-``physics_residual = observed_deformation − expected_deformation``, where the
-expected deformation comes from the **same influence-function/Knothe
-model that generated the synthetic data** — reused, never re-implemented
-(one source of physical truth, per 's "physical coupling" principle).
-
-The residual is the "is the ground behaving like the model says?" signal:
-≈ 0 when observation equals the model; structurally large when the observed
-movement cannot be explained by the configured mining geometry. It feeds
-XGBoost as a feature (Group F, ) and the explainability breakdown.
-
-Units/timescales: the raw node table stamps rows in decimal **hours**; the
-Knothe time base is **days** (configs/physics.yaml ``time_coefficient`` per
-day). This module owns that conversion so callers never guess.
-"""
+"""Compare observed displacement and tilt with the configured deformation model."""
 
 from __future__ import annotations
 

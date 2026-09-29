@@ -1,22 +1,4 @@
-"""Feature Group F — Physics — Group F,.
-
- Group F, exactly: ``expected_displacement, expected_tilt, physics_residual,
-physics_residual_velocity``.
-
-Sources:
-- ``expected_displacement`` / ``expected_tilt``: the model evaluated at
- the node's (x, y) at the window timestamp (via 's engine — the same
- model that generated the data);
-- ``physics_residual``: observed − expected, computed on the window's
- mean observed displacement;
-- ``physics_residual_velocity``: change of the residual between consecutive
- windows of the same (event, node) series, per hour — a growing residual is
- the classic "unexplained acceleration" signature ( motivation).
-
-The engine is built once per call from configs/physics.yaml; the tilt feature
-carries the expected tilt **magnitude** (single column; the signed
-components are recoverable via the physics engine).
-"""
+"""Compute features from the configured deformation model."""
 
 from __future__ import annotations
 

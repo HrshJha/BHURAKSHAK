@@ -1,6 +1,6 @@
 # Frozen-model workstation inference profile
 
-Platform: `darwin`. Each number is a single-window CPU measurement over 1,000 warm iterations. RSS is sampled process memory, not device peak memory;   defines no numeric edge budget.
+Platform: `darwin`. Each number is a single-window CPU measurement over 1,000 warm iterations. RSS is sampled process memory, not device peak memory. No numeric edge-device budget is defined.
 
 | Model | p50 latency (ms) | p95 latency (ms) | Peak sampled RSS (MiB) |
 |---|---:|---:|---:|

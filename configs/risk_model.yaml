@@ -1,4 +1,4 @@
-# BhuRakshak — risk-model config (,, …)
+# BhuRakshak — risk-model config
 xgboost:
   n_estimators: 400
   max_depth: 6

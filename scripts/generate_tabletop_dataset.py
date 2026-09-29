@@ -1,28 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the 4-node tabletop trapdoor dataset with self-consistent ground truth.
-
-Outputs (overwritten in place):
- trial_metadata.csv 26 trials
- raw_sensor_log.csv one row per node per 100 ms sample (10 Hz)
- processed_windowed_dataset.csv one row per (trial, node, 2 s window, 1 s step)
-
-Fixes vs the previous version (each verified by the built-in audit):
-1. knob_turns are MONOTONIC (a knob cannot un-turn) and reach
- max_displacement_mm_target / 1.25 exactly (M8 pitch, plan ).
-2. known_displacement_mm is pure mechanism ground truth — no sensor noise —
- so class 0 is exactly 0 mm and the 0/15/35 mm boundaries are exact.
-3. both_together = both trapdoors share one schedule; both_sequential = TD2
- starts late (every trial keeps a clean stable baseline before any motion).
-4. Per-trapdoor semantics: metadata target and each node's ground truth are
- the PER-TRAPDOOR descent (N2 <- TD1, N3 <- TD2), never the sum.
-5. Vibration has real burst dynamics: acceleration bursts at every stepped
- onset plus random micro-collapses, amplitude growing with displacement —
- vibration_rms / accel_peak now vary and carry signal.
-6. Reference nodes N1/N4: known_displacement exactly 0, relative_* exactly 0
- (their role is the baseline, plan ).
-7. tof_delta is an independent crack-opening channel (0.4x coupling + own
- noise), no longer a noiseless copy of displacement_mm.
-"""
+"""Generate a seeded tabletop sensor dataset with independent rig references."""
 
 from __future__ import annotations
 
@@ -38,12 +15,12 @@ sys.path.insert(0, str(REPO_ROOT))
 OUT_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("data/recorded/tabletop")
 SEED = 42
 DT_MS = 100          # raw sample period (10 Hz, simplified from MPU 50 Hz + ToF 5-10 Hz)
-WINDOW_MS = 2000     # plan: 2-second windows
+WINDOW_MS = 2000     # 2-second windows
 STEP_MS = 1000       # 1-second step
-KNOISE_MM = 1.25     # M8 thread pitch per full turn (plan )
+KNOISE_MM = 1.25     # M8 thread pitch per full turn
 TOF_COUPLES = 0.4    # crack opening per mm of vertical subsidence
 
-# severity thresholds, plan (mm of trapdoor descent)
+# Severity thresholds in millimetres of trapdoor descent.
 CLASS_THRESHOLDS = (0.0, 15.0, 35.0)
 
 TRIALS = [

@@ -1,35 +1,23 @@
-# BhuRakshak — Data + ML workstream dependencies
-#  refs:  (software stack),  (repo structure),  (reproducibility -> exact pins)
-#
-# SCOPE NOTE: this file declares the Data + ML stack only. FastAPI, paho-mqtt,
-# database drivers and ONNX Runtime belong to the backend / gateway / Raspberry Pi
-# edge stack ( , , ) and are excluded by workstream scope.
-
-# --- Core numerics & data ---
+# Core data and numerical tools
 numpy==2.3.5
 scipy==1.16.3
 pandas==2.3.3
 pyarrow==21.0.0
 
-# --- Modelling (  Isolation Forest,  XGBoost,  temporal DL) ---
+# Models and artifacts
 scikit-learn==1.6.1
 xgboost==3.2.0
 torch==2.10.0
 joblib==1.5.2
 
-# --- Explainability ( , ) ---
-# shap==0.51.0  # UNPINNED from the runtime set:  explanations are the
-# deterministic signal-catalogue breakdown (src/risk/explainability.py); no
-# module imports shap. Re-add when a SHAP-based explainer lands.
-
-# --- Notebooks ( : notebooks/01_ .. 10_) ---
+# Notebooks and plots
 notebook==7.4.5
 jupyter-core==5.8.1
 nbformat==5.10.4
 nbclient==0.10.2
 matplotlib==3.10.6
 
-# --- Config & testing (, ) ---
+# Configuration and tests
 PyYAML==6.0.3
 pytest==8.4.2
 optuna==5.0.0
@@ -38,14 +26,11 @@ colorlog==6.12.0
 Mako==1.4.3
 SQLAlchemy==2.1.1
 
-# --- Used by scripts/ ( downloader;  profiling) ---
+# Scripts
 requests==2.34.2
 psutil==7.2.2
 
-# --- Geospatial (  CRS,  Sentinel-1,  DGPS) ---
-# NOT INSTALLABLE in the current sandbox: PyPI egress is denied, so these are
-# declared but unverified. src/geospatial/crs.py implements the  local
-# projection in pure NumPy so Phases 0-3 do not depend on them.
+# Optional geospatial tools
 # pyproj==3.7.0
 # shapely==2.0.6
 # rasterio==1.4.3

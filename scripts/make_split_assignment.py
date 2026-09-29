@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
-"""Produce data/features/split_assignment.csv — reproducibly (fixall Phase 1.1).
-
-Closes the audit CRITICAL: the split file had ten consumers and no producer.
-This script is the single producer. It writes BOTH splits:
-
-- ``split`` — the unseen-parameter-regime holdout
- (src/evaluation/splits.regime_split; test = whole
- scenario regimes, default for all claims);
-- ``split_family_balanced`` — the legacy 60/20/20 family-balanced assignment
- (seeded permutation), kept so pre-fixall results
- stay comparable (the shipped file's assignment).
-
-Both columns are present in one file; readers keyed on ``split`` get the
-regime holdout, the comparability column keeps old/new numbers linkable.
-Seed and parameters come from configs/validation.yaml; the output is
-byte-reproducible from a fresh clone (verified by tests/test_split_assignment.py
-and by the Phase-0 sha256 discipline).
-"""
+"""Generate deterministic event-level train, validation, and test splits."""
 
 from __future__ import annotations
 
@@ -43,16 +26,7 @@ LEGACY_COLUMN = "split_family_balanced"
 
 
 def family_balanced_split(events: pd.Series, fractions: tuple[float, float, float] = (0.6, 0.2, 0.2)) -> pd.Series:
-    """The legacy family-balanced assignment, made deterministic.
-
- Within each scenario family, events are sorted by id and sliced 60/20/20.
- This reproduces the original shipped file's *distribution* (375/125/125
- per 625-event family) but not its exact per-event assignment — that came
- from an unknown process and is preserved verbatim in git history at tag
- ``pre-fixall`` (data/features/split_assignment.csv) for old-vs-new metric
- comparisons in reports/split_change.md. No rng: the sorted-order rule is
- byte-reproducible from any clone.
- """
+    """Split each scenario family deterministically using event identifiers."""
     train_f, val_f, _ = fractions
     out = pd.Series("train", index=events.index, dtype=object)
     families = events.str.rsplit("_", n=2).str[0]

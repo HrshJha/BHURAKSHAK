@@ -90,7 +90,7 @@ def evaluate(df: pd.DataFrame, groups: list[str], far_alpha: float) -> dict:
 
 
 def main() -> int:
-    raise SystemExit("Legacy ablation reads the burned test split; rerun only through the Phase 9 report workflow.")
+    raise SystemExit("This legacy ablation script reads a previously used test split and cannot produce valid final results.")
     df = pd.read_parquet(FEATURES_PATH)
     print(f"feature store: {len(df):,} windows, {df.event_id.nunique():,} events")
 

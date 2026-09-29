@@ -1,20 +1,4 @@
-"""Feature-schema drift guard (fixall Phase 3.1).
-
-Closes the audit HIGH: the schema and the emitted store had drifted in both
-directions.:func:`assert_schema_drift` enforces, for a frame's columns vs
-configs/feature_schema_v1.yaml:
-
-- every emitted feature column is DECLARED (undeclared columns fail — silent
- emitter changes become loud), and
-- every DECLARED column of a group the frame claims to carry is either
- present or covered by an explicit ``gates:`` entry in the schema (declared
- but silently missing fails).
-
-Non-feature key columns (event/node/window keys, labels, split columns) are
-exempt via:data:`KEY_COLUMNS` /:data:`LABEL_SUFFIXES` /:data:`EXEMPT_COLUMNS`.:func:`assert_manifest_schema_version` ties the manifest's
-``feature_schema_version`` to the live config so a regenerated store cannot
-claim the wrong schema.
-"""
+"""Check feature columns against their declared schema."""
 
 from __future__ import annotations
 

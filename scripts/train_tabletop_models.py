@@ -105,7 +105,7 @@ def train_if(train: pd.DataFrame) -> tuple[IsolationForest, StandardScaler, np.n
 
 
 def if_scores(iso: IsolationForest, scaler: StandardScaler, df: pd.DataFrame) -> np.ndarray:
-    """Anomaly score = −score_samples (higher = more anomalous, plan )."""
+    """Return higher anomaly scores for less typical sensor windows."""
     return -iso.score_samples(scaler.transform(df[FEATURES]))
 
 
@@ -337,7 +337,7 @@ def main() -> int:
         scaler=iso_scaler, preprocessing="standardise",
         extra={"threshold": float(if_threshold)},
     )
-    # RF is scale-invariant: no scaler, preprocessing declared "none" (fixall 3.5)
+    # RF is scale-invariant: no scaler, preprocessing declared "none"
     save_model_artifact(
         OUT_MODELS / "random_forest.joblib",
         model=rf, features=list(FEATURES),

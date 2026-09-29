@@ -1,32 +1,4 @@
-"""Feature Group H — InSAR — Group H,.
-
- Group H, exactly: ``LOS_displacement, LOS_velocity, LOS_acceleration,
-cumulative_displacement, coherence, spatial_gradient, local_hotspot_density``.
-
-Sources: the mesh-joined table (per node × acquisition date, nearest
-valid PS, staleness-explicit). All seven names are produced as of the
-window timestamp:
-
-- ``LOS_displacement`` — the node's most recent LOS observation at or before
- the window; NaN when the observation is staler than the configured carry
- budget (configs/insar.yaml ``mesh_feature.max_staleness_hours``, default
- two× the 12-day cadence) —: staleness visible, never implied, and no
- interpolation across acquisitions.
-- ``LOS_velocity`` / ``LOS_acceleration`` — per-PS trend terms carried
- through the join.
-- ``cumulative_displacement`` — LOS displacement relative to the earliest
- observation in the node's joined series (the stack's own referencing);
- NaN-preserving.
-- ``coherence`` — the joined observation's per-date coherence.
-- ``spatial_gradient`` — per metre, the node's LOS minus the nearest
- co-timed neighbour LOS, over mesh-local distance (Group C convention).
-- ``local_hotspot_density`` — fraction of mesh nodes within the hotspot
- radius whose most-recent |cumulative LOS| reaches the configured hotspot
- threshold.
-
-Every row keeps ``observation_timestamp`` and ``staleness_hours`` so the
-window can see how fresh its satellite evidence is.
-"""
+"""Join InSAR measurements to mesh nodes for analysis."""
 
 from __future__ import annotations
 

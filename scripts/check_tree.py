@@ -12,7 +12,6 @@ REQUIRED_PATHS = (
     "data/synthetic/dataset_manifest.json",
     "data/synthetic/synthetic_events.csv",
     "data/synthetic/synthetic_nodes.csv",
-    "data/heldout_locked",
     "experiments",
     "models/registry.json",
     "notebooks",

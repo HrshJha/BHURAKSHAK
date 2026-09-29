@@ -1,24 +1,4 @@
-"""Dataset builder — deliverables 1 & 2.
-
-Produces, under ``data/synthetic/``:
-
-* ``synthetic_nodes.csv`` — raw per-node-per-timestep channels ( fields),
- one row per node per timestep, ≥10,000 generated sequences ( scale);
- row count matches the accompanying ``dataset_manifest.json``.
-* ``synthetic_events.csv`` — event metadata with exactly the columns:
- ``id, start_time, end_time, type, severity, center, max_deformation, rate``;
- every event ``id`` referenced in ``synthetic_nodes.csv`` resolves.
-* ``dataset_manifest.json`` — manifest.
-
-Sequence accounting (Gap ): one *sequence* = one (scenario, node, event-
-instance) multivariate time series of ``steps_per_day × duration_days``
-timesteps. The builder emits ``sequences_per_scenario × n_nodes`` sequences;
-with the default 16 scenarios × 44 sequences × 400 nodes this is ≥10,000
-sequences (16 × 44 × 400 = 281,600 sequences; 112,640,000 rows are NOT all
-materialised — the CSV contains the rows of the generated run, and the
-manifest records the full sequence plan). Every row carries the event_id of
-its sequence so referential integrity is checkable.
-"""
+"""Generate synthetic sensor records, event labels, and a dataset manifest."""
 
 from __future__ import annotations
 

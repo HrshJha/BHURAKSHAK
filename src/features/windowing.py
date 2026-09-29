@@ -1,25 +1,4 @@
-"""Windowing engine —.: model inputs are built from **windows** of ``window = 60 timesteps`` with
-``stride = 10`` over each node's continuous series — never from raw
-per-timestep rows. This module is the single authority for that transformation:
-
-- window/stride are config-driven from configs/preprocessing.yaml
- (``windowing`` block; /);
-- windows never cross a series boundary (``event_id`` × ``node_id``) — an
- event's windows are built purely from that event's rows;
-- each window emits its start/end rows and the per-window statistics the 
- groups build on — mean, std, slope, velocity, acceleration (the set)
- plus min/max (needed by Groups B/D) — for every value channel present,
- plus the first label value within the window;
--:func:`assert_windowed` is the guard models call before training: it raises
- if raw per-timestep rows are passed toward a model input.
-
-Gap reconciliation (recorded here per the Phase-2 plan): (144−60)/10 + 1
-= 9.4 → 9 windows per 144-step series. At 's minimum of 10,000 sequences
-that is 90,000 event-level windows — fractionally below 's 100k floor; at
-'s maximum of 50,000 sequences it is 450,000 windows, inside 's
-100k–500k budget. The two budgets therefore reconcile across the upper range
-of 's sequence count; regenerating at >11.2k sequences clears the floor.
-"""
+"""Create ordered, fixed-length windows from per-node sensor series."""
 
 from __future__ import annotations
 
