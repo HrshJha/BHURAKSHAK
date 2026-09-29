@@ -229,7 +229,7 @@ def main() -> int:
         artifact.parent.mkdir(parents=True, exist_ok=True)
         torch.save({
             "metadata": {
-                "model_name": "SubSense temporal forecaster",
+                "model_name": "BhuRakshak temporal forecaster",
                 "model_version": "v2.0.0-tuned-dev",
                 "feature_schema_version": manifest["feature_schema_version"],
                 "training_dataset_version": manifest["dataset_version"],
@@ -248,7 +248,7 @@ def main() -> int:
         from src.risk.model_registry import ModelRegistry
         provenance_hash = hashlib.sha256((ROOT / "configs/feature_provenance.yaml").read_bytes()).hexdigest()
         ModelRegistry().register_model(
-            model_name="subsense_temporal_forecaster", model_version="v2.0.0-tuned-dev",
+            model_name="bhurakshak_temporal_forecaster", model_version="v2.0.0-tuned-dev",
             feature_version=str(manifest["feature_schema_version"]),
             training_dataset_version=str(manifest["dataset_version"]), artifact_path=str(artifact),
             split_name="train+validation development groups", seed=int(final["seed"]),

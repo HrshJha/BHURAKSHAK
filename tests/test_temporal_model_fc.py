@@ -1,4 +1,4 @@
-"""T-076 — §16 temporal forecasting model tests.
+""" — temporal forecasting model tests.
 
 The acceptance spine: the model predicts a PHYSICAL quantity (future
 displacement / tilt / deformation velocity) and NEVER "future danger"
@@ -46,7 +46,7 @@ def windowed() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# --- the §16 acceptance spine ------------------------------------------------
+# --- the acceptance spine ------------------------------------------------
 
 def test_forecastable_channels_are_physical_only() -> None:
     assert FORECASTABLE_CHANNELS == ("displacement", "tilt_x", "tilt_y")
@@ -140,7 +140,7 @@ def test_short_series_produce_no_forecast(windowed: pd.DataFrame) -> None:
 
 def test_forecast_reproduces_trend_direction(windowed: pd.DataFrame) -> None:
     """A trained forecaster should predict a LARGER future displacement for
-    the rising series than for the flat one (sanity, not accuracy)."""
+ the rising series than for the flat one (sanity, not accuracy)."""
     fc = train_temporal_forecaster(windowed, architecture="gru", epochs=15, history_steps=4, horizons=(1,))
     out = fc.predict(windowed)
     disp = out.rows[(out.rows.channel == "displacement") & (out.rows.horizon_steps == 1)]

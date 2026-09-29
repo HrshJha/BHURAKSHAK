@@ -1,0 +1,134 @@
+{"kind":"deck","id":"pr/rvtj3t","name":"Deck"}
+{"kind":"layout","id":"ly/0n69s7yd","editable":false,"name":"Master","type":"master"}
+{"kind":"layout","id":"ly/dwvadsjm","editable":false,"name":"Title Slide","type":"title","placeholders":[{"name":"title","type":"title"},{"name":"subtitle","type":"subtitle"}]}
+{"kind":"layout","id":"ly/7epk7610","editable":false,"name":"Section Header","type":"sectionHeader","placeholders":[{"name":"title","type":"title"}]}
+{"kind":"layout","id":"ly/pc32lwna","editable":false,"name":"Title and Body","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/4bi5wn65","editable":false,"name":"Title and Two Column","type":"twoColTx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/8jeto361","editable":false,"name":"Title and One Column","type":"tx","placeholders":[{"name":"title","type":"title"},{"name":"body","type":"body"}]}
+{"kind":"layout","id":"ly/94zatgra","editable":false,"name":"Blank","type":"blank"}
+{"kind":"slide","id":"sl/7xopvn","slideIndex":0,"layout":{"id":"ly/94zatgra","name":"Blank"},"title":"BHURAKSHAK","textShapes":39,"backgroundColor":"rgba(255,255,255,1)"}
+{"kind":"shape","id":"sh/61s369o7","slideIndex":0,"position":{"left":56,"top":56,"width":8,"height":108},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"textbox","id":"sh/t4j21o7i","slideIndex":0,"position":{"left":88,"top":53,"width":640,"height":56},"text":"BHURAKSHAK","geometry":"rect","lineWidth":0,"style":{"fontSize":24,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/s3al8j6x","slideIndex":0,"position":{"left":88,"top":106,"width":1300,"height":72},"text":"Mine subsidence monitoring · intended impact pathway","geometry":"rect","lineWidth":0,"style":{"fontSize":40,"typeface":"Helvetica Neue","color":"#173746","bold":true,"alignment":"left"}}
+{"kind":"shape","id":"sh/je1kvepg","slideIndex":0,"position":{"left":1460,"top":69,"width":400,"height":54},"geometry":"roundRect","fillColor":"#EDF4F8","lineWidth":0}
+{"kind":"textbox","id":"sh/id83298v","slideIndex":0,"position":{"left":1480,"top":71,"width":360,"height":50},"text":"DESIGNED SYSTEM · NOT A FIELD RESULT","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#3B83A7","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/50j2x47m","slideIndex":0,"position":{"left":88,"top":183,"width":1744,"height":47},"text":"Sensor signals move through anomaly detection and risk assessment to human review. The impact is potential until physically and operationally validated.","geometry":"rect","lineWidth":0,"style":{"fontSize":21,"typeface":"Helvetica Neue","color":"#56707C","alignment":"left"}}
+{"kind":"shape","id":"sh/kfal4jq1","slideIndex":0,"position":{"left":56,"top":306,"width":268,"height":354},"geometry":"roundRect","fillColor":"#F8FBF9","lineColor":"#D9E4E0","lineWidth":2}
+{"kind":"shape","id":"sh/vahkrupk","slideIndex":0,"position":{"left":56,"top":306,"width":6,"height":354},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"shape","id":"sh/a983yp8z","slideIndex":0,"position":{"left":78,"top":328,"width":40,"height":40},"geometry":"ellipse","fillColor":"#247A48","lineWidth":0}
+{"kind":"textbox","id":"sh/03ats76h","slideIndex":0,"position":{"left":78,"top":328,"width":40,"height":40},"text":"01","geometry":"rect","lineWidth":0,"style":{"fontSize":15,"typeface":"Helvetica Neue","color":"#FFFFFF","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/1ojulsn2","slideIndex":0,"position":{"left":151,"top":344,"width":54,"height":42},"geometry":"roundRect","lineColor":"#247A48","lineWidth":3}
+{"kind":"shape","id":"sh/e18bqxob","slideIndex":0,"position":{"left":171,"top":354,"width":14,"height":14},"geometry":"ellipse","lineColor":"#247A48","lineWidth":3}
+{"kind":"shape","id":"sh/f21cj25w","slideIndex":0,"position":{"left":161,"top":338,"width":0.1,"height":6},"geometry":"line","lineWidth":3}
+{"kind":"shape","id":"sh/szqton65","slideIndex":0,"position":{"left":195,"top":338,"width":0.1,"height":6},"geometry":"line","lineWidth":3}
+{"kind":"shape","id":"sh/d0zuhsnq","slideIndex":0,"position":{"left":161,"top":386,"width":0.1,"height":7},"geometry":"line","lineWidth":3}
+{"kind":"shape","id":"sh/qx8bmdoz","slideIndex":0,"position":{"left":195,"top":386,"width":0.1,"height":7},"geometry":"line","lineWidth":3}
+{"kind":"shape","id":"sh/ryhcfi5k","slideIndex":0,"position":{"left":145,"top":354,"width":6,"height":0.1},"geometry":"line","lineWidth":3}
+{"kind":"shape","id":"sh/cvud0rmp","slideIndex":0,"position":{"left":145,"top":376,"width":6,"height":0.1},"geometry":"line","lineWidth":3}
+{"kind":"shape","id":"sh/xw3utcnu","slideIndex":0,"position":{"left":205,"top":354,"width":6,"height":0.1},"geometry":"line","lineWidth":3}
+{"kind":"shape","id":"sh/lczudcfe","slideIndex":0,"position":{"left":205,"top":376,"width":6,"height":0.1},"geometry":"line","lineWidth":3}
+{"kind":"textbox","id":"sh/kbqt47et","slideIndex":0,"position":{"left":74,"top":416,"width":232,"height":54},"text":"SENSOR MONITORING","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/jahcbmx8","slideIndex":0,"position":{"left":80,"top":477,"width":220,"height":0.1},"geometry":"line","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"textbox","id":"sh/y98b2hwn","slideIndex":0,"position":{"left":79,"top":498,"width":222,"height":139},"text":"Designed for continuous tilt, vibration, crack-change and displacement readings.","geometry":"rect","lineWidth":0,"style":{"fontSize":20,"typeface":"Helvetica Neue","color":"#1E3039","alignment":"center"}}
+{"kind":"shape","id":"sh/x8fu9cf2","slideIndex":0,"position":{"left":360,"top":306,"width":268,"height":354},"geometry":"roundRect","fillColor":"#EDF4F8","lineColor":"#D9E4E0","lineWidth":2}
+{"kind":"shape","id":"sh/wn6t07eh","slideIndex":0,"position":{"left":360,"top":306,"width":6,"height":354},"geometry":"rect","fillColor":"#3B83A7","lineWidth":0}
+{"kind":"shape","id":"sh/bmxc72xw","slideIndex":0,"position":{"left":382,"top":328,"width":40,"height":40},"geometry":"ellipse","fillColor":"#3B83A7","lineWidth":0}
+{"kind":"textbox","id":"sh/alobyxgb","slideIndex":0,"position":{"left":382,"top":328,"width":40,"height":40},"text":"02","geometry":"rect","lineWidth":0,"style":{"fontSize":15,"typeface":"Helvetica Neue","color":"#FFFFFF","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/9kfa5sf6","slideIndex":0,"position":{"left":459,"top":345,"width":36,"height":36},"geometry":"ellipse","lineColor":"#3B83A7","lineWidth":3}
+{"kind":"shape","id":"sh/oj6twnyl","slideIndex":0,"position":{"left":488,"top":375,"width":19,"height":19},"geometry":"line","lineColor":"#3B83A7","lineWidth":4}
+{"kind":"shape","id":"sh/epkr6tc3","slideIndex":0,"position":{"left":466,"top":365,"width":7,"height":0.1},"geometry":"line","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"shape","id":"sh/zqd8fydo","slideIndex":0,"position":{"left":473,"top":357,"width":4,"height":8},"geometry":"line","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"shape","id":"sh/0rm983u9","slideIndex":0,"position":{"left":477,"top":357,"width":6,"height":12},"geometry":"line","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"textbox","id":"sh/1svqh8vu","slideIndex":0,"position":{"left":378,"top":416,"width":232,"height":54},"text":"DEFORMATION DETECTION","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#3B83A7","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/qlkr2tw7","slideIndex":0,"position":{"left":384,"top":477,"width":220,"height":0.1},"geometry":"line","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"textbox","id":"sh/rmt8byds","slideIndex":0,"position":{"left":383,"top":498,"width":222,"height":139},"text":"Isolation Forest flags unusual patterns in the sensor readings.","geometry":"rect","lineWidth":0,"style":{"fontSize":20,"typeface":"Helvetica Neue","color":"#1E3039","alignment":"center"}}
+{"kind":"shape","id":"sh/cn294jud","slideIndex":0,"position":{"left":664,"top":306,"width":268,"height":354},"geometry":"roundRect","fillColor":"#EAF3F7","lineColor":"#D9E4E0","lineWidth":2}
+{"kind":"shape","id":"sh/dobqdovy","slideIndex":0,"position":{"left":664,"top":306,"width":6,"height":354},"geometry":"rect","fillColor":"#3B83A7","lineWidth":0}
+{"kind":"shape","id":"sh/2x07y9wb","slideIndex":0,"position":{"left":686,"top":328,"width":40,"height":40},"geometry":"ellipse","fillColor":"#3B83A7","lineWidth":0}
+{"kind":"textbox","id":"sh/3yt87edg","slideIndex":0,"position":{"left":686,"top":328,"width":40,"height":40},"text":"03","geometry":"rect","lineWidth":0,"style":{"fontSize":15,"typeface":"Helvetica Neue","color":"#FFFFFF","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/vat4juhc","slideIndex":0,"position":{"left":761,"top":350,"width":12,"height":12},"geometry":"ellipse","fillColor":"#FFFFFF","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"shape","id":"sh/u9knapgr","slideIndex":0,"position":{"left":761,"top":378,"width":12,"height":12},"geometry":"ellipse","fillColor":"#FFFFFF","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"shape","id":"sh/hcvmlkzi","slideIndex":0,"position":{"left":790,"top":364,"width":14,"height":14},"geometry":"ellipse","fillColor":"#FFFFFF","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"shape","id":"sh/wbm5cfyx","slideIndex":0,"position":{"left":817,"top":364,"width":14,"height":14},"geometry":"ellipse","fillColor":"#3B83A7","lineWidth":0}
+{"kind":"shape","id":"sh/76t4fahg","slideIndex":0,"position":{"left":773,"top":356,"width":17,"height":11},"geometry":"line","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"shape","id":"sh/mlkn65gv","slideIndex":0,"position":{"left":773,"top":372,"width":17,"height":12},"geometry":"line","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"shape","id":"sh/98bmhkz6","slideIndex":0,"position":{"left":804,"top":371,"width":13,"height":0.1},"geometry":"line","lineColor":"#3B83A7","lineWidth":2}
+{"kind":"textbox","id":"sh/87258fy1","slideIndex":0,"position":{"left":682,"top":416,"width":232,"height":54},"text":"RISK ASSESSMENT","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#3B83A7","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/zi94bqh4","slideIndex":0,"position":{"left":688,"top":477,"width":220,"height":0.1},"geometry":"line","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"textbox","id":"sh/yh0n25gj","slideIndex":0,"position":{"left":687,"top":498,"width":222,"height":139},"text":"XGBoost assigns a risk class; physics checks screen for implausible signals.","geometry":"rect","lineWidth":0,"style":{"fontSize":20,"typeface":"Helvetica Neue","color":"#1E3039","alignment":"center"}}
+{"kind":"shape","id":"sh/ony1creh","slideIndex":0,"position":{"left":968,"top":306,"width":268,"height":354},"geometry":"roundRect","fillColor":"#FBF7EF","lineColor":"#D9E4E0","lineWidth":2}
+{"kind":"shape","id":"sh/po725wf2","slideIndex":0,"position":{"left":968,"top":306,"width":6,"height":354},"geometry":"rect","fillColor":"#B87922","lineWidth":0}
+{"kind":"shape","id":"sh/2lgja1wb","slideIndex":0,"position":{"left":990,"top":328,"width":40,"height":40},"geometry":"ellipse","fillColor":"#B87922","lineWidth":0}
+{"kind":"textbox","id":"sh/nmpk36xw","slideIndex":0,"position":{"left":990,"top":328,"width":40,"height":40},"text":"04","geometry":"rect","lineWidth":0,"style":{"fontSize":15,"typeface":"Helvetica Neue","color":"#FFFFFF","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/crylgbet","slideIndex":0,"position":{"left":1066,"top":345,"width":56,"height":50},"geometry":"triangle","lineColor":"#B87922","lineWidth":3}
+{"kind":"shape","id":"sh/xcr29gfy","slideIndex":0,"position":{"left":1092,"top":359,"width":4,"height":17},"geometry":"roundRect","fillColor":"#B87922","lineWidth":0}
+{"kind":"shape","id":"sh/apgje1wn","slideIndex":0,"position":{"left":1092,"top":380,"width":5,"height":5},"geometry":"ellipse","fillColor":"#B87922","lineWidth":0}
+{"kind":"textbox","id":"sh/bqpk76x8","slideIndex":0,"position":{"left":986,"top":416,"width":232,"height":54},"text":"EARLY WARNING","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#B87922","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/sve147e9","slideIndex":0,"position":{"left":992,"top":477,"width":220,"height":0.1},"geometry":"line","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"textbox","id":"sh/dgn2xcfu","slideIndex":0,"position":{"left":991,"top":498,"width":222,"height":139},"text":"GREEN → WATCH →\nWARNING → CRITICAL\nGuide attention; not a\ncollapse-time prediction.","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#1E3039","alignment":"center"}}
+{"kind":"shape","id":"sh/90vqlo3m","slideIndex":0,"position":{"left":1272,"top":306,"width":268,"height":354},"geometry":"roundRect","fillColor":"#F4F9F5","lineColor":"#D9E4E0","lineWidth":2}
+{"kind":"shape","id":"sh/8zm9sjm1","slideIndex":0,"position":{"left":1272,"top":306,"width":6,"height":354},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"shape","id":"sh/7yd8jelg","slideIndex":0,"position":{"left":1294,"top":328,"width":40,"height":40},"geometry":"ellipse","fillColor":"#247A48","lineWidth":0}
+{"kind":"textbox","id":"sh/md4rq94v","slideIndex":0,"position":{"left":1294,"top":328,"width":40,"height":40},"text":"05","geometry":"rect","lineWidth":0,"style":{"fontSize":15,"typeface":"Helvetica Neue","color":"#FFFFFF","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/h4fqpo3i","slideIndex":0,"position":{"left":1375,"top":345,"width":18,"height":18},"geometry":"ellipse","lineColor":"#247A48","lineWidth":3}
+{"kind":"shape","id":"sh/w369gjmx","slideIndex":0,"position":{"left":1404,"top":351,"width":15,"height":15},"geometry":"ellipse","lineColor":"#247A48","lineWidth":3}
+{"kind":"shape","id":"sh/v2d8nelc","slideIndex":0,"position":{"left":1369,"top":368,"width":31,"height":25},"geometry":"arc","lineColor":"#247A48","lineWidth":3}
+{"kind":"shape","id":"sh/u14re94r","slideIndex":0,"position":{"left":1399,"top":371,"width":29,"height":22},"geometry":"arc","lineColor":"#247A48","lineWidth":3}
+{"kind":"textbox","id":"sh/58fat83e","slideIndex":0,"position":{"left":1290,"top":416,"width":232,"height":54},"text":"HUMAN INTERVENTION","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/4769k3m9","slideIndex":0,"position":{"left":1296,"top":477,"width":220,"height":0.1},"geometry":"line","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"textbox","id":"sh/2d0nelkr","slideIndex":0,"position":{"left":1295,"top":498,"width":222,"height":139},"text":"Operators and authorities can prioritize inspections and safety measures.","geometry":"rect","lineWidth":0,"style":{"fontSize":20,"typeface":"Helvetica Neue","color":"#1E3039","alignment":"center"}}
+{"kind":"shape","id":"sh/ne9onq1w","slideIndex":0,"position":{"left":1576,"top":306,"width":268,"height":354},"geometry":"roundRect","fillColor":"#F1F7F3","lineColor":"#D9E4E0","lineWidth":2}
+{"kind":"shape","id":"sh/ofi5gv2h","slideIndex":0,"position":{"left":1576,"top":306,"width":6,"height":354},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"shape","id":"sh/pgr6p0j2","slideIndex":0,"position":{"left":1598,"top":328,"width":40,"height":40},"geometry":"ellipse","fillColor":"#247A48","lineWidth":0}
+{"kind":"textbox","id":"sh/ah0ni5kn","slideIndex":0,"position":{"left":1598,"top":328,"width":40,"height":40},"text":"06","geometry":"rect","lineWidth":0,"style":{"fontSize":15,"typeface":"Helvetica Neue","color":"#FFFFFF","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/bi9ora18","slideIndex":0,"position":{"left":1678,"top":359,"width":48,"height":36},"geometry":"rect","lineColor":"#247A48","lineWidth":3}
+{"kind":"shape","id":"sh/cji5kf2t","slideIndex":0,"position":{"left":1678,"top":345,"width":48,"height":31},"geometry":"triangle","lineColor":"#247A48","lineWidth":3}
+{"kind":"shape","id":"sh/x4b6tkje","slideIndex":0,"position":{"left":1697,"top":375,"width":12,"height":20},"geometry":"rect","lineColor":"#247A48","lineWidth":2}
+{"kind":"shape","id":"sh/y5k7m5kj","slideIndex":0,"position":{"left":1684,"top":369,"width":8,"height":8},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"shape","id":"sh/z6tova14","slideIndex":0,"position":{"left":1714,"top":369,"width":8,"height":8},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"textbox","id":"sh/jy9krm5k","slideIndex":0,"position":{"left":1594,"top":416,"width":232,"height":54},"text":"POTENTIAL IMPACT","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/ixgjihoz","slideIndex":0,"position":{"left":1600,"top":477,"width":220,"height":0.1},"geometry":"line","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"textbox","id":"sh/50r2twnq","slideIndex":0,"position":{"left":1599,"top":498,"width":222,"height":139},"text":"Earlier information could help reduce exposure and limit damage.","geometry":"rect","lineWidth":0,"style":{"fontSize":20,"typeface":"Helvetica Neue","color":"#1E3039","alignment":"center"}}
+{"kind":"shape","id":"sh/4zi1kr65","slideIndex":0,"position":{"left":329,"top":483,"width":14,"height":0.1},"geometry":"line","lineColor":"#7A8B92","lineWidth":2.5}
+{"kind":"shape","id":"sh/r29kvm5w","slideIndex":0,"position":{"left":340,"top":477,"width":14,"height":12},"geometry":"triangle","fillColor":"#7A8B92","lineWidth":0}
+{"kind":"shape","id":"sh/6103mhob","slideIndex":0,"position":{"left":633,"top":483,"width":14,"height":0.1},"geometry":"line","lineColor":"#7A8B92","lineWidth":2.5}
+{"kind":"shape","id":"sh/t4r2xwnm","slideIndex":0,"position":{"left":644,"top":477,"width":14,"height":12},"geometry":"triangle","fillColor":"#7A8B92","lineWidth":0}
+{"kind":"shape","id":"sh/s3ilormh","slideIndex":0,"position":{"left":937,"top":483,"width":14,"height":0.1},"geometry":"line","lineColor":"#7A8B92","lineWidth":2.5}
+{"kind":"shape","id":"sh/f6tkz65s","slideIndex":0,"position":{"left":948,"top":477,"width":14,"height":12},"geometry":"triangle","fillColor":"#7A8B92","lineWidth":0}
+{"kind":"shape","id":"sh/e503q147","slideIndex":0,"position":{"left":1241,"top":483,"width":14,"height":0.1},"geometry":"line","lineColor":"#7A8B92","lineWidth":2.5}
+{"kind":"shape","id":"sh/cv21gb2l","slideIndex":0,"position":{"left":1252,"top":477,"width":14,"height":12},"geometry":"triangle","fillColor":"#7A8B92","lineWidth":0}
+{"kind":"shape","id":"sh/dwb29g36","slideIndex":0,"position":{"left":1545,"top":483,"width":14,"height":0.1},"geometry":"line","lineColor":"#7A8B92","lineWidth":2.5}
+{"kind":"shape","id":"sh/qtkje1kf","slideIndex":0,"position":{"left":1556,"top":477,"width":14,"height":12},"geometry":"triangle","fillColor":"#7A8B92","lineWidth":0}
+{"kind":"shape","id":"sh/butk76l0","slideIndex":0,"position":{"left":559,"top":244,"width":386,"height":56},"geometry":"roundRect","fillColor":"#EDF4F8","lineColor":"#3B83A7","lineWidth":1.5}
+{"kind":"textbox","id":"sh/o721cr29","slideIndex":0,"position":{"left":571,"top":246,"width":362,"height":52},"text":"AI PIPELINE\nIsolation Forest + XGBoost + physics checks","geometry":"rect","lineWidth":0,"style":{"fontSize":14,"typeface":"Helvetica Neue","color":"#3B83A7","bold":true,"alignment":"center"}}
+{"kind":"shape","id":"sh/p8bi5w3u","slideIndex":0,"position":{"left":56,"top":713,"width":1808,"height":0.1},"geometry":"line","lineColor":"#D9E4E0","lineWidth":2}
+{"kind":"textbox","id":"sh/25kja1kj","slideIndex":0,"position":{"left":56,"top":739,"width":470,"height":44},"text":"POTENTIAL OUTCOMES","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/36t03mlo","slideIndex":0,"position":{"left":534,"top":739,"width":1200,"height":44},"text":"Possible benefits to evaluate in physical and field studies","geometry":"rect","lineWidth":0,"style":{"fontSize":19,"typeface":"Helvetica Neue","color":"#56707C","alignment":"left"}}
+{"kind":"shape","id":"sh/g3i18r2d","slideIndex":0,"position":{"left":56,"top":808,"width":428,"height":102},"geometry":"roundRect","fillColor":"#FFFFFF","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"shape","id":"sh/14ri1w3y","slideIndex":0,"position":{"left":56,"top":808,"width":5,"height":102},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"shape","id":"sh/q10nex0r","slideIndex":0,"position":{"left":80,"top":843,"width":24,"height":24},"geometry":"ellipse","fillColor":"#EAF4EE","lineWidth":0}
+{"kind":"textbox","id":"sh/r29o72hc","slideIndex":0,"position":{"left":80,"top":839,"width":24,"height":30},"text":"→","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/s3i5g7ix","slideIndex":0,"position":{"left":121,"top":823,"width":337,"height":30},"text":"WORKER SAFETY","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#173746","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/dor69czi","slideIndex":0,"position":{"left":121,"top":859,"width":337,"height":28},"text":"Worker exposure","geometry":"rect","lineWidth":0,"style":{"fontSize":16,"typeface":"Helvetica Neue","color":"#56707C","alignment":"left"}}
+{"kind":"shape","id":"sh/ixgnax0v","slideIndex":0,"position":{"left":516,"top":808,"width":428,"height":102},"geometry":"roundRect","fillColor":"#FFFFFF","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"shape","id":"sh/3ypo3ihg","slideIndex":0,"position":{"left":516,"top":808,"width":5,"height":102},"geometry":"rect","fillColor":"#3B83A7","lineWidth":0}
+{"kind":"shape","id":"sh/4zi5cnil","slideIndex":0,"position":{"left":540,"top":843,"width":24,"height":24},"geometry":"ellipse","fillColor":"#EDF4F8","lineWidth":0}
+{"kind":"textbox","id":"sh/50r65sz6","slideIndex":0,"position":{"left":540,"top":839,"width":24,"height":30},"text":"→","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#3B83A7","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/2tk7mh0z","slideIndex":0,"position":{"left":581,"top":823,"width":337,"height":30},"text":"FASTER DETECTION","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#173746","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/nutofmhk","slideIndex":0,"position":{"left":581,"top":859,"width":337,"height":28},"text":"Time to notice","geometry":"rect","lineWidth":0,"style":{"fontSize":16,"typeface":"Helvetica Neue","color":"#56707C","alignment":"left"}}
+{"kind":"shape","id":"sh/xovqlgjm","slideIndex":0,"position":{"left":976,"top":808,"width":428,"height":102},"geometry":"roundRect","fillColor":"#FFFFFF","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"shape","id":"sh/cnm9cb21","slideIndex":0,"position":{"left":976,"top":808,"width":5,"height":102},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"shape","id":"sh/bmd8j61g","slideIndex":0,"position":{"left":1000,"top":843,"width":24,"height":24},"geometry":"ellipse","fillColor":"#EAF4EE","lineWidth":0}
+{"kind":"textbox","id":"sh/al4ra1kb","slideIndex":0,"position":{"left":1000,"top":839,"width":24,"height":30},"text":"→","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/pkvqhgjq","slideIndex":0,"position":{"left":1041,"top":823,"width":337,"height":30},"text":"TARGETED INSPECTION","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#173746","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/ojm98b25","slideIndex":0,"position":{"left":1041,"top":859,"width":337,"height":28},"text":"Inspection priority","geometry":"rect","lineWidth":0,"style":{"fontSize":16,"typeface":"Helvetica Neue","color":"#56707C","alignment":"left"}}
+{"kind":"shape","id":"sh/nid8f61k","slideIndex":0,"position":{"left":1436,"top":808,"width":428,"height":102},"geometry":"roundRect","fillColor":"#FFFFFF","lineColor":"#D9E4E0","lineWidth":1.5}
+{"kind":"shape","id":"sh/2xkr61kz","slideIndex":0,"position":{"left":1436,"top":808,"width":5,"height":102},"geometry":"rect","fillColor":"#247A48","lineWidth":0}
+{"kind":"shape","id":"sh/tgfat0ju","slideIndex":0,"position":{"left":1460,"top":843,"width":24,"height":24},"geometry":"ellipse","fillColor":"#EAF4EE","lineWidth":0}
+{"kind":"textbox","id":"sh/8f69kv29","slideIndex":0,"position":{"left":1460,"top":839,"width":24,"height":30},"text":"→","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#247A48","bold":true,"alignment":"center"}}
+{"kind":"textbox","id":"sh/szetgjql","slideIndex":0,"position":{"left":1501,"top":823,"width":337,"height":30},"text":"ENVIRONMENTAL PROTECTION","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#173746","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/tknap4r6","slideIndex":0,"position":{"left":1501,"top":859,"width":337,"height":28},"text":"Land and water","geometry":"rect","lineWidth":0,"style":{"fontSize":16,"typeface":"Helvetica Neue","color":"#56707C","alignment":"left"}}
+{"kind":"shape","id":"sh/6xwbe98f","slideIndex":0,"position":{"left":56,"top":947,"width":1808,"height":57},"geometry":"roundRect","fillColor":"#F3F7F6","lineWidth":0}
+{"kind":"textbox","id":"sh/ry5sne90","slideIndex":0,"position":{"left":78,"top":951,"width":1760,"height":48},"text":"Evidence to date: held-out synthetic evaluation only; physical and mine-site transfer remain unverified.","geometry":"rect","lineWidth":0,"style":{"fontSize":17,"typeface":"Helvetica Neue","color":"#173746","bold":true,"alignment":"left"}}
+{"kind":"textbox","id":"sh/4vetczq9","slideIndex":0,"position":{"left":56,"top":1020,"width":1808,"height":32},"text":"Potential impact; real-world effectiveness awaits physical and field validation.","geometry":"rect","lineWidth":0,"style":{"fontSize":15,"typeface":"Helvetica Neue","color":"#56707C","alignment":"center"}}
+{"kind":"notes","id":"nt/7xopvn","slideIndex":0,"text":"Impact chain is a proposed system pathway. Current software evaluation is on a held-out synthetic corpus only. No physical or mine-site validation is established. Alert levels are intended risk categories and do not predict exact collapse time."}

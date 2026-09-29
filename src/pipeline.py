@@ -1,32 +1,32 @@
-"""Development-only Data+ML pipeline — PRD §7 layered architecture (T-081).
+"""Development-only Data+ML pipeline — layered architecture.
 
-Assembles the §7 layer cake IN ORDER, on development data, with no
+Assembles the layer cake IN ORDER, on development data, with no
 stage bypassing the module that owns it:
 
-1. **validation**   — `src/preprocessing.validation.validate_packets` on the
-   raw §9 node records (DQ flags: missing / duplicate / out-of-order /
-   corrupted).
-2. **features**     — `src.features.build_feature_store.build_feature_store`
-   (§10 windows → Groups A–F, §13 budget asserted).
+1. **validation** — `src/preprocessing.validation.validate_packets` on the
+ raw node records (DQ flags: missing / duplicate / out-of-order /
+ corrupted).
+2. **features** — `src.features.build_feature_store.build_feature_store`
+ ( windows → Groups A–F, budget asserted).
 3. **Isolation Forest** — `src.anomaly.isolation_forest.train_isolation_forest`
-   on healthy-baseline TRAIN windows only; the score is joined back (§14→§15).
-4. **spatial fusion** — Group C and §21.1 neighbor confirmations use only
-   nodes co-temporal within the same event/window; current single-node events
-   provide no spatial confirmation.
+ on healthy-baseline TRAIN windows only; the score is joined back (→).
+4. **spatial fusion** — Group C and neighbor confirmations use only
+ nodes co-temporal within the same event/window; current single-node events
+ provide no spatial confirmation.
 5. **physics check** — `src.physics.consistency.physics_engine` residuals for
-   every window (Group F / §21), evaluated on the same mesh coordinates.
-6. **XGBoost**      — `src.risk.xgboost_model.train_risk_model` (§15: groups
-   A–F + `anomaly_score` + `physics_residual`), trained on TRAIN, early-stopped
-   on VALIDATION.
+ every window (Group F / ), evaluated on the same mesh coordinates.
+6. **XGBoost** — `src.risk.xgboost_model.train_risk_model` (: groups
+ A–F + `anomaly_score` + `physics_residual`), trained on TRAIN, early-stopped
+ on VALIDATION.
 7. **alert engine** — `src.risk.alert_engine.AlertEngine` over VALIDATION rows
-   in window order (§21.1, config-driven, at most one escalation per update).
+ in window order (, config-driven, at most one escalation per update).
 8. **explainability** — `src.risk.explainability.emit_risk_output` per scored
-   VALIDATION window (FR-11: level + probabilities + contributing signals, never a
-   bare probability).
+ VALIDATION window (: level + probabilities + contributing signals, never a
+ bare probability).
 
-§23 discipline: this runner uses only TRAIN and VALIDATION rows. The burned
+ discipline: this runner uses only TRAIN and VALIDATION rows. The burned
 legacy TEST split is never read for scoring; the locked corpus is reserved for
-scripts/final_eval.py. The entry point is :func:`run_pipeline`, consumed by scripts/run_pipeline.py;
+scripts/final_eval.py. The entry point is:func:`run_pipeline`, consumed by scripts/run_pipeline.py;
 every stage's provenance (module + function) is recorded in the result.
 """
 
@@ -66,8 +66,8 @@ def _co_temporal_neighbor_confirmations(
 ) -> np.ndarray:
     """Count flagged neighbors only within the same event and window.
 
-    Reused node IDs across independent events never confirm one another.
-    """
+ Reused node IDs across independent events never confirm one another.
+ """
     required = {"event_id", "node_id", "window_index", "if_flag"}
     if not required <= set(frame.columns):
         raise PipelineError(f"neighbor confirmation frame missing {sorted(required - set(frame.columns))}")
@@ -90,20 +90,20 @@ def _co_temporal_neighbor_confirmations(
 
 @dataclass
 class PipelineResult:
-    """Everything the §7 chain produced, with per-stage provenance."""
+    """Everything the chain produced, with per-stage provenance."""
 
     validation: dict
     feature_report: object
     if_model: object
     risk_model: object
     scored_validation: pd.DataFrame    # per-window development output, never test
-    alert_timeline: pd.DataFrame       # per (node, window): §21.1 level after each update
-    explanations: list                 # RiskExplanation objects (FR-11 payload)
+    alert_timeline: pd.DataFrame       # per (node, window): level after each update
+    explanations: list                 # RiskExplanation objects ( payload)
     provenance: dict = field(default_factory=lambda: dict(_STAGE_PROVENANCE))
 
 
 def load_synthetic_corpus(nodes_path: Path | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Load the §12 synthetic node corpus + the T-068 event split assignment."""
+    """Load the synthetic node corpus + the event split assignment."""
     repo = Path(__file__).resolve().parent.parent
     nodes_path = nodes_path or repo / "data" / "synthetic" / "synthetic_nodes.csv"
     raw = pd.read_csv(
@@ -120,7 +120,7 @@ def load_synthetic_corpus(nodes_path: Path | None = None) -> tuple[pd.DataFrame,
 
 
 def _physics_residuals(model: pd.DataFrame, coords: pd.DataFrame) -> pd.DataFrame:
-    """Stage 5 — §21 physics residuals on the same mesh coordinates (Group F)."""
+    """Stage 5 — physics residuals on the same mesh coordinates (Group F)."""
     from src.physics.consistency import physics_engine
 
     phys = physics_engine()
@@ -144,7 +144,7 @@ def _physics_residuals(model: pd.DataFrame, coords: pd.DataFrame) -> pd.DataFram
 
 
 def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = True) -> PipelineResult:
-    """Execute the §7 chain on development data and score the validation rows."""
+    """Execute the chain on development data and score the validation rows."""
     from src.anomaly.isolation_forest import train_isolation_forest
     from src.features.build_feature_store import build_feature_store
     from src.preprocessing.validation import validate_packets
@@ -171,15 +171,15 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
         f"{ {k: v for k, v in vsum.items() if k != 'flagged_rows'} }")
 
     model, report = build_feature_store(raw, coords, center_mode="detected")
-    log(f"[2/8] features: {report.n_windows:,} windows, {len(report.features)} features (§13 budget OK)")
+    log(f"[2/8] features: {report.n_windows:,} windows, {len(report.features)} features ( budget OK)")
 
-    # §23 split at event level (T-068) — read at stage 0, merged before any fitting
+    # split at event level — read at stage 0, merged before any fitting
     model = model.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
     if model["split"].isna().any():
         raise PipelineError("events missing from split_assignment.csv — refusing an unsplit run")
     model = model.dropna(subset=["risk_label"])
 
-    # Isolation Forest (§14, healthy-baseline TRAIN only)
+    # Isolation Forest (, healthy-baseline TRAIN only)
     if_model = train_isolation_forest(model)
     model["anomaly_score"] = if_model.anomaly_score(model)
     model["if_flag"] = if_model.flags(model)
@@ -194,10 +194,10 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     model["neighbour_confirmations"] = _co_temporal_neighbor_confirmations(model, coords, radius)
     log(f"[4/8] spatial fusion: co-temporal graph radius {radius:g} m (config); "
         f"median confirmations {int(np.median(model['neighbour_confirmations']))}; "
-        "single-node events cannot satisfy §21.1 neighbor confirmation")
+        "single-node events cannot satisfy  neighbor confirmation")
 
     model = _physics_residuals(model, coords)
-    # §21/§22 semantics: "physics_residual_low" is judged on the NORMALISED
+    # / semantics: "physics_residual_low" is judged on the NORMALISED
     # residual (|z| <= 1.0, RESIDUAL_Z_OK in src/risk/explainability.py) —
     # standardised on TRAIN only; no held-out test rows are loaded here.
     tr = model["split"] == "train"
@@ -206,11 +206,11 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     if not np.isfinite(sd) or sd <= 0:
         raise PipelineError("physics_residual has zero variance on the train split")
     model["physics_residual_z"] = (model["physics_residual"] - mu) / sd
-    log("[5/8] physics check: §21 residuals computed for every window "
+    log("[5/8] physics check:  residuals computed for every window "
         f"(z-standardised on train: mu={mu:.3f}, sd={sd:.3f})")
 
     risk_model = train_risk_model(model)
-    log(f"[6/8] xgboost: {len(risk_model.features)} §15 inputs, classes {risk_model.classes}")
+    log(f"[6/8] xgboost: {len(risk_model.features)}  inputs, classes {risk_model.classes}")
 
     validation = model[model["split"] == "validation"].sort_values(
         ["window_timestamp", "event_id", "node_id"], kind="stable"
@@ -227,7 +227,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
         p = {c: float(row[f"p_{c}"]) for c in classes}
         conditions = {
             "spatial_coherence_above_threshold": bool(row.get("spatial_coherence", 0) > 0),
-            "displacement_trend_positive": bool(row.get("velocity", 0) > 0),  # bare §13 B-group name = displacement view
+            "displacement_trend_positive": bool(row.get("velocity", 0) > 0),  # bare B-group name = displacement view
             "physics_residual_low": bool(abs(float(row["physics_residual_z"])) <= 1.0),
             "neighbour_confirmations": int(row["neighbour_confirmations"]),  # CONDITION_KEYS value, not the config name
         }
@@ -239,10 +239,10 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     )
     log(f"[7/8] validation-only alert-engine trace: {timeline.alert_level.value_counts().to_dict()}")
 
-    # explainability (FR-11/§22, never a bare probability)
-    # FR-14: every prediction is logged with the five traceability fields,
+    # explainability (/, never a bare probability)
+    #: every prediction is logged with the five traceability fields,
     # copied from the REGISTERED model entry (never hand-assembled). The
-    # dataset/schema versions come from the §10.1 manifest itself.
+    # dataset/schema versions come from the manifest itself.
     import hashlib
     import json
 
@@ -254,7 +254,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     risk_cfg = risk_model_config()["xgboost"]
     registry = ModelRegistry()
     registry.register_model(
-        model_name="subsense_xgboost_risk",
+        model_name="bhurakshak_xgboost_risk",
         model_version="1.0.0",
         feature_version=str(manifest["feature_schema_version"]),
         training_dataset_version=str(manifest["dataset_version"]),
@@ -266,10 +266,10 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
     explanations = []
     for _, row in validation.iterrows():
         signals = {
-            "displacement_trend": float(row.get("slope", 0.0)),  # bare §13 B-group name = displacement view
+            "displacement_trend": float(row.get("slope", 0.0)),  # bare B-group name = displacement view
             "spatial_coherence": float(row.get("spatial_coherence", 0.0)),
             "anomaly_score": float(row["anomaly_score"]),
-            "physics_residual": float(row["physics_residual_z"]),  # normalised (§22 z= text)
+            "physics_residual": float(row["physics_residual_z"]),  # normalised ( z= text)
             "vibration_rms": float(row.get("vibration_rms", 0.0)),
         }
         _, _, expl = emit_risk_output(
@@ -277,7 +277,7 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
         )
         explanations.append(expl)
         registry.log_prediction(
-            "subsense_xgboost_risk",
+            "bhurakshak_xgboost_risk",
             "1.0.0",
             {
                 "node_id": str(row["node_id"]),
@@ -289,8 +289,8 @@ def run_pipeline(raw: pd.DataFrame, coords: pd.DataFrame, *, verbose: bool = Tru
                 "top_signal": expl.contributions[0].signal if expl.contributions else None,
             },
         )
-    log(f"[8/8] explainability: {len(explanations):,} FR-11 payloads emitted, "
-        f"FR-14 prediction log written ({len(explanations):,} records)")
+    log(f"[8/8] explainability: {len(explanations):,}  payloads emitted, "
+        f" prediction log written ({len(explanations):,} records)")
 
     return PipelineResult(
         validation={"n_rows": int(len(vr.df)), **vsum},

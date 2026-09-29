@@ -1,4 +1,4 @@
-"""Seeded reproducibility across the generator — PRD NFR-7 (T-020).
+"""Seeded reproducibility across the generator —.
 
 Single point of RNG construction: every simulator component takes a
 ``numpy.random.Generator`` created here from the dataset's fixed random seed.

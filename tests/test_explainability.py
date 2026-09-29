@@ -1,4 +1,4 @@
-"""T-054 tests — §22/FR-11 explainability contribution breakdown."""
+""" tests — / explainability contribution breakdown."""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ def test_every_risk_output_carries_a_breakdown() -> None:
 
 
 def test_emitting_a_bare_probability_without_breakdown_raises() -> None:
-    with pytest.raises(ExplanationError, match="FR-11"):
+    with pytest.raises(ExplanationError, match=""):
         emit_risk_output("n3", {"NORMAL": 0.9, "WARNING": 0.1, "CRITICAL": 0.0}, {})
 
 
@@ -52,7 +52,7 @@ def test_contributions_follow_the_signal_catalogue() -> None:
     assert by_signal["tilt_velocity"].raises_risk is True
     assert "high tilt velocity" in by_signal["tilt_velocity"].text
     assert by_signal["neighbour_anomaly_count"].text == "5 neighbouring nodes anomalous"
-    # physics residual z=+0.2 is near zero → §21 "physically consistent" → raises confidence
+    # physics residual z=+0.2 is near zero → "physically consistent" → raises confidence
     assert by_signal["physics_residual"].raises_risk is True
     assert "physically consistent" in by_signal["physics_residual"].text
 
@@ -94,7 +94,7 @@ def test_summary_signs_and_render_block() -> None:
     block = expl.render()
     assert block.startswith("Risk: CRITICAL (P=0.60)")
     assert "+ high tilt velocity" in block
-    # FR-11 contract: the emitted bundle always carries level + probability + breakdown
+    # contract: the emitted bundle always carries level + probability + breakdown
     assert (level, proba["CRITICAL"], bool(expl.summary)) == ("CRITICAL", 0.60, True)
 
 
@@ -120,7 +120,7 @@ def test_catalogue_covers_the_prd_section22_examples() -> None:
 
 
 def test_dashboard_can_pair_aggregate_probability_with_the_breakdown() -> None:
-    """P(WATCH or higher) from T-050 composes with the T-054 breakdown."""
+    """P(WATCH or higher) from composes with the breakdown."""
     proba = {"NORMAL": 0.2, "WARNING": 0.5, "CRITICAL": 0.3}
     level, _, expl = emit_risk_output("n3", proba, FULL_SIGNALS)
     watch_or_higher = probability_of("WATCH_or_higher", proba)

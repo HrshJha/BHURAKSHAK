@@ -1,4 +1,4 @@
-"""T-055 tests — §30/FR-14 model registry with §10.1 dataset-version resolution."""
+""" tests — / model registry with dataset-version resolution."""
 
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ REAL_DATASET_VERSION = json.loads((REPO_ROOT / "data" / "synthetic" / "dataset_m
 
 @pytest.fixture()
 def registry(tmp_path) -> ModelRegistry:
-    """Registry pointed at the REAL §10.1 manifest but a temp registry file."""
+    """Registry pointed at the REAL manifest but a temp registry file."""
     return ModelRegistry(
         path=tmp_path / "registry.json",
         manifest_paths=DEFAULT_MANIFEST_PATHS,
@@ -41,7 +41,7 @@ def entry_kwargs(**kw) -> dict:
 
 
 def test_real_manifest_exists_and_is_the_default_resolution_target() -> None:
-    assert all(p.exists() for p in DEFAULT_MANIFEST_PATHS), "§10.1: the dataset manifest is a hard requirement"
+    assert all(p.exists() for p in DEFAULT_MANIFEST_PATHS), ": the dataset manifest is a hard requirement"
     reg = ModelRegistry(path=REPO_ROOT / "models" / "registry.json") if False else None
     # (constructed lazily in other tests; here just assert the default path layout)
     assert (REPO_ROOT / "data" / "synthetic" / "dataset_manifest.json").is_file()
@@ -92,7 +92,7 @@ def test_every_logged_prediction_carries_the_five_fr14_fields(registry: ModelReg
         now=datetime(2026, 9, 27, 13, 30, tzinfo=timezone.utc),
     )
     for field in FR14_FIELDS:
-        assert field in rec, f"FR-14 field {field} missing"
+        assert field in rec, f" field {field} missing"
     assert rec["timestamp"] == "2026-09-27T13:30:00+00:00"
     assert rec["training_dataset_version"] == REAL_DATASET_VERSION
     assert rec["feature_version"] == REAL_SCHEMA_VERSION

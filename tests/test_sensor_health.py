@@ -1,4 +1,4 @@
-"""T-033 acceptance tests — sensor-health state detection (§9, §8.4)."""
+""" acceptance tests — sensor-health state detection."""
 
 from __future__ import annotations
 
@@ -61,9 +61,9 @@ def test_sudden_offset_produces_offset_state() -> None:
 
 
 def test_mild_drift_is_drift_not_degraded() -> None:
-    """A ramp-shaped change IS drift, whatever its amplitude (§9's distinction
-    is shape/separation, not severity; DEGRADED is for mild conditions but a
-    clean ramp above the trend threshold is a genuine drift signature)."""
+    """A ramp-shaped change IS drift, whatever its amplitude ('s distinction
+ is shape/separation, not severity; DEGRADED is for mild conditions but a
+ clean ramp above the trend threshold is a genuine drift signature)."""
     n = 144
     values = np.linspace(0.0, 0.35, n) + 0.01 * np.random.default_rng(4).standard_normal(n)
     health = detect_series_health(values, P)
@@ -74,7 +74,7 @@ def test_mild_drift_is_drift_not_degraded() -> None:
 
 def test_mild_offset_is_degraded() -> None:
     """A mid-series step changes BOTH halves' means, so the fitted trend is
-    large too; shape (jump 4.4σ < 6σ hard threshold) makes it DEGRADED."""
+ large too; shape (jump 4.4σ < 6σ hard threshold) makes it DEGRADED."""
     rng = np.random.default_rng(5)
     values = 0.01 * rng.standard_normal(144)
     values[72:] += 0.05  # ≈5σ jump: below the 6σ hard threshold, above 4σ
@@ -84,13 +84,13 @@ def test_mild_offset_is_degraded() -> None:
 
 
 def test_injected_sensor_fault_separates_from_ground_movement() -> None:
-    """§9 core requirement: T-016 SENSOR_FAULT is separable from movement.
+    """ core requirement: SENSOR_FAULT is separable from movement.
 
-    A BIAS fault is a STEP: the detector answers OFFSET with jump > 6σ. Real
-    movement of the same total magnitude is a RAMP: the detector answers DRIFT
-    with no step-like jump. (T-037's spatial coherence + §10 fault_label then
-    finish the separation: movement is multi-node coherent, faults are not.)
-    """
+ A BIAS fault is a STEP: the detector answers OFFSET with jump > 6σ. Real
+ movement of the same total magnitude is a RAMP: the detector answers DRIFT
+ with no step-like jump. ('s spatial coherence + fault_label then
+ finish the separation: movement is multi-node coherent, faults are not.)
+ """
     rng = np.random.default_rng(6)
     noise = 0.01 * rng.standard_normal(144)
     step = noise.copy()
@@ -139,7 +139,7 @@ def test_flag_series_health_groups_by_event_node_channel() -> None:
     assert len(out) == 2
     by_node = out.set_index("node_id")
     assert by_node.loc["V0001", "health_state"] == HEALTHY
-    # +0.5 mm at i=100 with 0.02 mm noise ≈ 25σ jump → clear OFFSET (a T-016 BIAS fault)
+    # +0.5 mm at i=100 with 0.02 mm noise ≈ 25σ jump → clear OFFSET (a BIAS fault)
     assert by_node.loc["V0002", "health_state"] == OFFSET
     assert by_node.loc["V0002", "offset_jump_sigma"] > float(P["offset_jump_sigma"])
 

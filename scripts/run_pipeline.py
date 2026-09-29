@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""T-081 — run the full §7 chain on development (train/validation) data.
+""" — run the full chain on development (train/validation) data.
 
-Acceptance (TASKS.md T-081): `python scripts/run_pipeline.py` runs the full
+Acceptance: `python scripts/run_pipeline.py` runs the full
 chain (validation → features → Isolation Forest → spatial fusion → physics
 check → XGBoost → alert engine → explainability) on development data. The old
 test split is burned; the new locked corpus is read only by final_eval.py.
@@ -51,9 +51,9 @@ def main() -> int:
     print(f"\nprovenance per stage: {json.dumps(result.provenance, indent=2)}")
     print(f"summary → {OUT_JSON.relative_to(REPO_ROOT)}")
 
-    # the §35 acceptance map is maintained by hand in
+    # the acceptance map is maintained by hand in
     # reports/acceptance_criteria.md — print the pointer, don't duplicate it
-    print("\n§35 acceptance map → reports/acceptance_criteria.md")
+    print("\n acceptance map → reports/acceptance_criteria.md")
     return 0
 
 

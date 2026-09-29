@@ -1,12 +1,12 @@
-"""Configuration loader for the SubSense Data+ML workstream.
+"""Configuration loader for the BhuRakshak Data+ML workstream.
 
-PRD refs: NFR-6 (all risk thresholds, sampling rates and alert escalation
-rules must be configuration-driven, not hard-coded), NFR-7 (reproducible,
+ refs: (all risk thresholds, sampling rates and alert escalation
+rules must be configuration-driven, not hard-coded), (reproducible,
 versioned parameters).
 
 Every consumer in ``src/`` must obtain operational thresholds, sampling
 rates and physics parameters through this module. The repo-wide scan in
-``tests/test_config_loader.py`` asserts that the §21.1 risk-threshold
+``tests/test_config_loader.py`` asserts that the risk-threshold
 literals appear nowhere under ``src/`` outside this loader.
 """
 
@@ -42,10 +42,10 @@ _CONFIG_FILES = {
 def load_config(name: str) -> dict[str, Any]:
     """Load one config file by logical name, cached.
 
-    Raises ``KeyError`` for an unknown name and ``FileNotFoundError`` if the
-    underlying YAML file is missing — callers fail loudly, never silently on
-    defaults.
-    """
+ Raises ``KeyError`` for an unknown name and ``FileNotFoundError`` if the
+ underlying YAML file is missing — callers fail loudly, never silently on
+ defaults.
+ """
     if name not in _CONFIG_FILES:
         raise KeyError(f"unknown config name {name!r}; expected one of {sorted(_CONFIG_FILES)}")
     path = CONFIG_DIR / _CONFIG_FILES[name]
@@ -59,57 +59,57 @@ def load_config(name: str) -> dict[str, Any]:
 
 
 def sampling_config() -> dict[str, Any]:
-    """PRD §8.3 sampling-rate defaults (T-003)."""
+    """ sampling-rate defaults."""
     return load_config("sampling")
 
 
 def alerts_config() -> dict[str, Any]:
-    """PRD §21.1 alert-engine escalation/de-escalation config (T-004)."""
+    """ alert-engine escalation/de-escalation config."""
     return load_config("alerts")
 
 
 def physics_config() -> dict[str, Any]:
-    """PRD §10 physics/simulator parameters (T-005)."""
+    """ physics/simulator parameters."""
     return load_config("physics")
 
 
 def feature_schema_config() -> dict[str, Any]:
-    """PRD §11/§13 current feature schema (T-006)."""
+    """ / current feature schema."""
     return load_config("feature_schema")
 
 
 def anomaly_config() -> dict[str, Any]:
-    """PRD §14 Isolation Forest parameters + ablation sets (T-043/T-045)."""
+    """ Isolation Forest parameters + ablation sets."""
     return load_config("anomaly")
 
 
 def validation_config() -> dict[str, Any]:
-    """PRD §23 split fractions (T-068)."""
+    """ split fractions."""
     return load_config("validation")
 
 
 def risk_model_config() -> dict[str, Any]:
-    """PRD §15/§24 risk-model parameters (T-046…T-049)."""
+    """ / risk-model parameters (…)."""
     return load_config("risk_model")
 
 
 def environmental_config() -> dict[str, Any]:
-    """Feature Group J gate + synthetic source parameters (T-067)."""
+    """Feature Group J gate + synthetic source parameters."""
     return load_config("environmental")
 
 
 def forecasting_config() -> dict[str, Any]:
-    """PRD §16 temporal-forecasting parameters (T-076/T-078)."""
+    """ temporal-forecasting parameters."""
     return load_config("forecasting")
 
 
 def model_params_config() -> dict[str, Any]:
-    """Tuned model parameters and provenance (NFR-6/NFR-7)."""
+    """Tuned model parameters and provenance."""
     return load_config("model_params")
 
 
 def escalation_thresholds() -> dict[str, dict[str, Any]]:
-    """The three §21.1 escalation transitions exactly as configured."""
+    """The three escalation transitions exactly as configured."""
     esc = alerts_config()["escalation"]
     return {
         "GREEN_to_WATCH": esc["GREEN_to_WATCH"],
@@ -119,10 +119,10 @@ def escalation_thresholds() -> dict[str, dict[str, Any]]:
 
 
 def deescalation_multiplier() -> float:
-    """§21.1 de-escalation hysteresis multiplier (default 1.5)."""
+    """ de-escalation hysteresis multiplier (default 1.5)."""
     return float(alerts_config()["de_escalation"]["persistence_multiplier"])
 
 
 def physics_parameters() -> dict[str, float]:
-    """The ten §10 physics parameters (validated present by test_configs)."""
+    """The ten physics parameters (validated present by test_configs)."""
     return {k: float(v) for k, v in physics_config()["physics"].items()}

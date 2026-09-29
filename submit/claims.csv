@@ -153,7 +153,7 @@ C151,Tuned IF active inputs: value,33,features,configs/model_params.yaml,isolati
 C152,Locked test NORMAL support: value,5625,windows,reports/final_eval.json,risk_models.tuned_xgboost.per_class.NORMAL.support,submit/build/make_submit.py,synthetic,locked_test,yes
 C153,Locked test WARNING support: value,5625,windows,reports/final_eval.json,risk_models.tuned_xgboost.per_class.WARNING.support,submit/build/make_submit.py,synthetic,locked_test,yes
 C154,Locked test CRITICAL support: value,5625,windows,reports/final_eval.json,risk_models.tuned_xgboost.per_class.CRITICAL.support,submit/build/make_submit.py,synthetic,locked_test,yes
-C155,Nodes per event in current corpus: value,1,node/event,reports/acceptance_criteria.md,G-5: one node per event,submit/build/make_submit.py,synthetic,synthetic_corpus,yes
+C155,Nodes per event in current corpus: value,1,node/event,reports/acceptance_criteria.md,: one node per event,submit/build/make_submit.py,synthetic,synthetic_corpus,yes
 C156,Tuned XGBoost: Macro PR-AUC,0.5028714642,fraction,reports/final_eval.json,risk_models.tuned_xgboost.pr_auc_macro_ovr,submit/build/make_submit.py,synthetic,locked_test,yes
 C157,Tuned XGBoost: Macro F1,0.4457603925,fraction,reports/final_eval.json,risk_models.tuned_xgboost.f1_macro,submit/build/make_submit.py,synthetic,locked_test,yes
 C158,Tuned XGBoost: Critical recall,0.09333333333,fraction,reports/final_eval.json,risk_models.tuned_xgboost.recall_critical,submit/build/make_submit.py,synthetic,locked_test,yes

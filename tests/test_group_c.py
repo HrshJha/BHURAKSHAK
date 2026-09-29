@@ -1,4 +1,4 @@
-"""T-037 acceptance tests — Feature Group C (spatial)."""
+""" acceptance tests — Feature Group C (spatial)."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from src.features.windowing import build_windows
 
 def _small_mesh(anomaly_nodes: set[str], n_side: int = 5, spacing: float = 25.0):
     """5×5 mesh, 25 m spacing. Anomalous nodes ramp to 12 mm; others are CONSTANT
-    (zero slope) so sign-of-slope coherence is unambiguous."""
+ (zero slope) so sign-of-slope coherence is unambiguous."""
     coords = (np.arange(n_side) - (n_side - 1) / 2.0) * spacing
     xx, yy = np.meshgrid(coords, coords)
     x, y = xx.ravel(), yy.ravel()  # node i: (x=coords[i%5], y=coords[i//5]); V0012 = (0,0)
@@ -65,7 +65,7 @@ def test_default_radius_is_one_and_a_half_grid_spacings() -> None:
 
 
 def test_spatial_coherence_separates_single_node_from_coherent_movement() -> None:
-    """§13 acceptance: single-node disturbance ≠ multi-node coherent movement."""
+    """ acceptance: single-node disturbance ≠ multi-node coherent movement."""
     # (a) ONE node moving alone: its flat neighbours have zero-slope ⇒ incoherent
     alone_w, coords = _small_mesh({"V0012"})
     alone = emit_group_c(alone_w, coords)
@@ -82,7 +82,7 @@ def test_spatial_coherence_separates_single_node_from_coherent_movement() -> Non
 
 def test_neighbour_statistics_exclude_self() -> None:
     """V0012 ramps to 12 mm; its 8 neighbours are constant 0.05 — if self were
-    included, neighbor_mean would be pulled towards ~1.5, not ~0.05."""
+ included, neighbor_mean would be pulled towards ~1.5, not ~0.05."""
     windowed, coords = _small_mesh({"V0012"})
     out = emit_group_c(windowed, coords)
     row = out[(out["node_id"] == "V0012") & (out["window_index"] == 8)].iloc[0]
@@ -92,7 +92,7 @@ def test_neighbour_statistics_exclude_self() -> None:
 
 def test_anomaly_fraction_and_hotspot_density() -> None:
     """V0007 sits at (0, 25): 8 neighbours within 37.5 m (one anomalous: V0012);
-    hotspot radius 75 m (incl. self) covers 21 nodes, still one anomalous."""
+ hotspot radius 75 m (incl. self) covers 21 nodes, still one anomalous."""
     windowed, coords = _small_mesh({"V0012"})
     out = emit_group_c(windowed, coords)
     row = out[(out["node_id"] == "V0007") & (out["window_index"] == 8)].iloc[0]
@@ -102,7 +102,7 @@ def test_anomaly_fraction_and_hotspot_density() -> None:
 
 def test_local_gradient_and_strain_use_distance_scaling() -> None:
     """V0012 (≈9.2 mm at window 8) vs its neighbours (0.05) 25 m away:
-    gradient/strain ≈ (own − 0.05)/25 per metre."""
+ gradient/strain ≈ (own − 0.05)/25 per metre."""
     windowed, coords = _small_mesh({"V0012"})
     own_disp = windowed.loc[
         (windowed["node_id"] == "V0012") & (windowed["window_index"] == 8), "displacement_mean"

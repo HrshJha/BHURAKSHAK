@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""T-045 — run the §14 Isolation Forest ablation (A/B/C) on the feature store.
+""" — run the Isolation Forest ablation (A/B/C) on the feature store.
 
-§14 ablation plan: (A) physical-only features, (B) + temporal, (C) + spatial —
+ ablation plan: (A) physical-only features, (B) + temporal, (C) + spatial —
 "measured against whether adding spatial coherence reduces false alarms".
 
-Protocol (§23-safe):
+Protocol (-safe):
 - split by EVENT (never by row): within each scenario family, events are
-  assigned 60% train / 20% validation / 20% test with a seeded rng; the
-  assignment is persisted to data/features/split_assignment.csv and reused by
-  later model tasks (T-046/T-049/T-068 build the full §23 machinery).
-- train: healthy-baseline windows of train events only (T-043 module);
+ assigned 60% train / 20% validation / 20% test with a seeded rng; the
+ assignment is persisted to data/features/split_assignment.csv and reused by
+ later model tasks (// build the full machinery).
+- train: healthy-baseline windows of train events only ( module);
 - validation: healthy windows set the FAR threshold (p99, ≈1% FAR by design);
 - test: false-alarm rate on healthy test windows + detection rate on
-  anomalous test windows, per feature set.
+ anomalous test windows, per feature set.
 
 Outputs: experiments/if_ablation_abc.json, reports/if_ablation_abc.md.
 """
@@ -43,10 +43,10 @@ FAMILY_SPLIT = {"train": 0.60, "validation": 0.20, "test": 0.20}
 def build_event_splits(df: pd.DataFrame, seed: int = SEED) -> pd.DataFrame:
     """Assign whole events to train/validation/test within each scenario family.
 
-    The family is the event's scenario base (the label before the trailing
-    instance suffix), so every split contains every scenario type. The mapping
-    is deterministic given the seed and persisted for reuse.
-    """
+ The family is the event's scenario base (the label before the trailing
+ instance suffix), so every split contains every scenario type. The mapping
+ is deterministic given the seed and persisted for reuse.
+ """
     rng = np.random.default_rng(seed)
     families = df["event_id"].str.rsplit("_", n=2).str[0]
     rows = []
@@ -149,10 +149,10 @@ def main() -> int:
          "ablation": results, "verdict": verdict}, indent=2))
 
     lines = [
-        "# §14 Isolation Forest ablation — A/B/C (T-045)",
+        "#  Isolation Forest ablation — A/B/C ()",
         "",
         f"Protocol: event-level splits (60/20/20 within each scenario family, seed {SEED}); "
-        f"healthy baseline = triple-healthy mask (G-2); threshold = p{far_alpha:.2f} of validation "
+        f"healthy baseline = triple-healthy mask (); threshold = p{far_alpha:.2f} of validation "
         "healthy scores; all numbers on held-out test events.",
         "",
         "| Set | Features | FAR (healthy test) | Detection (anomalous test) | AUC |",

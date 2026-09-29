@@ -1,29 +1,29 @@
-"""Feature Group J — Environmental — PRD §13 Group J, §38 (T-067).
+"""Feature Group J — Environmental — Group J,.
 
-§13 Group J, exactly: ``rainfall, temperature, land_surface_temperature,
+ Group J, exactly: ``rainfall, temperature, land_surface_temperature,
 land_cover``.
 
-**The gate is the point.** §13: Group J is included in the model feature set
-**only if** an ablation shows predictive value (§38 repeats it). This module
+**The gate is the point.**: Group J is included in the model feature set
+**only if** an ablation shows predictive value ( repeats it). This module
 enforces that mechanically:
 
-- :func:`emit_group_j` produces the four channels with explicit synthetic
-  provenance (G-9-style stand-ins — no real weather feed or satellite LST
-  product exists in MVP scope; configs/environmental.yaml ``sources`` says so
-  per channel). Emission is FREE — an ablation cannot study a group it
-  cannot generate — but every emitted frame carries
-  ``gate_status = "not_in_model"`` so it can never be mistaken for a live
-  model input.
+-:func:`emit_group_j` produces the four channels with explicit synthetic
+ provenance (-style stand-ins — no real weather feed or satellite LST
+ product exists in MVP scope; configs/environmental.yaml ``sources`` says so
+ per channel). Emission is FREE — an ablation cannot study a group it
+ cannot generate — but every emitted frame carries
+ ``gate_status = "not_in_model"`` so it can never be mistaken for a live
+ model input.
 
-- :func:`model_feature_names` — the ONLY sanctioned way to add Group J to a
-  model feature list — refuses unless configs/environmental.yaml records
-  BOTH ``enabled: true`` AND a gate block whose ``status == "included"``
-  naming the ablation that justifies it (study id, decision metric, measured
-  delta ≥ ``min_pr_auc_delta``, decision maker + date). A bare flag flip is
-  therefore not enough: the §13 evidence requirement is machine-checked.
+-:func:`model_feature_names` — the ONLY sanctioned way to add Group J to a
+ model feature list — refuses unless configs/environmental.yaml records
+ BOTH ``enabled: true`` AND a gate block whose ``status == "included"``
+ naming the ablation that justifies it (study id, decision metric, measured
+ delta ≥ ``min_pr_auc_delta``, decision maker + date). A bare flag flip is
+ therefore not enough: the evidence requirement is machine-checked.
 
-- :func:`assert_gate_compliant` raises if a frame marked
-  ``gate_status = "not_in_model"`` is passed off as a model feature frame.
+-:func:`assert_gate_compliant` raises if a frame marked
+ ``gate_status = "not_in_model"`` is passed off as a model feature frame.
 """
 
 from __future__ import annotations
@@ -72,14 +72,14 @@ def emit_group_j(
     *,
     timestamps_hours: pd.Series | np.ndarray | None = None,
 ) -> pd.DataFrame:
-    """Emit the four §13 Group J channels, 1:1 with ``windowed`` rows.
+    """Emit the four Group J channels, 1:1 with ``windowed`` rows.
 
-    Synthetic stand-ins seeded from config: per-event Poisson rainfall
-    (shared across an event's nodes), diurnal air temperature, LST offset
-    from air, static per-node land-cover index (distance bands — an index,
-    never a classification claim). Output carries
-    ``gate_status = "not_in_model"``.
-    """
+ Synthetic stand-ins seeded from config: per-event Poisson rainfall
+ (shared across an event's nodes), diurnal air temperature, LST offset
+ from air, static per-node land-cover index (distance bands — an index,
+ never a classification claim). Output carries
+ ``gate_status = "not_in_model"``.
+ """
     for col in ("event_id", "node_id", "window_index"):
         if col not in windowed.columns:
             raise GroupJError(f"windowed frame missing {col!r}")
@@ -112,8 +112,8 @@ def emit_group_j(
     # --- rainfall: one regional storm process per event (shared by nodes)
     rain = np.zeros(len(windowed), dtype=float)
     for event, positions in windowed.groupby("event_id", sort=False).indices.items():
-        # CRC32 (NOT hash()): string hash() is salted per process — the storm
-        # seed must be reproducible across runs (NFR-7).
+        # CRC32 (NOT hash): string hash is salted per process — the storm
+        # seed must be reproducible across runs.
         ev_rng = np.random.default_rng(seed + (zlib.crc32(str(event).encode("utf-8")) % 10000))
         ev_hours = hours[positions]
         span = float(max(np.nanmax(ev_hours) - np.nanmin(ev_hours), 1e-9)) if len(ev_hours) else 1.0
@@ -162,14 +162,14 @@ def gate_status() -> str:
 
 
 def model_feature_names(features=GROUP_J_FEATURES) -> tuple[str, ...]:
-    """Group J names IF AND ONLY IF the §13 gate allows them into the model.
+    """Group J names IF AND ONLY IF the gate allows them into the model.
 
-    Returns the (deduplicated) Group J feature names when the gate passes,
-    an EMPTY tuple when it does not — callers can splice the result into a
-    model feature list without branching. Raises only on an incoherent
-    configuration (enabled=true but gate missing its evidence fields, or a
-    delta below the configured inclusion threshold while claiming inclusion).
-    """
+ Returns the (deduplicated) Group J feature names when the gate passes,
+ an EMPTY tuple when it does not — callers can splice the result into a
+ model feature list without branching. Raises only on an incoherent
+ configuration (enabled=true but gate missing its evidence fields, or a
+ delta below the configured inclusion threshold while claiming inclusion).
+ """
     cfg = environmental_config()
     gate = cfg.get("gate", {})
     status = str(gate.get("status", "not_run"))
@@ -185,7 +185,7 @@ def model_feature_names(features=GROUP_J_FEATURES) -> tuple[str, ...]:
         if gate.get(field) is None:
             raise GroupJError(
                 f"environmental gate incomplete: '{field}' must record the ablation "
-                "evidence justifying Group J inclusion (§13/§38)"
+                "evidence justifying Group J inclusion (/)"
             )
     delta = float(gate["delta"])
     if delta < float(gate["min_pr_auc_delta"]):
@@ -201,7 +201,7 @@ def assert_gate_compliant(df: pd.DataFrame) -> None:
     status = df.attrs.get(_GATE_KEY)
     if status == _NOT_IN_MODEL:
         raise GroupJError(
-            "frame is stamped gate_status='not_in_model' (§13 gate) — it cannot "
+            "frame is stamped gate_status='not_in_model' ( gate) — it cannot "
             "be used as a model feature frame; pass the gate first"
         )
     if status is None:

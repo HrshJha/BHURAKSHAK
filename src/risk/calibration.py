@@ -1,14 +1,12 @@
-"""Probability calibration — PRD §15 (calibrated probabilities), §24 (T-048).
-
-§24: Brier score, a reliability curve and expected calibration error are the
+"""Probability calibration — (calibrated probabilities),.: Brier score, a reliability curve and expected calibration error are the
 calibration metrics; calibration is fitted on a validation split **disjoint
-from training** (§15: "calibrated class probabilities" are the model output).
+from training** (: "calibrated class probabilities" are the model output).
 
 Method: **confidence calibration** — an isotonic regression maps the row's
 maximum raw probability (the model's confidence) to the observed accuracy at
 that confidence level on the validation split. At inference the top class's
 probability is replaced by the mapped value and the remainder is redistributed
-proportionally over the other classes, so rows still sum to exactly 1 (§15).
+proportionally over the other classes, so rows still sum to exactly 1.
 Calibrating each class independently and renormalising would re-inflate the
 top class after the sum constraint — the known multiclass distortion this
 design avoids.
@@ -47,9 +45,9 @@ class ProbabilityCalibrator:
     def transform(self, proba: np.ndarray) -> np.ndarray:
         """Map raw probabilities through the fitted confidence calibration.
 
-        The top class receives the calibrated confidence; the other classes
-        share the remainder proportionally. Rows sum to exactly 1 (§15).
-        """
+ The top class receives the calibrated confidence; the other classes
+ share the remainder proportionally. Rows sum to exactly 1.
+ """
         proba = np.asarray(proba, dtype=float)
         if proba.ndim != 2 or proba.shape[1] != len(self.classes):
             raise CalibrationError(f"expected (n, {len(self.classes)}) probabilities")
@@ -77,8 +75,8 @@ def fit_probability_calibrator(
 ) -> ProbabilityCalibrator:
     """Fit the calibrator on VALIDATION rows only (disjoint from training).
 
-    ``labels`` must be the true ``risk_label`` values aligned with ``raw_proba``.
-    """
+ ``labels`` must be the true ``risk_label`` values aligned with ``raw_proba``.
+ """
     cfg = risk_model_config()["calibration"]
     if cfg["method"] != "isotonic":
         raise CalibrationError(f"unsupported calibration method {cfg['method']!r}")

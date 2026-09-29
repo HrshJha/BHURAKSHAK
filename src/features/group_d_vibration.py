@@ -1,9 +1,9 @@
-"""Feature Group D — Vibration — PRD §13 Group D, §8.3 (T-038).
+"""Feature Group D — Vibration — Group D,.
 
-§13 Group D: RMS, peak, crest_factor, low/mid/high band energy,
+ Group D: RMS, peak, crest_factor, low/mid/high band energy,
 spectral_centroid.
 
-§8.3 acceptance-critical constraint: on-node accelerometers sample at ≥100 Hz
+ acceptance-critical constraint: on-node accelerometers sample at ≥100 Hz
 but the node **summarises to 1 Hz before transmission** — the mesh only ever
 carries ``vibration_rms`` and ``vibration_peak``. Features are therefore
 computed from the summarised series **only**; the module refuses any input
@@ -37,22 +37,22 @@ _WINDOW_KEYS = ("event_id", "node_id", "window_index", "window_timestamp")
 def emit_group_d(windowed: pd.DataFrame) -> pd.DataFrame:
     """Emit Group D features per window from the summarised vibration series.
 
-    ``windowed`` is the windowing engine's output: per-window
-    ``vibration_rms_*``/``vibration_peak_*`` statistics over the 60-step
-    window. Features:
+ ``windowed`` is the windowing engine's output: per-window
+ ``vibration_rms_*``/``vibration_peak_*`` statistics over the 60-step
+ window. Features:
 
-    - ``vibration_rms`` / ``vibration_peak``: window level (mean of the
-      per-step summarised channels — the §13 names verbatim);
-    - ``crest_factor``: peak / rms (both window means) — shock impulsive-ness;
-    - ``band_energy_low/mid/high`` + ``spectral_centroid``: derived from the
-      per-window RMS *trend* across steps (its within-window mean, slope and
-      variability), the frequency content the 1 Hz summarised stream exposes.
-    """
+ - ``vibration_rms`` / ``vibration_peak``: window level (mean of the
+ per-step summarised channels — the names verbatim);
+ - ``crest_factor``: peak / rms (both window means) — shock impulsive-ness;
+ - ``band_energy_low/mid/high`` + ``spectral_centroid``: derived from the
+ per-window RMS *trend* across steps (its within-window mean, slope and
+ variability), the frequency content the 1 Hz summarised stream exposes.
+ """
     for col in _FORBIDDEN_RAW_COLUMNS:
         if col in windowed.columns:
             raise ValueError(
                 f"Group D must never see raw high-rate samples ({col!r}); "
-                "§8.3: nodes summarise vibration to 1 Hz before transmission"
+                ": nodes summarise vibration to 1 Hz before transmission"
             )
     required = [f"vibration_{s}" for s in ("rms_mean", "rms_std", "rms_slope", "peak_mean", "peak_max")]
     missing = [c for c in required if c not in windowed.columns]

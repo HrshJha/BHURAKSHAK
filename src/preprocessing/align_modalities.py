@@ -1,6 +1,4 @@
-"""Cross-modality temporal alignment — PRD §9.1 + FR-13 (T-031).
-
-§9.1: "Sentinel-1 InSAR passes and DGPS observations are asynchronous and
+"""Cross-modality temporal alignment — +.: "Sentinel-1 InSAR passes and DGPS observations are asynchronous and
 low-frequency relative to the sensor mesh. They are aligned to the nearest
 sensor feature window by timestamp (default tolerance: InSAR ±12 hours, DGPS
 ±1 hour) and tagged with their own observation timestamp so staleness is
@@ -30,7 +28,7 @@ __all__ = [
     "tolerance_for",
 ]
 
-#: Modality names with §9.1 default tolerances (hours) — resolved from config.
+#: Modality names with default tolerances (hours) — resolved from config.
 MODALITIES = ("insar", "dgps")
 
 
@@ -52,7 +50,7 @@ class AlignmentResult:
 
 
 def tolerance_for(modality: str) -> float:
-    """Configured §9.1 alignment tolerance in hours for a modality."""
+    """Configured alignment tolerance in hours for a modality."""
     cfg = load_config("preprocessing")["align_modalities"]
     key = f"{modality}_tolerance_hours"
     if key not in cfg:
@@ -71,12 +69,12 @@ def align_to_windows(
 ) -> AlignmentResult:
     """Align external observations to the nearest feature-window centre.
 
-    ``observations`` must carry ``observation_timestamp`` (hours) plus any
-    payload columns (e.g. ``LOS_displacement``). ``windows`` must carry
-    ``window_timestamp`` (hours). Each observation joins the nearest window
-    within the modality's tolerance; otherwise it is counted as out of
-    tolerance and excluded (staleness is never hidden by force-joining).
-    """
+ ``observations`` must carry ``observation_timestamp`` (hours) plus any
+ payload columns (e.g. ``LOS_displacement``). ``windows`` must carry
+ ``window_timestamp`` (hours). Each observation joins the nearest window
+ within the modality's tolerance; otherwise it is counted as out of
+ tolerance and excluded (staleness is never hidden by force-joining).
+ """
     tol = tolerance_for(modality)
     for col in ("observation_timestamp",):
         if col not in observations.columns:

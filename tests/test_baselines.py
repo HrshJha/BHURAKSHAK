@@ -1,4 +1,4 @@
-"""T-047 acceptance tests — §15 comparison baselines."""
+""" acceptance tests — comparison baselines."""
 
 from __future__ import annotations
 
@@ -50,7 +50,7 @@ def test_baselines_use_the_same_feature_matrix_as_xgboost() -> None:
     df = _frame()
     xgb = train_risk_model(df)
     baselines = fit_baselines(df[df.split == "train"], xgb.features)
-    assert baselines.features == xgb.features, "§15/§35: baselines share XGBoost's feature matrix"
+    assert baselines.features == xgb.features, "/: baselines share XGBoost's feature matrix"
 
 
 def test_logistic_and_rf_predict_on_test() -> None:

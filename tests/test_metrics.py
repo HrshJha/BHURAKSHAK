@@ -1,4 +1,4 @@
-"""T-069 — §24 evaluation metrics tests."""
+""" — evaluation metrics tests."""
 
 from __future__ import annotations
 
@@ -172,7 +172,7 @@ def test_calibration_reexports_match_risk_module() -> None:
 def test_brier_and_ece_known_values() -> None:
     proba = np.array([[0.8, 0.2], [0.3, 0.7]])
     y = np.array([0, 1])
-    # brier: (0.8-1)²+(0.2)²=0.08 ; (0.3)²+(0.7-1)²=0.18 → mean 0.13
+    # brier: (0.8-1)²+(0.2)²=0.08; (0.3)²+(0.7-1)²=0.18 → mean 0.13
     assert brier_score(proba, y) == pytest.approx(0.13)
     # perfectly confident-and-correct → ECE 0
     perfect = np.array([[1.0, 0.0], [0.0, 1.0]])
@@ -205,7 +205,7 @@ def test_lead_time_stats_median_p10_and_missed_events() -> None:
     alerts = {"E1": 2.0, "E2": 0.0, "E3": 5.0}
     onsets = {"E1": 5.0, "E2": 4.0, "E3": 4.0}
     out = lead_time_stats(alerts, onsets, stride_hours=0.6)
-    # leads: E1 = 3×0.6=1.8 h ; E2 = 4×0.6=2.4 h ; E3 alerted after onset → missed
+    # leads: E1 = 3×0.6=1.8 h; E2 = 4×0.6=2.4 h; E3 alerted after onset → missed
     assert out["median_lead_time_hours"] == pytest.approx(2.1)
     assert out["p10_lead_time_hours"] == pytest.approx(np.percentile([1.8, 2.4], 10))
     assert out["n_events_with_lead"] == 2

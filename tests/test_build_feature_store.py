@@ -1,4 +1,4 @@
-"""T-042 acceptance tests — feature store assembly and §13 budget."""
+""" acceptance tests — feature store assembly and budget."""
 
 from __future__ import annotations
 
@@ -89,7 +89,7 @@ def test_model_input_is_window_level_not_raw() -> None:
 def test_labels_are_kept_separate_in_the_store() -> None:
     raw, coords = _raw()
     model, _ = build_feature_store(raw, coords)
-    # §12: three independent label columns, not a collapsed binary flag
+    #: three independent label columns, not a collapsed binary flag
     assert model["risk_label"].isin(["NORMAL", "WARNING"]).all()
     assert set(model["anomaly_label"].unique()) <= {0, 1}
     assert model["progression_label"].isin(["STABLE", "SLOW"]).all()

@@ -25,6 +25,6 @@
     "reference nodes N1/N4 ground truth and relative features exactly 0"
   ],
   "class_distribution_all_nodes": {"0": 10771, "1": 2053, "2": 1823, "3": 321},
-  "intended_use": "T-072 tabletop ground-truth protocol, T-074 domain-gap Stage 2 (synthetic -> tabletop), Random Forest + Isolation Forest two-model pipeline (plan section 7)",
+  "intended_use": " tabletop ground-truth protocol,  domain-gap Stage 2 (synthetic -> tabletop), Random Forest + Isolation Forest two-model pipeline (plan section 7)",
   "ground_truth_rule": "known_displacement_mm = knob_turns x 1.25 mm, mechanism-defined, never model-defined; labels derived only from that column"
 }

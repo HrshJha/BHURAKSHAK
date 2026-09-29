@@ -1,4 +1,4 @@
-"""T-018 acceptance tests — all 12 §10 scenarios generatable with correct labels."""
+""" acceptance tests — all 12 scenarios generatable with correct labels."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def test_all_16_generator_scenarios_run() -> None:
 
 
 def test_twelve_taxonomy_rows_documented() -> None:
-    assert len(TAXONOMY_ROWS) == 12, "§10 defines exactly 12 scenario rows"
+    assert len(TAXONOMY_ROWS) == 12, " defines exactly 12 scenario rows"
     assert "stable ground" in TAXONOMY_ROWS
     assert "communication failure" in TAXONOMY_ROWS
 
@@ -61,7 +61,7 @@ def test_progression_labels() -> None:
 
 
 def test_vibration_only_is_never_subsidence() -> None:
-    """§10 hard rule: vibration alone ≠ subsidence."""
+    """ hard rule: vibration alone ≠ subsidence."""
     res = _gen(Scenario.VIBRATION_ONLY)
     assert res.risk_label == RISK_NORMAL, "vibration-only must NEVER be SUBSIDENCE/WARNING"
     assert res.anomaly_flag == ANOMALY_FLAG_NON_SUBSIDENCE

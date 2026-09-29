@@ -1,4 +1,4 @@
-"""T-025 acceptance tests — §11 dataset schema module."""
+""" acceptance tests — dataset schema module."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from src.preprocessing.schema import (
 
 
 def _df11() -> pd.DataFrame:
-    """A minimal dataframe with exactly the §11 columns."""
+    """A minimal dataframe with exactly the columns."""
     n = 3
     data: dict[str, object] = {
         "timestamp": pd.date_range("2026-01-01", periods=n, freq="10min"),
@@ -62,8 +62,8 @@ def _df11() -> pd.DataFrame:
 
 def test_schema_fields_are_the_exact_prd_list() -> None:
     fields = dataset_schema_fields()
-    assert len(fields) == 33, "§11 enumerates exactly 33 fields"
-    # spot-check first/last per the PRD text block
+    assert len(fields) == 33, " enumerates exactly 33 fields"
+    # spot-check first/last per the text block
     assert fields[0] == "timestamp"
     assert fields[-1] == "risk_label"
     assert "anomaly_score" in fields and "physics_residual" in fields
@@ -109,7 +109,7 @@ def test_dtype_contract_rejects_non_string_node_id() -> None:
 
 def test_dtype_contract_rejects_non_string_risk_label() -> None:
     df = _df11()
-    df["risk_label"] = 0  # collapsed binary flag — forbidden by §12
+    df["risk_label"] = 0  # collapsed binary flag — forbidden by 
     with pytest.raises(SchemaError, match="risk_label"):
         validate_schema(df)
 
@@ -208,6 +208,6 @@ def test_node_metadata_rejects_unknown_columns() -> None:
 
 
 def test_node_metadata_fields_documented() -> None:
-    # §8.4: per-node offsets, calibration date, drift history must all exist
+    #: per-node offsets, calibration date, drift history must all exist
     for field in ("tilt_x_offset", "displacement_offset", "calibration_date", "drift_history"):
         assert field in NODE_METADATA_FIELDS

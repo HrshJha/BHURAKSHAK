@@ -1,147 +1,50 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="144.72pt" height="49.68pt" viewBox="0 0 144.72 49.68" xmlns="http://www.w3.org/2000/svg" version="1.1">
- <metadata>
-  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-   <cc:Work>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2026-09-28T19:22:29.205857</dc:date>
-    <dc:format>image/svg+xml</dc:format>
-    <dc:creator>
-     <cc:Agent>
-      <dc:title>Matplotlib v3.10.6, https://matplotlib.org/</dc:title>
-     </cc:Agent>
-    </dc:creator>
-   </cc:Work>
-  </rdf:RDF>
- </metadata>
- <defs>
-  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
- </defs>
- <g id="figure_1">
-  <g id="patch_1">
-   <path d="M 0 49.68 
-L 144.72 49.68 
-L 144.72 0 
-L 0 0 
-z
-" style="fill: #ffffff"/>
-  </g>
-  <g id="axes_1">
-   <g id="patch_2">
-    <path d="M 4.48632 25.93296 
-L 34.58808 25.93296 
-Q 37.19304 25.93296 37.19304 25.03872 
-L 37.19304 11.22768 
-Q 37.19304 10.33344 34.58808 10.33344 
-L 4.48632 10.33344 
-Q 1.88136 10.33344 1.88136 11.22768 
-L 1.88136 25.03872 
-Q 1.88136 25.93296 4.48632 25.93296 
-z
-" clip-path="url(#p2228a27c95)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_3">
-    <path d="M 42.83712 25.93296 
-L 67.15008 25.93296 
-Q 69.75504 25.93296 69.75504 25.03872 
-L 69.75504 11.22768 
-Q 69.75504 10.33344 67.15008 10.33344 
-L 42.83712 10.33344 
-Q 40.23216 10.33344 40.23216 11.22768 
-L 40.23216 25.03872 
-Q 40.23216 25.93296 42.83712 25.93296 
-z
-" clip-path="url(#p2228a27c95)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_4">
-    <path d="M 76.12272 25.93296 
-L 100.43568 25.93296 
-Q 103.04064 25.93296 103.04064 25.03872 
-L 103.04064 11.22768 
-Q 103.04064 10.33344 100.43568 10.33344 
-L 76.12272 10.33344 
-Q 73.51776 10.33344 73.51776 11.22768 
-L 73.51776 25.03872 
-Q 73.51776 25.93296 76.12272 25.93296 
-z
-" clip-path="url(#p2228a27c95)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_5">
-    <path d="M 110.85552 25.93296 
-L 139.51008 25.93296 
-Q 142.11504 25.93296 142.11504 25.03872 
-L 142.11504 11.22768 
-Q 142.11504 10.33344 139.51008 10.33344 
-L 110.85552 10.33344 
-Q 108.25056 10.33344 108.25056 11.22768 
-L 108.25056 25.03872 
-Q 108.25056 25.93296 110.85552 25.93296 
-z
-" clip-path="url(#p2228a27c95)" style="fill: #eff6fb; stroke: #2878b5; stroke-width: 1.2; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_6">
-    <path d="M 37.45478 18.1332 
-Q 38.348712 18.1332 37.7892 18.1332 
-" clip-path="url(#p2228a27c95)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
-    <path d="M 34.5892 16.5332 
-L 37.7892 18.1332 
-L 34.5892 19.7332 
-z
-" clip-path="url(#p2228a27c95)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
-   </g>
-   <g id="patch_7">
-    <path d="M 70.01678 18.1332 
-Q 70.910712 18.1332 70.3512 18.1332 
-" clip-path="url(#p2228a27c95)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
-    <path d="M 67.1512 16.5332 
-L 70.3512 18.1332 
-L 67.1512 19.7332 
-z
-" clip-path="url(#p2228a27c95)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
-   </g>
-   <g id="patch_8">
-    <path d="M 103.30238 18.1332 
-Q 104.196312 18.1332 103.6368 18.1332 
-" clip-path="url(#p2228a27c95)" style="fill: none; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
-    <path d="M 100.4368 16.5332 
-L 103.6368 18.1332 
-L 100.4368 19.7332 
-z
-" clip-path="url(#p2228a27c95)" style="fill: #2878b5; stroke: #2878b5; stroke-width: 1.3; stroke-linecap: round"/>
-   </g>
-   <g id="text_1">
-    <text style="font-weight: 700; font-size: 5.2px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #12243a" x="4.3416" y="6.931988" transform="rotate(-0 4.3416 6.931988)">[HW]  PRD DESIGN PATH</text>
-   </g>
-   <g id="text_2">
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(10.652512 14.335903)">Sensors</text>
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(8.047434 19.374919)">IMU · ToF ·</text>
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(9.538411 24.413934)">vibration</text>
-   </g>
-   <g id="text_3">
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(47.923678 16.855411)">ESP32</text>
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(42.046959 21.894427)">WROOM-32</text>
-   </g>
-   <g id="text_4">
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(75.962208 16.855411)">SX1276/78</text>
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(82.796583 21.894427)">LoRa</text>
-   </g>
-   <g id="text_5">
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(110.765573 16.855411)">Pi 5 gateway</text>
-    <text style="font-size: 4.5px; font-family: 'DejaVu Sans'; fill: #1d2b3a" transform="translate(114.554011 21.894427)">LoRa HAT</text>
-   </g>
-   <g id="text_6">
-    <text style="font-weight: 700; font-size: 4.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #d85f59" x="72.36" y="32.292" transform="rotate(-0 72.36 32.292)">DESIGNED · PRD only · no build evidence</text>
-   </g>
-   <g id="text_7">
-    <text style="font-size: 4.4px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #68798b" x="72.36" y="43.7184" transform="rotate(-0 72.36 43.7184)">Data origin: PRD design</text>
-   </g>
-  </g>
- </g>
- <defs>
-  <clipPath id="p2228a27c95">
-   <rect x="0" y="0" width="144.72" height="49.68"/>
-  </clipPath>
- </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+<rect x="0" y="0" width="1200" height="520" rx="0" fill="#F7F9FC"/>
+<text x="28" y="22" dominant-baseline="hanging" text-anchor="start" font-family="Arial, sans-serif" font-size="38px" font-weight="700" fill="#16324B">HARDWARE ARCHITECTURE</text>
+<rect x="900" y="24" width="274" height="38" rx="19" fill="#FFF4DD"/>
+<text x="1037" y="32" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="18px" font-weight="700" fill="#B87912"> DESIGN ONLY</text>
+<text x="600" y="84" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="24px" font-weight="700" fill="#25857E">PLANNED LoRa MESH  ·  DESIGNED</text>
+<line x1="588" y1="124" x2="804" y2="124" stroke="#25857E" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 6"/>
+<rect x="24" y="152" width="200" height="210" rx="24" fill="#FFFFFF" stroke="#C9D5E0" stroke-width="2"/>
+<rect x="24" y="152" width="200" height="8" rx="4" fill="#2F6E9E"/>
+<text x="124" y="176" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="28px" font-weight="700" fill="#16324B">Sensors</text>
+<text x="124" y="224" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="22px" font-weight="700" fill="#536C80">IMU · ToF</text>
+<text x="124" y="258" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="20px" font-weight="400" fill="#536C80">tilt + displacement</text>
+<rect x="58" y="304" width="132" height="38" rx="19" fill="#EDF4F9"/>
+<text x="124" y="312" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="16px" font-weight="700" fill="#2F6E9E">DESIGNED</text>
+<line x1="228" y1="256" x2="250" y2="256" stroke="#536C80" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="260" y="152" width="200" height="210" rx="24" fill="#FFFFFF" stroke="#C9D5E0" stroke-width="2"/>
+<rect x="260" y="152" width="200" height="8" rx="4" fill="#2F6E9E"/>
+<text x="360" y="176" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="28px" font-weight="700" fill="#16324B">Node MCU</text>
+<text x="360" y="224" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="22px" font-weight="700" fill="#536C80">ESP32</text>
+<text x="360" y="258" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="20px" font-weight="400" fill="#536C80">WROOM-32</text>
+<rect x="294" y="304" width="132" height="38" rx="19" fill="#EDF4F9"/>
+<text x="360" y="312" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="16px" font-weight="700" fill="#2F6E9E">DESIGNED</text>
+<line x1="464" y1="256" x2="486" y2="256" stroke="#536C80" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="496" y="152" width="200" height="210" rx="24" fill="#FFFFFF" stroke="#C9D5E0" stroke-width="2"/>
+<rect x="496" y="152" width="200" height="8" rx="4" fill="#25857E"/>
+<text x="596" y="176" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="28px" font-weight="700" fill="#16324B">Radio</text>
+<text x="596" y="224" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="22px" font-weight="700" fill="#536C80">SX1276 / 78</text>
+<text x="596" y="258" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="20px" font-weight="400" fill="#536C80">LoRa</text>
+<rect x="530" y="304" width="132" height="38" rx="19" fill="#EAF5F3"/>
+<text x="596" y="312" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="16px" font-weight="700" fill="#25857E">DESIGNED</text>
+<line x1="700" y1="256" x2="722" y2="256" stroke="#536C80" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="732" y="152" width="200" height="210" rx="24" fill="#FFFFFF" stroke="#C9D5E0" stroke-width="2"/>
+<rect x="732" y="152" width="200" height="8" rx="4" fill="#2F6E9E"/>
+<text x="832" y="176" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="28px" font-weight="700" fill="#16324B">Gateway</text>
+<text x="832" y="224" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="22px" font-weight="700" fill="#536C80">Pi 5 + HAT</text>
+<text x="832" y="258" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="20px" font-weight="400" fill="#536C80"> design</text>
+<rect x="766" y="304" width="132" height="38" rx="19" fill="#EDF4F9"/>
+<text x="832" y="312" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="16px" font-weight="700" fill="#2F6E9E">DESIGNED</text>
+<line x1="936" y1="256" x2="958" y2="256" stroke="#536C80" stroke-width="4" stroke-linecap="round" marker-end="url(#arrow)"/>
+<rect x="968" y="152" width="208" height="210" rx="24" fill="#FFFFFF" stroke="#C9D5E0" stroke-width="2"/>
+<rect x="968" y="152" width="208" height="8" rx="4" fill="#B87912"/>
+<text x="1072" y="176" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="28px" font-weight="700" fill="#16324B">Service</text>
+<text x="1072" y="224" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="22px" font-weight="700" fill="#536C80">MQTT / API</text>
+<text x="1072" y="258" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="20px" font-weight="400" fill="#536C80"> design</text>
+<rect x="1002" y="304" width="140" height="38" rx="19" fill="#FFF4DD"/>
+<text x="1072" y="312" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="16px" font-weight="700" fill="#B87912">DESIGNED</text>
+<text x="600" y="408" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="20px" font-weight="700" fill="#A74646">EVIDENCE BOUNDARY</text>
+<text x="600" y="442" dominant-baseline="hanging" text-anchor="middle" font-family="Arial, sans-serif" font-size="20px" font-weight="400" fill="#536C80"> only · no firmware, BOM, build photos, or physical rig log here</text>
+<text x="1170" y="488" dominant-baseline="hanging" text-anchor="end" font-family="Arial, sans-serif" font-size="16px" font-weight="400" fill="#536C80">Source:  §, 26</text>
 </svg>

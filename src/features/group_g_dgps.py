@@ -1,24 +1,24 @@
-"""Feature Group G — DGPS/GNSS — PRD §13 Group G, §19 (T-064).
+"""Feature Group G — DGPS/GNSS — Group G,.
 
-§13 Group G, exactly: ``vertical_displacement, horizontal_displacement,
+ Group G, exactly: ``vertical_displacement, horizontal_displacement,
 velocity, acceleration, mesh_vs_dgps_residual``.
 
-Group G summarises the sparse control-point survey (T-063) at window level:
+Group G summarises the sparse control-point survey at window level:
 
 - ``vertical_displacement`` / ``horizontal_displacement`` — the control
-  point on this node's observation within the §9.1 DGPS window tolerance
-  (±1 h, config-driven); NaN elsewhere. Control locations are SPARSE: most
-  nodes have no DGPS point, and a missing point surfaces as NaN — never as
-  an interpolated or carried-forward fake reading (§19 honesty).
+ point on this node's observation within the DGPS window tolerance
+ (±1 h, config-driven); NaN elsewhere. Control locations are SPARSE: most
+ nodes have no DGPS point, and a missing point surfaces as NaN — never as
+ an interpolated or carried-forward fake reading ( honesty).
 - ``velocity`` / ``acceleration`` — the control point's per-observation
-  trend terms (mm/day → mm/yr and mm/yr²), computed per point series with
-  the same robust fits the mesh uses; NaN below the configured minimum
-  observations.
-- ``mesh_vs_dgps_residual`` — the T-063 residual at the matched window
-  (mesh − DGPS): the audit channel that tells the risk layer how much the
-  mesh's own estimate disagrees with the independent reference. It is an
-  EVALUATION-side construct (T-063 ``assert_evaluation_only`` discipline);
-  at scale it is NaN everywhere except control nodes.
+ trend terms (mm/day → mm/yr and mm/yr²), computed per point series with
+ the same robust fits the mesh uses; NaN below the configured minimum
+ observations.
+- ``mesh_vs_dgps_residual`` — the residual at the matched window
+ (mesh − DGPS): the audit channel that tells the risk layer how much the
+ mesh's own estimate disagrees with the independent reference. It is an
+ EVALUATION-side construct ( ``assert_evaluation_only`` discipline);
+ at scale it is NaN everywhere except control nodes.
 
 Rows align 1:1 with the input window frame (same keys, same order).
 """
@@ -83,17 +83,17 @@ def emit_group_g(
 ) -> pd.DataFrame:
     """Emit Group G features per window row.
 
-    ``dgps_raw``: raw control-point observations (T-063 ingest schema; the
-    synthetic survey fixture also carries ``mesh_displacement_mm``).
-    ``windowed``: window-key rows (``event_id, node_id, window_index,
-    window_timestamp`` hours on ``epoch``) — the same windows the other
-    groups use. ``epoch``: REQUIRED hours-axis origin — the caller states
-    the axis, never guessed (NFR-6 discipline).
+ ``dgps_raw``: raw control-point observations ( ingest schema; the
+ synthetic survey fixture also carries ``mesh_displacement_mm``).
+ ``windowed``: window-key rows (``event_id, node_id, window_index,
+ window_timestamp`` hours on ``epoch``) — the same windows the other
+ groups use. ``epoch``: REQUIRED hours-axis origin — the caller states
+ the axis, never guessed ( discipline).
 
-    The mesh side of the residual uses the window frame itself as the mesh
-    estimate (``displacement_mean`` per node/window), so Group G can be
-    computed directly on any windowed feature frame.
-    """
+ The mesh side of the residual uses the window frame itself as the mesh
+ estimate (``displacement_mean`` per node/window), so Group G can be
+ computed directly on any windowed feature frame.
+ """
     for col in ("event_id", "node_id", "window_index", "window_timestamp"):
         if col not in windowed.columns:
             raise GroupGError(f"windowed frame missing {col!r}")
@@ -122,13 +122,13 @@ def emit_group_g(
     series = _point_series(dgps)
 
     # Node → the point serving that node (sparse: usually zero or one). The
-    # §19 survey sits at CONTROL locations, so a point serves its nearest node.
+    # survey sits at CONTROL locations, so a point serves its nearest node.
     assignment = associate_to_nodes(dgps, node_coords).set_index("point_id")
     node_to_point: dict[str, str] = {}
     for pid, row in assignment.iterrows():
         node_to_point.setdefault(str(row["node_id"]), str(pid))
 
-    tol = tolerance_for("dgps")  # §9.1: DGPS aligns within ±1 h (config-driven)
+    tol = tolerance_for("dgps")  #: DGPS aligns within ±1 h (config-driven)
     rows_out: list[dict[str, object]] = []
     for (_idx, row), w_ts in zip(windowed.iterrows(), windows["_ts"], strict=True):
         node = row["node_id"]

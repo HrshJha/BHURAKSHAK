@@ -1,21 +1,18 @@
-"""§23 leakage-safe validation splits (T-068).
-
-§23: "Random row-shuffling across time is explicitly disallowed." The five
+""" leakage-safe validation splits.: "Random row-shuffling across time is explicitly disallowed." The five
 required split types, all assigned at **whole-unit granularity** (never per
 row), so no `node_id`, time block, event family or simulator parameter regime
 appears on both sides of a split:
 
-| Split    | Unit          | Rule (configs/validation.yaml)                          |
+| Split | Unit | Rule (configs/validation.yaml) |
 |----------|---------------|---------------------------------------------------------|
-| time     | event window  | early → train, middle → validation, late → test         |
-| spatial  | mesh sector   | quadrant thirds of the mesh extent                      |
-| node     | node_id       | ordered node list sliced into train/val/test            |
-| event    | scenario fam. | slow families → train, accelerating families → test     |
-| synthetic| parameter     | hold out the TOP of the max-deformation range entirely  |
+| time | event window | early → train, middle → validation, late → test |
+| spatial | mesh sector | quadrant thirds of the mesh extent |
+| node | node_id | ordered node list sliced into train/val/test |
+| event | scenario fam. | slow families → train, accelerating families → test |
+| synthetic| parameter | hold out the TOP of the max-deformation range entirely |
 
 Every function returns a ``pd.Series`` of split labels indexed like the input
-frame. :func:`assert_no_leakage` re-checks the unit-exclusivity property, and
-:func:`random_row_split` is the deliberate §23 refusal — it raises.
+frame.:func:`assert_no_leakage` re-checks the unit-exclusivity property, and:func:`random_row_split` is the deliberate refusal — it raises.
 """
 
 from __future__ import annotations
@@ -42,11 +39,11 @@ SPLIT_ORDER = ("train", "validation", "test")
 
 
 class SplitsError(ValueError):
-    """Raised on invalid split requests or §23 violations."""
+    """Raised on invalid split requests or violations."""
 
 
 def _fractions(block: str) -> tuple[float, float]:
-    """Ordered (train_upper, val_upper) fractions for a §23 split block."""
+    """Ordered (train_upper, val_upper) fractions for a split block."""
     cfg = validation_config()[block]
     if block == "synthetic_split":
         # synthetic holds out the TOP for test; validation is the next band
@@ -61,11 +58,11 @@ def _fractions(block: str) -> tuple[float, float]:
 
 
 def time_split(df: pd.DataFrame) -> pd.Series:
-    """§23 time split on each event's own timeline: early/middle/late windows.
+    """ time split on each event's own timeline: early/middle/late windows.
 
-    Applied per (event_id, node_id) series so the temporal ordering inside a
-    series is preserved and every event contributes to all three phases.
-    """
+ Applied per (event_id, node_id) series so the temporal ordering inside a
+ series is preserved and every event contributes to all three phases.
+ """
     tr, va = _fractions("time_split")
     out = pd.Series(index=df.index, dtype=object)
     for _key, g in df.groupby(["event_id", "node_id"], sort=False):
@@ -80,13 +77,13 @@ def time_split(df: pd.DataFrame) -> pd.Series:
 
 
 def spatial_split(df: pd.DataFrame) -> pd.Series:
-    """§23 spatial split: sector A/B → train/val, sector C → test.
+    """ spatial split: sector A/B → train/val, sector C → test.
 
-    Sectors are thirds of the mesh extent along x then y (fractions from
-    config): A = lower-left block (train), B = lower-right block (validation),
-    C = everything with y above the y-boundary (test). Whole nodes fall in one
-    sector — a node never appears in two splits.
-    """
+ Sectors are thirds of the mesh extent along x then y (fractions from
+ config): A = lower-left block (train), B = lower-right block (validation),
+ C = everything with y above the y-boundary (test). Whole nodes fall in one
+ sector — a node never appears in two splits.
+ """
     cfg = validation_config()["spatial_split"]
     bx = float(cfg["boundary_fraction_x"])
     by = float(cfg["boundary_fraction_y"])
@@ -108,11 +105,11 @@ def spatial_split(df: pd.DataFrame) -> pd.Series:
 
 
 def node_split(df: pd.DataFrame) -> pd.Series:
-    """§23 node split: nodes 1–15 → train, 16–20 → test style, by ordered id.
+    """ node split: nodes 1–15 → train, 16–20 → test style, by ordered id.
 
-    The ordered node-id list is sliced into train/val/test fractions; the
-    middle slice is validation. A node's windows all share one label.
-    """
+ The ordered node-id list is sliced into train/val/test fractions; the
+ middle slice is validation. A node's windows all share one label.
+ """
     tr, va = _fractions("node_split")
     nodes = sorted(df["node_id"].unique())
     n = len(nodes)
@@ -130,12 +127,12 @@ def node_split(df: pd.DataFrame) -> pd.Series:
 
 
 def event_split(df: pd.DataFrame) -> pd.Series:
-    """§23 event split: slow/stable families → train, accelerating/rapid → test.
+    """ event split: slow/stable families → train, accelerating/rapid → test.
 
-    Family = the event id minus its trailing instance suffix. Validation is
-    sampled from the train-side families at the configured event fraction
-    (deterministic given the family names — no rng in the module).
-    """
+ Family = the event id minus its trailing instance suffix. Validation is
+ sampled from the train-side families at the configured event fraction
+ (deterministic given the family names — no rng in the module).
+ """
     cfg = validation_config()["event_split"]
     train_fams = tuple(cfg["train_families"])
     test_fams = tuple(cfg["test_families"])
@@ -165,14 +162,13 @@ def event_split(df: pd.DataFrame) -> pd.Series:
 
 
 def regime_split(df: pd.DataFrame) -> pd.Series:
-    """§35 unseen-parameter-regime holdout.
+    """ unseen-parameter-regime holdout.
 
-    TEST = the whole scenario regimes in ``regime_split.test_families``
-    (growth regimes plus the no-deformation regime so P(NORMAL) has held-out
-    support); VALIDATION = deterministic 1-in-N within each remaining family
-    (no rng); the rest is TRAIN. Whole units only — asserted by
-    :func:`assert_no_leakage`.
-    """
+ TEST = the whole scenario regimes in ``regime_split.test_families``
+ (growth regimes plus the no-deformation regime so P(NORMAL) has held-out
+ support); VALIDATION = deterministic 1-in-N within each remaining family
+ (no rng); the rest is TRAIN. Whole units only — asserted by:func:`assert_no_leakage`.
+ """
     cfg = validation_config()["regime_split"]
     test_families = tuple(cfg["test_families"])
     val_frac = float(cfg["validation_fraction"])
@@ -193,13 +189,13 @@ def regime_split(df: pd.DataFrame) -> pd.Series:
 
 
 def synthetic_split(df: pd.DataFrame, events_meta: pd.DataFrame) -> pd.Series:
-    """§23 synthetic split: hold out the TOP of the max-deformation regime.
+    """ synthetic split: hold out the TOP of the max-deformation regime.
 
-    ``events_meta`` must carry ``id`` and ``max_deformation``. Events in the
-    top ``test_upper_fraction`` of the deformation range are test; the next
-    band up to ``val_upper_fraction`` is validation; the rest train. A whole
-    parameter regime is therefore never seen in training.
-    """
+ ``events_meta`` must carry ``id`` and ``max_deformation``. Events in the
+ top ``test_upper_fraction`` of the deformation range are test; the next
+ band up to ``val_upper_fraction`` is validation; the rest train. A whole
+ parameter regime is therefore never seen in training.
+ """
     cfg = validation_config()["synthetic_split"]
     test_frac = float(cfg["test_upper_fraction"])
     val_frac = float(cfg["val_upper_fraction"])
@@ -218,7 +214,7 @@ def synthetic_split(df: pd.DataFrame, events_meta: pd.DataFrame) -> pd.Series:
 
     # NOTE: the top band (above val_cut) is test; the band (test_cut, val_cut]
     # is validation; below test_cut is train. The very top regime (>val_cut) is
-    # held out entirely from training — that is the §23 point.
+    # held out entirely from training — that is the point.
     meta = meta.sort_values("max_deformation", ascending=False)
     top_n = int(round(len(meta) * test_frac))
     held_out = set(meta["id"].iloc[:top_n])
@@ -240,9 +236,9 @@ def synthetic_split(df: pd.DataFrame, events_meta: pd.DataFrame) -> pd.Series:
 def assert_no_leakage(df: pd.DataFrame, split: pd.Series, unit: str) -> None:
     """Assert the split ``unit`` (e.g. node_id/event_id) never spans two splits.
 
-    This is the executable §23 guarantee: a node/event/time-block that appears
-    in both train and test means information leaked across the boundary.
-    """
+ This is the executable guarantee: a node/event/time-block that appears
+ in both train and test means information leaked across the boundary.
+ """
     if len(split) != len(df):
         raise SplitsError("split series must align with the frame")
     work = df[[unit]].copy()
@@ -252,14 +248,14 @@ def assert_no_leakage(df: pd.DataFrame, split: pd.Series, unit: str) -> None:
     if len(bad):
         examples = list(bad.index[:5])
         raise AssertionError(
-            f"§23 leakage: {unit} values appear in multiple splits: {examples}"
+            f" leakage: {unit} values appear in multiple splits: {examples}"
         )
 
 
 def random_row_split(df: pd.DataFrame, **_kwargs) -> pd.Series:
-    """§23 refusal: random row-shuffling across time is explicitly disallowed."""
+    """ refusal: random row-shuffling across time is explicitly disallowed."""
     raise SplitsError(
-        "§23 violation: random row-shuffling across time is explicitly "
+        " violation: random row-shuffling across time is explicitly "
         "disallowed — use time_split/spatial_split/node_split/event_split/"
         "synthetic_split, which assign whole units"
     )

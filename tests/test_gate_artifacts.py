@@ -1,4 +1,4 @@
-"""Gate-artifact regression tests — the three §10 deliverables stay valid.
+"""Gate-artifact regression tests — the three deliverables stay valid.
 
 Lightweight on purpose: reads the events CSV and manifest fully, and the
 nodes CSV by column projection only (the raw file is ~220 MB).
@@ -49,12 +49,12 @@ def test_nodes_csv_exists_with_min_columns() -> None:
         "anomaly_label", "fault_label", "progression_label", "risk_label",
     }
     missing = required - set(header.columns)
-    assert not missing, f"nodes CSV missing §11-aligned columns: {sorted(missing)}"
+    assert not missing, f"nodes CSV missing -aligned columns: {sorted(missing)}"
 
 
 def test_events_csv_has_exact_section10_columns(events_df: pd.DataFrame) -> None:
     assert list(events_df.columns) == EVENT_COLUMNS
-    assert len(events_df) >= 10_000, "§10: ≥10,000 generated sequences"
+    assert len(events_df) >= 10_000, ": ≥10,000 generated sequences"
 
 
 def test_referential_integrity_nodes_to_events(events_df: pd.DataFrame) -> None:
@@ -64,7 +64,7 @@ def test_referential_integrity_nodes_to_events(events_df: pd.DataFrame) -> None:
 
 
 def test_manifest_valid_and_consistent(manifest: dict, events_df: pd.DataFrame) -> None:
-    assert validate_manifest(manifest) == [], "manifest must satisfy §10.1"
+    assert validate_manifest(manifest) == [], "manifest must satisfy "
     rc = manifest["row_counts"]
     assert rc["synthetic_nodes_rows"] == rc["synthetic_events_rows"] * 144, (
         "each sequence contributes exactly one event and 144 timestep rows"
@@ -77,4 +77,4 @@ def test_gate_fault_and_scenario_diversity(events_df: pd.DataFrame) -> None:
         "stable_ground", "slow_subsidence", "accelerating_subsidence",
         "rapid_subsidence", "irregular_subsidence", "multiple_zones",
         "vibration_only", "packet_loss", "communication_failure",
-    }, "all major §10 scenario families present"
+    }, "all major  scenario families present"

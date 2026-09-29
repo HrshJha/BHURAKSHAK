@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""T-022/T-023 acceptance validation for the synthetic-data gate CSVs.
+"""/ acceptance validation for the synthetic-data gate CSVs.
 
 Checks:
-  1. synthetic_nodes.csv exists, ≥10,000 sequences' worth of rows, §11-aligned
-     raw columns, one row per node per timestep.
-  2. synthetic_events.csv has exactly the §10 event-metadata columns.
-  3. Every event_id in synthetic_nodes.csv resolves in synthetic_events.csv.
-  4. dataset_manifest.json row counts match the actual CSVs.
+ 1. synthetic_nodes.csv exists, ≥10,000 sequences' worth of rows, -aligned
+ raw columns, one row per node per timestep.
+ 2. synthetic_events.csv has exactly the event-metadata columns.
+ 3. Every event_id in synthetic_nodes.csv resolves in synthetic_events.csv.
+ 4. dataset_manifest.json row counts match the actual CSVs.
 
 Usage: python scripts/validate_synthetic_dataset.py [--dir data/synthetic]
 """
@@ -67,23 +67,23 @@ def main() -> int:
     planned = manifest.get("row_counts", {}).get("sequences_planned", 0)
     if not (sequences >= args.min_sequences or planned >= args.min_sequences):
         failures.append(
-            f"sequence count below §10 scale: generated={sequences}, planned={planned}, "
+            f"sequence count below  scale: generated={sequences}, planned={planned}, "
             f"required ≥{args.min_sequences}"
         )
     if (nodes.groupby(["event_id", "node_id", "timestamp"]).size() > 1).any():
         failures.append("duplicate (event_id, node_id, timestamp) rows present")
 
-    # §35: ≥3 fault types and ≥5 deformation scenario classes
+    #: ≥3 fault types and ≥5 deformation scenario classes
     fault_types = set(nodes["fault_label"].dropna().unique()) - {"NONE"}
     if len(fault_types) < 3:
-        failures.append(f"only {len(fault_types)} fault types tagged; §35 requires ≥3")
+        failures.append(f"only {len(fault_types)} fault types tagged;  requires ≥3")
     deformation_types = set(
         nodes.loc[nodes["progression_label"] != "STABLE", "progression_label"].unique()
     )
     if len(deformation_types) < 3:
         failures.append(f"only {len(deformation_types)} deformation progression classes; need SLOW/ACCELERATING/RAPID")
 
-    # 2 — events CSV: exactly the §10 columns
+    # 2 — events CSV: exactly the columns
     if list(events.columns) != REQUIRED_EVENT_COLUMNS:
         failures.append(
             f"synthetic_events.csv columns must be exactly {REQUIRED_EVENT_COLUMNS}, got {list(events.columns)}"

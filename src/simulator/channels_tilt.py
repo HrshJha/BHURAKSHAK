@@ -1,6 +1,6 @@
-"""Tilt channels derived from the deformation field — PRD §10 (T-013).
+"""Tilt channels derived from the deformation field —.
 
-    tilt_x ≈ ∂W/∂x ,  tilt_y ≈ ∂W/∂y
+ tilt_x ≈ ∂W/∂x, tilt_y ≈ ∂W/∂y
 
 Tilt is NEVER independently sampled: it is the analytic gradient of the same
 W(x, y, t) that drives every other channel, plus sensor noise. Units: the
@@ -40,7 +40,7 @@ def generate_tilt(
 
 
 def tilt_magnitude(tilt_x: np.ndarray, tilt_y: np.ndarray) -> np.ndarray:
-    """§11 field: tilt_magnitude = sqrt(tilt_x² + tilt_y²)."""
+    """ field: tilt_magnitude = sqrt(tilt_x² + tilt_y²)."""
     return np.sqrt(np.asarray(tilt_x) ** 2 + np.asarray(tilt_y) ** 2)
 
 

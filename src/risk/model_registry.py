@@ -1,24 +1,21 @@
-"""Model registry — PRD §30, FR-14, §10.1 (T-055).
-
-FR-14: the system shall log every prediction with **model name, version,
+"""Model registry —,,.: the system shall log every prediction with **model name, version,
 feature-schema version and training-dataset version** for traceability, plus
-a timestamp (§30). This module makes that requirement structural:
+a timestamp. This module makes that requirement structural:
 
-- :meth:`ModelRegistry.register_model` stores a model entry under
-  ``models/registry.json`` and REFUSES versions of the training dataset that
-  do not resolve to an existing §10.1 manifest (the hard requirement of
-  §10.1: "without it, … model-registry traceability cannot actually be
-  verified after the fact"). A feature-version mismatch with the manifest's
-  ``feature_schema_version`` is likewise rejected;
-- :meth:`ModelRegistry.log_prediction` emits prediction records that carry
-  the five FR-14 fields BY CONSTRUCTION — they are copied from the registered
-  entry, so a logged prediction cannot omit them;
+-:meth:`ModelRegistry.register_model` stores a model entry under
+ ``models/registry.json`` and REFUSES versions of the training dataset that
+ do not resolve to an existing manifest (the hard requirement of: "without it, … model-registry traceability cannot actually be
+ verified after the fact"). A feature-version mismatch with the manifest's
+ ``feature_schema_version`` is likewise rejected;
+-:meth:`ModelRegistry.log_prediction` emits prediction records that carry
+ the five fields BY CONSTRUCTION — they are copied from the registered
+ entry, so a logged prediction cannot omit them;
 - prediction records are append-only JSON Lines; the registry itself is JSON
-  and reloaded on construction, so entries survive the session.
+ and reloaded on construction, so entries survive the session.
 
-Default locations follow §30's artifact layout: the registry lives at
+Default locations follow 's artifact layout: the registry lives at
 ``models/registry.json`` and dataset manifests are resolved from
-``data/synthetic/dataset_manifest.json`` (§10.1).
+``data/synthetic/dataset_manifest.json``.
 """
 
 from __future__ import annotations
@@ -39,7 +36,7 @@ DEFAULT_MANIFEST_PATHS: tuple[Path, ...] = (
     REPO_ROOT / "data" / "recorded" / "tabletop" / "dataset_manifest.json",
 )
 
-#: the FR-14 traceability fields every logged prediction must carry
+#: the traceability fields every logged prediction must carry
 FR14_FIELDS = ("model_name", "model_version", "feature_version", "training_dataset_version", "timestamp")
 
 
@@ -49,7 +46,7 @@ class ModelRegistryError(ValueError):
 
 @dataclass
 class ModelEntry:
-    """One registered model: identity + the §10.1 dataset it was trained on."""
+    """One registered model: identity + the dataset it was trained on."""
 
     model_name: str
     model_version: str
@@ -81,7 +78,7 @@ class ModelEntry:
 
 
 class ModelRegistry:
-    """§30 registry: model entries in JSON, prediction log as append-only JSONL."""
+    """ registry: model entries in JSON, prediction log as append-only JSONL."""
 
     def __init__(
         self,
@@ -129,17 +126,17 @@ class ModelRegistry:
                 manifest = json.loads(p.read_text(encoding="utf-8"))
                 version = manifest.get("dataset_version")
                 if not version:
-                    raise ModelRegistryError(f"manifest {p} lacks a dataset_version field (§10.1)")
+                    raise ModelRegistryError(f"manifest {p} lacks a dataset_version field ()")
                 found[str(version)] = (manifest, p)
         return found
 
     def resolve_training_dataset(self, version: str) -> tuple[dict[str, Any], Path]:
-        """§10.1: the dataset version must resolve to an EXISTING manifest."""
+        """: the dataset version must resolve to an EXISTING manifest."""
         found = self._manifests()
         if str(version) not in found:
             available = sorted(found) or "none (no manifest files exist)"
             raise ModelRegistryError(
-                f"training_dataset_version {version!r} does not resolve to an existing §10.1 manifest "
+                f"training_dataset_version {version!r} does not resolve to an existing  manifest "
                 f"(available: {available})"
             )
         return found[str(version)]
@@ -157,7 +154,7 @@ class ModelRegistry:
         seed: int | None = None,
         now: datetime | None = None,
     ) -> ModelEntry:
-        """Register a model; the dataset version must resolve (§10.1/§30)."""
+        """Register a model; the dataset version must resolve."""
         if not str(model_name).strip() or not str(model_version).strip():
             raise ModelRegistryError("model_name and model_version are required")
         manifest, _ = self.resolve_training_dataset(training_dataset_version)
@@ -193,7 +190,7 @@ class ModelRegistry:
     def list_models(self) -> list[ModelEntry]:
         return list(self._entries.values())
 
-    # FR-14 prediction log
+    # prediction log
 
     def log_prediction(
         self,
@@ -203,12 +200,12 @@ class ModelRegistry:
         *,
         now: datetime | None = None,
     ) -> dict[str, Any]:
-        """Append one prediction record carrying the five FR-14 fields by construction.
+        """Append one prediction record carrying the five fields by construction.
 
-        ``payload`` holds the prediction-specific content (node_id,
-        probabilities, alert level, …); the traceability fields are copied
-        from the registered entry so they can never be missing or diverge.
-        """
+ ``payload`` holds the prediction-specific content (node_id,
+ probabilities, alert level, …); the traceability fields are copied
+ from the registered entry so they can never be missing or diverge.
+ """
         entry = self.get_entry(model_name, model_version)
         ts = (now or datetime.now(timezone.utc)).astimezone(timezone.utc).isoformat()
         record: dict[str, Any] = {

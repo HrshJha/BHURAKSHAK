@@ -1,4 +1,4 @@
-"""T-036 acceptance tests — Feature Group B (temporal)."""
+""" acceptance tests — Feature Group B (temporal)."""
 
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ def _multi_series() -> pd.DataFrame:
 def test_all_section_13_group_b_features_emitted() -> None:
     out = emit_group_b(_multi_series())
     for feat in GROUP_B_FEATURES:
-        assert feat in out.columns, f"missing §13 Group B feature {feat}"
+        assert feat in out.columns, f"missing  Group B feature {feat}"
 
 
 def test_per_channel_temporal_features_emitted() -> None:

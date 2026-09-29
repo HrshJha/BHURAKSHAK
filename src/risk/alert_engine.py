@@ -1,34 +1,32 @@
-"""Alert-engine state machine — PRD §21.1, FR-7 (T-050).
-
-FR-7: **no single reading can escalate risk straight to CRITICAL.** This
+"""Alert-engine state machine —,.: **no single reading can escalate risk straight to CRITICAL.** This
 module makes that requirement structural rather than aspirational:
 
 - each ``update`` moves a node's alert level by AT MOST ONE level, so even a
-  maximally severe window from GREEN lands on WATCH — reaching CRITICAL takes
-  at least one update per §21.1 transition;
-- every §21.1 transition fires only after its configured number of
-  CONSECUTIVE qualifying windows (configs/alerts.yaml, NFR-6 — class
-  thresholds and persistence counts are read from configuration, never
-  hard-coded);
+ maximally severe window from GREEN lands on WATCH — reaching CRITICAL takes
+ at least one update per transition;
+- every transition fires only after its configured number of
+ CONSECUTIVE qualifying windows (configs/alerts.yaml, — class
+ thresholds and persistence counts are read from configuration, never
+ hard-coded);
 - every configured ``requires`` condition FAILS CLOSED: a window that does
-  not evidence it resets that transition's streak to zero.
+ not evidence it resets that transition's streak to zero.
 
-G-vocabulary mapping (user decision 2026-09-27, gaps G-1/G-2/G-3): the MVP
-risk model emits 3 classes while §21.1's machine uses 4 alert levels.
+G-vocabulary mapping (user decision 2026-09-27, gaps //): the MVP
+risk model emits 3 classes while 's machine uses 4 alert levels.
 
-    model NORMAL   → alert GREEN
-    model WARNING  → fills BOTH the WATCH and the WARNING slots
-    model CRITICAL → alert CRITICAL
+ model NORMAL → alert GREEN
+ model WARNING → fills BOTH the WATCH and the WARNING slots
+ model CRITICAL → alert CRITICAL
 
 hence ``P(WATCH or higher) = 1 − P(NORMAL)`` and
 ``P(WARNING or higher) = P(model WARNING) + P(model CRITICAL)``. WATCH is fed
 by weaker evidence than WARNING (lower class threshold, no spatial/physics
-confirmation required), so the state machine keeps all three §21.1
+confirmation required), so the state machine keeps all three 
 transitions intact while the 3-class model stays untouched. The final
 4-class vocabulary is a post-MVP change and would only widen this mapping.
 
-De-escalation hysteresis is T-051 (recovery deliberately slower than alarm);
-per-node → region roll-up is T-052; operator overrides are T-053. This
+De-escalation hysteresis is (recovery deliberately slower than alarm);
+per-node → region roll-up is; operator overrides are. This
 module owns per-node escalation only.
 """
 
@@ -41,10 +39,10 @@ from src.config import alerts_config, escalation_thresholds
 
 __all__ = ["AlertEngineError", "NodeAlertState", "AlertEngine", "probability_of", "CONDITION_KEYS"]
 
-#: The MVP model classes whose probabilities the engine consumes (§15).
+#: The MVP model classes whose probabilities the engine consumes.
 MODEL_CLASSES = ("NORMAL", "WARNING", "CRITICAL")
 
-#: §21.1 requirement name (configs/alerts.yaml) → the condition key that evidences it.
+#: requirement name (configs/alerts.yaml) → the condition key that evidences it.
 CONDITION_KEYS: dict[str, str] = {
     "spatial_coherence_above_threshold": "spatial_coherence_above_threshold",
     "displacement_trend_positive": "displacement_trend_positive",
@@ -58,11 +56,11 @@ class AlertEngineError(ValueError):
 
 
 def probability_of(target: str, proba: Mapping[str, float]) -> float:
-    """§21.1 aggregate ``P(target or higher)`` under the G-vocabulary mapping.
+    """ aggregate ``P(target or higher)`` under the G-vocabulary mapping.
 
-    ``target`` is the ``probability_of`` value from configs/alerts.yaml
-    (``WATCH_or_higher``, ``WARNING_or_higher`` or ``CRITICAL``).
-    """
+ ``target`` is the ``probability_of`` value from configs/alerts.yaml
+ (``WATCH_or_higher``, ``WARNING_or_higher`` or ``CRITICAL``).
+ """
     missing = [c for c in MODEL_CLASSES if c not in proba]
     if missing:
         raise AlertEngineError(f"probabilities missing model classes {missing}")
@@ -93,7 +91,7 @@ def _conditions_met(transition_cfg: Mapping[str, Any], conditions: Mapping[str, 
 
 @dataclass
 class NodeAlertState:
-    """§21.1 state for one node: current level + consecutive-window streaks."""
+    """ state for one node: current level + consecutive-window streaks."""
 
     node_id: str
     level: str = "GREEN"
@@ -102,7 +100,7 @@ class NodeAlertState:
 
 
 class AlertEngine:
-    """Per-node §21.1 escalation state machine, fully configuration-driven."""
+    """Per-node escalation state machine, fully configuration-driven."""
 
     def __init__(
         self,
@@ -149,7 +147,7 @@ class AlertEngine:
                 raise AlertEngineError(f"P({c})={v} outside [0, 1]")
         total = sum(values.values())
         if abs(total - 1.0) > 1e-4:
-            raise AlertEngineError(f"class probabilities must sum to 1 (§15), got {total}")
+            raise AlertEngineError(f"class probabilities must sum to 1 (), got {total}")
 
     def update(
         self,
@@ -160,18 +158,18 @@ class AlertEngine:
     ) -> str:
         """Feed one window; return the node's alert level after it.
 
-        ``conditions`` evidences the configured ``requires`` items (booleans,
-        ``neighbour_confirmations`` as a count); missing evidence fails
-        closed. At most ONE escalation fires per update, and the window that
-        fires a transition earns no streak credit for the next one — the
-        conservative reading of FR-7.
-        """
+ ``conditions`` evidences the configured ``requires`` items (booleans,
+ ``neighbour_confirmations`` as a count); missing evidence fails
+ closed. At most ONE escalation fires per update, and the window that
+ fires a transition earns no streak credit for the next one — the
+ conservative reading of.
+ """
         conditions = conditions or {}
         self._validate_proba(proba)
         st = self._nodes.setdefault(node_id, NodeAlertState(node_id=node_id, level=self.levels[0]))
         idx = self.levels.index(st.level)
         if idx == len(self.levels) - 1:
-            return st.level  # top level is absorbing here; de-escalation is T-051
+            return st.level  # top level is absorbing here; de-escalation is 
 
         l1, l2 = self.levels[idx], self.levels[idx + 1]
         key = f"{l1}_to_{l2}"

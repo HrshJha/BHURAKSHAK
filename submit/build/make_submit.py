@@ -138,7 +138,7 @@ def build(outdir:Path):
     ]
     for cls in ('NORMAL','WARNING','CRITICAL'):
         dataset_rows.append({'stat':f'Locked test {cls} support','value':int(support[cls]['support']),'unit':'windows','source_file':'reports/final_eval.json','source_key':f'risk_models.tuned_xgboost.per_class.{cls}.support','split':'locked_test'})
-    dataset_rows.append({'stat':'Nodes per event in current corpus','value':1,'unit':'node/event','source_file':'reports/acceptance_criteria.md','source_key':'G-5: one node per event','split':'synthetic_corpus'})
+    dataset_rows.append({'stat':'Nodes per event in current corpus','value':1,'unit':'node/event','source_file':'reports/acceptance_criteria.md','source_key':': one node per event','split':'synthetic_corpus'})
     write_csv(outdir/'tables/dataset.csv',list(dataset_rows[0]),dataset_rows)
     # Workstation measurements and artifact sizes (size is repo artifact metadata, not latency claim).
     edge=diag['workstation_edge_profile']['models']; files={'risk_xgboost_tuned':'models/tuned/risk_xgboost_tuned.joblib','isolation_forest_tuned':'models/tuned/iforest_tuned.joblib','forecaster_tuned':'models/temporal_model/forecaster_tuned.pt'}

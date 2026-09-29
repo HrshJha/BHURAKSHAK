@@ -1,4 +1,4 @@
-"""T-012 acceptance tests — coupled field identity and config-driven parameters."""
+""" acceptance tests — coupled field identity and config-driven parameters."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ def test_field_equals_product_of_temporal_and_spatial() -> None:
     expected = np.asarray(f.w_of_t(ts)) * np.asarray(
         spatial_kernel(xs, ys, f.params.panel_center_x, f.params.panel_center_y, f.params.sigma)
     )
-    assert np.allclose(got, expected, rtol=0, atol=1e-12), "§10: W(x,y,t) == W(t)·kernel"
+    assert np.allclose(got, expected, rtol=0, atol=1e-12), ": W(x,y,t) == W(t)·kernel"
 
 
 def test_field_zero_at_t_zero_everywhere() -> None:
@@ -66,7 +66,7 @@ def test_config_change_changes_field_output() -> None:
 
 
 def test_derived_w_max_matches_configured_maximum_subsidence() -> None:
-    """Geometry-derived amplitude must reconcile with the §10 bookkeeping parameter."""
+    """Geometry-derived amplitude must reconcile with the bookkeeping parameter."""
     f = _field()
     p = f.params
     derived = p.extraction_height * p.subsidence_factor * 1000.0

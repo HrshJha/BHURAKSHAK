@@ -1,4 +1,4 @@
-"""T-010 acceptance tests — spatial kernel matches §10 formula exactly."""
+""" acceptance tests — spatial kernel matches formula exactly."""
 
 from __future__ import annotations
 

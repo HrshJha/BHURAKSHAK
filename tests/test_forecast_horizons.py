@@ -1,6 +1,6 @@
-"""T-078 — §16 forecast-horizon configuration tests.
+""" — forecast-horizon configuration tests.
 
-Acceptance spine: all five §16 horizons (next-window, 30 min, 1 h, 6 h, 24 h)
+Acceptance spine: all five horizons (next-window, 30 min, 1 h, 6 h, 24 h)
 are selectable from config and none is hard-coded under ``src/``.
 """
 
@@ -32,7 +32,7 @@ def test_forecasting_yaml_exists_and_carries_all_five_horizons() -> None:
     raw = yaml.safe_load(FORECASTING_YAML.read_text(encoding="utf-8"))
     horizons = raw["horizons"]
     assert set(HORIZON_ORDER) <= set(horizons)
-    assert set(horizons) == set(HORIZON_ORDER), "no extra horizons beyond §16's five"
+    assert set(horizons) == set(HORIZON_ORDER), "no extra horizons beyond 's five"
     assert horizons["next_window"] == 0
     assert horizons["minutes_30"] == 30
     assert horizons["hours_1"] == 60
@@ -42,14 +42,14 @@ def test_forecasting_yaml_exists_and_carries_all_five_horizons() -> None:
 
 def test_config_reachable_through_loader() -> None:
     cfg = forecasting_config()
-    assert cfg["architecture"] == "lstm"  # §16 benchmark stays the default
+    assert cfg["architecture"] == "lstm"  # benchmark stays the default
     assert isinstance(cfg["horizons"], dict)
 
 
-# resolution to §10 window-steps
+# resolution to window-steps
 
 def test_horizons_resolve_to_window_steps_on_default_grid() -> None:
-    assert grid_interval_minutes() == 10.0  # §8.3 default mesh cadence
+    assert grid_interval_minutes() == 10.0  # default mesh cadence
     assert horizons_in_steps() == (1, 3, 6, 36, 144)
 
 
@@ -102,25 +102,25 @@ def test_negative_horizon_raises(monkeypatch: pytest.MonkeyPatch) -> None:
         configured_horizon_minutes()
 
 
-# NFR-6: §16 horizons live in config, not in code
+#: horizons live in config, not in code
 
 def test_no_hardcoded_horizon_literals_outside_config() -> None:
-    """The §16 horizons must be configuration-driven (NFR-6).
+    """The horizons must be configuration-driven.
 
-    The distinctive minute values (6 h = 360, 24 h = 1440) appear nowhere as
-    bare literals under ``src/``. The colliding values (30/60 also name
-    epochs and the §10 window size) are guarded structurally instead: the
-    trainer's horizon default stays the neutral next-window ``[1]`` and only
-    the horizon resolver may read the forecasting config.
-    """
+ The distinctive minute values (6 h = 360, 24 h = 1440) appear nowhere as
+ bare literals under ``src/``. The colliding values (30/60 also name
+ epochs and the window size) are guarded structurally instead: the
+ trainer's horizon default stays the neutral next-window ``[1]`` and only
+ the horizon resolver may read the forecasting config.
+ """
     for value in (360, 1440):
         pattern = re.compile(rf"(?<![\w.]){value}(?![\w.])")
         for path in sorted(SRC_DIR.rglob("*.py")):
             for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
                 assert not pattern.search(line), (
-                    f"§16 horizon literal {value} (minutes) hard-coded at "
+                    f" horizon literal {value} (minutes) hard-coded at "
                     f"{path.relative_to(REPO_ROOT)}:{i}: {line.strip()} — "
-                    "horizons must come from configs/forecasting.yaml (NFR-6)"
+                    "horizons must come from configs/forecasting.yaml ()"
                 )
 
 
@@ -130,7 +130,7 @@ def test_trainer_horizon_default_is_neutral_and_config_only_in_resolver() -> Non
     from src.forecasting.temporal_model import train_temporal_forecaster
 
     default = inspect.signature(train_temporal_forecaster).parameters["horizons"].default
-    assert default == (1,), "the trainer must not bake a §16 horizon table into its signature"
+    assert default == (1,), "the trainer must not bake a  horizon table into its signature"
 
     # only the resolver reads the forecasting config
     users = [

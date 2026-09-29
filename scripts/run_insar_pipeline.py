@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T-059 — Derive the InSAR deformation time series (PRD §18 step 4).
+""" — Derive the InSAR deformation time series ( step 4).
 
 Produces data/processed/insar/deformation_timeseries.parquet: per
 persistent-scatterer (PS) point × acquisition date — LOS displacement
@@ -7,14 +7,14 @@ persistent-scatterer (PS) point × acquisition date — LOS displacement
 low-coherence observations MASKED (NaN), never silently included.
 
 Two modes:
-  synthetic (default) — build a synthetic SLC stack with a KNOWN imposed
-  deformation field (Mogi-style point source + speckle + flat-Earth ramp),
-  run the full T-058 chain, verify recovery, and write the parquet + run
-  record. This validates the chain end-to-end while the 21 real scenes
-  await T-057's credentialed download.
-  real — process the downloaded SLC zips from data/raw/sentinel1/ (requires
-  the credentialed download to have succeeded; SAR raster reading without
-  rasterio is out of MVP scope, so this mode raises with instructions).
+ synthetic (default) — build a synthetic SLC stack with a KNOWN imposed
+ deformation field (Mogi-style point source + speckle + flat-Earth ramp),
+ run the full chain, verify recovery, and write the parquet + run
+ record. This validates the chain end-to-end while the 21 real scenes
+ await 's credentialed download.
+ real — process the downloaded SLC zips from data/raw/sentinel1/ (requires
+ the credentialed download to have succeeded; SAR raster reading without
+ rasterio is out of MVP scope, so this mode raises with instructions).
 """
 
 from __future__ import annotations
@@ -46,7 +46,7 @@ WAVELENGTH_M = 0.0556            # Sentinel-1 C-band
 
 
 def synth_dates(n: int = 21) -> list[str]:
-    """The REAL T121 DESC acquisition dates from the T-057 inventory manifest."""
+    """The REAL T121 DESC acquisition dates from the inventory manifest."""
     import json
 
     manifest = json.loads((REPO_ROOT / "data" / "raw" / "sentinel1" / "inventory_manifest.json").read_text())
@@ -56,10 +56,10 @@ def synth_dates(n: int = 21) -> list[str]:
 def impose_deformation(n_range: int, n_azimuth: int, dates: list[str], rng: np.ndarray) -> np.ndarray:
     """Known ground truth: a subsiding point source growing linearly in time.
 
-    Returns LOS deformation in metres per (date, range, azimuth) in the
-    satellite look direction — encoded as phase φ = −4π·d_LOS/λ on the
-    secondary scenes.
-    """
+ Returns LOS deformation in metres per (date, range, azimuth) in the
+ satellite look direction — encoded as phase φ = −4π·d_LOS/λ on the
+ secondary scenes.
+ """
     from datetime import date
 
     t_days = np.array(
@@ -76,8 +76,8 @@ def impose_deformation(n_range: int, n_azimuth: int, dates: list[str], rng: np.n
 
 def synth_slc_stack(dates: list[str], seed: int = 42) -> tuple[list[np.ndarray], np.ndarray, np.ndarray]:
     """Synthetic master + secondaries: bright stable point scatterers (PS),
-    speckle background, and UNSTABLE decorrelated patches — so the coherence
-    mask and PS gates have real work to do (§18 step 4 discipline)."""
+ speckle background, and UNSTABLE decorrelated patches — so the coherence
+ mask and PS gates have real work to do ( step 4 discipline)."""
     rng = np.random.default_rng(seed)
     truth = impose_deformation(N_RANGE, N_AZIMUTH, dates, rng)
 
@@ -110,8 +110,8 @@ def synth_slc_stack(dates: list[str], seed: int = 42) -> tuple[list[np.ndarray],
 
 def stack_to_timeseries(stack: dict, dates: list[str], cfg: InSARConfig) -> pd.DataFrame:
     """Per-PS-point × date rows: LOS displacement (wrapped-referenced proxy),
-    velocity and acceleration from per-date series, coherence per date —
-    low-coherence observations MASKED (NaN), never silently included."""
+ velocity and acceleration from per-date series, coherence per date —
+ low-coherence observations MASKED (NaN), never silently included."""
     ps = np.where(stack["ps_mask"])
     if ps[0].size == 0:
         raise InSARError("no PS points selected — loosen configs/insar.yaml ps_selection gates")
@@ -221,7 +221,7 @@ def main() -> int:
         json.dumps(
             {
                 "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-                "mode": "synthetic (real scenes pending T-057 credentialed download)",
+                "mode": "synthetic (real scenes pending  credentialed download)",
                 "n_dates": len(dates),
                 "n_pairs": len(stack["pairs"]),
                 "n_ps_points": n_ps,

@@ -1,4 +1,4 @@
-"""T-053 tests — §21.1 manual-override logging (operator ID, reason, timestamp; model output never suppressed)."""
+""" tests — manual-override logging (operator ID, reason, timestamp; model output never suppressed)."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ def test_override_records_operator_reason_and_timestamp(tmp_path) -> None:
 def test_model_output_is_always_recorded_never_suppressed(tmp_path) -> None:
     lg = log(tmp_path)
     rec = lg.record_override(**sample(model_level="WARNING", overridden_level="GREEN"))
-    assert rec.model_level == "WARNING", "the underlying model output must persist (§21.1)"
+    assert rec.model_level == "WARNING", "the underlying model output must persist ()"
     # and the log refuses to exist under a suppressing configuration:
     with pytest.raises(OverrideLogError, match="suppress"):
         OverrideLog(tmp_path / "other.jsonl", config={"suppresses_model_output": True})

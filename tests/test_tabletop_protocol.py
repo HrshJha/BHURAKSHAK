@@ -1,8 +1,8 @@
-"""T-072 — §23.1 tabletop ground-truth protocol harness tests.
+""" — tabletop ground-truth protocol harness tests.
 
 The fixture data lives in ``data/recorded/tabletop/`` (recorded campaign
-schema; see its README). Tests assert the full §23.1 linkage chain, the
-derived-risk-state discipline, and the §23.1 acceptance quantity
+schema; see its README). Tests assert the full linkage chain, the
+derived-risk-state discipline, and the acceptance quantity
 (mesh-estimated vs reference displacement error).
 """
 
@@ -52,7 +52,7 @@ def test_fixture_links_cleanly(metadata: pd.DataFrame, windowed: pd.DataFrame) -
 
 
 def test_fixture_reference_never_exceeds_actuator(metadata: pd.DataFrame, windowed: pd.DataFrame) -> None:
-    """§23.1 coherence on the recorded data: mechanism truth ≤ actuator."""
+    """ coherence on the recorded data: mechanism truth ≤ actuator."""
     links = link_trials(metadata, windowed, raw=None)
     for link in links:
         assert link.reference_mm_max <= link.actuator_achieved_mm + 1e-6
@@ -105,7 +105,7 @@ def test_derived_risk_state_uses_sensor_features_not_reference() -> None:
 
 
 def test_derived_risk_state_boundaries_exact() -> None:
-    # plan §3.2: 15 mm belongs to the 0–15 band, 35 mm to the 15–35 band;
+    # plan: 15 mm belongs to the 0–15 band, 35 mm to the 15–35 band;
     # states flip strictly ABOVE the boundary
     w = pd.DataFrame({
         "displacement_mm": [15.0, 15.5, 35.0, 35.5],
@@ -116,7 +116,7 @@ def test_derived_risk_state_boundaries_exact() -> None:
     assert out["derived_risk_state"].tolist() == ["NORMAL", "WARNING", "WARNING", "CRITICAL"]
 
 
-# --- §23.1 acceptance quantity: displacement error ---------------------------
+# --- acceptance quantity: displacement error ---------------------------
 
 def test_displacement_error_matches_manual_computation(windowed: pd.DataFrame) -> None:
     out = displacement_error_vs_reference(windowed)
@@ -156,7 +156,7 @@ def test_evaluate_tabletop_full_run(metadata: pd.DataFrame, windowed: pd.DataFra
 
 
 def test_evaluate_tabletop_displacement_error_is_honest(metadata: pd.DataFrame, windowed: pd.DataFrame) -> None:
-    """The §23.1 number: sensor-derived vs mechanism-truth displacement."""
+    """The number: sensor-derived vs mechanism-truth displacement."""
     result = evaluate_tabletop(metadata, windowed)
     err = result["displacement_error"]
     # the ultrasonic channel tracks the mechanism to ~mm level (drift + noise)

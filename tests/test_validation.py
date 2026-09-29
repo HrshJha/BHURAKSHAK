@@ -1,4 +1,4 @@
-"""T-028 acceptance tests — FR-3 packet-level data validation."""
+""" acceptance tests — packet-level data validation."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from src.preprocessing.validation import (
     validate_packets,
 )
 
-INTERVAL = 10.0 / 60.0  # §8.3 grid interval in hours (timestamps are decimal hours)
+INTERVAL = 10.0 / 60.0  # grid interval in hours (timestamps are decimal hours)
 
 
 def _base_rows() -> list[dict]:

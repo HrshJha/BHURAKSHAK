@@ -304,19 +304,19 @@ def main() -> int:
     common = {"training_dataset_version": dataset_version, "split_name": "train", "seed": 42}
     provenance_hash = hashlib.sha256((ROOT / "configs/feature_provenance.yaml").read_bytes()).hexdigest()
     save_model_artifact(artifact_dir / "risk_xgboost_tuned.joblib", model=risk_model, features=features,
-                        model_name="SubSense risk XGBoost tuned", model_version="v2.0.0-dev", **common,
+                        model_name="BhuRakshak risk XGBoost tuned", model_version="v2.0.0-dev", **common,
                         extra={"class_names": list(CLASSES), "thresholds": params_yaml["risk_classifier"]["thresholds"],
                                "calibration": calibration, "provenance_hash": provenance_hash})
     save_model_artifact(artifact_dir / "risk_xgboost_default.joblib", model=default_model, features=features,
-                        model_name="SubSense risk XGBoost default baseline", model_version="v2.0.0-dev", **common,
+                        model_name="BhuRakshak risk XGBoost default baseline", model_version="v2.0.0-dev", **common,
                         extra={"class_names": list(CLASSES), "provenance_hash": provenance_hash})
     save_model_artifact(artifact_dir / "risk_logistic_baseline.joblib", model=logistic, features=features,
-                        model_name="SubSense risk logistic baseline", model_version="v2.0.0-dev", scaler=scaler,
+                        model_name="BhuRakshak risk logistic baseline", model_version="v2.0.0-dev", scaler=scaler,
                         **common, extra={"class_names": list(logistic.classes_), "provenance_hash": provenance_hash})
     for name, model in (("iforest_default", default_if), ("iforest_tuned", tuned_if)):
         threshold = thresholds["default" if name == "iforest_default" else "tuned"]
         save_model_artifact(artifact_dir / f"{name}.joblib", model=model, features=if_features,
-                            model_name=f"SubSense {name}", model_version="v2.0.0-dev", **common,
+                            model_name=f"BhuRakshak {name}", model_version="v2.0.0-dev", **common,
                             extra={"score_threshold": threshold, "threshold_percentile": alpha,
                                    "provenance_hash": provenance_hash})
     print(json.dumps({"development_rows": len(dev), "training_events": int(train.event_id.nunique()), "healthy_train_rows": len(healthy_train),

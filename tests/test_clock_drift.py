@@ -1,4 +1,4 @@
-"""T-030 acceptance tests — node clock-drift estimation and correction."""
+""" acceptance tests — node clock-drift estimation and correction."""
 
 from __future__ import annotations
 

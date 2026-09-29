@@ -1,4 +1,4 @@
-"""T-031 acceptance tests — cross-modality temporal alignment (§9.1)."""
+""" acceptance tests — cross-modality temporal alignment."""
 
 from __future__ import annotations
 
@@ -18,8 +18,8 @@ def _windows(n: int, start_h: float = 0.0, step_h: float = 1.0) -> pd.DataFrame:
 
 
 def test_config_tolerances_match_prd() -> None:
-    assert tolerance_for("insar") == 12.0, "§9.1: InSAR ±12 hours"
-    assert tolerance_for("dgps") == 1.0, "§9.1: DGPS ±1 hour"
+    assert tolerance_for("insar") == 12.0, ": InSAR ±12 hours"
+    assert tolerance_for("dgps") == 1.0, ": DGPS ±1 hour"
     with pytest.raises(AlignmentError):
         tolerance_for("lidar")
 

@@ -1,4 +1,4 @@
-# Feature thresholds and spatial gates (NFR-6).
+# Feature thresholds and spatial gates.
 group_c:
   gated: true
   gate_reason: "single-node events, no co-temporal neighbours"

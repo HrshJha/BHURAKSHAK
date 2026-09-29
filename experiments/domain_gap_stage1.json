@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "task": "T-073 (\u00a723.2 domain-gap Stage 1: synthetic \u2192 synthetic)",
+    "task": " ( domain-gap Stage 1: synthetic \u2192 synthetic)",
     "store": "data/features/features_v2.parquet",
     "alert_threshold_p_critical": 0.5,
     "axes": {
@@ -110,7 +110,7 @@
           "n_events_with_lead": 0,
           "n_missed_events": 0,
           "missed_event_rate": null,
-          "note": "band carries no anomalous events (deformation below the \u00a710 threshold)",
+          "note": "band carries no anomalous events (deformation below the  threshold)",
           "false_alarms_per_day": 0.006329113924050633
         }
       },

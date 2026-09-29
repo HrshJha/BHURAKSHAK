@@ -3,7 +3,7 @@
 Proves the audit CRITICAL is closed: data/features/split_assignment.csv has a
 single reproducible producer (scripts/make_split_assignment.py), the
 committed file equals the regenerated file, and both named splits satisfy
-§23 unit-exclusivity with real class support.
+ unit-exclusivity with real class support.
 """
 
 from __future__ import annotations
@@ -75,7 +75,7 @@ def test_legacy_balanced_has_zero_group_leakage(split_csv: pd.DataFrame) -> None
 
 
 def test_regime_test_split_holds_out_whole_families(split_csv: pd.DataFrame) -> None:
-    """§35: the test regimes must not appear in train/validation at all."""
+    """: the test regimes must not appear in train/validation at all."""
     test_fams = set(split_csv.loc[split_csv["split"] == "test", "scenario_family"])
     assert test_fams == {"E_rapid_subsidence", "E_accelerating_subsidence", "E_stable_ground"}
     other = split_csv[split_csv["split"] != "test"]
@@ -105,4 +105,4 @@ def test_manifest_records_the_producer() -> None:
     sd = manifest["split_definition"]
     assert sd["producer"] == "scripts/make_split_assignment.py"
     assert sd["default_split"] == "regime_holdout"
-    assert "assigned in Phase 4 (T-068)" not in json.dumps(sd)
+    assert "assigned in " not in json.dumps(sd)

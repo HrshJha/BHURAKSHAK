@@ -1,31 +1,31 @@
 #!/usr/bin/env python3
-"""T-070 — the mandatory §25 ablation study (A–F) → experiments/ablation_a_to_f.json.
+""" — the mandatory ablation study (A–F) → experiments/ablation_a_to_f.json.
 
-§25 mandates a six-arm ablation as the evidence that gates whether temporal
-DL (§26 G) and GNN (§27 H) are ever built. Each arm adds ONE modality family
-to the previous arm and the §24 metric families are re-measured:
+ mandates a six-arm ablation as the evidence that gates whether temporal
+DL ( G) and GNN ( H) are ever built. Each arm adds ONE modality family
+to the previous arm and the metric families are re-measured:
 
-    A  sensors only          (Group A: tilt / displacement / strain)
-    B  + temporal            (Group B, per-channel + bare)
-    C  + spatial             (Group C)
-    D  + vibration + health  (Groups D + E — remaining on-node sensor channels)
-    E  + physics             (Group F: expected field + residuals)
-    F  + Sentinel-1          (Group H: node-level LOS snapshot, T-062)
+ A sensors only (Group A: tilt / displacement / strain)
+ B + temporal (Group B, per-channel + bare)
+ C + spatial (Group C)
+ D + vibration + health (Groups D + E — remaining on-node sensor channels)
+ E + physics (Group F: expected field + residuals)
+ F + Sentinel-1 (Group H: node-level LOS snapshot, )
 
-Honest deviations from the §25 letter list, recorded in the output metadata:
+Honest deviations from the letter list, recorded in the output metadata:
 
-- **No DGPS arm.** §19 makes DGPS sparse (6 control points) and
-  evaluation-target-only (T-063 `assert_evaluation_only`); it cannot be a
-  model input at scale, so a "+DGPS" arm would be theatre. Documented, not
-  silently dropped.
+- **No DGPS arm.** makes DGPS sparse (6 control points) and
+ evaluation-target-only ( `assert_evaluation_only`); it cannot be a
+ model input at scale, so a "+DGPS" arm would be theatre. Documented, not
+ silently dropped.
 - **No G/H temporal-DL or GNN arms** — those are the very architectures the
-  ablation gates (§26/§27); building them to evaluate them is circular.
+ ablation gates; building them to evaluate them is circular.
 - The Isolation-Forest `anomaly_score` cross-signal is held OUT of every arm
-  (constant across arms ⇒ cancels in comparisons); `physics_residual` enters
-  only in arm E, where Group F is the arm's delta.
+ (constant across arms ⇒ cancels in comparisons); `physics_residual` enters
+ only in arm E, where Group F is the arm's delta.
 
-All metrics come from `src/evaluation/metrics.py` (T-069, §24 — no bare
-accuracy anywhere). Splits are the T-068 event-level splits. Deterministic:
+All metrics come from `src/evaluation/metrics.py` (, — no bare
+accuracy anywhere). Splits are the event-level splits. Deterministic:
 config-driven hyperparameters, fixed seeds, no sampling.
 """
 
@@ -63,9 +63,9 @@ SPLITS = REPO_ROOT / "data" / "features" / "split_assignment.csv"
 INSAR_CSV = REPO_ROOT / "experiments" / "nb08_mesh_aligned_insar.csv"
 
 ALERT_THRESHOLD = 0.5  # P(CRITICAL) at which the alert engine would fire
-HOTSPOT_RADIUS_M = 75.0  # 3 × §10 node spacing — the §24 match radius
-STRIDE_HOURS = 0.6  # §10 window stride (36 min)
-EVENT_DAYS = 1.0  # every §10 event spans one simulated day (§10 scenarios)
+HOTSPOT_RADIUS_M = 75.0  # 3 × node spacing — the match radius
+STRIDE_HOURS = 0.6  # window stride (36 min)
+EVENT_DAYS = 1.0  # every event spans one simulated day ( scenarios)
 
 A_PHYSICAL = ("tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain")
 B_TEMPORAL = tuple(dict.fromkeys(
@@ -90,24 +90,24 @@ ARMS: dict[str, list[str]] = {
     "F_add_sentinel1": [*A_PHYSICAL, *B_TEMPORAL, *C_SPATIAL, *D_VIBRATION, *E_HEALTH, *F_PHYSICS, *H_INSAR],
 }
 ARM_DEVELOPMENT = {
-    "A_sensors_only": "Group A (§13)",
+    "A_sensors_only": "Group A ()",
     "B_add_temporal": "A + Group B",
     "C_add_spatial": "B + Group C",
     "D_add_vibration_health": "C + Groups D + E",
     "E_add_physics": "D + Group F (physics modality)",
-    "F_add_sentinel1": "E + Group H (Sentinel-1 modality, T-062 mesh-aligned LOS)",
+    "F_add_sentinel1": "E + Group H (Sentinel-1 modality,  mesh-aligned LOS)",
 }
 
 
 def enrich_with_insar(store: pd.DataFrame) -> pd.DataFrame:
-    """Join the T-062 mesh-aligned Sentinel-1 features onto the store.
+    """Join the mesh-aligned Sentinel-1 features onto the store.
 
-    Static per-node join, honestly: the product is ONE acquisition and the
-    store's timestamps are event-local hours, so there is no wall-clock key.
-    Sentinel-1 enters arm F as what a deployment knows per node from the
-    latest acquisition — recorded in ``deviations_from_prd``; a real
-    temporal stack waits for T-057's scenes.
-    """
+ Static per-node join, honestly: the product is ONE acquisition and the
+ store's timestamps are event-local hours, so there is no wall-clock key.
+ Sentinel-1 enters arm F as what a deployment knows per node from the
+ latest acquisition — recorded in ``deviations_from_prd``; a real
+ temporal stack waits for 's scenes.
+ """
     insar = pd.read_csv(INSAR_CSV)
     keep = ["node_id", *H_INSAR]
     insar = insar[keep].drop_duplicates("node_id")
@@ -145,7 +145,7 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
     calib = {"brier": brier_score(two_col, y_idx),
              "ece": expected_calibration_error(two_col, y_idx)}
 
-    # deformation error (model-invariant; §24 honesty)
+    # deformation error (model-invariant; honesty)
     defo = regression_metrics(test["displacement"], test["expected_displacement"])
 
     ious: list[float] = []
@@ -229,7 +229,7 @@ def main() -> int:
 
     payload = {
         "metadata": {
-            "task": "T-070 (§25 mandatory ablation A–F)",
+            "task": " ( mandatory ablation A–F)",
             "store": str(STORE.relative_to(REPO_ROOT)),
             "n_store_rows": int(len(store)),
             "splits": {k: int(v) for k, v in store["split"].value_counts().items()},
@@ -238,12 +238,12 @@ def main() -> int:
             "window_stride_hours": STRIDE_HOURS,
             "event_span_days": EVENT_DAYS,
             "deviations_from_prd": [
-                "No +DGPS arm: §19 makes DGPS sparse and evaluation-target-only "
-                "(T-063 assert_evaluation_only); it cannot be a model input at scale.",
-                "No temporal-DL/GNN arms: §26/§27 architectures are what this ablation gates.",
+                "No +DGPS arm:  makes DGPS sparse and evaluation-target-only "
+                "( assert_evaluation_only); it cannot be a model input at scale.",
+                "No temporal-DL/GNN arms: / architectures are what this ablation gates.",
                 "Isolation-Forest anomaly_score held out of every arm (constant across arms).",
                 "Sentinel-1 arm F joins the node-level LOS snapshot from the single "
-                "available acquisition (T-062/nb08) as static per-node context — no "
+                "available acquisition (/nb08) as static per-node context — no "
                 "per-window InSAR exists because the synthetic events carry no "
                 "wall-clock dates.",
             ],

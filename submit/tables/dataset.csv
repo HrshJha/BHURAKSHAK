@@ -16,4 +16,4 @@ Tuned IF active inputs,33,features,configs/model_params.yaml,isolation_forest.fe
 Locked test NORMAL support,5625,windows,reports/final_eval.json,risk_models.tuned_xgboost.per_class.NORMAL.support,locked_test
 Locked test WARNING support,5625,windows,reports/final_eval.json,risk_models.tuned_xgboost.per_class.WARNING.support,locked_test
 Locked test CRITICAL support,5625,windows,reports/final_eval.json,risk_models.tuned_xgboost.per_class.CRITICAL.support,locked_test
-Nodes per event in current corpus,1,node/event,reports/acceptance_criteria.md,G-5: one node per event,synthetic_corpus
+Nodes per event in current corpus,1,node/event,reports/acceptance_criteria.md,: one node per event,synthetic_corpus

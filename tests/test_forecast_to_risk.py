@@ -1,4 +1,4 @@
-"""T-077 — §16 forecast→risk-layer bridge tests.
+""" — forecast→risk-layer bridge tests.
 
 The acceptance spine: forecasted PHYSICAL values enter the XGBoost risk layer
 as FEATURES, and the forecaster never emits a risk state directly. Torch-
@@ -53,7 +53,7 @@ def windowed() -> pd.DataFrame:
 
 @pytest.fixture()
 def feature_frame(windowed: pd.DataFrame) -> pd.DataFrame:
-    """A §15-shaped model frame: window keys + two risk features + labels."""
+    """A -shaped model frame: window keys + two risk features + labels."""
     rows = []
     for (event, node), g in windowed.groupby(["event_id", "node_id"], sort=False):
         for _, r in g.iterrows():
@@ -98,7 +98,7 @@ def test_forecast_columns_of_is_deterministic_and_ordered(feature_frame: pd.Data
 def test_forecast_all_origins_covers_every_origin(windowed: pd.DataFrame) -> None:
     fc = train_temporal_forecaster(windowed, epochs=2, history_steps=4, horizons=(1, 2))
     rows = forecast_all_origins(fc, windowed)
-    # origins = history-1 .. n-1 with per-horizon target filtering: h1 reaches
+    # origins = history-1.. n-1 with per-horizon target filtering: h1 reaches
     # origin 7 (target 8 = last), h2 stops at origin 6 → union 3..7
     assert sorted(rows["window_index"].unique().tolist()) == [3, 4, 5, 6, 7]
     # horizon 2 rows stop at origin 6 (target 8 = last); horizon 1 rows reach origin 7
@@ -115,7 +115,7 @@ def test_forecast_all_origins_covers_every_origin(windowed: pd.DataFrame) -> Non
 
 def test_forecast_all_origins_never_uses_future_values(windowed: pd.DataFrame) -> None:
     """Causality: permuting FUTURE windows of a series must not change the
-    forecast made from an earlier origin."""
+ forecast made from an earlier origin."""
     fc = train_temporal_forecaster(windowed, epochs=2, history_steps=4, horizons=(1, 2))
     rows_a = forecast_all_origins(fc, windowed)
     shuffled = windowed.copy()
@@ -200,7 +200,7 @@ def test_leakage_assert_refuses_nan_and_empty() -> None:
         assert_no_forecast_leakage(pd.DataFrame({"displacement": [1.0]}))
 
 
-# --- §16 acceptance spine: forecasts enter the risk layer as FEATURES --------------
+# --- acceptance spine: forecasts enter the risk layer as FEATURES --------------
 
 def test_forecasts_feed_xgboost_as_features_and_never_emit_risk(
     windowed: pd.DataFrame, feature_frame: pd.DataFrame
@@ -225,7 +225,7 @@ def test_forecasts_feed_xgboost_as_features_and_never_emit_risk(
 
 
 def test_risk_model_without_forecast_columns_is_unchanged() -> None:
-    """Frames without forecast columns resolve exactly as before T-077."""
+    """Frames without forecast columns resolve exactly as before."""
     from src.risk.xgboost_model import train_risk_model
 
     rng = np.random.default_rng(0)

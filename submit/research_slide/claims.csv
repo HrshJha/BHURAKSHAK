@@ -3,7 +3,7 @@ Sentinel-1 orbit repeat,12,days per orbit,docs/insar_study_region.md,repeat cycl
 Interleaved Sentinel-1 pair interval,6,days,docs/insar_study_region.md,repeat cycle note,literature/project context,not a model split,GAP
 Raniganj maximum LOS subsidence rate,−21.18,mm/year,docs/insar_references.md,abstract-level reported rate,literature,not applicable,GAP
 Korba cited deformation rate,~30,mm/year,https://doi.org/10.5194/isprs-archives-XLII-5-427-2018,user-supplied table claim,literature,not applicable,GAP
-PRD tilt sensor options,2,"models (MPU-6050, MPU-9250)",PRD.md,§8 component options,PRD design,not applicable,HW
+ tilt sensor options,2,"models (MPU-6050, MPU-9250)",.md, component options, design,not applicable,HW
 Evaluation count,1,locked evaluation,reports/test_lock.json,evals_run,synthetic corpus,unseen scenario-regime holdout,SW
 Locked evaluation seed,20260929,seed,reports/test_lock.json,seed,synthetic corpus,unseen scenario-regime holdout,SW
 Balanced accuracy: threshold rule,0.4692,fraction,reports/final_eval.json,macro avg recall,synthetic corpus,unseen scenario-regime holdout,SW
@@ -31,22 +31,23 @@ Korba paper publication year,2018,year,refs_verified.csv,GAP-2 bibliographic yea
 Knothe simulator reference year,2015,year,refs_verified.csv,SW-5 bibliographic year,literature,not applicable,SW
 Isolation Forest paper publication year,2008,year,refs_verified.csv,SW-6a bibliographic year,literature,not applicable,SW
 XGBoost paper publication year,2016,year,refs_verified.csv,SW-6b bibliographic year,literature,not applicable,SW
-LoRa radio part number,SX1276/SX1278,model,PRD.md,§8 radio option,PRD design,not applicable,HW
-IMU part number options,MPU-6050 / MPU-9250,model,PRD.md,§8 tilt sensor options,PRD design,not applicable,HW
-Displacement sensor part number,VL53L1X,model,PRD.md,§8 displacement option,PRD design,not applicable,HW
-Node microcontroller model,ESP32-WROOM-32,model,PRD.md,§8 compute option,PRD design,not applicable,HW
-Gateway model,Raspberry Pi 5,model,PRD.md,§26 gateway design,PRD design,not applicable,HW
-PRD hardware component section,8,section,PRD.md,§8,PRD design,not applicable,HW
-PRD gateway section,26,section,PRD.md,§26,PRD design,not applicable,HW
+LoRa radio part number,SX1276/SX1278,model,.md, radio option, design,not applicable,HW
+IMU part number options,MPU-6050 / MPU-9250,model,.md, tilt sensor options, design,not applicable,HW
+Displacement sensor part number,VL53L1X,model,.md, displacement option, design,not applicable,HW
+Node microcontroller model,ESP32-WROOM-32,model,.md, compute option, design,not applicable,HW
+Gateway model,Raspberry Pi 5,model,.md, gateway design, design,not applicable,HW
+ hardware component section,8,section,.md,, design,not applicable,HW
+ gateway section,26,section,.md,, design,not applicable,HW
 Raniganj paper publication year,2024,year,refs_verified.csv,GAP-1 bibliographic year,literature,not applicable,GAP
 Korba paper publication year,2018,year,refs_verified.csv,GAP-2 bibliographic year,literature,not applicable,GAP
 Knothe simulator reference year,2015,year,refs_verified.csv,SW-5 bibliographic year,literature,not applicable,SW
 Isolation Forest paper publication year,2008,year,refs_verified.csv,SW-6a bibliographic year,literature,not applicable,SW
 XGBoost paper publication year,2016,year,refs_verified.csv,SW-6b bibliographic year,literature,not applicable,SW
-LoRa radio part number,SX1276/SX1278,model,PRD.md,§8 radio option,PRD design,not applicable,HW
-IMU part number options,MPU-6050 / MPU-9250,model,PRD.md,§8 tilt sensor options,PRD design,not applicable,HW
-Displacement sensor part number,VL53L1X,model,PRD.md,§8 displacement option,PRD design,not applicable,HW
-Node microcontroller model,ESP32-WROOM-32,model,PRD.md,§8 compute option,PRD design,not applicable,HW
-Gateway model,Raspberry Pi 5,model,PRD.md,§26 gateway design,PRD design,not applicable,HW
-PRD hardware component section,8,section,PRD.md,§8,PRD design,not applicable,HW
-PRD gateway section,26,section,PRD.md,§26,PRD design,not applicable,HW
+LoRa radio part number,SX1276/SX1278,model,.md, radio option, design,not applicable,HW
+IMU part number options,MPU-6050 / MPU-9250,model,.md, tilt sensor options, design,not applicable,HW
+Displacement sensor part number,VL53L1X,model,.md, displacement option, design,not applicable,HW
+Node microcontroller model,ESP32-WROOM-32,model,.md, compute option, design,not applicable,HW
+Gateway model,Raspberry Pi 5,model,.md, gateway design, design,not applicable,HW
+ hardware component section,8,section,.md,, design,not applicable,HW
+ gateway section,26,section,.md,, design,not applicable,HW
+Ordered pipeline stages,8,stages,src/pipeline.py,ordered development runner steps 1–8,synthetic corpus,development; not the locked test,SW

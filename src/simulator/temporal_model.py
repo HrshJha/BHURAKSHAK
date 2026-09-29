@@ -1,6 +1,6 @@
-"""Knothe-style temporal subsidence growth — PRD §10 (T-011).
+"""Knothe-style temporal subsidence growth —.
 
-    W(t) = W_max * (1 - e^(-c * t))
+ W(t) = W_max * (1 - e^(-c * t))
 
 W(0) == 0, monotonically increasing, asymptotically approaching W_max.
 ``c`` is the time coefficient (per day) and ``W_max`` the maximum subsidence

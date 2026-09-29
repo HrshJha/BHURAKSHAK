@@ -349,7 +349,7 @@ def main() -> int:
     result["workstation_edge_profile"] = {
         "platform": sys.platform,
         "models": profile_models,
-        "note": "workstation CPU/process RSS; sampled RSS is not device peak; no numeric edge budget is defined in PRD NFR-2",
+        "note": "workstation CPU/process RSS; sampled RSS is not device peak; no numeric edge budget is defined in  ",
     }
     persist_result()
     print(f"wrote {output_path.relative_to(ROOT)}; shuffled macro PR-AUC={result['shuffled_label_control']['mean_macro_pr_auc']:.4f}")

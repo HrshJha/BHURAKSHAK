@@ -1,6 +1,4 @@
-"""De-escalation hysteresis — PRD §21.1 (de-escalation), §35 (T-051).
-
-§21.1: de-escalation requires a *longer* persistence window than escalation
+"""De-escalation hysteresis — (de-escalation),.: de-escalation requires a *longer* persistence window than escalation
 (default: one-and-a-half times the escalation window count at each level, from
 configs/alerts.yaml ``de_escalation.persistence_multiplier``), so the system
 does not flap between states on borderline readings — recovery is
@@ -14,12 +12,11 @@ qualifying starts a de-escalation streak; ``ceil(persistence × multiplier)``
 CONSECUTIVE such windows drop the node one level. Any single qualifying
 window resets the de-escalation streak (and a non-qualifying window resets
 the escalation streak), so a borderline oscillating input can neither climb
-nor recover — it holds steady, which is the §21.1 intent.
+nor recover — it holds steady, which is the intent.
 
 Escalation and de-escalation are mutually exclusive per window: a window
 either earns escalation credit or de-escalation credit, never both. Any level
-change (either direction) resets all streaks. Like the escalation engine
-(T-050), level changes move AT MOST ONE level per update and a firing window
+change (either direction) resets all streaks. Like the escalation engine, level changes move AT MOST ONE level per update and a firing window
 earns no credit for further movement.
 """
 
@@ -44,12 +41,12 @@ class NodeHysteresisState:
 
 
 class HysteresisEngine:
-    """§21.1 escalation + hysteresis de-escalation for one node population.
+    """ escalation + hysteresis de-escalation for one node population.
 
-    Wraps the same transition table as T-050's AlertEngine (identical
-    escalation behaviour) and adds the slower, persistence-multiplied
-    de-escalation path. Levels and thresholds come from configs/alerts.yaml.
-    """
+ Wraps the same transition table as 's AlertEngine (identical
+ escalation behaviour) and adds the slower, persistence-multiplied
+ de-escalation path. Levels and thresholds come from configs/alerts.yaml.
+ """
 
     def __init__(
         self,

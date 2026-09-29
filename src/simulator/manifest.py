@@ -1,13 +1,13 @@
-"""Dataset manifest writer — PRD §10.1 (T-021), NFR-7, FR-14.
+"""Dataset manifest writer —,,.
 
 Every generated synthetic dataset ships with ``dataset_manifest.json`` so any
 dataset used for training is traceable and reproducible — this is what the
-model registry (§30) points to as ``training_dataset_version``.
+model registry points to as ``training_dataset_version``.
 
-The manifest is a HARD requirement (§10.1): without it the unseen-parameter-
-regime test split (§23) and registry traceability (FR-14) cannot be verified
+The manifest is a HARD requirement: without it the unseen-parameter-
+regime test split and registry traceability cannot be verified
 after the fact. ``write_manifest`` refuses to emit a manifest that is missing
-any §10.1 field.
+any field.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from src.simulator.scenarios import Scenario
 
 GENERATOR_VERSION = "sim-0.1.0"
 
-# The exact §10.1 field list — validated on write
+# The exact field list — validated on write
 REQUIRED_FIELDS: list[str] = [
     "dataset_version",
     "generator_version",
@@ -45,7 +45,7 @@ def build_manifest(
     split_definition: dict[str, Any] | None = None,
     scenario_types: list[str] | None = None,
 ) -> dict[str, Any]:
-    """Assemble a §10.1 manifest from the live config + generation facts."""
+    """Assemble a manifest from the live config + generation facts."""
     cfg = physics_config()
     fsc = feature_schema_config()
     return {
@@ -75,7 +75,7 @@ def build_manifest(
 
 
 def validate_manifest(manifest: dict[str, Any]) -> list[str]:
-    """Return the list of missing §10.1 fields (empty = valid)."""
+    """Return the list of missing fields (empty = valid)."""
     return [f for f in REQUIRED_FIELDS if f not in manifest]
 
 
@@ -83,7 +83,7 @@ def write_manifest(manifest: dict[str, Any], path: Path | str) -> Path:
     """Write the manifest JSON, refusing incomplete manifests (hard requirement)."""
     missing = validate_manifest(manifest)
     if missing:
-        raise ValueError(f"manifest missing required §10.1 fields: {missing}")
+        raise ValueError(f"manifest missing required  fields: {missing}")
     out = Path(path)
     out.parent.mkdir(parents=True, exist_ok=True)
     with out.open("w", encoding="utf-8") as fh:

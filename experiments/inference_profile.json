@@ -27,6 +27,6 @@
     "window_stride_h": 1.6666999999999987,
     "chain_p95_pct_of_period": 8.106764948034379e-05
   },
-  "gap_g8": "NFR-2 states no numeric edge budget; measurements recorded, no pass/fail claimed",
+  "gap_g8": " states no numeric edge budget; measurements recorded, no pass/fail claimed",
   "n_calls": 2000
 }

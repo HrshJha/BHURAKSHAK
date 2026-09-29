@@ -1,30 +1,30 @@
-"""Tabletop ground-truth protocol harness — PRD §23.1 (T-072).
+"""Tabletop ground-truth protocol harness —.
 
-The §23.1 tabletop rig validates the pipeline chain **against a physical
+The tabletop rig validates the pipeline chain **against a physical
 ground-truth protocol**: each trial's ``run_id`` (``trial_id`` in the
 recorded data) links, end to end:
 
-    rig actuator setting  →  independent reference measurement  →
-    raw sensor data       →  derived risk state
+ rig actuator setting → independent reference measurement →
+ raw sensor data → derived risk state
 
 Software harness only: operating the physical rig is out of workstream
-scope (TASKS.md). The harness consumes RECORDED data in the schema produced
+scope. The harness consumes RECORDED data in the schema produced
 by ``scripts/generate_tabletop_dataset.py`` (the seeded stand-in campaign
 lives in ``data/recorded/tabletop/`` — see its README); the SAME code runs
 unchanged on a real campaign's CSVs.
 
 Chain semantics (per trial):
 - **Actuator setting**: the knob-turn schedule (M8 pitch 1.25 mm/turn) —
-  ``max_displacement_mm_target`` metadata plus the per-window actuator
-  displacement implied by the knob columns of the raw log.
+ ``max_displacement_mm_target`` metadata plus the per-window actuator
+ displacement implied by the knob columns of the raw log.
 - **Independent reference**: ``known_displacement_mm`` — mechanism truth at
-  window end, measured OUTSIDE the sensor pipeline (the knob schedule), not
-  derived from any sensor.
+ window end, measured OUTSIDE the sensor pipeline (the knob schedule), not
+ derived from any sensor.
 - **Raw sensor data**: the 10 Hz accelerometer / gyro / ToF / ultrasonic log.
 - **Derived risk state**: the pipeline's windowed risk state computed from
-  sensor features only.
+ sensor features only.
 
-The §23.1 acceptance quantity — **mesh-estimated vs reference displacement
+The acceptance quantity — **mesh-estimated vs reference displacement
 error** — is computed here as window-level error statistics of the sensor
 derived displacement vs ``known_displacement_mm``, with the honest caveat
 that the rig's "mesh" is 4 nodes, 2 of which are pure references.
@@ -46,7 +46,7 @@ __all__ = [
     "evaluate_tabletop",
 ]
 
-_KNOB_PITCH_MM = 1.25  # M8 thread pitch per full turn (plan §3.1)
+_KNOB_PITCH_MM = 1.25  # M8 thread pitch per full turn (plan )
 
 _REQUIRED_METADATA = ("trial_id", "condition", "max_displacement_mm_target",
                       "achieved_displacement_mm_TD1", "achieved_displacement_mm_TD2")
@@ -55,12 +55,12 @@ _REQUIRED_WINDOWS = ("trial_id", "node_id", "window_start_ms", "displacement_mm"
 
 
 class TabletopProtocolError(ValueError):
-    """Raised when recorded data breaks the §23.1 linkage contract."""
+    """Raised when recorded data breaks the linkage contract."""
 
 
 @dataclass
 class TrialLinkage:
-    """The §23.1 chain for one trial: actuator → reference → sensor → risk."""
+    """The chain for one trial: actuator → reference → sensor → risk."""
 
     run_id: str
     condition: str
@@ -73,7 +73,7 @@ class TrialLinkage:
     n_raw_samples: int
     n_raw_nodes: int
     n_windows: int
-    #: Derived risk state summary (filled by :func:`derived_risk_state`).
+    #: Derived risk state summary (filled by:func:`derived_risk_state`).
     risk_state: dict = field(default_factory=dict)
 
 
@@ -82,13 +82,13 @@ def link_trials(
     windowed: pd.DataFrame,
     raw: pd.DataFrame | None = None,
 ) -> list[TrialLinkage]:
-    """Assert and return the §23.1 chain for every ``run_id``.
+    """Assert and return the chain for every ``run_id``.
 
-    Raises :class:`TabletopProtocolError` the moment the chain is broken:
-    a trial in metadata without windows, windows without metadata, raw
-    samples whose (trial, node) has no metadata, or duplicate (trial, node,
-    window) keys.
-    """
+ Raises:class:`TabletopProtocolError` the moment the chain is broken:
+ a trial in metadata without windows, windows without metadata, raw
+ samples whose (trial, node) has no metadata, or duplicate (trial, node,
+ window) keys.
+ """
     for col in _REQUIRED_METADATA:
         if col not in metadata.columns:
             raise TabletopProtocolError(f"trial metadata missing {col!r}")
@@ -124,7 +124,7 @@ def link_trials(
         win = windowed[windowed["trial_id"] == row.trial_id]
         ref_max = float(win["known_displacement_mm"].max())
         achieved = max(float(row.achieved_displacement_mm_TD1), float(row.achieved_displacement_mm_TD2))
-        # §23.1 coherence: the reference can never exceed what the actuator
+        # coherence: the reference can never exceed what the actuator
         # physically produced (knob schedule is the truth source).
         if ref_max > achieved + 1e-6:
             raise TabletopProtocolError(
@@ -154,12 +154,12 @@ def derived_risk_state(
 ) -> pd.DataFrame:
     """Per-window derived risk state from SENSOR features only.
 
-    Thresholds are the plan §3.2 severity boundaries (0/15/35 mm) applied to
-    the sensor-derived ``displacement_mm`` (ultrasonic minus baseline) — NOT
-    to the reference. This is the honest analogue of the deployment rule
-    "raise the alert when the sensor pipeline says so"; the reference is
-    used only to SCORE this state, never to set it.
-    """
+ Thresholds are the plan severity boundaries (0/15/35 mm) applied to
+ the sensor-derived ``displacement_mm`` (ultrasonic minus baseline) — NOT
+ to the reference. This is the honest analogue of the deployment rule
+ "raise the alert when the sensor pipeline says so"; the reference is
+ used only to SCORE this state, never to set it.
+ """
     for col in ("displacement_mm", "known_displacement_mm", "severity_class"):
         if col not in windowed.columns:
             raise TabletopProtocolError(f"windowed data missing {col!r}")
@@ -176,12 +176,12 @@ def displacement_error_vs_reference(
     *,
     nodes: tuple[str, ...] = ("N2", "N3"),
 ) -> dict[str, float]:
-    """Mesh-estimated vs reference displacement error (§23.1 acceptance).
+    """Mesh-estimated vs reference displacement error ( acceptance).
 
-    ``nodes``: the active sensor nodes whose ``known_displacement_mm`` is
-    the independent reference (N2 ← TD1, N3 ← TD2; N1/N4 are pure
-    references with zero truth and are excluded by default).
-    """
+ ``nodes``: the active sensor nodes whose ``known_displacement_mm`` is
+ the independent reference (N2 ← TD1, N3 ← TD2; N1/N4 are pure
+ references with zero truth and are excluded by default).
+ """
     for col in ("displacement_mm", "known_displacement_mm", "node_id"):
         if col not in windowed.columns:
             raise TabletopProtocolError(f"windowed data missing {col!r}")
@@ -209,12 +209,12 @@ def evaluate_tabletop(
     critical_mm: float = 35.0,
     active_nodes: tuple[str, ...] = ("N2", "N3"),
 ) -> dict:
-    """Full §23.1 protocol run: link every trial, derive risk, score it.
+    """Full protocol run: link every trial, derive risk, score it.
 
-    Returns a dict with the per-trial linkage records, the derived-risk
-    confusion against the reference severity classes, and the §23.1
-    displacement-error statistics.
-    """
+ Returns a dict with the per-trial linkage records, the derived-risk
+ confusion against the reference severity classes, and the 
+ displacement-error statistics.
+ """
     links = link_trials(metadata, windowed, raw)
     state = derived_risk_state(windowed, warning_mm=warning_mm, critical_mm=critical_mm)
     sel = state[state["node_id"].isin(active_nodes)]
@@ -223,7 +223,7 @@ def evaluate_tabletop(
     est_class = sel["derived_risk_state"].map(
         {"NORMAL": 0, "WARNING": 1, "CRITICAL": 2}
     ).to_numpy(dtype=int)
-    # The rig's severity buckets are 0/1/2/3 (§3.2); collapse bucket 1 vs 2
+    # The rig's severity buckets are 0/1/2/3; collapse bucket 1 vs 2
     # (0–15 vs 15–35 mm) into one WARNING band for the 3-state comparison.
     ref_state = np.where(ref_class >= 3, 2, np.where(ref_class >= 1, np.where(
         sel["known_displacement_mm"].to_numpy(dtype=float) > critical_mm, 2, 1), 0))

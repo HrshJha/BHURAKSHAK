@@ -1,4 +1,4 @@
-# SubSense — risk-model config (PRD §15, §24, T-046…T-049)
+# BhuRakshak — risk-model config (,, …)
 xgboost:
   n_estimators: 400
   max_depth: 6
@@ -16,8 +16,8 @@ baselines:
   logistic:
     C: 10.0
     max_iter: 2000
-  # §7.3-style explainable rule on the SAME feature matrix (thresholds are
-  # calibration starting points, tuned on the validation split only — NFR-6)
+  # -style explainable rule on the SAME feature matrix (thresholds are
+  # calibration starting points, tuned on the validation split only — )
   threshold_rule:
     persistence_windows: 3
     velocity_warning: 0.05      # displacement-rate threshold → at least WARNING
@@ -25,10 +25,10 @@ baselines:
     score_warning: 0.2          # windowed displacement level (mm) → WARNING
 
 calibration:
-  method: "isotonic"            # §15 calibrated probabilities; isotonic for ~90k windows
+  method: "isotonic"            # calibrated probabilities; isotonic for ~90k windows
   cv_folds: 3                   # internal CV inside the TRAIN split only
 
-# §24 headline metrics for the risk model (accuracy deliberately absent)
+# headline metrics for the risk model (accuracy deliberately absent)
 metrics:
   primary: ["pr_auc_macro", "f1_macro", "recall_per_class"]
   never_headline: ["accuracy"]

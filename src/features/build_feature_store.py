@@ -1,20 +1,19 @@
-"""Feature store assembly — PRD §13 (T-042).
+"""Feature store assembly —.
 
-Assembles the first-iteration feature matrix from Groups A–F over the §10
-windowing of a raw node table, and **asserts the §13 budget: 40–70 features
+Assembles the first-iteration feature matrix from Groups A–F over the 
+windowing of a raw node table, and **asserts the budget: 40–70 features
 inclusive** — failing loudly (``FeatureBudgetError``) if the assembled count
 falls outside the budget.
 
-Feature-count accounting (deterministic): the §13-exact names from Groups A,
-D, E, F plus Group C's eight §13 names, plus Group B's §13 names per channel
-(10 features × 3 movement channels) + the §13-exact bare set. Groups G–J are
+Feature-count accounting (deterministic): the -exact names from Groups A,
+D, E, F plus Group C's eight names, plus Group B's names per channel
+(10 features × 3 movement channels) + the -exact bare set. Groups G–J are
 out of first-iteration scope (G/H arrive with Phase-4 modalities; J is
-ablation-gated per §13/§38).
+ablation-gated per /).
 
-Also emits a model-input frame: window keys + selected features + the §12
+Also emits a model-input frame: window keys + selected features + the 
 labels (``anomaly_label`` majority, ``risk_label`` majority,
-``progression_label`` majority) for training. The guard in
-:func:`src.features.windowing.assert_windowed` is applied to the model input
+``progression_label`` majority) for training. The guard in:func:`src.features.windowing.assert_windowed` is applied to the model input
 so raw rows can never flow downstream.
 """
 
@@ -42,18 +41,18 @@ __all__ = [
     "build_feature_store",
 ]
 
-#: Labels carried onto the model-input frame (§12 — kept separate).
+#: Labels carried onto the model-input frame ( — kept separate).
 MODEL_LABELS = ("anomaly_label", "risk_label", "progression_label", "fault_label")
 
 #: Group B per-channel part of the budget: tilt_x/tilt_y get explicit
-#: per-channel features; the §13-exact bare temporal set IS the displacement
+#: per-channel features; the -exact bare temporal set IS the displacement
 #: channel's view (the bare names alias displacement_* in emit_group_b), so it
 #: is counted once — no duplication, and the budget stays honest.
 B_PER_CHANNEL = ("tilt_x", "tilt_y")
 
 
 class FeatureBudgetError(RuntimeError):
-    """Raised when the assembled feature count violates §13's 40–70 budget."""
+    """Raised when the assembled feature count violates 's 40–70 budget."""
 
 
 @dataclass
@@ -69,12 +68,12 @@ class FeatureStoreReport:
 def feature_names(b_channels: tuple[str, ...] = B_PER_CHANNEL) -> list[str]:
     """The deterministic first-iteration feature list (Groups A–F).
 
-    Accounting: A=5, B=10×2 per-channel + 10 bare (the displacement view) = 30,
-    C=8, D=7, E=7, F=4 → 61 features, inside §13's 40–70 budget.
-    """
+ Accounting: A=5, B=10×2 per-channel + 10 bare (the displacement view) = 30,
+ C=8, D=7, E=7, F=4 → 61 features, inside 's 40–70 budget.
+ """
     names = list(GROUP_A_FEATURES)
     names += [f"{ch}_{feat}" for ch in b_channels for feat in GROUP_B_FEATURES]
-    names += list(GROUP_B_FEATURES)  # §13-exact bare set (displacement channel)
+    names += list(GROUP_B_FEATURES)  # -exact bare set (displacement channel)
     names += list(GROUP_C_FEATURES)
     names += list(GROUP_D_FEATURES)
     names += list(GROUP_E_FEATURES)
@@ -84,11 +83,11 @@ def feature_names(b_channels: tuple[str, ...] = B_PER_CHANNEL) -> list[str]:
 
 
 def check_feature_budget(names: list[str], *, minimum: int = 40, maximum: int = 70) -> None:
-    """§13: raise unless the feature count is within [40, 70]."""
+    """: raise unless the feature count is within [40, 70]."""
     n = len(set(names))
     if not minimum <= n <= maximum:
         raise FeatureBudgetError(
-            f"§13 feature budget violated: {n} features assembled, allowed {minimum}–{maximum}. "
+            f" feature budget violated: {n} features assembled, allowed {minimum}–{maximum}. "
             "First iteration must stay within the budget — reduce or extend feature groups."
         )
 
@@ -109,11 +108,11 @@ def build_feature_store(
 ) -> tuple[pd.DataFrame, FeatureStoreReport]:
     """Build the model-input feature store from a raw node table.
 
-    Returns ``(model_input, report)`` where ``model_input`` carries structural
-    keys, features, and labels separately. Emitters receive a label-blind copy
-    of the input. Oracle geometry is refused for feature builds; diagnostics
-    must use the separate diagnostic tooling, never a model store.
-    """
+ Returns ``(model_input, report)`` where ``model_input`` carries structural
+ keys, features, and labels separately. Emitters receive a label-blind copy
+ of the input. Oracle geometry is refused for feature builds; diagnostics
+ must use the separate diagnostic tooling, never a model store.
+ """
     if center_mode == "oracle":
         raise ValueError("center_mode='oracle' is forbidden for model feature stores")
     if center_mode != "detected":
@@ -197,7 +196,7 @@ def build_feature_store(
 
 
 def _window_index_of(raw: pd.DataFrame) -> np.ndarray:
-    """Recompute each raw row's window index from the §10 windowing params."""
+    """Recompute each raw row's window index from the windowing params."""
     raw = raw.reset_index(drop=True)
     from src.features.windowing import windowing_params
 

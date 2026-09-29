@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
-"""T-073 — domain-gap Stage 1 (synthetic → synthetic) → experiments/domain_gap_stage1.json.
+""" — domain-gap Stage 1 (synthetic → synthetic) → experiments/domain_gap_stage1.json.
 
-§23.2 Stage 1 establishes INTERNAL VALIDITY: can the §15 model handle a
+ Stage 1 establishes INTERNAL VALIDITY: can the model handle a
 simulator parameter regime it was never trained on? Two partition axes are
 reported:
 
-1. **literal §23 synthetic_split** — hold out the TOP ``test_upper_fraction``
-   of the corpus-wide ``max_deformation`` range. On THIS corpus the axis is
-   degenerate: ~75% of events (stable/vibration/fault families) carry
-   ≈0 mm deformation, so the held-out band contains essentially all
-   deforming events and the regime-split model trains on no subsidence at
-   all. The failure is REPORTED, not hidden — it is a real property of the
-   generator's parameter space (and an input to the T-075 report).
+1. **literal synthetic_split** — hold out the TOP ``test_upper_fraction``
+ of the corpus-wide ``max_deformation`` range. On THIS corpus the axis is
+ degenerate: ~75% of events (stable/vibration/fault families) carry
+ ≈0 mm deformation, so the held-out band contains essentially all
+ deforming events and the regime-split model trains on no subsidence at
+ all. The failure is REPORTED, not hidden — it is a real property of the
+ generator's parameter space (and an input to the report).
 
-2. **family-conditional regime split** — the axis §23's example
-   ("train σ=5–20, test σ=22–30") actually intends: within each scenario
-   family, hold out the top 20% of deformation (next 20% = validation,
-   zero-variance families stay in train). This answers the stage-1
-   question: does a model trained on small/medium subsidence grade large
-   subsidence of the SAME families it has seen?
+2. **family-conditional regime split** — the axis 's example
+ ("train σ=5–20, test σ=22–30") actually intends: within each scenario
+ family, hold out the top 20% of deformation (next 20% = validation,
+ zero-variance families stay in train). This answers the stage-1
+ question: does a model trained on small/medium subsidence grade large
+ subsidence of the SAME families it has seen?
 
-All metrics come from src/evaluation/metrics.py (§24). Deterministic.
+All metrics come from src/evaluation/metrics.py. Deterministic.
 """
 
 from __future__ import annotations
@@ -58,12 +58,12 @@ ALERT_THRESHOLD = 0.5
 def family_conditional_split(events: pd.DataFrame) -> pd.Series:
     """Within each event family, hold out the top deformation band.
 
-    Returns a Series indexed by event ``id`` with train/validation/test.
-    Test = top ``test_upper_fraction`` of ``max_deformation`` within the
-    family; validation = the next band of the same width; train = the rest.
-    Families with zero deformation variance cannot yield a regime band and
-    stay entirely in train (recorded in the payload metadata).
-    """
+ Returns a Series indexed by event ``id`` with train/validation/test.
+ Test = top ``test_upper_fraction`` of ``max_deformation`` within the
+ family; validation = the next band of the same width; train = the rest.
+ Families with zero deformation variance cannot yield a regime band and
+ stay entirely in train (recorded in the payload metadata).
+ """
     test_frac = float(validation_config()["synthetic_split"]["test_upper_fraction"])
     labels = {}
     zero_variance_families: list[str] = []
@@ -87,7 +87,7 @@ def family_conditional_split(events: pd.DataFrame) -> pd.Series:
 
 
 def score_band(model, classes: list[str], band: pd.DataFrame) -> dict:
-    """§24 metrics on one parameter-regime band."""
+    """ metrics on one parameter-regime band."""
     proba = model.predict_proba(band)
     pred_labels = np.asarray(classes)[proba.argmax(axis=1)]
     i_crit = classes.index("CRITICAL")
@@ -128,7 +128,7 @@ def score_band(model, classes: list[str], band: pd.DataFrame) -> dict:
     else:
         temporal = {"median_lead_time_hours": None, "p10_lead_time_hours": None,
                     "n_events_with_lead": 0, "n_missed_events": 0, "missed_event_rate": None,
-                    "note": "band carries no anomalous events (deformation below the §10 threshold)"}
+                    "note": "band carries no anomalous events (deformation below the  threshold)"}
     temporal["false_alarms_per_day"] = false_alarms_per_day(
         y_bin, pred_bin, n_days=float(band["event_id"].nunique()) * EVENT_DAYS
     )
@@ -187,7 +187,7 @@ def main() -> int:
         raise SystemExit(f"synthetic_split left events unassigned: {missing}")
     assert_no_leakage(store, literal, "event_id")
     literal_store = store.assign(_split=literal)
-    literal_res = run_axis("literal §23 synthetic_split (corpus-wide deformation quantile)",
+    literal_res = run_axis("literal  synthetic_split (corpus-wide deformation quantile)",
                            literal_store, defa)
 
     # axis 2: family-conditional regime split
@@ -203,7 +203,7 @@ def main() -> int:
 
     payload = {
         "metadata": {
-            "task": "T-073 (§23.2 domain-gap Stage 1: synthetic → synthetic)",
+            "task": " ( domain-gap Stage 1: synthetic → synthetic)",
             "store": str(STORE.relative_to(REPO_ROOT)),
             "alert_threshold_p_critical": ALERT_THRESHOLD,
             "axes": {

@@ -1,21 +1,20 @@
-"""Feature Group B — Temporal — PRD §13 Group B, FR-4 (T-036).
+"""Feature Group B — Temporal — Group B,.
 
-§13 Group B: rolling mean/std/min/max, slope, velocity, acceleration, trend,
+ Group B: rolling mean/std/min/max, slope, velocity, acceleration, trend,
 persistence, change-point score.
 
-Two §23-adjacent acceptance requirements are engineered in:
+Two -adjacent acceptance requirements are engineered in:
 
 - **No rolling statistic crosses a train/test boundary.** Rolling statistics
-  are computed *within a window's own 60 steps* (and, for the rolling
-  moments, within a sub-history limited to the window itself) over each
-  (event_id, node_id) series. Because windows are grouped per series and each
-  window only sees its own rows, a statistic computed for one window can
-  never incorporate rows from another series, event, or split block.
-  :func:`assert_no_boundary_crossing` re-checks this property on the emitted
-  frame by recomputing per-series statistics independently.
+ are computed *within a window's own 60 steps* (and, for the rolling
+ moments, within a sub-history limited to the window itself) over each
+ (event_id, node_id) series. Because windows are grouped per series and each
+ window only sees its own rows, a statistic computed for one window can
+ never incorporate rows from another series, event, or split block.:func:`assert_no_boundary_crossing` re-checks this property on the emitted
+ frame by recomputing per-series statistics independently.
 
-- The features are emitted per §10 window (from the windowing engine), with
-  names matching §13 exactly.
+- The features are emitted per window (from the windowing engine), with
+ names matching exactly.
 """
 
 from __future__ import annotations
@@ -27,7 +26,7 @@ __all__ = ["GROUP_B_FEATURES", "emit_group_b", "assert_no_boundary_crossing"]
 
 _WINDOW_KEYS = ("event_id", "node_id", "window_index", "window_timestamp")
 
-#: §13 Group B feature names, verbatim (each computed per §13-listed channel).
+#: Group B feature names, verbatim (each computed per -listed channel).
 GROUP_B_FEATURES = (
     "rolling_mean",
     "rolling_std",
@@ -41,7 +40,7 @@ GROUP_B_FEATURES = (
     "change_point_score",
 )
 
-#: Channels per window that Group B statistics are computed over (the §13
+#: Channels per window that Group B statistics are computed over (the 
 #: temporal group is defined over the movement channels).
 B_CHANNELS = ("tilt_x", "tilt_y", "displacement")
 
@@ -62,12 +61,12 @@ def emit_group_b(
 ) -> pd.DataFrame:
     """Emit Group B temporal features per window.
 
-    ``history_windows`` rolling moments (mean/std/min/max) use only the
-    current window and the immediately preceding ``history_windows`` windows
-    **within the same series** — never any row outside the series, so no
-    train/test boundary can be crossed (windows are consecutive within a
-    series; split boundaries are series-aligned in T-068).
-    """
+ ``history_windows`` rolling moments (mean/std/min/max) use only the
+ current window and the immediately preceding ``history_windows`` windows
+ **within the same series** — never any row outside the series, so no
+ train/test boundary can be crossed (windows are consecutive within a
+ series; split boundaries are series-aligned in ).
+ """
     n_hist = int(history_windows)
     if n_hist < 0:
         raise ValueError("history_windows must be >= 0")
@@ -127,8 +126,8 @@ def emit_group_b(
 
     out = pd.concat(out_frames, ignore_index=True) if out_frames else windowed.iloc[0:0].copy()
 
-    # §13-exact aggregate columns: the temporal features of the primary
-    # movement channel (displacement), under the bare §13 names.
+    # -exact aggregate columns: the temporal features of the primary
+    # movement channel (displacement), under the bare names.
     for feat in GROUP_B_FEATURES:
         src = f"displacement_{feat}"
         if src in out.columns:
@@ -168,10 +167,10 @@ def _change_point(means: np.ndarray, rolled_std: np.ndarray) -> float:
 def assert_no_boundary_crossing(windowed: pd.DataFrame, channels: tuple[str, ...] = B_CHANNELS) -> None:
     """Recompute a rolling statistic per series and assert equality.
 
-    If any rolling value had been computed across series/event boundaries, the
-    per-series recomputation would differ. This is the executable form of the
-    §23 requirement that no rolling statistic crosses a train/test boundary.
-    """
+ If any rolling value had been computed across series/event boundaries, the
+ per-series recomputation would differ. This is the executable form of the
+ requirement that no rolling statistic crosses a train/test boundary.
+ """
     for ch in channels:
         col = f"{ch}_rolling_mean"
         if col not in windowed.columns:

@@ -1,36 +1,36 @@
-"""Map satellite features onto the mesh node/grid representation — PRD §18
-step 5 + FR-13 (T-060).
+"""Map satellite features onto the mesh node/grid representation — 
+step 5 +.
 
-§18 step 5: satellite-derived deformation joins the sensor-mesh feature
-schema **on the same spatial representation** — the mesh nodes, via the §9.2
-WGS84 ↔ mesh-local transform (T-032) — and FR-13 requires every fused record
+ step 5: satellite-derived deformation joins the sensor-mesh feature
+schema **on the same spatial representation** — the mesh nodes, via the 
+WGS84 ↔ mesh-local transform — and requires every fused record
 to carry its own observation timestamp so its staleness is explicit, never
-implied (§9.1; the T-031 alignment vocabulary: InSAR ±12 h to a window).
+implied (; the alignment vocabulary: InSAR ±12 h to a window).
 
-Inputs: the T-059 per-PS × per-date deformation table
+Inputs: the per-PS × per-date deformation table
 (``data/processed/insar/deformation_timeseries.parquet``), whose persistent
 scatterers live in multi-look index space, and the mesh node table
 (``node_id, x, y`` mesh-local metres). Three steps:
 
 1. **georeference** — map PS indices to WGS84 across the configs/insar.yaml
-   study bbox. Sentinel-1 geometry (T121 DESC): the AZIMUTH axis is
-   along-track — the satellite flies southward, so azimuth index increases
-   north→south with column index; the RANGE axis is cross-track — a
-   descending, right-looking pass looks west, so range index increases
-   east→west with row index (an ascending pass mirrors the longitude axis).
-   For the synthetic MVP scene this linear index→bbox mapping IS the
-   georeferencing (documented honestly); real geocoded PS products carry
-   lat/lon directly and enter the identical join unchanged.
+ study bbox. Sentinel-1 geometry (T121 DESC): the AZIMUTH axis is
+ along-track — the satellite flies southward, so azimuth index increases
+ north→south with column index; the RANGE axis is cross-track — a
+ descending, right-looking pass looks west, so range index increases
+ east→west with row index (an ascending pass mirrors the longitude axis).
+ For the synthetic MVP scene this linear index→bbox mapping IS the
+ georeferencing (documented honestly); real geocoded PS products carry
+ lat/lon directly and enter the identical join unchanged.
 2. **project** — WGS84 → mesh-local metres via ``wgs84_to_local``, so PS
-   points and nodes share one coordinate frame.
+ points and nodes share one coordinate frame.
 3. **join** — per node and acquisition date, the NEAREST persistent
-   scatterer carrying a VALID (finite, unmasked) observation that date wins.
-   Masked low-coherence observations are never force-joined (§18 step 4
-   discipline): if the nearest PS is masked that date, the next-nearest valid
-   one is used, and a node with no valid observation gets no row. Every
-   output row carries ``observation_timestamp`` (its own) and
-   ``staleness_hours`` (``as_of`` − observation, in hours; ``as_of`` defaults
-   to the latest acquisition in the frame — deterministic for batch joins).
+ scatterer carrying a VALID (finite, unmasked) observation that date wins.
+ Masked low-coherence observations are never force-joined ( step 4
+ discipline): if the nearest PS is masked that date, the next-nearest valid
+ one is used, and a node with no valid observation gets no row. Every
+ output row carries ``observation_timestamp`` (its own) and
+ ``staleness_hours`` (``as_of`` − observation, in hours; ``as_of`` defaults
+ to the latest acquisition in the frame — deterministic for batch joins).
 """
 
 from __future__ import annotations
@@ -86,12 +86,12 @@ def georeference_ps(
 ) -> pd.DataFrame:
     """Geo-reference persistent scatterers: indices → WGS84 → mesh-local.
 
-    ``grid_shape`` is the multi-look grid extent ``(n_rows, n_cols)``; when
-    omitted it is inferred from the data's maximum indices (the synthetic
-    MVP scene fills its grid, so this is exact for the T-059 parquet).
-    Returns one geometry row per PS: ``ps_id, range_idx, azimuth_idx, lat,
-    lon, x, y``.
-    """
+ ``grid_shape`` is the multi-look grid extent ``(n_rows, n_cols)``; when
+ omitted it is inferred from the data's maximum indices (the synthetic
+ MVP scene fills its grid, so this is exact for the parquet).
+ Returns one geometry row per PS: ``ps_id, range_idx, azimuth_idx, lat,
+ lon, x, y``.
+ """
     if cfg is None:
         cfg = load_insar_config()
     missing = [c for c in _PS_COLUMNS if c not in timeseries.columns]
@@ -150,17 +150,17 @@ def map_ps_to_mesh(
 ) -> pd.DataFrame:
     """Join per-date InSAR observations onto mesh nodes (nearest valid PS).
 
-    ``timeseries``: T-059 deformation table (PS × date). ``node_coords``:
-    ``node_id, x, y`` mesh-local metres (the §9.2 shared representation).
-    ``max_distance_m`` caps the join — nodes beyond it are excluded rather
-    than assigned a distant PS. ``as_of`` sets the staleness reference;
-    default is the latest acquisition timestamp in the frame.
+ ``timeseries``: deformation table (PS × date). ``node_coords``:
+ ``node_id, x, y`` mesh-local metres (the shared representation).
+ ``max_distance_m`` caps the join — nodes beyond it are excluded rather
+ than assigned a distant PS. ``as_of`` sets the staleness reference;
+ default is the latest acquisition timestamp in the frame.
 
-    Every row carries the observation's OWN ``observation_timestamp`` and its
-    ``staleness_hours`` (FR-13: staleness explicit, never implied). A join
-    summary (counts of masked/uncovered/capped node-dates) is attached as
-    ``df.attrs["join_summary"]``.
-    """
+ Every row carries the observation's OWN ``observation_timestamp`` and its
+ ``staleness_hours`` (: staleness explicit, never implied). A join
+ summary (counts of masked/uncovered/capped node-dates) is attached as
+ ``df.attrs["join_summary"]``.
+ """
     missing = [c for c in _NODE_COLUMNS if c not in node_coords.columns]
     if missing:
         raise InsarToMeshError(f"node_coords missing columns: {missing}")

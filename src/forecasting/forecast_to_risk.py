@@ -1,40 +1,39 @@
-"""Forecast → risk-layer bridge — PRD §16 (T-077).
+"""Forecast → risk-layer bridge —.
 
-§16's layered, explainable design: the temporal forecaster (T-076) predicts
+'s layered, explainable design: the temporal forecaster predicts
 PHYSICAL quantities — future displacement / tilt — and those forecasts enter
-the XGBoost risk layer (§15, T-046) as FEATURES. The forecaster never emits a
+the XGBoost risk layer as FEATURES. The forecaster never emits a
 risk state, label or probability (asserted in tests/test_temporal_model_fc.py);
 the ONLY path from a forecast to "danger" runs through the risk model, whose
-splits §22 can interrogate like any other feature.
+splits can interrogate like any other feature.
 
 Join mechanics (leak-free by construction):
 
-- :func:`forecast_all_origins` runs the fitted forecaster at EVERY history
-  position of every series — not just the last one like
-  :meth:`TemporalForecaster.predict` — so each origin window carries the
-  forecast a real deployment would have had at that instant. The forecast
-  input is strictly windows ≤ origin: no future information can enter the
-  feature, which is what makes it a legal causal feature for the risk model.
-- :func:`forecasts_to_feature_frame` pivots forecast rows into one column per
-  (channel, horizon): ``forecast_{channel}_h{steps}`` (§13-style names).
-- :func:`join_forecast_features` left-joins that frame onto a window-level
-  model frame on (event_id, node_id, window_index).
-- :func:`assert_no_forecast_leakage` refuses frames whose forecast columns
-  contain NaN: for risk-model TRAINING the feature must be fully observed;
-  series tails (whose forecast target lies beyond the data) are dropped by
-  the caller, never imputed.
+-:func:`forecast_all_origins` runs the fitted forecaster at EVERY history
+ position of every series — not just the last one like:meth:`TemporalForecaster.predict` — so each origin window carries the
+ forecast a real deployment would have had at that instant. The forecast
+ input is strictly windows ≤ origin: no future information can enter the
+ feature, which is what makes it a legal causal feature for the risk model.
+-:func:`forecasts_to_feature_frame` pivots forecast rows into one column per
+ (channel, horizon): ``forecast_{channel}_h{steps}`` (-style names).
+-:func:`join_forecast_features` left-joins that frame onto a window-level
+ model frame on (event_id, node_id, window_index).
+-:func:`assert_no_forecast_leakage` refuses frames whose forecast columns
+ contain NaN: for risk-model TRAINING the feature must be fully observed;
+ series tails (whose forecast target lies beyond the data) are dropped by
+ the caller, never imputed.
 
 Alignment: a forecast from origin window ``o`` (the last window of its
 history) with horizon ``h`` targets window ``o + h`` — the same convention
 ``build_sequences`` uses (target = ``series[origin + h]``), so training-time
-features and §16 evaluation (T-079) share identical semantics.
+features and evaluation share identical semantics.
 
 The resolver in ``src/risk/xgboost_model.py`` picks these columns up as the
 ``I_forecast`` input group whenever they are present, so joining the bridge
 output onto a model frame is sufficient for the risk layer to use them.
 
 Pipeline discipline: when forecast features feed the risk model's held-out
-evaluation, the forecaster itself must be trained §23-safe (train split only).
+evaluation, the forecaster itself must be trained -safe (train split only).
 """
 
 from __future__ import annotations
@@ -57,7 +56,7 @@ __all__ = [
     "assert_no_forecast_leakage",
 ]
 
-#: §13-style name prefix shared by every forecast feature column.
+#: -style name prefix shared by every forecast feature column.
 FORECAST_FEATURE_PREFIX = "forecast_"
 
 #: ``forecast_{channel}_h{steps}`` — channel names contain no underscores-only
@@ -75,20 +74,20 @@ def is_forecast_feature(name: str) -> bool:
 
 
 def forecast_feature_names(channels: tuple[str, ...], horizons: tuple[int, ...]) -> list[str]:
-    """The deterministic forecast feature column names for a config (T-078)."""
+    """The deterministic forecast feature column names for a config."""
     return [f"{FORECAST_FEATURE_PREFIX}{ch}_h{int(h)}" for ch in channels for h in horizons]
 
 
 def forecast_all_origins(fc: TemporalForecaster, windowed: pd.DataFrame) -> pd.DataFrame:
     """Forecast every horizon from EVERY valid history position of every series.
 
-    Origin ``o`` needs a full ``fc.history_steps`` history behind it; horizon
-    ``h`` is emitted only when target window ``o + h`` exists. Rows carry the
-    origin/target keys plus physical-unit ``predicted_value`` — a pure
-    physical-quantity table, never a risk column. Short series and non-finite
-    history values yield no rows — never an invented forecast.
-    """
-    import torch  # lazy (T-076 discipline); threading caps already applied
+ Origin ``o`` needs a full ``fc.history_steps`` history behind it; horizon
+ ``h`` is emitted only when target window ``o + h`` exists. Rows carry the
+ origin/target keys plus physical-unit ``predicted_value`` — a pure
+ physical-quantity table, never a risk column. Short series and non-finite
+ history values yield no rows — never an invented forecast.
+ """
+    import torch  # lazy ( discipline); threading caps already applied
 
     fc.torch_module.eval()
     rows: list[dict] = []
@@ -151,9 +150,9 @@ def forecast_all_origins(fc: TemporalForecaster, windowed: pd.DataFrame) -> pd.D
 def forecasts_to_feature_frame(forecast_rows: pd.DataFrame) -> pd.DataFrame:
     """Pivot forecast rows into one feature column per (channel, horizon).
 
-    Output: one row per (event_id, node_id, window_index) origin with columns
-    ``forecast_{channel}_h{steps}`` holding the physical-unit prediction.
-    """
+ Output: one row per (event_id, node_id, window_index) origin with columns
+ ``forecast_{channel}_h{steps}`` holding the physical-unit prediction.
+ """
     keys = ["event_id", "node_id", "window_index"]
     if forecast_rows.empty:
         return pd.DataFrame(columns=keys)
@@ -177,10 +176,9 @@ def forecasts_to_feature_frame(forecast_rows: pd.DataFrame) -> pd.DataFrame:
 def join_forecast_features(target: pd.DataFrame, forecasts: pd.DataFrame) -> pd.DataFrame:
     """Left-join the pivoted forecast features onto a window-level model frame.
 
-    Rows whose series tail lies inside a horizon keep NaN in the forecast
-    columns — real deployments cannot know those values either. Call
-    :func:`assert_no_forecast_leakage` before training on the result.
-    """
+ Rows whose series tail lies inside a horizon keep NaN in the forecast
+ columns — real deployments cannot know those values either. Call:func:`assert_no_forecast_leakage` before training on the result.
+ """
     features = forecasts_to_feature_frame(forecasts)
     if features.empty:
         return target
@@ -196,10 +194,10 @@ def forecast_columns_of(df: pd.DataFrame) -> list[str]:
 def assert_no_forecast_leakage(df: pd.DataFrame) -> None:
     """Refuse a training frame whose forecast features are not fully observed.
 
-    NaN in a forecast column means "the series ended inside that horizon" —
-    a value no deployment could have had. Training on imputed versions would
-    fabricate foreknowledge; the caller must drop those rows instead.
-    """
+ NaN in a forecast column means "the series ended inside that horizon" —
+ a value no deployment could have had. Training on imputed versions would
+ fabricate foreknowledge; the caller must drop those rows instead.
+ """
     cols = forecast_columns_of(df)
     if not cols:
         raise LeakageError("no forecast feature columns present — nothing to assert")

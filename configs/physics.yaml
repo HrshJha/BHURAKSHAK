@@ -1,8 +1,8 @@
-# SubSense — physics & simulator parameters (PRD §10, NFR-6, NFR-7)
+# BhuRakshak — physics & simulator parameters 
 # All values are MVP starting defaults for the synthetic-data generator and the
-# live physics-consistency engine (§21). Nothing here may be hard-coded in src/.
+# live physics-consistency engine. Nothing here may be hard-coded in src/.
 physics:
-  panel_center_x: 0.0          # metres, mesh-local frame (§9.2)
+  panel_center_x: 0.0          # metres, mesh-local frame 
   panel_center_y: 0.0
   panel_width: 200.0           # metres — x extent of the working panel
   panel_length: 300.0          # metres — y extent of the working panel
@@ -14,17 +14,17 @@ physics:
   maximum_subsidence: 2100.0   # millimetres — W_max at panel centre
 
 kernel:
-  # Spatial Gaussian kernel width: sigma = influence_radius / sigma_divisor (§10)
+  # Spatial Gaussian kernel width: sigma = influence_radius / sigma_divisor 
   sigma_from: influence_radius
   sigma_divisor: 2.0
 
-noise:                         # feeds dataset_manifest noise_parameters (§10.1)
+noise:                         # feeds dataset_manifest noise_parameters 
   tilt_noise_std_deg: 0.01
   displacement_noise_std_mm: 0.5
   vibration_noise_model: gaussian
   vibration_noise_std: 0.02
 
-faults:                        # §10 injected sensor-fault parameters (T-016)
+faults:                        # injected sensor-fault parameters 
   bias_mm: 2.0                 # constant offset once faulted
   drift_mm_per_day: 1.5        # slow growing offset
   dropout_probability: 0.05    # per-timestep chance in a dropout run
@@ -33,9 +33,9 @@ faults:                        # §10 injected sensor-fault parameters (T-016)
   spike_magnitude_mm: 25.0
   stuck_duration_steps: 12
 
-scenarios:                     # §10 scenario-engine parameters (T-018)
+scenarios:                     # scenario-engine parameters 
   duration_days: 1.0
-  steps_per_day: 144           # 10-minute feature-grid cadence (§9.1)
+  steps_per_day: 144           # 10-minute feature-grid cadence 
   anomaly_subsidence_threshold_mm: 5.0   # subsidence above this ⇒ anomaly_label=1
   slow_c_multiplier: 0.3
   rapid_c_multiplier: 8.0
@@ -58,7 +58,7 @@ scenarios:                     # §10 scenario-engine parameters (T-018)
   vibration_event_rate: 0.02
   deformation_onset_fraction: 0.15
 
-telemetry:                     # node-metadata channel models (§8: battery/RSSI/SNR piggybacked)
+telemetry:                     # node-metadata channel models (: battery/RSSI/SNR piggybacked)
   battery_start_v: 4.1
   battery_end_v: 3.6
   rssi_mean_dbm: -95.0
@@ -66,7 +66,7 @@ telemetry:                     # node-metadata channel models (§8: battery/RSSI
   snr_mean_db: 0.0
   snr_std_db: 5.0
 
-vibration:                     # component parameters for the vibration channel (T-015)
+vibration:                     # component parameters for the vibration channel 
   vehicle_rate_per_day: 6.0
   vehicle_amplitude: 0.075
   transient_rate_per_day: 0.5
@@ -76,16 +76,16 @@ vibration:                     # component parameters for the vibration channel 
   burst_duration_minutes: 3.0
   on_node_window_seconds: 10.0   # synthetic on-node summarisation window
 
-strain:                        # horizontal-convergence model for inter-node strain (T-014)
+strain:                        # horizontal-convergence model for inter-node strain 
   horizontal_displacement_factor: 0.3   # u(p,t) = -factor · W(x,y,t) · (p-p0)/sigma
 
-grid:                          # virtual mesh for the synthetic generator (§10 scale)
+grid:                          # virtual mesh for the synthetic generator ( scale)
   nodes_per_side: 20           # 20×20 = 400 virtual nodes
   spacing_m: 25.0
-  neighbour_radius_multiplier: 1.5   # Group C neighbourhood = this × spacing_m (§13/T-037)
+  neighbour_radius_multiplier: 1.5   # Group C neighbourhood = this × spacing_m 
 
-terrain:                       # Feature Group I synthetic terrain (T-066; G-10)
-  # G-10 honesty: no real DEM or mine survey exists in MVP scope. This block
+terrain:                       # Feature Group I synthetic terrain 
+  # honesty: no real DEM or mine survey exists in MVP scope. This block
   # parameterises a SMOOTH SYNTHETIC surface (regional dip + seeded gentle
   # undulations); every emitted Group I frame labels its provenance in
   # terrain_source. mine_depth / panel geometry stay in the physics block.
@@ -97,13 +97,13 @@ terrain:                       # Feature Group I synthetic terrain (T-066; G-10)
   undulation_wavelength_m: 180.0
   seed: 42                         # reproducible undulation phases
 
-crs:                           # §9.2 dual coordinate reference system, per deployment
+crs:                           # dual coordinate reference system, per deployment
   # Mesh-local frame: metres, origin at the mesh (0,0) — used for all inter-node
   # distance/strain/gradient calculations. Global frame: WGS84 for GIS mapping
-  # and Sentinel-1/DGPS/NISAR alignment. Jharia study region (§18): the origin
+  # and Sentinel-1/DGPS/NISAR alignment. Jharia study region: the origin
   # sits in the Jharia coalfield, Dhanbad district, Jharkhand.
   origin_lat_deg: 23.75
   origin_lon_deg: 86.45
   utm_zone: 45                 # WGS84 UTM zone 45N covers 84°E–90°E
   earth_radius_m: 6378137.0    # WGS84 equatorial radius for the local tangent plane
-  projection_model: equirectangular  # §9.2 allows the small-extent approximation
+  projection_model: equirectangular  # allows the small-extent approximation

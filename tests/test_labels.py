@@ -1,4 +1,4 @@
-"""T-026 acceptance tests — §12 separated label schema."""
+""" acceptance tests — separated label schema."""
 
 from __future__ import annotations
 
@@ -59,7 +59,7 @@ def test_unknown_risk_value_rejected() -> None:
 
 
 def test_full4_to_mvp3_mapping_is_pinned() -> None:
-    """G-1 closure: the 4-class → 3-class rename table is authoritative."""
+    """ closure: the 4-class → 3-class rename table is authoritative."""
     assert FULL4_TO_MVP3 == {"GREEN": "NORMAL", "WATCH": "WARNING", "WARNING": "WARNING", "CRITICAL": "CRITICAL"}
     # the rename must be within one vocabulary: every value is an MVP class
     assert set(FULL4_TO_MVP3.values()) == set(RISK_VOCAB_MVP3)
@@ -75,7 +75,7 @@ def test_full4_vocabulary_accepted_when_selected() -> None:
 
 def test_full4_to_mvp3_mapping_is_a_rename_not_a_collapse() -> None:
     # The mapping renames within one vocabulary on ONE column; it must never
-    # erase the distinction the §12 separation protects.
+    # erase the distinction the separation protects.
     assert set(RISK_VOCAB_MVP3) <= set(RISK_VOCAB_MVP3)
     for src, dst in {
         "GREEN": "NORMAL",
@@ -117,7 +117,7 @@ def test_fault_vocabulary_matches_simulator_modes() -> None:
 
 def test_unknown_label_column_rejected() -> None:
     df = _labelled()
-    with pytest.raises(LabelError, match="no §12 vocabulary"):
+    with pytest.raises(LabelError, match="no  vocabulary"):
         validate_labels(df, columns=LABEL_COLUMNS + ("mystery_label",))
 
 

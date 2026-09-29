@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""T-062 — build and execute notebooks/08_sentinel1_integration.ipynb.
+""" — build and execute notebooks/08_sentinel1_integration.ipynb.
 
-Acceptance (TASKS.md T-062): the notebook executes end-to-end and renders the
+Acceptance: the notebook executes end-to-end and renders the
 Jharia deformation map plus the joined mesh-aligned InSAR feature table.
 
-Pipeline exercised on the real T-059 artifacts:
-  T-059 deformation parquet (PS × date, synthetic-stack validation of the
-  T-058 chain) → T-060 georeference into the configs/insar.yaml Jharia bbox
-  and mesh-local projection → nearest-valid-PS join onto the 400-node §10 mesh
-  → T-061 Group H features at window level → §18-step-5 deformation map +
-  mesh-aligned table + staleness/hotspot summary.
+Pipeline exercised on the real artifacts:
+ deformation parquet (PS × date, synthetic-stack validation of the
+ chain) → georeference into the configs/insar.yaml Jharia bbox
+ and mesh-local projection → nearest-valid-PS join onto the 400-node mesh
+ → Group H features at window level → -step-5 deformation map +
+ mesh-aligned table + staleness/hotspot summary.
 
 The synthetic provenance is stated honestly in the notebook: while the real
-21-scene stack awaits the T-057 credentialed download, this validates the full
+21-scene stack awaits the credentialed download, this validates the full
 integration path on a stack with a KNOWN imposed signal (−12 mm/yr source).
 Idempotent: rebuilds and re-executes the notebook in place.
 """
@@ -33,24 +33,24 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "08_sentinel1_integration.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 08 — Sentinel-1 Integration: Jharia deformation on the mesh (PRD §18, FR-13)
+        """# 08 — Sentinel-1 Integration: Jharia deformation on the mesh ( , )
 
 **Claim under test:** satellite-derived deformation joins the sensor-mesh
-feature schema **on the same spatial representation** (§18 step 5, §9.2) and
+feature schema **on the same spatial representation** ( step 5, ) and
 every fused value carries its **own observation timestamp + staleness age**
-(FR-13, §9.1 — staleness visible, never implied).
+(,  — staleness visible, never implied).
 
-**Data provenance (stated honestly):** the InSAR stack here is the T-059
-synthetic-stack validation of the T-058 processing chain — a Sentinel-1-style
+**Data provenance (stated honestly):** the InSAR stack here is the 
+synthetic-stack validation of the  processing chain — a Sentinel-1-style
 scene with a KNOWN imposed −12 mm/yr subsiding point source, decorated with
 speckle, bright PS candidates and decorrelated patches. The acquisition DATES
-are the real T121-DESCENDING inventory (T-057, 21 slices Jan–Sep 2026 over the
-configs/insar.yaml Jharia bbox). When the credentialed T-057 download lands,
-real geocoded PS tables enter the identical T-060 join — the synthetic
+are the real T121-DESCENDING inventory (, 21 slices Jan–Sep 2026 over the
+configs/insar.yaml Jharia bbox). When the credentialed  download lands,
+real geocoded PS tables enter the identical  join — the synthetic
 index→bbox georeferencing is the only step that changes.
 
-**Chain exercised:** T-059 parquet → T-060 `georeference_ps` + `map_ps_to_mesh`
-→ T-061 `emit_group_h` (§13 Group H names)."""
+**Chain exercised:**  parquet →  `georeference_ps` + `map_ps_to_mesh`
+→  `emit_group_h` ( Group H names)."""
     ),
     new_code_cell(
         """import sys
@@ -97,10 +97,10 @@ src = geo.iloc[((geo.range_idx - 76.8) ** 2 + (geo.azimuth_idx - 76.8) ** 2).arg
 print(f"PS at the imposed source: {src.ps_id} at ({src.lat:.4f} N, {src.lon:.4f} E), "
       f"mesh-local ({src.x:.0f}, {src.y:.0f}) m")
 print(f"distance source→mesh centre: {np.hypot(src.x, src.y):.0f} m "
-      f"(the §10 mesh is 500×500 m — the strong bowl sits outside it)")"""
+      f"(the  mesh is 500×500 m — the strong bowl sits outside it)")"""
     ),
     new_markdown_cell(
-        """## 2 — Jharia deformation map (per-PS velocity + the §10 mesh overlay)"""
+        """## 2 — Jharia deformation map (per-PS velocity + the  mesh overlay)"""
     ),
     new_code_cell(
         """vel = ts.drop_duplicates("ps_id").merge(geo[["ps_id", "lat", "lon"]], on="ps_id")
@@ -113,8 +113,8 @@ plt.colorbar(sc, ax=axes[0], label="LOS velocity (mm/yr) — imposed source −1
 grid = build_grid()
 nlat, nlon = local_to_wgs84(crs, grid.x, grid.y)
 axes[1].scatter(vel.lon, vel.lat, c=vel.los_velocity_mm_yr, cmap="RdBu_r", vmin=-12, vmax=12, s=4)
-mesh = axes[1].scatter(nlon, nlat, c="#111111", marker="s", s=14, label="§10 mesh (400 nodes)")
-axes[1].set_title("Jharia study bbox: PS field + mesh nodes (§9.2 shared frame)")
+mesh = axes[1].scatter(nlon, nlat, c="#111111", marker="s", s=14, label=" mesh (400 nodes)")
+axes[1].set_title("Jharia study bbox: PS field + mesh nodes ( shared frame)")
 axes[1].set_xlabel("longitude (°E)"); axes[1].set_ylabel("latitude (°N)")
 axes[1].legend(loc="upper right")
 for ax in axes:
@@ -135,14 +135,14 @@ for k, v in summary.items():
     print(f"  {k}: {v}")
 assert summary["n_nodes"] == 400
 assert summary["n_node_dates_with_valid_observation"] == len(joined)
-# FR-13: per-row observation timestamp + staleness
+# : per-row observation timestamp + staleness
 assert joined.observation_timestamp.notna().all()
 display_cols = ["node_id", "date", "observation_timestamp", "staleness_hours", "ps_id",
                 "ps_distance_m", "insar_los_displacement_mm", "insar_coherence"]
 print(joined[display_cols].head(8).to_string(index=False))"""
     ),
     new_markdown_cell(
-        """## 4 — Group H features on the mesh (§13 Group H, as-of window semantics)"""
+        """## 4 — Group H features on the mesh ( Group H, as-of window semantics)"""
     ),
     new_code_cell(
         """# windows at the last three acquisition dates (hours since the 2026-01-01 epoch)
@@ -193,7 +193,7 @@ ax.plot(pd.to_datetime(m_track.window_timestamp, unit="h", origin=epoch),
         label=f"mesh node {mesh_node} (far field)")
 ax.axhline(0, color="k", lw=0.6)
 ax.set_xlabel("acquisition date"); ax.set_ylabel("LOS displacement (mm)")
-ax.set_title("Source-adjacent PS vs mesh far-field — T-060 join preserves the field")
+ax.set_title("Source-adjacent PS vs mesh far-field —  join preserves the field")
 ax.legend()
 fig.tight_layout()
 fig.savefig(REPO / "reports" / "nb08_mesh_timeseries.png", dpi=110)
@@ -217,14 +217,14 @@ print(f"InSAR hotspots (|cumulative| ≥ {cfg['mesh_feature']['hotspot_threshold
     new_markdown_cell(
         """## Verdict
 
-- The §18-step-5 join holds: satellite values ride the **same mesh node
-  representation** (§9.2) as the sensor features, on the real T121-DESC
+- The -step-5 join holds: satellite values ride the **same mesh node
+  representation** () as the sensor features, on the real T121-DESC
   acquisition calendar.
-- Every fused row keeps its **observation timestamp + staleness** (FR-13);
+- Every fused row keeps its **observation timestamp + staleness** ();
   masked/absent observations produce absence, not interpolation.
 - The imposed −12 mm/yr synthetic source survives georeferencing → nearest-PS
   join → Group H as-of semantics, so the integration path is validated for the
-  real stack the moment T-057's credentialed download delivers it."""
+  real stack the moment 's credentialed download delivers it."""
     ),
 ]
 

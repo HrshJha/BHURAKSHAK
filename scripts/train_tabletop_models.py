@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
-"""Train the plan's two-model pipeline on the tabletop dataset (plan §7–§9).
+"""Train the plan's two-model pipeline on the tabletop dataset (plan –).
 
-Models (§7.1 — the two-model pipeline, run in parallel at inference):
-  1. Isolation Forest  — unsupervised trip-wire, trained ONLY on Stable
-     (severity_class == 0) windows from the training trials; flags anything
-     that deviates from normal, including patterns never labeled.
-  2. Random Forest     — supervised 4-class severity classifier on the
-     engineered features, class-weighted because Stable dominates (§6).
+Models ( — the two-model pipeline, run in parallel at inference):
+ 1. Isolation Forest — unsupervised trip-wire, trained ONLY on Stable
+ (severity_class == 0) windows from the training trials; flags anything
+ that deviates from normal, including patterns never labeled.
+ 2. Random Forest — supervised 4-class severity classifier on the
+ engineered features, class-weighted because Stable dominates.
 
-Protocol (§8):
-  - split by TRIAL, never by row (§8.1) — 18 train / 4 validation / 4 test,
-    each split mixing conditions and speeds;
-  - StandardScaler fitted on the training split only (§6, §8.2 step 3);
-  - hyperparameters tuned on the VALIDATION set only, then frozen;
-  - GroupKFold(5) cross-validation across trials for the RF;
-  - one final evaluation on the held-out test trials.
+Protocol:
+ - split by TRIAL, never by row — 18 train / 4 validation / 4 test,
+ each split mixing conditions and speeds;
+ - StandardScaler fitted on the training split only (, step 3);
+ - hyperparameters tuned on the VALIDATION set only, then frozen;
+ - GroupKFold(5) cross-validation across trials for the RF;
+ - one final evaluation on the held-out test trials.
 
-Metrics (§8.3): per-class confusion/recall (critical recall first), IF score
+Metrics: per-class confusion/recall (critical recall first), IF score
 separation, and lead time — seconds before the trapdoor reaches the critical
 threshold that the pipeline first flags it.
 
-Alert mapping (§9): green = IF normal AND RF Stable; yellow = Initiation;
+Alert mapping: green = IF normal AND RF Stable; yellow = Initiation;
 orange = Progressive; red = Critical OR strong IF anomaly.
 
-The threshold-rule baseline (§7.3) is trained alongside for the honest
+The threshold-rule baseline is trained alongside for the honest
 "ML must beat it" comparison.
 """
 
@@ -66,7 +66,7 @@ CRITICAL_MM = 35.0
 CLASS_NAMES = {0: "Stable", 1: "Initiation", 2: "Progressive", 3: "Critical"}
 ALERT_NAMES = {0: "green", 1: "yellow", 2: "orange", 3: "red"}
 
-# §8.1: split by trial, mixing conditions and speeds in every split
+#: split by trial, mixing conditions and speeds in every split
 TRAIN_TRIALS = [
     "T001", "T003", "T005", "T006", "T007", "T008", "T009", "T011",
     "T013", "T015", "T016", "T018", "T019", "T020", "T022", "T023",
@@ -95,7 +95,7 @@ def split_frame(win: pd.DataFrame, trials: list[str]) -> pd.DataFrame:
 
 
 def train_if(train: pd.DataFrame) -> tuple[IsolationForest, StandardScaler, np.ndarray]:
-    """§8.2 step 4: Isolation Forest on Stable windows of the training trials."""
+    """ step 4: Isolation Forest on Stable windows of the training trials."""
     stable = train[train.severity_class == 0]
     scaler = StandardScaler().fit(stable[FEATURES])
     X = scaler.transform(stable[FEATURES])
@@ -105,12 +105,12 @@ def train_if(train: pd.DataFrame) -> tuple[IsolationForest, StandardScaler, np.n
 
 
 def if_scores(iso: IsolationForest, scaler: StandardScaler, df: pd.DataFrame) -> np.ndarray:
-    """Anomaly score = −score_samples (higher = more anomalous, plan §7.1)."""
+    """Anomaly score = −score_samples (higher = more anomalous, plan )."""
     return -iso.score_samples(scaler.transform(df[FEATURES]))
 
 
 def tune_rf(val_split: pd.DataFrame) -> dict:
-    """Hyperparameter search on the VALIDATION split only (§8.2 step 6)."""
+    """Hyperparameter search on the VALIDATION split only ( step 6)."""
     X = val_split[FEATURES].to_numpy()
     y = val_split["severity_class"].to_numpy()
     best, best_score = None, -1.0
@@ -136,7 +136,7 @@ def tune_rf(val_split: pd.DataFrame) -> dict:
 
 
 def cross_validate_rf(win: pd.DataFrame, params: dict) -> dict:
-    """§8.1: 5-fold GroupKFold across TRIALS on the training trials."""
+    """: 5-fold GroupKFold across TRIALS on the training trials."""
     tr = win[win.trial_id.isin(TRAIN_TRIALS)]
     X, y, groups = tr[FEATURES].to_numpy(), tr["severity_class"].to_numpy(), tr["trial_id"].to_numpy()
     scaler = StandardScaler().fit(X)  # CV-internal scaling, training split only
@@ -167,9 +167,9 @@ def train_rf(train_split: pd.DataFrame, params: dict) -> tuple[RandomForestClass
 
 
 def threshold_baseline(df: pd.DataFrame) -> np.ndarray:
-    """§7.3: alert when displacement_rate OR vibration_rms stays elevated for
-    3 consecutive windows (per trial-node series). Returns predicted classes
-    0/1/2 mapped from sustained level."""
+    """: alert when displacement_rate OR vibration_rms stays elevated for
+ 3 consecutive windows (per trial-node series). Returns predicted classes
+ 0/1/2 mapped from sustained level."""
     out = np.zeros(len(df), dtype=int)
     df = df.reset_index(drop=True)
     for _key, g in df.groupby(["trial_id", "node_id"], sort=False):
@@ -188,8 +188,8 @@ def threshold_baseline(df: pd.DataFrame) -> np.ndarray:
 
 
 def lead_time_seconds(df: pd.DataFrame, pred: np.ndarray) -> dict:
-    """§8.3: seconds before known displacement crosses 35 mm that the pipeline
-    first flags (per active-node trial). Negative = late."""
+    """: seconds before known displacement crosses 35 mm that the pipeline
+ first flags (per active-node trial). Negative = late."""
     df = df.reset_index(drop=True)
     df["pred"] = pred
     results = []
@@ -238,7 +238,7 @@ def main() -> int:
     OUT_EXPERIMENTS.mkdir(exist_ok=True)
     win, meta = load_data()
 
-    # §8.1 split-mix sanity: every split must mix conditions and speeds
+    # split-mix sanity: every split must mix conditions and speeds
     for name, trials in (("train", TRAIN_TRIALS), ("val", VAL_TRIALS), ("test", TEST_TRIALS)):
         conds = set(meta.loc[trials, "condition"])
         speeds = set(meta.loc[trials, "speed"])
@@ -249,7 +249,7 @@ def main() -> int:
     val_split = split_frame(win, VAL_TRIALS)
     test_split = split_frame(win, TEST_TRIALS)
 
-    # Isolation Forest (Stable-only training, §8.2 step 4)
+    # Isolation Forest (Stable-only training, step 4)
     iso, iso_scaler, _ = train_if(train_split)
     val_if = if_scores(iso, iso_scaler, val_split)
     val_stable = val_split[val_split.severity_class == 0]["severity_class"].size
@@ -274,7 +274,7 @@ def main() -> int:
     print(f"5-fold GroupKFold (trial-grouped) on training trials: {cv}")
     rf, rf_scaler = train_rf(train_split, params)
 
-    # Held-out test evaluation (once, §8.2 step 7)
+    # Held-out test evaluation (once, step 7)
     Xte = test_split[FEATURES].to_numpy()
     yte = test_split["severity_class"].to_numpy()
     rf_pred = rf.predict(rf_scaler.transform(Xte))
@@ -283,7 +283,7 @@ def main() -> int:
     test_if = if_scores(iso, iso_scaler, test_split)
     if_flag = (test_if > if_threshold).astype(int)
 
-    # §9 traffic light: red = RF Critical OR IF anomaly; else RF class
+    # traffic light: red = RF Critical OR IF anomaly; else RF class
     alert = rf_pred.copy()
     alert[(rf_pred == 0) & (if_flag == 1)] = 3  # novel anomaly trip-wire
 
@@ -297,7 +297,7 @@ def main() -> int:
     print(pd.DataFrame(cm, index=[CLASS_NAMES[i] for i in range(4)],
                        columns=[CLASS_NAMES[i] for i in range(4)]).to_string())
 
-    print("\nthreshold baseline (§7.3) per-class:")
+    print("\nthreshold baseline () per-class:")
     base_pred = threshold_baseline(test_split)
     print(classification_report_frame(yte, base_pred).to_string(index=False))
 

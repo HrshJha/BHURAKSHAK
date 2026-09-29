@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""T-044 — build and execute notebooks/04_isolation_forest.ipynb.
+""" — build and execute notebooks/04_isolation_forest.ipynb.
 
-Acceptance (TASKS.md T-044): the notebook executes end-to-end and renders an
+Acceptance: the notebook executes end-to-end and renders an
 anomaly-score distribution plot plus a numeric separation statistic showing
 injected anomalies are demonstrably separated from normal behaviour.
 
-The notebook trains the §14 Isolation Forest on the FULL model input
-(A+B+C+D+E feature groups, per §14 "Input: physical + temporal + spatial +
+The notebook trains the Isolation Forest on the FULL model input
+(A+B+C+D+E feature groups, per "Input: physical + temporal + spatial +
 vibration + sensor-health feature groups"), using the persisted event-level
-splits from the T-045 ablation run.
+splits from the ablation run.
 
 Idempotent: rebuilds and re-executes the notebook in place.
 """
@@ -29,20 +29,20 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "04_isolation_forest.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 04 — Isolation Forest: anomaly-score separation (PRD §14, FR-5)
+        """# 04 — Isolation Forest: anomaly-score separation ( , )
 
 **Claim under test:** an Isolation Forest trained **only on healthy-baseline
 windows** of training events separates injected anomalies from normal
 behaviour on held-out events — the unsupervised "does this look abnormal?"
 trip-wire that feeds XGBoost as one input feature.
 
-**§14 discipline honoured here:**
+** discipline honoured here:**
 - hyperparameters exactly `IsolationForest(n_estimators=300, contamination="auto", random_state=42)`;
-- healthy baseline = the G-2 triple-healthy mask
+- healthy baseline = the  triple-healthy mask
   (`anomaly_label==0 AND fault_label=="NONE" AND risk_label=="NORMAL"`) —
-  §14's literal `risk_label=="GREEN"` filter is inoperable under the 3-class MVP;
+  's literal `risk_label=="GREEN"` filter is inoperable under the 3-class MVP;
 - input = physical + temporal + spatial + vibration + sensor-health feature groups;
-- event-level splits (60/20/20 within scenario family, persisted by the T-045 run);
+- event-level splits (60/20/20 within scenario family, persisted by the  run);
 - threshold = p99 of VALIDATION healthy scores; all evaluation on TEST events."""
     ),
     new_code_cell(
@@ -93,7 +93,7 @@ ax.hist(scores_a, bins=60, alpha=0.6, density=True, label=f"anomalous test windo
 ax.axvline(fitted.threshold, color="r", ls="--", lw=1.6, label=f"threshold = {fitted.threshold:.3f} (p99 of val healthy)")
 ax.set_xlabel("anomaly score = -score_samples(X)   (higher = more anomalous)")
 ax.set_ylabel("density")
-ax.set_title("Isolation Forest anomaly-score separation — held-out test events (§14)")
+ax.set_title("Isolation Forest anomaly-score separation — held-out test events ()")
 ax.legend()
 fig.tight_layout()
 fig.savefig(Path.cwd().parent / "reports" / "nb04_if_separation.png", dpi=110)
@@ -123,13 +123,13 @@ print(f"score gap (mean_a - mean_h) / std_h         : {gap_sigmas:.2f} sigma")
 
 separated = (auc > 0.9) and (hit_rate > 2 * max(false_alarm, 1e-9))
 print(f"injected anomalies demonstrably separated from normal behaviour: {separated}")
-assert separated, "§14 separation gate failed" """
+assert separated, " separation gate failed" """
     ),
     new_markdown_cell(
         """## Verdict"""
     ),
     new_code_cell(
-        """print("T-044 ISOLATION FOREST SEPARATION")
+        """print(" ISOLATION FOREST SEPARATION")
 print(f"  trained on {fitted.n_training_windows:,} healthy windows (train events only)")
 print(f"  test AUC {auc:.4f} | hit rate {hit_rate:.3f} at FAR {false_alarm:.3f}")
 print(f"  separation gap {gap_sigmas:.2f} sigma of the healthy spread")

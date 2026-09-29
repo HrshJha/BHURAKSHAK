@@ -1,4 +1,4 @@
-"""T-040 acceptance tests — physics engine (physics_residual, §21)."""
+""" acceptance tests — physics engine (physics_residual, )."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ def test_engine_reuses_the_same_deformation_field() -> None:
     engine = physics_engine()
     field = DeformationField()
     assert engine.field.params.panel_center_x == field.params.panel_center_x
-    assert engine.field.w_max == field.w_max, "expected deformation must reuse the §10 model"
+    assert engine.field.w_max == field.w_max, "expected deformation must reuse the  model"
     assert engine.field.params.time_coefficient == field.params.time_coefficient
 
 
@@ -40,7 +40,7 @@ def test_expected_displacement_matches_the_field_directly() -> None:
 
 def test_hours_to_days_conversion_is_applied_once() -> None:
     """A common unit bug: applying the /24 conversion twice would give a
-    near-zero W(t); the engine must convert exactly once."""
+ near-zero W(t); the engine must convert exactly once."""
     engine = physics_engine()
     field = DeformationField()
     t_h = 24.0  # exactly one Knothe day
@@ -70,7 +70,7 @@ def test_tilt_residual_zero_for_gradient_consistent_observation() -> None:
 
 
 def test_expected_tilt_is_the_analytic_gradient() -> None:
-    """§10 coupling: expected tilt must equal the field's analytic gradient."""
+    """ coupling: expected tilt must equal the field's analytic gradient."""
     engine = physics_engine()
     field = DeformationField()
     x, y, t = 45.0, -25.0, 20.0

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T-024 — build and execute notebooks/01_synthetic_data_generation.ipynb.
+""" — build and execute notebooks/01_synthetic_data_generation.ipynb.
 
 The notebook is the third synthetic-data-gate deliverable: it must execute
 end-to-end and emit both a plot and a numeric statistic showing tilt tracks
@@ -25,9 +25,9 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "01_synthetic_data_generation.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 01 — Synthetic Data Generation: Physical-Coupling Proof (PRD §10, Gate 3/3)
+        """# 01 — Synthetic Data Generation: Physical-Coupling Proof ( , Gate 3/3)
 
-**Claim under test:** every sensor channel in the SubSense synthetic dataset derives
+**Claim under test:** every sensor channel in the BhuRakshak synthetic dataset derives
 from one latent deformation field
 
 $$W(x,y,t) = W_{max}\\,(1-e^{-ct})\\cdot \\exp\\!\\left(-\\frac{(x-x_0)^2+(y-y_0)^2}{2\\sigma^2}\\right)$$
@@ -35,7 +35,7 @@ $$W(x,y,t) = W_{max}\\,(1-e^{-ct})\\cdot \\exp\\!\\left(-\\frac{(x-x_0)^2+(y-y_0
 and in particular **tilt is the spatial gradient of W** (`tilt ≈ ∂W/∂x, ∂W/∂y`) —
 not independently sampled noise.
 
-**Acceptance (T-024):** the notebook executes end-to-end and shows
+**Acceptance ():** the notebook executes end-to-end and shows
 **Pearson r > 0.95** between generated tilt and the analytic gradient, as both a
 numeric statistic and a plot."""
     ),

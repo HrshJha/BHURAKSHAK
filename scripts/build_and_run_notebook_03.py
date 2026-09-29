@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""T-042 — build and execute notebooks/03_feature_engineering.ipynb.
+""" — build and execute notebooks/03_feature_engineering.ipynb.
 
-Acceptance (TASKS.md T-042): the notebook executes end-to-end and asserts the
+Acceptance: the notebook executes end-to-end and asserts the
 assembled first-iteration feature count falls within 40–70 inclusive, failing
 loudly if it does not. The run also emits the feature-store artifacts to
 data/features/ (features_v2.parquet + feature_store_report.json).
@@ -26,19 +26,19 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "03_feature_engineering.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 03 — Feature Engineering: the Feature Store (PRD §13, T-042)
+        """# 03 — Feature Engineering: the Feature Store ( , )
 
 **Purpose:** assemble the first-iteration feature store from the raw synthetic
-node table through the Phase-2 pipeline — §10 windowing (60/10) → feature
-Groups A–F → §12 majority labels per window — and **assert the §13 budget of
+node table through the Phase-2 pipeline —  windowing (60/10) → feature
+Groups A–F →  majority labels per window — and **assert the  budget of
 40–70 engineered features**, failing loudly outside it.
 
 **Design notes carried from the modules:**
 - Group B rolling statistics are series-internal (no train/test boundary
-  crossing — §23, executable check in `tests/test_group_b.py`);
+  crossing — , executable check in `tests/test_group_b.py`);
 - Group C uses observable values from the current snapshot; single-node
   snapshots receive gated NaNs. Oracle geometry is refused for model builds.
-- Group D features come from §8.3 on-node **summarised** vibration only."""
+- Group D features come from  on-node **summarised** vibration only."""
     ),
     new_code_cell(
         """import sys, json, time
@@ -55,7 +55,7 @@ from src.features.windowing import windowing_params
 REPO = Path.cwd().parent
 nodes_path = REPO / "data" / "synthetic" / "synthetic_nodes.csv"
 window, stride = windowing_params()
-print(f"windowing: window={window} stride={stride} (§10, config-driven)")"""
+print(f"windowing: window={window} stride={stride} (, config-driven)")"""
     ),
     new_code_cell(
         """usecols = ["event_id", "node_id", "timestamp", "x", "y",
@@ -68,11 +68,11 @@ coords = raw.groupby("node_id", sort=False)[["x", "y"]].first().reset_index()
 print(f"loaded {len(raw):,} rows, {raw.event_id.nunique():,} events in {time.time()-t0:.1f}s")"""
     ),
     new_markdown_cell(
-        """## 1 — Assemble the feature store (Groups A–F over §10 windows)
+        """## 1 — Assemble the feature store (Groups A–F over  windows)
 
 One node per event in the corpus means no co-temporal neighbours. Group C is
 gated on the production corpus (spatial behavior is exercised by mesh tests);
-§21.1 neighbor confirmation cannot be validated with this data."""
+ neighbor confirmation cannot be validated with this data."""
     ),
     new_code_cell(
         """t0 = time.time()
@@ -83,14 +83,14 @@ for group, feats in report.per_group.items():
     print(f"  {group:16s} {len(feats):2d} features")"""
     ),
     new_markdown_cell(
-        "## 2 — The §13 budget assertion (40–70 features, inclusive)"
+        "## 2 — The  budget assertion (40–70 features, inclusive)"
     ),
     new_code_cell(
         """n = len(report.features)
 MIN_BUDGET, MAX_BUDGET = 40, 70
-print(f"assembled feature count = {n}; §13 budget = [{MIN_BUDGET}, {MAX_BUDGET}]")
+print(f"assembled feature count = {n};  budget = [{MIN_BUDGET}, {MAX_BUDGET}]")
 assert MIN_BUDGET <= n <= MAX_BUDGET, (
-    f"§13 feature budget violated: {n} features, allowed {MIN_BUDGET}-{MAX_BUDGET}"
+    f" feature budget violated: {n} features, allowed {MIN_BUDGET}-{MAX_BUDGET}"
 )
 print("budget assertion PASSED")"""
     ),
@@ -100,7 +100,7 @@ print("budget assertion PASSED")"""
     new_code_cell(
         """from src.preprocessing.labels import validate_labels, assert_labels_separate
 
-validate_labels(model)          # §12 vocabularies
+validate_labels(model)          #  vocabularies
 assert_labels_separate(model)   # no collapse into one flag
 
 feature_cols = report.features
@@ -117,7 +117,7 @@ print(f"windows per series: min={per_series.min()} max={per_series.max()} (expec
 assert (per_series == 9).all()
 print(f"risk distribution in the store:\\n{model['risk_label'].value_counts().to_string()}")"""
     ),
-    new_markdown_cell("## 4 — Persist the feature-store artifacts (§33 data/features/)"),
+    new_markdown_cell("## 4 — Persist the feature-store artifacts ( data/features/)"),
     new_code_cell(
         """out_dir = REPO / "data" / "features"
 out_dir.mkdir(parents=True, exist_ok=True)
@@ -144,10 +144,10 @@ print(f"wrote {out_dir / 'feature_store_report.json'}")"""
     ),
     new_markdown_cell("## Verdict"),
     new_code_cell(
-        """print("T-042 FEATURE STORE")
+        """print(" FEATURE STORE")
 print(f"  windows           : {report.n_windows:,}")
 print(f"  features assembled: {len(report.features)} (budget 40-70: PASS)")
-print(f"  §12 labels        : separate columns, vocabularies validated")
+print(f"   labels        : separate columns, vocabularies validated")
 print(f"  artifacts         : data/features/features_v2.parquet + report")
 verdict = True
 assert verdict"""
@@ -191,8 +191,8 @@ def main() -> int:
         }
         manifest["sequence_count_note"] = (
             "10,000 generated events produce 90,000 overlapping windows at window=60/stride=10, "
-            "below PRD §15's 100,000-500,000 window band. The 4,000,000 planned sequence "
-            "capacity is not achieved data; §10's nine windows per event cap forecasting to horizon 1."
+            "below  's 100,000-500,000 window band. The 4,000,000 planned sequence "
+            "capacity is not achieved data; 's nine windows per event cap forecasting to horizon 1."
         )
         manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     print(f"executed OK → {NOTEBOOK_PATH.relative_to(REPO_ROOT)}")

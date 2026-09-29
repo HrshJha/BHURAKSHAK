@@ -1,4 +1,4 @@
-"""T-016 acceptance tests — five injectable fault modes, each tagged SENSOR_FAULT."""
+""" acceptance tests — five injectable fault modes, each tagged SENSOR_FAULT."""
 
 from __future__ import annotations
 

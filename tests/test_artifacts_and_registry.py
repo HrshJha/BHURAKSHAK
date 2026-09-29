@@ -1,7 +1,7 @@
-"""Fixall Phase 2 — artifact integrity, FR-14 traceability, credential hygiene.
+"""Fixall Phase 2 — artifact integrity, traceability, credential hygiene.
 
 Covers: versioned save/load with sha256 sidecars (tamper refused),
-preprocessing declared-and-applied per bundle, registry-backed FR-14
+preprocessing declared-and-applied per bundle, registry-backed 
 prediction records, and the env-only CDSE credential path.
 """
 

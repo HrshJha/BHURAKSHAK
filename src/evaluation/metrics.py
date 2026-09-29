@@ -1,27 +1,27 @@
-"""Evaluation metrics — PRD §24 (T-069).
+"""Evaluation metrics —.
 
-The §24 metric surface for every study, ablation and notebook in the repo.
+The metric surface for every study, ablation and notebook in the repo.
 Five families:
 
 - **Detection** (alert quality at the operating point): precision, recall,
-  F1, and PR-AUC over the full score sweep. A confusion cell count rides
-  along so no number is unexplained.
+ F1, and PR-AUC over the full score sweep. A confusion cell count rides
+ along so no number is unexplained.
 
-- **Displacement error** (§24 names it explicitly): MAE, RMSE,
-  max-abs-error and signed bias of predicted vs reference displacement.
+- **Displacement error** ( names it explicitly): MAE, RMSE,
+ max-abs-error and signed bias of predicted vs reference displacement.
 
 - **Spatial**: hotspot IoU (overlap of flagged node sets) and hotspot
-  localisation error (how far the nearest predicted hotspot sits from each
-  true one).
+ localisation error (how far the nearest predicted hotspot sits from each
+ true one).
 
 - **Calibration**: Brier score, reliability curve and expected calibration
-  error — re-exported from :mod:`src.risk.calibration` (T-048) so §24 has
-  ONE implementation, not two drifting copies.
+ error — re-exported from:mod:`src.risk.calibration` so has
+ ONE implementation, not two drifting copies.
 
 - **Operational / temporal**: false alarms per day, median and P10 lead
-  time, missed-event rate.
+ time, missed-event rate.
 
-**Accuracy is deliberately absent.** §24 replaces accuracy with the
+**Accuracy is deliberately absent.** replaces accuracy with the
 class-balanced and cost-aware families above; in a subsidence mesh the
 healthy class dominates so accuracy flatters a model that never warns. This
 module exposes no ``accuracy`` function and the headline registry
@@ -52,13 +52,13 @@ __all__ = [
     "hotspot_localisation_error",
     "false_alarms_per_day",
     "lead_time_stats",
-    # §24 calibration family (single implementation lives in src/risk/calibration.py)
+    # calibration family (single implementation lives in src/risk/calibration.py)
     "brier_score",
     "expected_calibration_error",
     "reliability_curve",
 ]
 
-#: The §24 headline registry. `accuracy` is intentionally NOT a member —
+#: The headline registry. `accuracy` is intentionally NOT a member —
 #: see the module docstring. tests/test_metrics.py enforces this.
 HEADLINE_METRICS = (
     "precision",
@@ -133,10 +133,10 @@ def f1_score(y_true, y_pred) -> float:
 def pr_auc(y_true, y_score) -> float:
     """Area under the precision-recall curve (step-wise, tie-safe).
 
-    Scores are swept from highest to lowest; equal scores are absorbed into
-    one operating point (precision is read AFTER the whole tie group, which
-    is the honest convention — a tie can never grant a free perfect point).
-    """
+ Scores are swept from highest to lowest; equal scores are absorbed into
+ one operating point (precision is read AFTER the whole tie group, which
+ is the honest convention — a tie can never grant a free perfect point).
+ """
     y, s = _paired(y_true, y_score, "pr_auc")
     order = np.argsort(-s, kind="stable")
     y_sorted = y[order] > 0
@@ -165,7 +165,7 @@ def pr_auc(y_true, y_score) -> float:
 
 
 def classification_metrics(y_true, y_pred, y_score=None) -> dict[str, float]:
-    """The §24 detection dict: precision/recall/F1 (+ PR-AUC when scores exist)."""
+    """The detection dict: precision/recall/F1 (+ PR-AUC when scores exist)."""
     out = {
         "precision": precision(y_true, y_pred),
         "recall": recall(y_true, y_pred),
@@ -182,9 +182,9 @@ def classification_metrics(y_true, y_pred, y_score=None) -> dict[str, float]:
 def regression_metrics(y_true, y_pred) -> dict[str, float]:
     """MAE, RMSE, max-abs-error and signed bias of displacement errors.
 
-    NaN pairs are dropped (reported as ``n_used``); if nothing remains the
-    call raises — an empty agreement claim is not an agreement claim.
-    """
+ NaN pairs are dropped (reported as ``n_used``); if nothing remains the
+ call raises — an empty agreement claim is not an agreement claim.
+ """
     t, p = _paired(y_true, y_pred, "regression_metrics")
     ok = np.isfinite(t) & np.isfinite(p)
     n_used = int(ok.sum())
@@ -205,9 +205,9 @@ def regression_metrics(y_true, y_pred) -> dict[str, float]:
 def iou_hotspots(pred_mask, true_mask) -> float:
     """IoU of flagged hotspot node sets.
 
-    Convention: both empty → 1.0 (the maps agree perfectly that nothing
-    burns); exactly one empty → 0.0.
-    """
+ Convention: both empty → 1.0 (the maps agree perfectly that nothing
+ burns); exactly one empty → 0.0.
+ """
     p, t = _paired(pred_mask, true_mask, "iou_hotspots")
     if not np.isin(p, (0.0, 1.0)).all() or not np.isin(t, (0.0, 1.0)).all():
         raise MetricsError("iou_hotspots expects binary 0/1 masks")
@@ -228,12 +228,12 @@ def hotspot_localisation_error(
 ) -> dict[str, float]:
     """How well predicted hotspot centres cover the TRUE ones (metres).
 
-    For each true hotspot: the distance to the nearest predicted centre.
-    ``match_radius_m`` decides whether that true hotspot counts as matched
-    (a miss beyond the radius is still REPORTED at its capped distance, so
-    a totally absent prediction cannot hide behind a clip). Returns the
-    mean/max distance and the unmatched count.
-    """
+ For each true hotspot: the distance to the nearest predicted centre.
+ ``match_radius_m`` decides whether that true hotspot counts as matched
+ (a miss beyond the radius is still REPORTED at its capped distance, so
+ a totally absent prediction cannot hide behind a clip). Returns the
+ mean/max distance and the unmatched count.
+ """
     if match_radius_m <= 0:
         raise MetricsError("match_radius_m must be positive")
     true_arr = np.asarray(true_xy, dtype=float)
@@ -266,9 +266,9 @@ def hotspot_localisation_error(
 def false_alarms_per_day(y_true, y_pred, *, n_days: float) -> float:
     """False alerts on quiet windows, per day of the observation span.
 
-    ``n_days`` is STATED by the caller (the honest span the alerts were
-    collected over) — never inferred from window counts.
-    """
+ ``n_days`` is STATED by the caller (the honest span the alerts were
+ collected over) — never inferred from window counts.
+ """
     c = confusion_counts(y_true, y_pred)
     if n_days <= 0:
         raise MetricsError("n_days must be positive — state the observation span")
@@ -283,13 +283,13 @@ def lead_time_stats(
 ) -> dict[str, float]:
     """Median / P10 lead time and missed-event rate across events.
 
-    ``alert_window_by_event``: first alert window index per event (absent ⇒
-    the event was never alerted). ``onset_window_by_event``: the ground-truth
-    onset window index per event (REQUIRED for every evaluated event).
-    Lead time = (onset − first alert) × ``stride_hours`` for events whose
-    first alert is at or before onset; alert-after-onset and never-alerted
-    events count as MISSED and enter no percentile.
-    """
+ ``alert_window_by_event``: first alert window index per event (absent ⇒
+ the event was never alerted). ``onset_window_by_event``: the ground-truth
+ onset window index per event (REQUIRED for every evaluated event).
+ Lead time = (onset − first alert) × ``stride_hours`` for events whose
+ first alert is at or before onset; alert-after-onset and never-alerted
+ events count as MISSED and enter no percentile.
+ """
     if stride_hours <= 0:
         raise MetricsError("stride_hours must be positive")
     events = set(onset_window_by_event)

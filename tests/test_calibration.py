@@ -1,4 +1,4 @@
-"""T-048 acceptance tests — probability calibration and calibration metrics."""
+""" acceptance tests — probability calibration and calibration metrics."""
 
 from __future__ import annotations
 
@@ -18,10 +18,10 @@ from src.risk.calibration import (
 def _probabilities(n: int = 600, overconfident: bool = True, seed: int = 0):
     """Probabilities with a controlled confidence/accuracy gap.
 
-    overconfident=True: confidence 0.95 but the prediction is right only 75%
-    of the time (ECE ≈ 0.20). overconfident=False: confidence 0.55 with 55%
-    accuracy (ECE ≈ 0, properly calibrated).
-    """
+ overconfident=True: confidence 0.95 but the prediction is right only 75%
+ of the time (ECE ≈ 0.20). overconfident=False: confidence 0.55 with 55%
+ accuracy (ECE ≈ 0, properly calibrated).
+ """
     rng = np.random.default_rng(seed)
     classes = ["CRITICAL", "NORMAL", "WARNING"]
     y_idx = rng.integers(0, 3, size=n)
@@ -71,8 +71,8 @@ def test_reliability_curve_shape_and_monotonicity() -> None:
 
 
 def test_calibrator_fitted_on_validation_reduces_ece_on_test() -> None:
-    """The §15/§24 acceptance: calibration (fit on validation only) improves
-    test-set calibration of overconfident probabilities."""
+    """The / acceptance: calibration (fit on validation only) improves
+ test-set calibration of overconfident probabilities."""
     proba, y, classes = _probabilities(1200, overconfident=True, seed=3)
     cut = len(proba) // 2
     val_p, val_y = proba[:cut], y[:cut]
