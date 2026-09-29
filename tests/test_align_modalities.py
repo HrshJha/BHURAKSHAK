@@ -17,7 +17,7 @@ def _windows(n: int, start_h: float = 0.0, step_h: float = 1.0) -> pd.DataFrame:
     return pd.DataFrame({"window_timestamp": start_h + step_h * np.arange(n, dtype=float)})
 
 
-def test_config_tolerances_match_prd() -> None:
+def test_config_tolerances() -> None:
     assert tolerance_for("insar") == 12.0, ": InSAR ±12 hours"
     assert tolerance_for("dgps") == 1.0, ": DGPS ±1 hour"
     with pytest.raises(AlignmentError):

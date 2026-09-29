@@ -1,33 +1,7 @@
-"""Development-only Data+ML pipeline — layered architecture.
+"""Development pipeline for validation, feature extraction, scoring, and alerts.
 
-Assembles the layer cake IN ORDER, on development data, with no
-stage bypassing the module that owns it:
-
-1. **validation** — `src/preprocessing.validation.validate_packets` on the
- raw node records (DQ flags: missing / duplicate / out-of-order /
- corrupted).
-2. **features** — `src.features.build_feature_store.build_feature_store`
- ( windows → Groups A–F, budget asserted).
-3. **Isolation Forest** — `src.anomaly.isolation_forest.train_isolation_forest`
- on healthy-baseline TRAIN windows only; the score is joined back (→).
-4. **spatial fusion** — Group C and neighbor confirmations use only
- nodes co-temporal within the same event/window; current single-node events
- provide no spatial confirmation.
-5. **physics check** — `src.physics.consistency.physics_engine` residuals for
- every window (Group F / ), evaluated on the same mesh coordinates.
-6. **XGBoost** — `src.risk.xgboost_model.train_risk_model` (: groups
- A–F + `anomaly_score` + `physics_residual`), trained on TRAIN, early-stopped
- on VALIDATION.
-7. **alert engine** — `src.risk.alert_engine.AlertEngine` over VALIDATION rows
- in window order (, config-driven, at most one escalation per update).
-8. **explainability** — `src.risk.explainability.emit_risk_output` per scored
- VALIDATION window (: level + probabilities + contributing signals, never a
- bare probability).
-
- discipline: this runner uses only TRAIN and VALIDATION rows. The burned
-legacy TEST split is never read for scoring; the locked corpus is reserved for
-scripts/final_eval.py. The entry point is:func:`run_pipeline`, consumed by scripts/run_pipeline.py;
-every stage's provenance (module + function) is recorded in the result.
+The locked evaluation corpus is reserved for the final evaluation script.
+Each stage records its module and function in the result provenance.
 """
 
 from __future__ import annotations

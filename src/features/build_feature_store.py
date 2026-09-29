@@ -1,21 +1,4 @@
-"""Feature store assembly —.
-
-Assembles the first-iteration feature matrix from Groups A–F over the 
-windowing of a raw node table, and **asserts the budget: 40–70 features
-inclusive** — failing loudly (``FeatureBudgetError``) if the assembled count
-falls outside the budget.
-
-Feature-count accounting (deterministic): the -exact names from Groups A,
-D, E, F plus Group C's eight names, plus Group B's names per channel
-(10 features × 3 movement channels) + the -exact bare set. Groups G–J are
-out of first-iteration scope (G/H arrive with Phase-4 modalities; J is
-ablation-gated per /).
-
-Also emits a model-input frame: window keys + selected features + the 
-labels (``anomaly_label`` majority, ``risk_label`` majority,
-``progression_label`` majority) for training. The guard in:func:`src.features.windowing.assert_windowed` is applied to the model input
-so raw rows can never flow downstream.
-"""
+"""Build the feature matrix from sensor windows and enabled feature groups."""
 
 from __future__ import annotations
 

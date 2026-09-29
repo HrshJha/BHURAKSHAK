@@ -1,26 +1,4 @@
-"""Explainability contribution breakdown —,.
-
-/: the system must never present a bare probability ("AI = 92%")
-without a contributing-signal breakdown — a functional requirement, not a UI
-nicety, because a black-box percentage is not actionable or defensible to a
-mine operator. This module makes structural:
-
--:func:`emit_risk_output` is the sanctioned way to emit a risk output; it
- returns the level, the probabilities and the explanation TOGETHER, and
- refuses (raises) when no contributing signals are supplied;
--:class:`RiskExplanation` renders -style lines ("+ high tilt velocity",
- "+ 5 neighbouring nodes anomalous", "+ InSAR deformation agreement",
- "+ physics residual low") with the numeric evidence kept alongside for
- auditability.
-
-Signal semantics come from a fixed catalogue of canonical signals:
-most raise risk when positive; ``physics_residual`` is the special case
-— a residual near zero (supplied normalised by the physics model's noise
-scale, i.e. a z-score) CONFIRMS the classification ("physically consistent")
-while a large residual suggests a sensor artifact and counts against the
-output. Signals outside the catalogue are included with an honest,
-direction-neutral bullet rather than a guessed influence.
-"""
+"""Build a signal breakdown for each risk prediction."""
 
 from __future__ import annotations
 

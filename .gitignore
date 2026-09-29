@@ -49,7 +49,7 @@ Thumbs.db
 .freebuff/
 .gemini/
 
-# Large regenerable data (fixall phase 5): regenerate via scripts, do not track
+# Large regenerable data: regenerate via scripts, do not track
 data/synthetic/synthetic_nodes.csv
 data/features/features_v2.parquet
 data/raw/sensors/tabletop/raw_sensor_log.csv

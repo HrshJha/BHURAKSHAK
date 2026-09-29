@@ -122,7 +122,7 @@ def test_ablation_feature_sets_resolve_in_order() -> None:
         "neighbor_mean", "neighbor_std", "neighbor_anomaly_fraction", "spatial_coherence",
         "local_gradient", "local_strain", "hotspot_density", "distance_to_subsidence_center",
     )), "Group C is gated because this corpus has no co-temporal neighbours"
-    assert len(full) == 15  # 5 + 10; Group C is gated on this corpus (Phase 2, /)
+    assert len(full) == 15  # 5 + 10; Group C is gated on this corpus
     a_only = _resolve_features(["A_physical"])
     assert a_only == ["tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain"]
 

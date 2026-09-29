@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""The sole one-use reader of ``data/heldout_locked/`` (Phase 8).
+"""Evaluate frozen models against the locked synthetic corpus.
 
-The lock is incremented before opening the corpus. A failed evaluation still
-burns the one-use set; reruns need the explicit ``--i-accept-burning-the-test-set``
-override, which permanently records the additional burn.
+The evaluation lock is incremented before opening the corpus. A failed run
+consumes the locked set; reruns require the explicit override.
 """
 from __future__ import annotations
 

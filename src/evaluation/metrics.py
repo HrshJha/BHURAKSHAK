@@ -1,32 +1,4 @@
-"""Evaluation metrics —.
-
-The metric surface for every study, ablation and notebook in the repo.
-Five families:
-
-- **Detection** (alert quality at the operating point): precision, recall,
- F1, and PR-AUC over the full score sweep. A confusion cell count rides
- along so no number is unexplained.
-
-- **Displacement error** ( names it explicitly): MAE, RMSE,
- max-abs-error and signed bias of predicted vs reference displacement.
-
-- **Spatial**: hotspot IoU (overlap of flagged node sets) and hotspot
- localisation error (how far the nearest predicted hotspot sits from each
- true one).
-
-- **Calibration**: Brier score, reliability curve and expected calibration
- error — re-exported from:mod:`src.risk.calibration` so has
- ONE implementation, not two drifting copies.
-
-- **Operational / temporal**: false alarms per day, median and P10 lead
- time, missed-event rate.
-
-**Accuracy is deliberately absent.** replaces accuracy with the
-class-balanced and cost-aware families above; in a subsidence mesh the
-healthy class dominates so accuracy flatters a model that never warns. This
-module exposes no ``accuracy`` function and the headline registry
-(:data:`HEADLINE_METRICS`) omits it — asserted by tests/test_metrics.py.
-"""
+"""Compute classification, alert, spatial, and subsidence evaluation metrics."""
 
 from __future__ import annotations
 

@@ -1,22 +1,4 @@
-"""Node clock-drift estimation and correction —.: "each uplink packet carries the node's local timestamp; the gateway also
-stamps its own receipt time. The two are compared per node to estimate drift,
-and a drift-correction offset is applied during feature generation rather than
-trusting raw node timestamps indefinitely — this offset is logged, not
-silently absorbed."
-
-Design:
-- ``estimate_clock_drift`` consumes per-node (node-stamp, receipt-stamp)
- pairs and produces a robust per-node offset estimate (median of the
- differences), plus an informational drift-rate (seconds per hour) from a
- linear fit.
-- Nodes with fewer than ``clock_drift.min_samples_for_estimate`` pairs are
- never corrected (flag ``INSUFFICIENT_SAMPLES``); nodes whose estimated
- offset exceeds ``clock_drift.max_abs_offset_seconds`` in magnitude are
- flagged and NOT corrected (the offset is treated as suspect, not absorbed).
-- ``apply_clock_correction`` shifts node timestamps by the estimated offset at
- feature-generation time and returns the applied-correction log — every
- applied offset is visible in ``drift_log`` output, never silently absorbed.
-"""
+"""Estimate and correct node clock drift from paired timestamps."""
 
 from __future__ import annotations
 

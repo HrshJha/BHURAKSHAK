@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fit and register the selected development-only model bundles for Phase 8."""
+"""Fit and register selected development models for evaluation."""
 from __future__ import annotations
 
 import json

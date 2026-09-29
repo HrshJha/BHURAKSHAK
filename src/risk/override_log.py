@@ -1,20 +1,4 @@
-"""Operator override logging — (manual override),.: an operator can force an acknowledgement/hold at a given level from
-the dashboard (e.g. during known maintenance or vibration events), logged
-with **operator ID and reason** — but they **cannot suppress the underlying
-model output from being recorded**. Every override therefore persists:
-
-- who (``operator_id``) and why (``reason``) — both required by config
- (``manual_override.requires_operator_id`` / ``requires_reason``);
-- what the model said (the recorded model level) and what the operator held
- it at (``overridden_level``), plus the node/region it applies to;
-- a monotonic UTC timestamp.
-
-The log is append-only (JSON Lines): records are never edited or removed,
-so the audit trail survives the session. Every entry carries the model's own
-level — suppression is structurally impossible because the record cannot be
-created without it (``suppresses_model_output`` is asserted False against
-configs/alerts.yaml at construction).
-"""
+"""Record operator acknowledgements and overrides."""
 
 from __future__ import annotations
 
@@ -67,7 +51,7 @@ class OverrideLog:
         cfg = alerts_config()["manual_override"] if config is None else config
         if bool(cfg.get("suppresses_model_output", False)):
             raise OverrideLogError(
-                "manual_override.suppresses_model_output must be false —  forbids "
+                "manual_override.suppresses_model_output must be false"
                 "suppressing the underlying model output"
             )
         self.requires_operator_id = bool(cfg.get("requires_operator_id", True))

@@ -1,17 +1,4 @@
-"""Inter-node displacement and strain —.
-
- strain ≈ Δd_ij / d_ij (from inter-node distance change d_ij → d'_ij)
-
-Kinematic model: a subsidence bowl pulls surface points horizontally toward
-the subsidence centre (convergence). Each node's ground position moves by
-
- u(p, t) = -factor · W(x, y, t) · (p − p0) / σ [metres]
-
-with `factor` from configs/physics.yaml (strain.horizontal_displacement_factor).
-Inter-node distance d_ij is recomputed from the displaced positions and strain
-is the fractional change. When W_max == 0 (t = 0, no extraction) the displaced
-positions equal the originals, so strain is exactly 0 everywhere.
-"""
+"""Derive inter-node displacement and strain around a simulated subsidence bowl; this represents horizontal subsidence movement."""
 
 from __future__ import annotations
 

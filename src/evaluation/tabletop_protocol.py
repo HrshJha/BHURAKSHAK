@@ -1,34 +1,4 @@
-"""Tabletop ground-truth protocol harness —.
-
-The tabletop rig validates the pipeline chain **against a physical
-ground-truth protocol**: each trial's ``run_id`` (``trial_id`` in the
-recorded data) links, end to end:
-
- rig actuator setting → independent reference measurement →
- raw sensor data → derived risk state
-
-Software harness only: operating the physical rig is out of workstream
-scope. The harness consumes RECORDED data in the schema produced
-by ``scripts/generate_tabletop_dataset.py`` (the seeded stand-in campaign
-lives in ``data/recorded/tabletop/`` — see its README); the SAME code runs
-unchanged on a real campaign's CSVs.
-
-Chain semantics (per trial):
-- **Actuator setting**: the knob-turn schedule (M8 pitch 1.25 mm/turn) —
- ``max_displacement_mm_target`` metadata plus the per-window actuator
- displacement implied by the knob columns of the raw log.
-- **Independent reference**: ``known_displacement_mm`` — mechanism truth at
- window end, measured OUTSIDE the sensor pipeline (the knob schedule), not
- derived from any sensor.
-- **Raw sensor data**: the 10 Hz accelerometer / gyro / ToF / ultrasonic log.
-- **Derived risk state**: the pipeline's windowed risk state computed from
- sensor features only.
-
-The acceptance quantity — **mesh-estimated vs reference displacement
-error** — is computed here as window-level error statistics of the sensor
-derived displacement vs ``known_displacement_mm``, with the honest caveat
-that the rig's "mesh" is 4 nodes, 2 of which are pure references.
-"""
+"""Validate tabletop trials against independent reference measurements."""
 
 from __future__ import annotations
 
@@ -46,7 +16,7 @@ __all__ = [
     "evaluate_tabletop",
 ]
 
-_KNOB_PITCH_MM = 1.25  # M8 thread pitch per full turn (plan )
+_KNOB_PITCH_MM = 1.25  # M8 thread pitch per full turn
 
 _REQUIRED_METADATA = ("trial_id", "condition", "max_displacement_mm_target",
                       "achieved_displacement_mm_TD1", "achieved_displacement_mm_TD2")
@@ -176,12 +146,7 @@ def displacement_error_vs_reference(
     *,
     nodes: tuple[str, ...] = ("N2", "N3"),
 ) -> dict[str, float]:
-    """Mesh-estimated vs reference displacement error ( acceptance).
-
- ``nodes``: the active sensor nodes whose ``known_displacement_mm`` is
- the independent reference (N2 ← TD1, N3 ← TD2; N1/N4 are pure
- references with zero truth and are excluded by default).
- """
+    """Compare mesh-estimated displacement with independent rig measurements."""
     for col in ("displacement_mm", "known_displacement_mm", "node_id"):
         if col not in windowed.columns:
             raise TabletopProtocolError(f"windowed data missing {col!r}")
@@ -209,12 +174,7 @@ def evaluate_tabletop(
     critical_mm: float = 35.0,
     active_nodes: tuple[str, ...] = ("N2", "N3"),
 ) -> dict:
-    """Full protocol run: link every trial, derive risk, score it.
-
- Returns a dict with the per-trial linkage records, the derived-risk
- confusion against the reference severity classes, and the 
- displacement-error statistics.
- """
+    """Compare mesh-estimated movement with independent rig measurements."""
     links = link_trials(metadata, windowed, raw)
     state = derived_risk_state(windowed, warning_mm=warning_mm, critical_mm=critical_mm)
     sel = state[state["node_id"].isin(active_nodes)]

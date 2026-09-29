@@ -114,7 +114,7 @@ def test_argmax_matches_plain_numpy_argmax_on_ordinary_inputs() -> None:
     assert values == {"NORMAL": 0.1, "WARNING": 0.7, "CRITICAL": 0.2}
 
 
-def test_catalogue_covers_the_prd_section22_examples() -> None:
+def test_catalogue_covers_documented_examples() -> None:
     for expected in ("tilt_velocity", "neighbour_anomaly_count", "displacement_trend", "insar_agreement", "physics_residual"):
         assert expected in SIGNAL_CATALOGUE
 

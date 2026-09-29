@@ -1,22 +1,4 @@
-"""Model registry —,,.: the system shall log every prediction with **model name, version,
-feature-schema version and training-dataset version** for traceability, plus
-a timestamp. This module makes that requirement structural:
-
--:meth:`ModelRegistry.register_model` stores a model entry under
- ``models/registry.json`` and REFUSES versions of the training dataset that
- do not resolve to an existing manifest (the hard requirement of: "without it, … model-registry traceability cannot actually be
- verified after the fact"). A feature-version mismatch with the manifest's
- ``feature_schema_version`` is likewise rejected;
--:meth:`ModelRegistry.log_prediction` emits prediction records that carry
- the five fields BY CONSTRUCTION — they are copied from the registered
- entry, so a logged prediction cannot omit them;
-- prediction records are append-only JSON Lines; the registry itself is JSON
- and reloaded on construction, so entries survive the session.
-
-Default locations follow 's artifact layout: the registry lives at
-``models/registry.json`` and dataset manifests are resolved from
-``data/synthetic/dataset_manifest.json``.
-"""
+"""Store model metadata and predictions with dataset and feature provenance."""
 
 from __future__ import annotations
 

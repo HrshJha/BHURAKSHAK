@@ -15,7 +15,7 @@ gate:
   ablation_id: null            # e.g. "ablation_J" under experiments/
   metric: null                 # the decision metric, e.g. "pr_auc"
   delta: null                  # measured effect of adding Group J (float)
-  decided_by: null             # task/reference that made the call
+  decided_by: null             # basis for the decision
   decided_on: null             # ISO date of the decision
   min_pr_auc_delta: 0.01       # inclusion threshold for the PR-AUC delta
 

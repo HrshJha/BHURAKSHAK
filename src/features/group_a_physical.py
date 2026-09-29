@@ -1,14 +1,4 @@
-"""Feature Group A — Physical — Group A,.
-
- Group A, exactly: ``tilt_x, tilt_y, tilt_magnitude, displacement, strain``.
-
-Mapping from the windowing engine (recorded deliberately): each name
-is the **window mean** of the corresponding raw channel over the 60-step
-model window. The temporal dynamics of the same channels are carried by
-Group B (slope/velocity/acceleration), so Group A is the window's physical
-state. The mapping is one-to-one and naming-exact — the acceptance check
-asserts the emitted names match verbatim.
-"""
+"""Compute physical sensor features for each window."""
 
 from __future__ import annotations
 

@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-""" — run the full chain on development (train/validation) data.
-
-Acceptance: `python scripts/run_pipeline.py` runs the full
-chain (validation → features → Isolation Forest → spatial fusion → physics
-check → XGBoost → alert engine → explainability) on development data. The old
-test split is burned; the new locked corpus is read only by final_eval.py.
-"""
+"""Run the scoring pipeline on training and validation data."""
 
 from __future__ import annotations
 
@@ -51,9 +45,6 @@ def main() -> int:
     print(f"\nprovenance per stage: {json.dumps(result.provenance, indent=2)}")
     print(f"summary → {OUT_JSON.relative_to(REPO_ROOT)}")
 
-    # the acceptance map is maintained by hand in
-    # reports/acceptance_criteria.md — print the pointer, don't duplicate it
-    print("\n acceptance map → reports/acceptance_criteria.md")
     return 0
 
 

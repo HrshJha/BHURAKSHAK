@@ -1,34 +1,4 @@
-"""Alert-engine state machine —,.: **no single reading can escalate risk straight to CRITICAL.** This
-module makes that requirement structural rather than aspirational:
-
-- each ``update`` moves a node's alert level by AT MOST ONE level, so even a
- maximally severe window from GREEN lands on WATCH — reaching CRITICAL takes
- at least one update per transition;
-- every transition fires only after its configured number of
- CONSECUTIVE qualifying windows (configs/alerts.yaml, — class
- thresholds and persistence counts are read from configuration, never
- hard-coded);
-- every configured ``requires`` condition FAILS CLOSED: a window that does
- not evidence it resets that transition's streak to zero.
-
-G-vocabulary mapping (user decision 2026-09-27, gaps //): the MVP
-risk model emits 3 classes while 's machine uses 4 alert levels.
-
- model NORMAL → alert GREEN
- model WARNING → fills BOTH the WATCH and the WARNING slots
- model CRITICAL → alert CRITICAL
-
-hence ``P(WATCH or higher) = 1 − P(NORMAL)`` and
-``P(WARNING or higher) = P(model WARNING) + P(model CRITICAL)``. WATCH is fed
-by weaker evidence than WARNING (lower class threshold, no spatial/physics
-confirmation required), so the state machine keeps all three 
-transitions intact while the 3-class model stays untouched. The final
-4-class vocabulary is a post-MVP change and would only widen this mapping.
-
-De-escalation hysteresis is (recovery deliberately slower than alarm);
-per-node → region roll-up is; operator overrides are. This
-module owns per-node escalation only.
-"""
+"""Apply configured persistence and evidence rules to risk predictions."""
 
 from __future__ import annotations
 

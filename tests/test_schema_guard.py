@@ -1,4 +1,4 @@
-"""Fixall Phase 3.1 — schema drift guard tests (both directions + manifest)."""
+"""schema drift guard tests (both directions + manifest)."""
 
 from __future__ import annotations
 

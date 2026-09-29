@@ -1,39 +1,4 @@
-"""Offline InSAR processing workflow — step 3, non-goal.: InSAR processing runs on the workstation, NEVER on the Raspberry Pi.
-Toolchain: pure NumPy/SciPy — rasterio/SNAP/ISCE are deliberately NOT
-dependencies (the precedent: simple, auditable implementations over
-heavy geospatial stacks for a small-area MVP). Every parameter comes from
-configs/insar.yaml.
-
-Pipeline per interferometric pair (all functions complex-domain unless noted):
-
-1. **coarseregister** — shift the secondary SLC onto the master grid by an
- integer pixel offset (orbit-accuracy coregistration for the MVP; the
- sub-pixel DEM-assisted refinement of full processors is documented as an
- assumption in docs/insar_workflow.md).
-2. **multi_look** — complex averaging (range × azimuth factors from config)
- for ~20 × 20 m ground resolution and speckle reduction.
-3. **interferogram** — master · conj(secondary); remove the flat-Earth
- phase ramp (a plane fit in range/azimuth — MVP-level orbital fringe
- removal).
-4. **power_spectrum_filter** — topographic-phase-independent noise
- filtering of the wrapped interferogram (non-linear spectral filter; the
- Goldstein-Werner power-spectrum approach, simplified).
-5. **coherence** — sliding-window |<m·s*>| / sqrt(<|m|²><|s|²>) with the
- configured window; low-coherence pixels are MASKED (never silently
- included — step 4).
-
-The small-baseline stack combines all pairs whose temporal baseline is
-within [min, max] days (config): per multi-look pixel, wrapped phases are
-temporally averaged (weighted by coherence) — phase unwrapping is SKIPPED
-in the MVP (documented honestly); PS points (amplitude-dispersion gate)
-get per-date displacement estimates relative to the highest-coherence /
-lowest-variance reference candidate outside mapped subsidence.
-
-Validation: the module is exercised on SYNTHETIC SLC stacks with a known
-deformation signal (the tests and the notebook-08 builder) — the
-processing recovers the imposed deformation, which validates the chain
-given real SLC scenes from 's credentialed download.
-"""
+"""Process an InSAR stack into a subsidence and deformation time series."""
 
 from __future__ import annotations
 
@@ -226,11 +191,7 @@ def coherence(master: np.ndarray, secondary: np.ndarray, window: tuple[int, int]
         coh = np.abs(num) / np.sqrt(np.maximum(den, np.finfo(float).eps))
     return np.clip(coh, 0.0, 1.0)
 def amplitude_dispersion(stack_amplitudes: np.ndarray) -> np.ndarray:
-    """Amplitude dispersion σ_A/μ_A per pixel across the stack (PS gate).
-
- ``stack_amplitudes`` is (n_dates,...) — the reduction is over axis 0,
- so 2-D (n_dates, n_pixels) and 3-D (n_dates, rows, cols) inputs both work.
- """
+    """Compute per-pixel amplitude dispersion across an image stack."""
     if stack_amplitudes.ndim < 2:
         raise InSARError("amplitude_dispersion expects (n_dates, ...) — one amplitude map per date")
     mean = stack_amplitudes.mean(axis=0)

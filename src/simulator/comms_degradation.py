@@ -1,14 +1,4 @@
-"""Packet loss & communication-failure modes —.
-
-Two distinct comms-degradation modes, distinct from ``SENSOR_FAULT``:
-
- random packet loss → ``DATA_QUALITY`` (individual packets missing)
- total link outage → ``COMMUNICATION_FAILURE`` (a node/link goes silent)
-
-Both operate as keep-masks over (node, timestep) readings; the label engine
- tags affected rows, and the generator drops lost packets so the
-missing-data handling in preprocessing sees realistic gaps.
-"""
+"""Simulate packet loss and communication failures."""
 
 from __future__ import annotations
 

@@ -1,12 +1,4 @@
-"""Spatial deformation kernel —.
-
- W(x, y) = exp( -[(x - x0)^2 + (y - y0)^2] / (2 * sigma^2) )
-
-A Gaussian influence-kernel approximation over the virtual mining panel,
-consistent with probability-integral / influence-function concepts used in
-the mining subsidence literature. sigma is derived from the configured
-influence radius (configs/physics.yaml), never hard-coded.
-"""
+"""Compute the spatial deformation kernel for a subsidence bowl."""
 
 from __future__ import annotations
 

@@ -92,7 +92,7 @@ feature_groups:
     - persistence
     - change_point_score
     # per-channel expansions actually emitted by the windowing engine
-    # (fixall 3.1: every emitted column is declared — closes the schema drift)
+    # (every emitted column is declared to prevent schema drift)
     - tilt_x_rolling_mean
     - tilt_x_rolling_std
     - tilt_x_rolling_min
@@ -177,7 +177,7 @@ feature_groups:
     gate: ablation_required
 
 # target budget for the first model iteration
-# Gated groups (fixall 3.1): declared in the schema but intentionally absent
+# Gated groups: declared in the schema but intentionally absent
 # from the default feature store, with the reason. The drift guard
 # (src/features/schema_guard.py) treats these as allowed-absent.
 gates:

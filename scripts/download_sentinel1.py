@@ -1,21 +1,5 @@
 #!/usr/bin/env python3
-""" — Acquire the Sentinel-1 SLC scene stack ( step 2).
-
-Reads the FIXED geometry from configs/insar.yaml: track 121,
-descending, Jharia bbox, 2026 acquisition window. Two modes:
-
- inventory (default) — query the Copernicus Data Space Ecosystem OData
- catalogue anonymously and write data/raw/sentinel1/inventory_manifest.json
- listing every matching slice: date, track, geometry, product id, size.
-
- download — additionally fetch each product's SLC zip. This REQUIRES
- Copernicus credentials (env CDSE_USERNAME / CDSE_PASSWORD or --username /
- --password): product download is an authenticated endpoint. Tokens are
- requested from the CDSE identity service; nothing is hard-coded.
-
-Usage:.venv/bin/python scripts/download_sentinel1.py # inventory
- CDSE_USERNAME=... CDSE_PASSWORD=....venv/bin/python scripts/download_sentinel1.py --download
-"""
+"""Download Sentinel-1 scenes using configured geometry and date filters."""
 
 from __future__ import annotations
 
@@ -194,7 +178,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--download", action="store_true", help="download scenes (requires credentials)")
     ap.add_argument("--limit", type=int, default=None, help="download only the first N scenes")
-    # Credentials are env-only (fixall 2.3): argv values are visible in process
+    # Credentials are env-only  argv values are visible in process
     # listings. CDSE_USERNAME / CDSE_PASSWORD are read at call time.
     username = os.environ.get("CDSE_USERNAME", "")
     password = os.environ.get("CDSE_PASSWORD", "")

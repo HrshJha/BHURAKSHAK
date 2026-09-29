@@ -1,7 +1,4 @@
-"""Acceptance tests for the Phase 0 config files.
-
-These encode the values verbatim so that any config drift from,, and / fails loudly.
-"""
+"""Check configuration files against their expected values."""
 
 from __future__ import annotations
 
@@ -21,7 +18,7 @@ from src.config import (
 # — configs/sampling.yaml must match exactly
 
 
-def test_sampling_matches_prd() -> None:
+def test_sampling_config_values() -> None:
     cfg = sampling_config()
     ch = cfg["channels"]
 
@@ -52,7 +49,7 @@ def test_sampling_node_metadata_piggybacks() -> None:
 # — configs/alerts.yaml must match exactly
 
 
-def test_alerts_match_prd() -> None:
+def test_alert_config_values() -> None:
     cfg = alerts_config()
     esc = escalation_thresholds()
 

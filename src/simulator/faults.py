@@ -1,16 +1,4 @@
-"""Sensor-fault injection —, (``fault_label``).
-
-Five fault modes, each injectable and each tagged ``SENSOR_FAULT``:
-
- BIAS — constant offset from onset
- STUCK — readings flatline at the pre-fault level
- DROPOUT — NaN runs (missing data)
- SPIKE — isolated extreme outliers
- DRIFT — slowly growing offset (sensor slow drift)
-
-Without these, Isolation Forest would treat any sensor malfunction as ground
-failure. Parameters come from configs/physics.yaml (faults block).
-"""
+"""Inject labeled bias, stuck, dropout, spike, and drift faults."""
 
 from __future__ import annotations
 

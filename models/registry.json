@@ -27,11 +27,11 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytes/test_load_refuses_schema_misma0/m.joblib",
+      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-169/test_load_refuses_schema_misma0/m.joblib",
       "feature_version": "v2",
       "model_name": "test_model",
       "model_version": "1.0.0",
-      "registered_at": "2026-09-28T12:54:20.189645+00:00",
+      "registered_at": "2026-09-29T14:11:19.857980+00:00",
       "seed": 42,
       "split_name": "regime_holdout",
       "training_dataset_version": "synthetic-v2-label-blind"

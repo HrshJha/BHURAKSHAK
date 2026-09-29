@@ -15,7 +15,7 @@ on groups A–F + signals), then scored on ONE feature window: per-call latency
 of `anomaly_score`, `predict_proba` and the full IF→XGBoost chain over 2,000
 timed calls after warm-up (p50/p95), plus peak RSS (post-training footprint
 and the inference-time delta) and pickled artifact sizes. Numbers are also
-written to experiments/inference_profile.json for the acceptance map.
+written to experiments/inference_profile.json for the run summary.
 """
 
 from __future__ import annotations

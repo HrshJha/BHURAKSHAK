@@ -105,7 +105,7 @@ def enrich_with_insar(store: pd.DataFrame) -> pd.DataFrame:
  Static per-node join, honestly: the product is ONE acquisition and the
  store's timestamps are event-local hours, so there is no wall-clock key.
  Sentinel-1 enters arm F as what a deployment knows per node from the
- latest acquisition — recorded in ``deviations_from_prd``; a real
+ latest acquisition — recorded in ``deviations``; a real
  temporal stack waits for 's scenes.
  """
     insar = pd.read_csv(INSAR_CSV)
@@ -200,7 +200,7 @@ def evaluate_arm(arm_id: str, features: list[str], store: pd.DataFrame) -> dict:
 
 
 def main() -> int:
-    raise SystemExit("Legacy ablation reads the burned test split; rerun only through the Phase 9 report workflow.")
+    raise SystemExit("This legacy ablation script reads a previously used test split and cannot produce valid final results.")
     store = pd.read_parquet(STORE)
     splits = pd.read_csv(SPLITS)
     store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
@@ -237,7 +237,7 @@ def main() -> int:
             "hotspot_match_radius_m": HOTSPOT_RADIUS_M,
             "window_stride_hours": STRIDE_HOURS,
             "event_span_days": EVENT_DAYS,
-            "deviations_from_prd": [
+            "deviations": [
                 "No +DGPS arm:  makes DGPS sparse and evaluation-target-only "
                 "( assert_evaluation_only); it cannot be a model input at scale.",
                 "No temporal-DL/GNN arms: / architectures are what this ablation gates.",

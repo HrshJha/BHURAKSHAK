@@ -1,22 +1,4 @@
-"""Versioned model artifacts with integrity + metadata (fixall Phase 2).
-
-Closes audit MEDIUM (artifacts carry no version/schema) and MEDIUM
-(unauthenticated pickle). Every saved bundle embeds an block
-
- model_name, model_version, feature_version, training_dataset_version,
- timestamp, split_name, seed
-
-plus ``preprocessing`` (what the loader must apply before the model sees
-data: ``"standardise"`` for bundles carrying a fitted scaler, ``"none"`` for
-scale-invariant models). A sha256 sidecar (``<path>.sha256``) is written at
-save time and verified at load time — a tampered or truncated file fails
-loudly instead of silently deserialising.
-
-Saves register through:mod:`src.risk.model_registry` when the dataset
-version resolves, so ``models/registry.json`` is the single index of what is
-shipped and every prediction path can log records from a registered
-entry.
-"""
+"""Save and load model bundles with schema metadata and integrity checks."""
 
 from __future__ import annotations
 
@@ -156,7 +138,7 @@ def load_model_artifact(path: str | Path, *, expected_schema_version: str | None
     payload = joblib.load(path)
     for field in ("fr14", "preprocessing", "features", "model"):
         if field not in payload:
-            raise ArtifactError(f"artifact {path.name} lacks the required '{field}' block (pre-fixall bundle?)")
+            raise ArtifactError(f"artifact {path.name} lacks the required '{field}' block (invalid bundle?)")
     fr14 = payload["fr14"]
     missing = [f for f in FR14_PAYLOAD_FIELDS if f not in fr14]
     if missing:
