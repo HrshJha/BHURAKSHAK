@@ -1,4 +1,6 @@
-# BHURAKSHAK bounded optimization report
+# Historical bounded optimization report — superseded for current claims
+
+> This report records the bounded v2 optimization experiment and its consumed test. Keep it as historical evidence; do not present its results as current or retune from its test. The newer v3 report defines a different local-severity target and protocol: [reports/generalization_v3/final_report.md](../generalization_v3/final_report.md). The old scenario-label target remains unmet in v3.
 
 The candidate improved unseen-scenario Critical recall but **did not meet the acceptance target**. On the same new synthetic test, the exact original frozen XGBoost artifact achieved 10.67% Critical recall / 13.11% Normal FPR; the candidate achieved **29.22% / 7.44%**. Required: >=89% / <=5%. The candidate remains experimental; deployed models and previous evidence were preserved. No field effectiveness or collapse-time prediction is demonstrated.
 

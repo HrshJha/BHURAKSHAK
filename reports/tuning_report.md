@@ -1,4 +1,6 @@
-# Hyperparameter tuning report
+# Historical v2 hyperparameter tuning report — superseded for current claims
+
+> This report documents development selection and one already-consumed v2 synthetic holdout. It is retained for reproducibility of that version, not as the current model result. The v3 task changes the target to local displacement severity and has its own grouped protocol and one-use test; see the [current v3 report](generalization_v3/final_report.md). The v2 test must not be reused for tuning.
 
 ## Development-only results
 
