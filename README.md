@@ -61,6 +61,8 @@ flowchart LR
 
 The synthetic v3 generator supports virtual zone conditions for analysis. A virtual zone is not a claim that additional physical sensors or trapdoors exist. Tabletop records are synthetic stand-ins and the physical rig campaign has not been run.
 
+The related SubSense console at `/Users/harshkumarjha/Documents/printf` now includes a software-only Trapdoor Prototype view. It uses the recorded M8 × 1.25 mm screw pitch and calls `scripts/trapdoor_inference_server.py` to extract the existing tabletop window features and run the frozen tabletop RF/IF artifacts. The view models one door, marks unverified dimensions and soil response as assumptions, and labels sensor values and predictions simulated. It does not add a physical hardware integration or change any model, locked test, or evaluation artifact. See that console's `TRAPDOOR_PROTOTYPE.md` for run instructions and assumptions.
+
 ## Repository map
 
 | Path | Purpose |
