@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""T-049 — build and execute notebooks/05_xgboost_risk_model.ipynb.
+""" — build and execute notebooks/05_xgboost_risk_model.ipynb.
 
-Acceptance (TASKS.md T-049): the notebook executes end-to-end and demonstrates
+Acceptance: the notebook executes end-to-end and demonstrates
 XGBoost beating threshold-rule and logistic-regression baselines on PR-AUC and
 F1 on the held-out unseen-parameter-regime split (never a random split).
 
 Pipeline exercised end-to-end on real feature-store data:
-  §10 windows → §23 synthetic split (top deformation regime held out) →
-  T-043 IF anomaly scores → §15 XGBoost (groups A–F + anomaly_score +
-  physics_residual) → §15 baselines on the SAME matrix → T-048 calibration →
-  §24 metrics (PR-AUC/macro-F1 per class; accuracy never the headline).
+ windows → synthetic split (top deformation regime held out) →
+ IF anomaly scores → XGBoost (groups A–F + anomaly_score +
+ physics_residual) → baselines on the SAME matrix → calibration →
+ metrics (PR-AUC/macro-F1 per class; accuracy never the headline).
 
 Idempotent: rebuilds and re-executes the notebook in place.
 """
@@ -30,27 +30,27 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "05_xgboost_risk_model.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 05 — XGBoost Risk Model vs Baselines (PRD §15, §24, §35)
+        """# 05 — XGBoost Risk Model vs Baselines ( , , )
 
-**Claim under test:** the §15 XGBoost risk classifier beats threshold-rule and
+**Claim under test:** the  XGBoost risk classifier beats threshold-rule and
 logistic-regression baselines on **PR-AUC and macro-F1**, evaluated on the
 held-out **unseen-parameter-regime split** — events from the top of the
-max-deformation range that never appear in training (§23's synthetic split;
+max-deformation range that never appear in training ('s synthetic split;
 random row-shuffling is explicitly disallowed).
 
-**Split composition (each model under its own §23 discipline):**
-- the Isolation Forest keeps the **event-family split** persisted by T-045
+**Split composition (each model under its own  discipline):**
+- the Isolation Forest keeps the **event-family split** persisted by 
   (the high-deformation regime bands contain no stable events, so a
   regime-based healthy validation set is empty by construction — the IF
   trains/calibrates on its own split's healthy windows);
-- XGBoost + baselines use the **§23 synthetic parameter-regime split**:
+- XGBoost + baselines use the ** synthetic parameter-regime split**:
   train on deformation ≤ 60% of range, validate on 60–80%, test on the held-out
   top 20% that training never saw.
 
-**Inputs honoured (§15 contract):** feature groups A–F + the Isolation Forest
-`anomaly_score` (T-043) + `physics_residual` (T-040). Calibration (T-048) is
+**Inputs honoured ( contract):** feature groups A–F + the Isolation Forest
+`anomaly_score` () + `physics_residual` (). Calibration () is
 fitted on the validation split only. **Accuracy is never the headline metric**
-(§24 — severe NORMAL imbalance)."""
+( — severe NORMAL imbalance)."""
     ),
     new_code_cell(
         """import sys
@@ -72,12 +72,12 @@ from src.risk.xgboost_model import train_risk_model
 REPO = Path.cwd().parent
 df = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
 splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
-# keep the T-045 EVENT-FAMILY split for the Isolation Forest
+# keep the  EVENT-FAMILY split for the Isolation Forest
 df = df.merge(splits.rename(columns={"split": "split_family"}), on="event_id", how="left")
 events = pd.read_csv(REPO / "data" / "synthetic" / "synthetic_events.csv")
 
-# §23 synthetic parameter-regime split: within each event TYPE, hold out the
-# top of that type's max-deformation range (mirroring §23's "train σ=5-20,
+#  synthetic parameter-regime split: within each event TYPE, hold out the
+# top of that type's max-deformation range (mirroring 's "train σ=5-20,
 # test σ=22-30" — a regime band per class, so every risk class stays present
 # in every split while the training regime stops short of the test regime).
 meta = events.rename(columns={"id": "event_id"})[["event_id", "type", "max_deformation"]]
@@ -127,7 +127,7 @@ assert (risk_by_split > 0).all().all(), "regime split must keep all risk classes
     new_code_cell(
         """from src.anomaly.isolation_forest import train_isolation_forest
 
-# IF trains/calibrates on the EVENT-FAMILY split (T-045's persisted splits):
+# IF trains/calibrates on the EVENT-FAMILY split ('s persisted splits):
 # the regime bands contain no stable events, so the IF must use its own split.
 # Its unsupervised scores are then valid for every window, including the
 # regime-split test events the risk model holds out.
@@ -144,7 +144,7 @@ print(f"XGBoost inputs ({len(xgb.features)}): {xgb.features}")
 print("classes:", xgb.classes)"""
     ),
     new_markdown_cell(
-        "## 2 — Baselines on the SAME feature matrix (§15/§35), tuned on validation only"
+        "## 2 — Baselines on the SAME feature matrix (/), tuned on validation only"
     ),
     new_code_cell(
         """train_df = df[df.split == "train"]
@@ -166,7 +166,7 @@ val_pred = {
 }
 print("models fitted:", list(test_pred))"""
     ),
-    new_markdown_cell("## 3 — §24 headline metrics on held-out unseen-regime events"),
+    new_markdown_cell("## 3 —  headline metrics on held-out unseen-regime events"),
     new_code_cell(
         """CLASSES = xgb.classes  # alphabetical: CRITICAL, NORMAL, WARNING
 y_true = test_df["risk_label"].to_numpy()
@@ -204,9 +204,9 @@ print(f"macro-F1  XGBoost={f1_xgb:.4f}  Logistic={f1_log:.4f}  ThresholdRule={f1
 beats_rule = f1_xgb > f1_rule
 beats_log = f1_xgb > f1_log
 print(f"XGBoost beats ThresholdRule: {beats_rule} | beats Logistic: {beats_log}")
-assert beats_rule and beats_log, "§35: XGBoost must beat threshold-rule and logistic baselines\""""
+assert beats_rule and beats_log, ": XGBoost must beat threshold-rule and logistic baselines\""""
     ),
-    new_markdown_cell("## 4 — Calibration (T-048): fitted on validation, applied to test"),
+    new_markdown_cell("## 4 — Calibration (): fitted on validation, applied to test"),
     new_code_cell(
         """val_proba = xgb.predict_proba(val_df)
 cal = fit_probability_calibrator(val_proba, val_df["risk_label"], xgb.classes)
@@ -233,7 +233,7 @@ plt.show()"""
     ),
     new_markdown_cell("## Verdict"),
     new_code_cell(
-        """print("T-049 XGBOOST RISK MODEL vs BASELINES")
+        """print(" XGBOOST RISK MODEL vs BASELINES")
 print(f"  split: unseen-parameter-regime — top magnitude band per variable type, "
       f"event-identity holdout for constant-magnitude types ({n_test_types} types)")
 print(f"  events: train={n.train} / validation={n.validation} / test={n.test}")
@@ -241,7 +241,7 @@ print(f"  XGBoost macro-F1 {f1_xgb:.4f} vs Logistic {f1_log:.4f} / ThresholdRule
 print(f"  PR-AUC macro {pr_auc_macro:.4f} (per-class: {[f'{c}:{pr_auc[c]:.3f}' for c in CLASSES]})")
 print(f"  calibration: ECE {ece_raw:.4f} -> {ece_cal:.4f} (validation-fitted)")
 verdict = beats_rule and beats_log
-print(f"  XGBoost beats both §15 baselines: {verdict}")
+print(f"  XGBoost beats both  baselines: {verdict}")
 assert verdict"""
     ),
 ]

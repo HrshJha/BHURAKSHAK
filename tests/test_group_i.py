@@ -1,4 +1,4 @@
-"""T-066 — Feature Group I (terrain / mine geometry) tests."""
+""" — Feature Group I (terrain / mine geometry) tests."""
 
 from __future__ import annotations
 

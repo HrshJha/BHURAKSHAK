@@ -1,4 +1,4 @@
-"""Feature-source registry and deployment allow-list (FR-14 / NFR-6)."""
+"""Feature-source registry and deployment allow-list."""
 
 from __future__ import annotations
 

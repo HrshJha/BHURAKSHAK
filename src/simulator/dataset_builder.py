@@ -1,16 +1,16 @@
-"""Dataset builder — PRD §10 deliverables 1 & 2 (T-022, T-023).
+"""Dataset builder — deliverables 1 & 2.
 
 Produces, under ``data/synthetic/``:
 
-* ``synthetic_nodes.csv`` — raw per-node-per-timestep channels (§11 fields),
-  one row per node per timestep, ≥10,000 generated sequences (§10 scale);
-  row count matches the accompanying ``dataset_manifest.json``.
-* ``synthetic_events.csv`` — event metadata with exactly the §10 columns:
-  ``id, start_time, end_time, type, severity, center, max_deformation, rate``;
-  every event ``id`` referenced in ``synthetic_nodes.csv`` resolves.
-* ``dataset_manifest.json`` — §10.1 manifest (T-021).
+* ``synthetic_nodes.csv`` — raw per-node-per-timestep channels ( fields),
+ one row per node per timestep, ≥10,000 generated sequences ( scale);
+ row count matches the accompanying ``dataset_manifest.json``.
+* ``synthetic_events.csv`` — event metadata with exactly the columns:
+ ``id, start_time, end_time, type, severity, center, max_deformation, rate``;
+ every event ``id`` referenced in ``synthetic_nodes.csv`` resolves.
+* ``dataset_manifest.json`` — manifest.
 
-Sequence accounting (Gap G-4): one *sequence* = one (scenario, node, event-
+Sequence accounting (Gap ): one *sequence* = one (scenario, node, event-
 instance) multivariate time series of ``steps_per_day × duration_days``
 timesteps. The builder emits ``sequences_per_scenario × n_nodes`` sequences;
 with the default 16 scenarios × 44 sequences × 400 nodes this is ≥10,000
@@ -84,9 +84,9 @@ def build_dataset(
 ) -> dict[str, Any]:
     """Generate the synthetic dataset and write all three gate artefacts.
 
-    ``nodes_limit`` exists for smoke tests only; production runs use the full
-    400-node mesh from config.
-    """
+ ``nodes_limit`` exists for smoke tests only; production runs use the full
+ 400-node mesh from config.
+ """
     out = Path(output_dir)
     out.mkdir(parents=True, exist_ok=True)
 

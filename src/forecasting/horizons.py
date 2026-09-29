@@ -1,11 +1,11 @@
-"""§16 forecast-horizon resolution (T-078) — NFR-6 discipline.
+""" forecast-horizon resolution — discipline.
 
-The five §16 horizons (next-window, 30 min, 1 h, 6 h, 24 h) live in
-configs/forecasting.yaml expressed in MINUTES and are resolved here to §10
-window-steps using the §9.1 window grid interval
+The five horizons (next-window, 30 min, 1 h, 6 h, 24 h) live in
+configs/forecasting.yaml expressed in MINUTES and are resolved here to 
+window-steps using the window grid interval
 (configs/preprocessing.yaml → resampling.grid_interval_minutes). No horizon
 value is hard-coded anywhere under ``src/`` — a different grid or a changed
-PRD horizon only requires editing YAML (asserted by
+ horizon only requires editing YAML (asserted by
 tests/test_forecast_horizons.py).
 """
 
@@ -21,22 +21,22 @@ __all__ = [
     "horizons_in_steps",
 ]
 
-#: The five §16 horizons in config-key order — the order forecasts and
+#: The five horizons in config-key order — the order forecasts and
 #: ``forecast_{channel}_h{steps}`` feature columns are emitted in.
 HORIZON_ORDER = ("next_window", "minutes_30", "hours_1", "hours_6", "hours_24")
 
 
 class HorizonError(ValueError):
-    """Raised on an invalid or incomplete §16 horizon configuration."""
+    """Raised on an invalid or incomplete horizon configuration."""
 
 
 def configured_horizon_minutes() -> dict[str, int]:
-    """The §16 horizon minutes exactly as configured (all five keys required)."""
+    """The horizon minutes exactly as configured (all five keys required)."""
     cfg = forecasting_config()["horizons"]
     missing = [k for k in HORIZON_ORDER if k not in cfg]
     if missing:
         raise HorizonError(
-            f"configs/forecasting.yaml horizons missing §16 keys: {missing}"
+            f"configs/forecasting.yaml horizons missing  keys: {missing}"
         )
     out: dict[str, int] = {}
     for key in HORIZON_ORDER:
@@ -48,7 +48,7 @@ def configured_horizon_minutes() -> dict[str, int]:
 
 
 def grid_interval_minutes() -> float:
-    """The §9.1 window-grid interval the horizons are resolved against."""
+    """The window-grid interval the horizons are resolved against."""
     value = float(load_config("preprocessing")["resampling"]["grid_interval_minutes"])
     if value <= 0:
         raise HorizonError("grid_interval_minutes must be > 0")
@@ -56,14 +56,14 @@ def grid_interval_minutes() -> float:
 
 
 def horizons_in_steps(grid_minutes: float | None = None) -> tuple[int, ...]:
-    """Resolve the §16 horizons to §10 window-steps (ascending, de-duplicated).
+    """Resolve the horizons to window-steps (ascending, de-duplicated).
 
-    ``next_window`` (0 minutes in config) is by definition exactly 1 step.
-    Every longer horizon must land on the window grid — a multiple of the
-    §9.1 grid interval — otherwise the resolution raises rather than silently
-    forecasting to a timestamp no window exists for. With the §8.3 default
-    10-minute grid the five §16 horizons resolve to (1, 3, 6, 36, 144).
-    """
+ ``next_window`` (0 minutes in config) is by definition exactly 1 step.
+ Every longer horizon must land on the window grid — a multiple of the
+ grid interval — otherwise the resolution raises rather than silently
+ forecasting to a timestamp no window exists for. With the default
+ 10-minute grid the five horizons resolve to (1, 3, 6, 36, 144).
+ """
     if grid_minutes is None:
         grid_minutes = grid_interval_minutes()
     minutes = configured_horizon_minutes()

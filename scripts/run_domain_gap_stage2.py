@@ -1,35 +1,35 @@
 #!/usr/bin/env python3
-"""T-074 — domain-gap Stage 2 (synthetic → tabletop) → experiments/domain_gap_stage2.json.
+""" — domain-gap Stage 2 (synthetic → tabletop) → experiments/domain_gap_stage2.json.
 
-§23.2 Stage 2: the model trained on synthetic data runs **UNMODIFIED** on
+ Stage 2: the model trained on synthetic data runs **UNMODIFIED** on
 real tabletop sensor data and its risk classification is scored against the
-§23.1 independent ground truth.
+ independent ground truth.
 
-**Data provenance (honest):** the physical §23.1 rig campaign is out of
+**Data provenance (honest):** the physical rig campaign is out of
 workstream scope, so the "tabletop sensor data" here is the RECORDED
 STAND-IN (``data/recorded/tabletop/raw_sensor_log.csv``, seeded — see the
 folder README). The harness is the deliverable: point it at a real
 campaign's CSVs with the same schema and nothing else changes.
 
-Bridge (raw 10 Hz log → §10 windowing → feature emitters → model):
+Bridge (raw 10 Hz log → windowing → feature emitters → model):
 
 - ``event_id`` = trial_id; ``node_id`` = N1..N4; ``timestamp`` = hours
-  (10 Hz samples on the 1-minute §10 grid interval).
+ (10 Hz samples on the 1-minute grid interval).
 - Channels ported with per-node 2 s re-baselining (the rig protocol's own
-  baseline rule): ``displacement`` = ultrasonic distance − baseline (mm);
-  ``tilt_x`` = roll, ``tilt_y`` = pitch (deg); ``tilt_magnitude`` =
-  hypot(roll, pitch); ``strain`` = ToF crack-opening delta (mm) — the
-  physical analog of the synthetic horizontal-convergence channel, recorded
-  as a substitution; ``vibration_rms`` = |a| deviation from the node's
-  median magnitude (g) so units match the synthetic channel.
-- §10 windowing (config: 60 steps / stride 10) + Group A/B emitters run
-  UNCHANGED. Groups C (needs mesh x/y the rig lacks), F (physics engine is
-  a mine-panel model, meaningless on a tabletop) are honestly ABSENT —
-  the model's resolver skips absent groups, which is part of what Stage 2
-  measures (feature-scarce transfer).
+ baseline rule): ``displacement`` = ultrasonic distance − baseline (mm);
+ ``tilt_x`` = roll, ``tilt_y`` = pitch (deg); ``tilt_magnitude`` =
+ hypot(roll, pitch); ``strain`` = ToF crack-opening delta (mm) — the
+ physical analog of the synthetic horizontal-convergence channel, recorded
+ as a substitution; ``vibration_rms`` = |a| deviation from the node's
+ median magnitude (g) so units match the synthetic channel.
+- windowing (config: 60 steps / stride 10) + Group A/B emitters run
+ UNCHANGED. Groups C (needs mesh x/y the rig lacks), F (physics engine is
+ a mine-panel model, meaningless on a tabletop) are honestly ABSENT —
+ the model's resolver skips absent groups, which is part of what Stage 2
+ measures (feature-scarce transfer).
 - Scoring: predicted 3-state risk vs the reference state from
-  ``known_displacement_mm`` (T-072 collapse: 0 → NORMAL, 1–2 → WARNING,
-  3 → CRITICAL), plus the §23.1 displacement-error statistics.
+ ``known_displacement_mm`` ( collapse: 0 → NORMAL, 1–2 → WARNING,
+ 3 → CRITICAL), plus the displacement-error statistics.
 """
 
 from __future__ import annotations
@@ -67,7 +67,7 @@ BASELINE_MS = 2000.0  # rig protocol: first 2 s of every trial is the baseline
 
 
 def bridge_raw_to_series(raw: pd.DataFrame) -> pd.DataFrame:
-    """Raw 10 Hz log → per-sample channel series on the §10 time axis (hours)."""
+    """Raw 10 Hz log → per-sample channel series on the time axis (hours)."""
     out_frames = []
     for (trial, node), g in raw.groupby(["trial_id", "node_id"], sort=False):
         g = g.sort_values("timestamp_ms", kind="stable")
@@ -106,11 +106,11 @@ def bridge_raw_to_series(raw: pd.DataFrame) -> pd.DataFrame:
 def reference_state_at_windows(windowed: pd.DataFrame, ref: pd.DataFrame) -> pd.DataFrame:
     """Attach the reference displacement/state to each bridged window.
 
-    ``ref`` is the rig's own 2 s/1 s window grid with ``known_displacement_mm``
-    and ``severity_class``. Each §10 window is matched to the rig window whose
-    span CONTAINS the §10 window's end (tolerance 1 s); unmatched windows
-    carry NaN reference and are excluded from scoring (counted honestly).
-    """
+ ``ref`` is the rig's own 2 s/1 s window grid with ``known_displacement_mm``
+ and ``severity_class``. Each window is matched to the rig window whose
+ span CONTAINS the window's end (tolerance 1 s); unmatched windows
+ carry NaN reference and are excluded from scoring (counted honestly).
+ """
     ref = ref.copy()
     ref["_span_end_ms"] = ref["window_start_ms"] + 2000
     parts = []
@@ -141,7 +141,7 @@ def main() -> int:
     ref = pd.read_csv(WINDOWED_REF)
     print(f"raw log: {len(raw):,} samples, {raw.trial_id.nunique()} trials × {raw.node_id.nunique()} nodes @10 Hz")
 
-    # the model: trained on the SYNTHETIC store (§23 event split), unmodified
+    # the model: trained on the SYNTHETIC store ( event split), unmodified
     store = pd.read_parquet(STORE)
     splits = pd.read_csv(SPLITS)
     store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
@@ -166,14 +166,14 @@ def main() -> int:
     classes = list(model.classes)
     print(f"A/B model trained on synthetic store: {len(store):,} windows, classes {classes}")
 
-    # DIAGNOSTIC model: the full §15 contract, fed all-NaN for the modalities
+    # DIAGNOSTIC model: the full contract, fed all-NaN for the modalities
     # the rig cannot provide (C/D/E/F). Measures the modality-scarcity effect,
     # NOT the sensor domain gap — reported separately, never as the headline.
     model_full = train_risk_model(store)
 
     series = bridge_raw_to_series(raw)
     windowed = build_windows(series, channels=BRIDGE_CHANNELS, labels=()).df
-    print(f"bridged windows: {len(windowed):,} (60-sample §10 windows over {windowed.event_id.nunique()} trials)")
+    print(f"bridged windows: {len(windowed):,} (60-sample  windows over {windowed.event_id.nunique()} trials)")
 
     # reference matching FIRST (needs window_end, which the emitters drop)
     windowed_ref = reference_state_at_windows(windowed, ref)
@@ -227,7 +227,7 @@ def main() -> int:
         y_score=p_crit[ok],
     )
 
-    # §23.1 displacement error: bridged sensor displacement vs mechanism truth
+    # displacement error: bridged sensor displacement vs mechanism truth
     err_frame = scored[scored["node_id"].isin(("N2", "N3"))][["displacement_mean", "known_displacement_mm"]].rename(
         columns={"displacement_mean": "displacement_mm"}
     ).dropna()
@@ -236,25 +236,25 @@ def main() -> int:
         nodes=("N2",),
     )
 
-    # in-regime comparison point (T-068 event-split test band, T-070 numbers)
+    # in-regime comparison point ( event-split test band, numbers)
     abl = json.load(open(REPO_ROOT / "experiments" / "ablation_a_to_f.json"))
     e_arm = abl["arms"]["E_add_physics"]
 
     payload = {
         "metadata": {
-            "task": "T-074 (§23.2 domain-gap Stage 2: synthetic → tabletop)",
+            "task": " ( domain-gap Stage 2: synthetic → tabletop)",
             "data_provenance": (
                 "RECORDED STAND-IN: data/recorded/tabletop/raw_sensor_log.csv is the seeded "
-                "output of scripts/generate_tabletop_dataset.py (seed 42). The physical §23.1 "
+                "output of scripts/generate_tabletop_dataset.py (seed 42). The physical  "
                 "rig campaign is out of workstream scope; a real campaign's CSVs with the "
                 "same schema run through this script unchanged."
             ),
             "status": "conditionally_executed (harness verified; real-hardware validation pending)",
-            "model": "§15 XGBoost trained on the synthetic store (T-068 event split) — run UNMODIFIED",
+            "model": " XGBoost trained on the synthetic store ( event split) — run UNMODIFIED",
             "bridge": {
                 "channels": list(BRIDGE_CHANNELS),
-                "windowing": "§10 config (60 steps / stride 10) via src/features/windowing.build_windows",
-                "model_feature_set": "A+B (the §13 groups available on BOTH domains); C/D/E/F absent on the rig",
+                "windowing": " config (60 steps / stride 10) via src/features/windowing.build_windows",
+                "model_feature_set": "A+B (the  groups available on BOTH domains); C/D/E/F absent on the rig",
                 "channel_substitutions": {
                     "strain": "ToF crack-opening delta (mm) — the rig's physical analog of horizontal convergence",
                     "vibration_rms": "|a| deviation from the node's median magnitude (g)",
@@ -273,7 +273,7 @@ def main() -> int:
                 "n_above_alert_threshold": int((p_crit >= 0.5).sum()),
             },
             "diagnostic_full_contract_nanfill": {
-                "note": ("full §15 feature contract with C/D/E/F modalities fed as NaN — measures "
+                "note": ("full  feature contract with C/D/E/F modalities fed as NaN — measures "
                          "modality scarcity, NOT the sensor domain gap; informational only"),
                 "pred_label_counts": {str(k): int(v) for k, v in
                                       zip(*np.unique(diag_pred, return_counts=True), strict=True)},

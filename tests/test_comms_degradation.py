@@ -1,4 +1,4 @@
-"""T-017 acceptance tests — packet loss vs link outage, distinct from SENSOR_FAULT."""
+""" acceptance tests — packet loss vs link outage, distinct from SENSOR_FAULT."""
 
 from __future__ import annotations
 
@@ -64,7 +64,7 @@ def test_labels_distinguish_data_quality_from_comm_failure() -> None:
     assert pl[1] == DATA_QUALITY_LABEL and pl[0] == "" and pl[2] == ""
     assert of[0] == COMMUNICATION_FAILURE_LABEL and of[1] == "" and of[2] == ""
     assert DATA_QUALITY_LABEL != COMMUNICATION_FAILURE_LABEL
-    # both are distinct from SENSOR_FAULT (T-016)
+    # both are distinct from SENSOR_FAULT 
     from src.simulator.faults import FAULT_LABEL
 
     assert DATA_QUALITY_LABEL != FAULT_LABEL

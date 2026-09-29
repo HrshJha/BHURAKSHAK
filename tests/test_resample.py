@@ -1,4 +1,4 @@
-"""T-029 acceptance tests — §9.1 resampling and interpolation rule."""
+""" acceptance tests — resampling and interpolation rule."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from src.preprocessing.resample import (
     resample_to_grid,
 )
 
-INTERVAL = 10.0 / 60.0  # hours — §8.3 cadence
+INTERVAL = 10.0 / 60.0  # hours — cadence
 
 
 def _series(timestamps: list[float], displacement: list[float] | None = None) -> pd.DataFrame:

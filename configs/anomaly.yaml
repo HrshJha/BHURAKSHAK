@@ -1,17 +1,17 @@
-# SubSense — Isolation Forest config (PRD §14, T-043/T-045)
-# §14 code block, verbatim discipline: IsolationForest(n_estimators=300,
+# BhuRakshak — Isolation Forest config 
+# code block, verbatim discipline: IsolationForest(n_estimators=300,
 # contamination="auto", random_state=42); anomaly_score = -score_samples(X).
 isolation_forest:
   n_estimators: 300
   contamination: "auto"
   random_state: 42
 
-# Healthy-baseline definition (resolves Gap G-2 for the 3-class MVP):
-# "healthy" = normal on ALL THREE §12 label axes. §14's `df[risk_label=="GREEN"]`
+# Healthy-baseline definition (resolves Gap for the 3-class MVP):
+# "healthy" = normal on ALL THREE label axes. 's `df[risk_label=="GREEN"]`
 # filter is inoperable under the MVP vocabulary (no GREEN), so the healthy mask is
-#   anomaly_label == 0  AND  fault_label == "NONE"  AND  risk_label == "NORMAL"
+# anomaly_label == 0 AND fault_label == "NONE" AND risk_label == "NORMAL"
 # which keeps sensor-faulted windows (risk_label=NORMAL under faults) OUT of the
-# baseline — the §12 "sensor is broken ≠ ground is moving" separation, applied
+# baseline — the "sensor is broken ≠ ground is moving" separation, applied
 # to the training set.
 healthy_baseline:
   require_anomaly_zero: true
@@ -22,8 +22,8 @@ healthy_baseline:
 # (chosen on validation only; the false-alarm rate on test ≈ 1 - far_alpha).
 far_alpha: 0.99
 
-# §14 ablation feature sets (A physical, B +temporal, C +spatial).
-# Names are §13 group keys resolved against the feature store.
+# ablation feature sets (A physical, B +temporal, C +spatial).
+# Names are group keys resolved against the feature store.
 ablation:
   A_physical:
     - tilt_x
@@ -51,7 +51,7 @@ ablation:
     - local_strain
     - hotspot_density
     - distance_to_subsidence_center
-  # §14 full model input adds vibration + sensor-health groups on top of A/B/C
+  # full model input adds vibration + sensor-health groups on top of A/B/C
   D_add_vibration:
     - vibration_rms
     - vibration_peak

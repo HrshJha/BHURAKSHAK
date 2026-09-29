@@ -1,14 +1,14 @@
-"""§15 comparison baselines (T-047).
+""" comparison baselines.
 
-§15/§35: XGBoost must be evaluated against threshold-rule, logistic-regression
+/: XGBoost must be evaluated against threshold-rule, logistic-regression
 and random-forest baselines — all trained and predicting on the **same feature
 matrix** as XGBoost. If ML does not beat the explainable threshold rule,
 "that's a sign something is wrong in the pipeline, not that ML isn't needed".
 
-The threshold rule is the §7.3-style explainable policy: sustained displacement
+The threshold rule is the -style explainable policy: sustained displacement
 rate / acceleration / level over ``persistence_windows`` consecutive windows.
-Its thresholds come from configs/risk_model.yaml (NFR-6) and are calibrated on
-the validation split only by :func:`calibrate_threshold_rule`.
+Its thresholds come from configs/risk_model.yaml and are calibrated on
+the validation split only by:func:`calibrate_threshold_rule`.
 """
 
 from __future__ import annotations
@@ -66,8 +66,8 @@ def _classes_from(df: pd.DataFrame) -> list[str]:
 def fit_baselines(train: pd.DataFrame, features: list[str]) -> Baselines:
     """Fit logistic + random-forest baselines on the SAME feature matrix as XGBoost.
 
-    ``train`` must be the TRAIN split only (the caller owns split discipline).
-    """
+ ``train`` must be the TRAIN split only (the caller owns split discipline).
+ """
     classes = _classes_from(train)
     missing = [c for c in features if c not in train.columns]
     if missing:
@@ -109,15 +109,15 @@ def threshold_rule_predict(
     score_warning: float | None = None,
     persistence_windows: int | None = None,
 ) -> np.ndarray:
-    """§7.3/§15 threshold rule on the SAME feature matrix (explainable baseline).
+    """/ threshold rule on the SAME feature matrix (explainable baseline).
 
-    A window is a candidate WARNING if its displacement ``velocity`` exceeds
-    ``velocity_warning`` OR its level ``displacement`` exceeds ``score_warning``;
-    it becomes CRITICAL if additionally ``acceleration`` exceeds
-    ``accel_critical``. A label sticks only when the condition held for
-    ``persistence_windows`` consecutive windows within the same (event, node)
-    series — mirroring the §21.1 persistence philosophy.
-    """
+ A window is a candidate WARNING if its displacement ``velocity`` exceeds
+ ``velocity_warning`` OR its level ``displacement`` exceeds ``score_warning``;
+ it becomes CRITICAL if additionally ``acceleration`` exceeds
+ ``accel_critical``. A label sticks only when the condition held for
+ ``persistence_windows`` consecutive windows within the same (event, node)
+ series — mirroring the persistence philosophy.
+ """
     cfg = risk_model_config()["baselines"]["threshold_rule"]
     velocity_warning = float(velocity_warning if velocity_warning is not None else cfg["velocity_warning"])
     accel_critical = float(accel_critical if accel_critical is not None else cfg["accel_critical"])
@@ -153,9 +153,9 @@ def threshold_rule_predict(
 def calibrate_threshold_rule(val: pd.DataFrame) -> dict:
     """Tune the rule's thresholds on the VALIDATION split for best macro-F1.
 
-    A small grid around the configured starting points; the winning values are
-    returned so the test evaluation uses validation-chosen parameters only.
-    """
+ A small grid around the configured starting points; the winning values are
+ returned so the test evaluation uses validation-chosen parameters only.
+ """
     from sklearn.metrics import f1_score
 
     cfg = risk_model_config()["baselines"]["threshold_rule"]

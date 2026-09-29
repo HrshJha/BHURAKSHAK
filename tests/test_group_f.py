@@ -1,4 +1,4 @@
-"""T-041 acceptance tests — Feature Group F (physics)."""
+""" acceptance tests — Feature Group F (physics)."""
 
 from __future__ import annotations
 
@@ -64,7 +64,7 @@ def test_residual_is_observed_minus_expected() -> None:
 
 def test_residual_near_zero_when_observation_matches_model_well() -> None:
     """The observation ramp is chosen so late-window residuals are small
-    relative to the 450 mm signal — the §21 'observation ≈ model' case."""
+ relative to the 450 mm signal — the 'observation ≈ model' case."""
     raw, windowed, coords = _frames()
     out = emit_group_f(windowed, coords)
     late = out[out["window_index"] >= 5]

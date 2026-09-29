@@ -1,4 +1,4 @@
-"""T-013 acceptance tests — tilt is the gradient of W, not independently sampled."""
+""" acceptance tests — tilt is the gradient of W, not independently sampled."""
 
 from __future__ import annotations
 
@@ -65,8 +65,8 @@ def test_tilt_zero_at_center_exactly() -> None:
 
 def test_tilt_antisymmetric_across_center() -> None:
     """The bowl's gradient is antisymmetric: tilt at (−d, 0) and (+d, 0) oppose.
-    (Sign convention is defined by tilt = degrees(∂W/∂x / 1000); the physics
-    requirement is that the two sides disagree in sign, not which is which.)"""
+ (Sign convention is defined by tilt = degrees(∂W/∂x / 1000); the physics
+ requirement is that the two sides disagree in sign, not which is which.)"""
     f = _field()
     rng = np.random.default_rng(5)
     t = 12.0

@@ -1,4 +1,4 @@
-"""T-064 acceptance tests — Feature Group G (DGPS/GNSS), §13 Group G names."""
+""" acceptance tests — Feature Group G (DGPS/GNSS), Group G names."""
 
 from __future__ import annotations
 
@@ -81,7 +81,7 @@ def test_nodes_without_control_points_stay_nan() -> None:
 
 
 def test_windows_outside_dgps_tolerance_yield_nan() -> None:
-    """A window hours away from any survey pass cannot see the survey (§9.1)."""
+    """A window hours away from any survey pass cannot see the survey."""
     win = _windowed(["V_A"], ["Mar21"])
     win["window_timestamp"] = 24.0 * 200  # far from all three survey dates
     out = emit_group_g(_survey(), win, _nodes(), epoch=EPOCH)
@@ -92,7 +92,7 @@ def test_windows_outside_dgps_tolerance_yield_nan() -> None:
 
 def test_velocity_and_acceleration_are_point_trend_terms() -> None:
     """CP0 falls 0→−5→−9 mm at days 0/12/24: least-squares slope =
-    −0.375 mm/day → ≈ −137 mm/yr (the LS fit, not the chord average)."""
+ −0.375 mm/day → ≈ −137 mm/yr (the LS fit, not the chord average)."""
     win = _windowed(["V_A"], ["Mar09", "Mar21", "Apr02"])
     out = emit_group_g(_survey(), win, _nodes(), epoch=EPOCH).sort_values("window_index")
     vel = out["velocity"].to_numpy(dtype=float)

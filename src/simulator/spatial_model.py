@@ -1,6 +1,6 @@
-"""Spatial deformation kernel — PRD §10 (T-010).
+"""Spatial deformation kernel —.
 
-    W(x, y) = exp( -[(x - x0)^2 + (y - y0)^2] / (2 * sigma^2) )
+ W(x, y) = exp( -[(x - x0)^2 + (y - y0)^2] / (2 * sigma^2) )
 
 A Gaussian influence-kernel approximation over the virtual mining panel,
 consistent with probability-integral / influence-function concepts used in
@@ -18,7 +18,7 @@ from src.config import physics_config
 
 
 def sigma_from_config(physics_cfg: dict | None = None) -> float:
-    """Kernel width sigma = influence_radius / sigma_divisor (§10, config-driven)."""
+    """Kernel width sigma = influence_radius / sigma_divisor (, config-driven)."""
     cfg = physics_cfg or physics_config()
     influence_radius = float(cfg["physics"]["influence_radius"])
     divisor = float(cfg["kernel"]["sigma_divisor"])

@@ -1,4 +1,4 @@
-"""T-034 acceptance tests — §10 windowing engine (60/10, config-driven)."""
+""" acceptance tests — windowing engine (60/10, config-driven)."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from src.features.windowing import (
     windowing_params,
 )
 
-INTERVAL = 10.0 / 60.0  # §8.3 grid cadence in hours
+INTERVAL = 10.0 / 60.0  # grid cadence in hours
 
 
 def _series(n: int = 144, node: str = "V0001", event: str = "E1", ramp: float = 1.0) -> pd.DataFrame:
@@ -39,7 +39,7 @@ def _series(n: int = 144, node: str = "V0001", event: str = "E1", ramp: float = 
 
 def test_params_are_config_driven_60_10() -> None:
     window, stride = windowing_params()
-    assert (window, stride) == (60, 10), "§10: window=60 timesteps, stride=10"
+    assert (window, stride) == (60, 10), ": window=60 timesteps, stride=10"
 
 
 def test_window_count_and_stride() -> None:
@@ -75,7 +75,7 @@ def test_all_default_channels_get_all_five_statistics() -> None:
 
 
 def test_windows_never_cross_series_boundaries() -> None:
-    """T-036-adjacent acceptance: rolling computation must not cross events."""
+    """-adjacent acceptance: rolling computation must not cross events."""
     a = _series(144, node="V0001", event="E1", ramp=1.0)
     b = _series(144, node="V0002", event="E1", ramp=2.0)
     res = build_windows(pd.concat([a, b], ignore_index=True))
@@ -131,18 +131,18 @@ def test_guard_accepts_windowed_frame() -> None:
 
 
 def test_g4_reconciliation_window_budget() -> None:
-    """Documented G-4 reconciliation: 9 windows per 144-step series.
+    """Documented reconciliation: 9 windows per 144-step series.
 
-    10,000 sequences (current gate dataset) → 90,000 event-level windows, just
-    below §15's 100k floor; 50,000 sequences (§10 maximum) → 450,000 windows,
-    inside §15's 100k–500k budget. The budgets reconcile across §10's upper
-    range; the honest arithmetic is asserted here, not a convenient rounding.
-    """
+ 10,000 sequences (current gate dataset) → 90,000 event-level windows, just
+ below 's 100k floor; 50,000 sequences ( maximum) → 450,000 windows,
+ inside 's 100k–500k budget. The budgets reconcile across 's upper
+ range; the honest arithmetic is asserted here, not a convenient rounding.
+ """
     windows_per_series = (144 - 60) // 10 + 1
     assert windows_per_series == 9
     assert windows_per_series * 10_000 == 90_000
     total_at_max = windows_per_series * 50_000
-    assert 100_000 <= total_at_max <= 500_000, "G-4: §15 budget matches §10's upper range"
+    assert 100_000 <= total_at_max <= 500_000, ":  budget matches 's upper range"
 
 
 def test_window_stats_robust_to_nan_channel_values() -> None:

@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""T-080 — build and execute notebooks/10_inference_profiling.ipynb.
+""" — build and execute notebooks/10_inference_profiling.ipynb.
 
-Acceptance (TASKS.md T-080): the notebook measures p50/p95 inference latency
+Acceptance: the notebook measures p50/p95 inference latency
 and peak RSS for the Isolation Forest + XGBoost artifacts on a single feature
 window and records them against the documented edge budget. Portable
 profiling only — no Raspberry Pi 5 hardware is executed on in this
-workstream, and Gap G-8 records that the PRD's NFR-2 names an "edge
+workstream, and Gap records that the 's names an "edge
 compute/power budget" without ever giving it a number, so there is NO
 threshold to pass/fail against: the notebook measures and reports honestly.
 
-Method: the two §15 artifacts are trained §23-safe exactly as in T-043/T-046
+Method: the two artifacts are trained -safe exactly as in /
 (IF on healthy-baseline train windows → anomaly_score joined back → XGBoost
 on groups A–F + signals), then scored on ONE feature window: per-call latency
 of `anomaly_score`, `predict_proba` and the full IF→XGBoost chain over 2,000
 timed calls after warm-up (p50/p95), plus peak RSS (post-training footprint
 and the inference-time delta) and pickled artifact sizes. Numbers are also
-written to experiments/inference_profile.json for the T-081 acceptance map.
+written to experiments/inference_profile.json for the acceptance map.
 """
 
 from __future__ import annotations
@@ -34,16 +34,16 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "10_inference_profiling.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 10 — Inference Profiling (PRD NFR-2, §33)
+        """# 10 — Inference Profiling ( , )
 
 **What this notebook measures:** p50/p95 single-window inference latency for
-the §15 chain — Isolation Forest `anomaly_score` → XGBoost `predict_proba` —
+the  chain — Isolation Forest `anomaly_score` → XGBoost `predict_proba` —
 plus the models' memory footprint and artifact sizes.
 
 **What it deliberately does NOT do:**
 
-1. **No pass/fail verdict.** Gap **G-8**: NFR-2 requires edge inference to
-   run "within its compute/power budget" but the PRD never states a latency,
+1. **No pass/fail verdict.** Gap ****:  requires edge inference to
+   run "within its compute/power budget" but the  never states a latency,
    memory or power number. There is no numeric budget to record against —
    the honest output is the measurement itself, flagged for the missing
    budget.
@@ -97,7 +97,7 @@ RSS_AFTER_IMPORTS = peak_rss_mb()
 print(f"peak RSS after imports: {RSS_AFTER_IMPORTS:.1f} MB")"""
     ),
     new_markdown_cell(
-        "## 1 — Train the two §15 artifacts §23-safe (IF → anomaly_score → XGBoost)"
+        "## 1 — Train the two  artifacts -safe (IF → anomaly_score → XGBoost)"
     ),
     new_code_cell(
         """store = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
@@ -105,9 +105,9 @@ splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
 store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
 assert store["split"].notna().all()
 
-if_model = train_isolation_forest(store)          # T-043: healthy-baseline train windows only
-store["anomaly_score"] = if_model.anomaly_score(store)  # §15: the IF score feeds XGBoost
-risk_model = train_risk_model(store)              # T-046: groups A–F + anomaly_score + physics_residual
+if_model = train_isolation_forest(store)          # : healthy-baseline train windows only
+store["anomaly_score"] = if_model.anomaly_score(store)  # : the IF score feeds XGBoost
+risk_model = train_risk_model(store)              # : groups A–F + anomaly_score + physics_residual
 print(f"IF features: {len(if_model.features)} | threshold {if_model.threshold:.4f} "
       f"({if_model.threshold_rule}) | XGBoost features: {len(risk_model.features)} "
       f"| classes {risk_model.classes}")
@@ -125,7 +125,7 @@ print(f"peak RSS after training: {RSS_AFTER_TRAINING:.1f} MB (delta {RSS_AFTER_T
     new_markdown_cell(
         """## 2 — Single-window inference latency
 
-One feature window = one row of the §15 feature frame. After 50 warm-up
+One feature window = one row of the  feature frame. After 50 warm-up
 calls, 2,000 timed calls per stage: the IF score, the XGBoost probabilities,
 and the full chain (score the row, attach `anomaly_score`, predict) — the
 exact per-window edge inference path. Batch-256 is reported for context only."""
@@ -193,11 +193,11 @@ shipped to the edge)."""
 display(memory.round(2))"""
     ),
     new_markdown_cell(
-        """## 4 — Against the edge budget: G-8 says there is none
+        """## 4 — Against the edge budget:  says there is none
 
-NFR-2 (edge inference "within its compute/power budget") carries **no
-number** in the PRD — recorded as Gap G-8. The register below therefore has
-no pass/fail column. For scale only: the system's own §10 window cadence
+ (edge inference "within its compute/power budget") carries **no
+number** in the  — recorded as Gap . The register below therefore has
+no pass/fail column. For scale only: the system's own  window cadence
 (the stride at which new feature windows — and therefore inference requests —
 arrive) is measured next; per-window inference cost is compared to *that*
 project-internal cadence, which is a fact of this system, not an invented
@@ -212,20 +212,20 @@ for _, g in store.groupby(["event_id", "node_id"], sort=False):
 stride_h = float(np.median(dts))
 chain_p95 = float(latency.loc[latency.stage.str.contains("full IF→XGBoost chain"), "p95_ms"].iloc[0])
 cadence_ms = stride_h * 3600 * 1000
-print(f"§10 window cadence on this corpus: {stride_h:.2f} h = {cadence_ms:,.0f} ms between windows")
+print(f" window cadence on this corpus: {stride_h:.2f} h = {cadence_ms:,.0f} ms between windows")
 print(f"full-chain p95 on ONE window: {chain_p95:.3f} ms = {100 * chain_p95 / cadence_ms:.5f}% of one window period")
 
 budget = pd.DataFrame([
     {"measurement": "single-window chain p50", "value": f"{latency.loc[latency.stage.str.contains('full IF→XGBoost chain'), 'p50_ms'].iloc[0]:.3f} ms",
-     "edge budget (NFR-2)": "NOT SPECIFIED — Gap G-8"},
+     "edge budget ()": "NOT SPECIFIED — Gap "},
     {"measurement": "single-window chain p95", "value": f"{chain_p95:.3f} ms",
-     "edge budget (NFR-2)": "NOT SPECIFIED — Gap G-8"},
+     "edge budget ()": "NOT SPECIFIED — Gap "},
     {"measurement": "peak RSS (trained artifacts in memory)", "value": f"{RSS_AFTER_TRAINING:.1f} MB",
-     "edge budget (NFR-2)": "NOT SPECIFIED — Gap G-8"},
+     "edge budget ()": "NOT SPECIFIED — Gap "},
     {"measurement": "shipped artifact size", "value": f"{sum(sizes.values()):.2f} MB",
-     "edge budget (NFR-2)": "NOT SPECIFIED — Gap G-8"},
-    {"measurement": "share of one §10 window period (p95)", "value": f"{100 * chain_p95 / cadence_ms:.5f}%",
-     "edge budget (NFR-2)": "context only — cadence is a system fact, not a budget"},
+     "edge budget ()": "NOT SPECIFIED — Gap "},
+    {"measurement": "share of one  window period (p95)", "value": f"{100 * chain_p95 / cadence_ms:.5f}%",
+     "edge budget ()": "context only — cadence is a system fact, not a budget"},
 ])
 display(budget)
 
@@ -245,7 +245,7 @@ profile = {
         "artifact_mb": sizes,
     },
     "cadence_context": {"window_stride_h": stride_h, "chain_p95_pct_of_period": 100 * chain_p95 / cadence_ms},
-    "gap_g8": "NFR-2 states no numeric edge budget; measurements recorded, no pass/fail claimed",
+    "gap_g8": " states no numeric edge budget; measurements recorded, no pass/fail claimed",
     "n_calls": N,
 }
 (REPO / "experiments").mkdir(exist_ok=True)
@@ -263,7 +263,7 @@ ax.bar(x + 0.2, p95, 0.38, label="p95")
 ax.set_yscale("log")
 ax.set_xticks(x, ["IF score", "XGB proba", "full chain"], fontsize=9)
 ax.set_ylabel("ms per single window (log)")
-ax.set_title(f"Single-window inference latency — no NFR-2 budget exists (Gap G-8); workstation only")
+ax.set_title(f"Single-window inference latency — no  budget exists (Gap ); workstation only")
 ax.legend()
 fig.tight_layout()
 fig.savefig(REPO / "reports" / "nb10_latency_panels.png", dpi=110, bbox_inches="tight")
@@ -273,16 +273,16 @@ print("panels → reports/nb10_latency_panels.png")"""
     new_markdown_cell(
         """## Provenance & honest notes
 
-- Artifacts: `src/anomaly/isolation_forest.py` (T-043, healthy-baseline
+- Artifacts: `src/anomaly/isolation_forest.py` (, healthy-baseline
   train windows, threshold on validation) and `src/risk/xgboost_model.py`
-  (T-046, groups A–F + anomaly_score + physics_residual) — trained here on
-  the §23 store with the T-068 splits, exactly as in the ablation/§24 runs.
-- Latency: 2,000 individually-timed calls after 50 warm-ups, one §15 feature
+  (, groups A–F + anomaly_score + physics_residual) — trained here on
+  the  store with the  splits, exactly as in the ablation/ runs.
+- Latency: 2,000 individually-timed calls after 50 warm-ups, one  feature
   row per call; percentiles over per-call samples (not loop averages).
 - Peak RSS via `resource.ru_maxrss` (platform-normalised); artifact sizes
   via pickle (what ships to the edge). Numbers also in
   `experiments/inference_profile.json`.
-- **G-8 stands:** no numeric edge budget exists in the PRD, so nothing here
+- ** stands:** no numeric edge budget exists in the , so nothing here
   is a pass/fail claim; and these are workstation measurements, not
   Raspberry Pi 5 measurements. On-target profiling is the open follow-up
   the moment the budget (and hardware) exist."""

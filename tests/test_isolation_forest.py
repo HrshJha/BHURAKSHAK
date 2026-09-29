@@ -1,4 +1,4 @@
-"""T-043 acceptance tests — §14 Isolation Forest module."""
+""" acceptance tests — Isolation Forest module."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ def _frame(n_healthy: int = 800, n_anomalous: int = 150, seed: int = 0) -> pd.Da
     healthy = rng.normal(0.0, 0.3, size=(n_healthy, len(features)))
     # anomalous windows are globally displaced (a compact abnormal cluster far
     # from the healthy hull) — the subtle partial-dimension regime is exercised
-    # by the T-045 ablation on real feature-store data, not by this unit fixture
+    # by the ablation on real feature-store data, not by this unit fixture
     anomalous = rng.normal(0.0, 0.3, size=(n_anomalous, len(features))) + 4.0
     X = np.vstack([healthy, anomalous])
     df = pd.DataFrame(X, columns=features)
@@ -36,13 +36,13 @@ def _frame(n_healthy: int = 800, n_anomalous: int = 150, seed: int = 0) -> pd.Da
 
 def test_config_holds_the_exact_section_14_parameters() -> None:
     cfg = anomaly_config()["isolation_forest"]
-    assert cfg["n_estimators"] == 300, "§14 code block: n_estimators=300"
+    assert cfg["n_estimators"] == 300, " code block: n_estimators=300"
     assert cfg["contamination"] == "auto"
     assert cfg["random_state"] == 42
 
 
 def test_healthy_mask_is_the_triple_conjunction() -> None:
-    """G-2: faulted windows with risk_label=NORMAL must NOT count as healthy."""
+    """: faulted windows with risk_label=NORMAL must NOT count as healthy."""
     df = pd.DataFrame(
         {
             "anomaly_label": [0, 0, 1, 0],
@@ -52,7 +52,7 @@ def test_healthy_mask_is_the_triple_conjunction() -> None:
     )
     mask = healthy_baseline_mask(df)
     assert mask.tolist() == [True, False, False, False], (
-        "healthy = anomaly 0 AND fault NONE AND risk NORMAL (G-2)"
+        "healthy = anomaly 0 AND fault NONE AND risk NORMAL ()"
     )
 
 
@@ -62,8 +62,8 @@ def test_healthy_mask_requires_label_columns() -> None:
 
 
 def test_training_uses_only_healthy_baseline_rows() -> None:
-    """§14: the model must be fit on healthy rows only — verified by
-    contamination of the training set producing a degenerate detector otherwise."""
+    """: the model must be fit on healthy rows only — verified by
+ contamination of the training set producing a degenerate detector otherwise."""
     df = _frame()
     fitted = train_isolation_forest(df)
     # training-set size equals the healthy train-split count
@@ -102,7 +102,7 @@ def test_flags_fire_on_anomalies_not_healthy() -> None:
 
 def test_threshold_set_on_validation_not_train() -> None:
     """The fitted threshold must equal a high quantile of VALIDATION healthy
-    scores — recomputing it from the held-out validation split must agree."""
+ scores — recomputing it from the held-out validation split must agree."""
     df = _frame(seed=3)
     fitted = train_isolation_forest(df)
     val = df[df["split"] == "validation"]
@@ -122,7 +122,7 @@ def test_ablation_feature_sets_resolve_in_order() -> None:
         "neighbor_mean", "neighbor_std", "neighbor_anomaly_fraction", "spatial_coherence",
         "local_gradient", "local_strain", "hotspot_density", "distance_to_subsidence_center",
     )), "Group C is gated because this corpus has no co-temporal neighbours"
-    assert len(full) == 15  # 5 + 10; Group C is gated on this corpus (Phase 2, §13/§14)
+    assert len(full) == 15  # 5 + 10; Group C is gated on this corpus (Phase 2, /)
     a_only = _resolve_features(["A_physical"])
     assert a_only == ["tilt_x", "tilt_y", "tilt_magnitude", "displacement", "strain"]
 

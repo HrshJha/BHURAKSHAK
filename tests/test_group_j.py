@@ -1,4 +1,4 @@
-"""T-067 — Feature Group J (environmental) gate & synthetic emission tests."""
+""" — Feature Group J (environmental) gate & synthetic emission tests."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from src.features.group_j_environmental import (
 
 @pytest.fixture()
 def windowed() -> pd.DataFrame:
-    # 2 events × 2 nodes × 3 windows, timestamps on a 0.6 h §10 stride
+    # 2 events × 2 nodes × 3 windows, timestamps on a 0.6 h stride
     rows = []
     for event in ("EV_A", "EV_B"):
         for node in ("V0000", "V0009"):
@@ -84,7 +84,7 @@ def test_not_in_model_frame_rejected_as_model_input(windowed: pd.DataFrame) -> N
 
 def test_gate_included_but_master_flag_off_raises(monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = _gate(status="included", ablation_id="ablation_J", metric="pr_auc",
-                delta=0.02, decided_by="T-067", decided_on="2026-09-27")
+                delta=0.02, decided_by="", decided_on="2026-09-27")
     cfg["enabled"] = False
     monkeypatch.setattr(gj, "environmental_config", lambda: cfg)
     with pytest.raises(GroupJError, match="master flag"):
@@ -93,7 +93,7 @@ def test_gate_included_but_master_flag_off_raises(monkeypatch: pytest.MonkeyPatc
 
 def test_gate_incomplete_evidence_raises(monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = _gate(status="included", ablation_id=None, metric="pr_auc",
-                delta=0.02, decided_by="T-067", decided_on="2026-09-27")
+                delta=0.02, decided_by="", decided_on="2026-09-27")
     cfg["enabled"] = True
     monkeypatch.setattr(gj, "environmental_config", lambda: cfg)
     with pytest.raises(GroupJError, match="ablation_id"):
@@ -102,7 +102,7 @@ def test_gate_incomplete_evidence_raises(monkeypatch: pytest.MonkeyPatch) -> Non
 
 def test_gate_delta_below_threshold_raises(monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = _gate(status="included", ablation_id="ablation_J", metric="pr_auc",
-                delta=0.005, decided_by="T-067", decided_on="2026-09-27", min_pr_auc_delta=0.01)
+                delta=0.005, decided_by="", decided_on="2026-09-27", min_pr_auc_delta=0.01)
     cfg["enabled"] = True
     monkeypatch.setattr(gj, "environmental_config", lambda: cfg)
     with pytest.raises(GroupJError, match="below the inclusion threshold"):
@@ -111,7 +111,7 @@ def test_gate_delta_below_threshold_raises(monkeypatch: pytest.MonkeyPatch) -> N
 
 def test_gate_pass_yields_feature_names(monkeypatch: pytest.MonkeyPatch) -> None:
     cfg = _gate(status="included", ablation_id="ablation_J", metric="pr_auc",
-                delta=0.03, decided_by="T-067", decided_on="2026-09-27")
+                delta=0.03, decided_by="", decided_on="2026-09-27")
     cfg["enabled"] = True
     monkeypatch.setattr(gj, "environmental_config", lambda: cfg)
     names = model_feature_names()

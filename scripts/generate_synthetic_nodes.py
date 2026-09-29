@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""T-022 — generate synthetic_nodes.csv (+ dataset_manifest.json).
+""" — generate synthetic_nodes.csv (+ dataset_manifest.json).
 
 Usage:
-    python scripts/generate_synthetic_nodes.py [--out data/synthetic]
-        [--sequences-per-scenario 44] [--seed 42] [--nodes-limit N]
+ python scripts/generate_synthetic_nodes.py [--out data/synthetic]
+ [--sequences-per-scenario 44] [--seed 42] [--nodes-limit N]
 
-§10 scale: default run = 16 scenarios × 44 sequences/scenario × 400 nodes
+ scale: default run = 16 scenarios × 44 sequences/scenario × 400 nodes
 = 281,600 sequences ≥ the 10,000 required. The manifest records both the
 generated and planned sequence counts.
 """

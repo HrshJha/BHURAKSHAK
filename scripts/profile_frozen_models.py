@@ -62,7 +62,7 @@ def main() -> int:
         profiles["forecaster_tuned"] = {"status": "no_frozen_forecaster_artifact"}
     result["workstation_edge_profile"] = {
         "platform": sys.platform, "models": profiles,
-        "note": "workstation CPU/process RSS; sampled RSS is not device peak; no numeric edge budget is defined in PRD NFR-2",
+        "note": "workstation CPU/process RSS; sampled RSS is not device peak; no numeric edge budget is defined in  ",
     }
     out_path.write_text(json.dumps(result, indent=2, default=float) + "\n", encoding="utf-8")
     print(json.dumps(result["workstation_edge_profile"], indent=2))

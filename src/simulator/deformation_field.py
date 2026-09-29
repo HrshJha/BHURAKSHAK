@@ -1,8 +1,8 @@
-"""Coupled deformation field W(x, y, t) = W(t) * spatial_kernel(x, y) — PRD §10 (T-012).
+"""Coupled deformation field W(x, y, t) = W(t) * spatial_kernel(x, y) —.
 
 This is the simulator's latent ground truth. Every sensor channel in the
 synthetic dataset is derived from this single field — never generated
-independently (the §10 "core principle — physical coupling").
+independently (the "core principle — physical coupling").
 
 All parameters come from configs/physics.yaml via src/config.py; no physics
 literals live in code (asserted by tests).
@@ -21,7 +21,7 @@ from src.simulator.temporal_model import growth_velocity, subsidence_growth
 
 @dataclass(frozen=True)
 class FieldParams:
-    """Validated container for the §10 physics parameters."""
+    """Validated container for the physics parameters."""
 
     panel_center_x: float
     panel_center_y: float
@@ -80,7 +80,7 @@ class DeformationField:
         self.params = params or FieldParams.from_config()
         p = self.params
 
-        # PRD §10 note: the influence-function literature derives surface
+        # note: the influence-function literature derives surface
         # subsidence from extraction geometry (depth, seam height, subsidence
         # factor) rather than taking W_max as an independent dial. The config
         # keeps BOTH; we use the geometry-derived value as the authoritative
@@ -147,11 +147,11 @@ class DeformationField:
         w_t = np.asarray(self.w_of_t(t))
         return -(y_a - self.params.panel_center_y) / (self.params.sigma**2) * kernel * w_t
 
-    # -- expected values for the live physics-consistency engine (§21) -------
+    # -- expected values for the live physics-consistency engine -------
     def expected_displacement(self, x: float | np.ndarray, y: float | np.ndarray, t: float) -> np.ndarray:
-        """Expected subsidence (mm) at (x, y) at time t — reuses this same model (§21)."""
+        """Expected subsidence (mm) at (x, y) at time t — reuses this same model."""
         return self.__call__(x, y, t)
 
     def expected_tilt(self, x: float | np.ndarray, y: float | np.ndarray, t: float) -> tuple[np.ndarray, np.ndarray]:
-        """Expected (tilt_x, tilt_y) from the analytic gradient of the same model (§21)."""
+        """Expected (tilt_x, tilt_y) from the analytic gradient of the same model."""
         return self.dW_dx(x, y, t), self.dW_dy(x, y, t)

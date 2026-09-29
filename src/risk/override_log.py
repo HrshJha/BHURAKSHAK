@@ -1,14 +1,12 @@
-"""Operator override logging — PRD §21.1 (manual override), T-053.
-
-§21.1: an operator can force an acknowledgement/hold at a given level from
+"""Operator override logging — (manual override),.: an operator can force an acknowledgement/hold at a given level from
 the dashboard (e.g. during known maintenance or vibration events), logged
 with **operator ID and reason** — but they **cannot suppress the underlying
 model output from being recorded**. Every override therefore persists:
 
 - who (``operator_id``) and why (``reason``) — both required by config
-  (``manual_override.requires_operator_id`` / ``requires_reason``);
+ (``manual_override.requires_operator_id`` / ``requires_reason``);
 - what the model said (the recorded model level) and what the operator held
-  it at (``overridden_level``), plus the node/region it applies to;
+ it at (``overridden_level``), plus the node/region it applies to;
 - a monotonic UTC timestamp.
 
 The log is append-only (JSON Lines): records are never edited or removed,
@@ -38,14 +36,14 @@ class OverrideLogError(ValueError):
 
 @dataclass
 class OverrideRecord:
-    """One §21.1 manual-override entry (append-only, never edited)."""
+    """One manual-override entry (append-only, never edited)."""
 
     override_id: int
     timestamp: str  # ISO-8601 UTC
     operator_id: str
     reason: str
     node_id: str
-    model_level: str  # the model's own output — ALWAYS recorded (§21.1)
+    model_level: str  # the model's own output — ALWAYS recorded 
     overridden_level: str  # the level the operator held it at
     node_state_at_override: str | None = None  # engine state, when supplied
 
@@ -63,13 +61,13 @@ class OverrideRecord:
 
 
 class OverrideLog:
-    """Append-only §21.1 override log with JSONL persistence."""
+    """Append-only override log with JSONL persistence."""
 
     def __init__(self, path: str | Path, config: dict[str, Any] | None = None) -> None:
         cfg = alerts_config()["manual_override"] if config is None else config
         if bool(cfg.get("suppresses_model_output", False)):
             raise OverrideLogError(
-                "manual_override.suppresses_model_output must be false — §21.1 forbids "
+                "manual_override.suppresses_model_output must be false —  forbids "
                 "suppressing the underlying model output"
             )
         self.requires_operator_id = bool(cfg.get("requires_operator_id", True))
@@ -112,7 +110,7 @@ class OverrideLog:
         if not str(node_id).strip():
             raise OverrideLogError("override must name the node/region it applies to")
         if not str(model_level).strip():
-            raise OverrideLogError("the model's own level must be recorded — §21.1 forbids suppressing it")
+            raise OverrideLogError("the model's own level must be recorded —  forbids suppressing it")
         if not str(overridden_level).strip():
             raise OverrideLogError("the overridden level must be recorded")
         ts = (now or datetime.now(timezone.utc)).astimezone(timezone.utc).isoformat()

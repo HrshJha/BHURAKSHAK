@@ -1,6 +1,6 @@
-# SubSense — Feature Group J (Environmental) gate & synthetic sources (T-067)
-# PRD §13 Group J: "included **only if** an ablation shows predictive value"
-# (§38 repeats the gate). Nothing here may be hard-coded in src/ (NFR-6).
+# BhuRakshak — Feature Group J (Environmental) gate & synthetic sources 
+# Group J: "included **only if** an ablation shows predictive value"
+# ( repeats the gate). Nothing here may be hard-coded in src/.
 #
 # DEFAULT STATE: Group J is EXCLUDED from the model feature set. Enabling it
 # requires BOTH (a) `enabled: true` below AND (b) a recorded ablation result
@@ -25,7 +25,7 @@ sources:                       # provenance of each channel (none real in MVP)
   land_surface_temperature: synthetic (no real satellite LST product in MVP scope)
   land_cover: synthetic (no real land-cover map in MVP scope)
 
-synthetic:                     # parameters for the G-9-style stand-in generator
+synthetic:                     # parameters for the -style stand-in generator
   seed: 42
   temp_mean_c: 28.0            # Jharia annual-ish mean surface air temperature
   temp_amplitude_c: 6.0        # diurnal swing half-amplitude

@@ -1,26 +1,24 @@
-"""Windowing engine — PRD §10 (T-034).
-
-§10: model inputs are built from **windows** of ``window = 60 timesteps`` with
+"""Windowing engine —.: model inputs are built from **windows** of ``window = 60 timesteps`` with
 ``stride = 10`` over each node's continuous series — never from raw
 per-timestep rows. This module is the single authority for that transformation:
 
 - window/stride are config-driven from configs/preprocessing.yaml
-  (``windowing`` block; NFR-6/NFR-7);
+ (``windowing`` block; /);
 - windows never cross a series boundary (``event_id`` × ``node_id``) — an
-  event's windows are built purely from that event's rows;
-- each window emits its start/end rows and the per-window statistics the §13
-  groups build on — mean, std, slope, velocity, acceleration (the §10 set)
-  plus min/max (needed by Groups B/D) — for every value channel present,
-  plus the first label value within the window;
-- :func:`assert_windowed` is the guard models call before training: it raises
-  if raw per-timestep rows are passed toward a model input.
+ event's windows are built purely from that event's rows;
+- each window emits its start/end rows and the per-window statistics the 
+ groups build on — mean, std, slope, velocity, acceleration (the set)
+ plus min/max (needed by Groups B/D) — for every value channel present,
+ plus the first label value within the window;
+-:func:`assert_windowed` is the guard models call before training: it raises
+ if raw per-timestep rows are passed toward a model input.
 
-Gap G-4 reconciliation (recorded here per the Phase-2 plan): (144−60)/10 + 1
-= 9.4 → 9 windows per 144-step series. At §10's minimum of 10,000 sequences
-that is 90,000 event-level windows — fractionally below §15's 100k floor; at
-§10's maximum of 50,000 sequences it is 450,000 windows, inside §15's
+Gap reconciliation (recorded here per the Phase-2 plan): (144−60)/10 + 1
+= 9.4 → 9 windows per 144-step series. At 's minimum of 10,000 sequences
+that is 90,000 event-level windows — fractionally below 's 100k floor; at
+'s maximum of 50,000 sequences it is 450,000 windows, inside 's
 100k–500k budget. The two budgets therefore reconcile across the upper range
-of §10's sequence count; regenerating at >11.2k sequences clears the floor.
+of 's sequence count; regenerating at >11.2k sequences clears the floor.
 """
 
 from __future__ import annotations
@@ -79,12 +77,10 @@ def windowing_params() -> tuple[int, int]:
 
 
 def _slope(values: np.ndarray) -> float:
-    """OLS slope of a window (per step), fitted over FINITE samples only.
-
-    §9: missing steps (e.g. §10 DROPOUT runs) are first-class, not errors —
-    the regression simply skips them. Returns NaN only when fewer than two
-    finite samples exist (a window that cannot support a slope at all).
-    """
+    """OLS slope of a window (per step), fitted over FINITE samples only.: missing steps (e.g. DROPOUT runs) are first-class, not errors —
+ the regression simply skips them. Returns NaN only when fewer than two
+ finite samples exist (a window that cannot support a slope at all).
+ """
     ok = np.isfinite(values)
     n = int(ok.sum())
     if n < 2:
@@ -101,9 +97,9 @@ def _slope(values: np.ndarray) -> float:
 def _velocity(values: np.ndarray, interval_hours: float) -> float:
     """Mean per-hour change across the window: (last − first finite) / duration.
 
-    The duration spans the full window; only the endpoints must be finite.
-    Returns NaN when fewer than two finite samples exist.
-    """
+ The duration spans the full window; only the endpoints must be finite.
+ Returns NaN when fewer than two finite samples exist.
+ """
     ok = np.flatnonzero(np.isfinite(values))
     if ok.size < 2 or interval_hours <= 0:
         return float("nan") if ok.size < 2 else 0.0
@@ -114,11 +110,11 @@ def _velocity(values: np.ndarray, interval_hours: float) -> float:
 def _acceleration(velocities: np.ndarray, interval_hours: float) -> float:
     """Per-hour² change of the per-step velocity proxy inside the window.
 
-    Velocity samples are the window's finite per-step deltas; acceleration is
-    the change between the first and last usable velocity sample over the
-    elapsed span. Zero when fewer than two usable deltas exist (§9: gaps are
-    skipped, never invented).
-    """
+ Velocity samples are the window's finite per-step deltas; acceleration is
+ the change between the first and last usable velocity sample over the
+ elapsed span. Zero when fewer than two usable deltas exist (: gaps are
+ skipped, never invented).
+ """
     if velocities.size < 3 or interval_hours <= 0:
         return 0.0
     finite_pairs = np.isfinite(velocities[1:]) & np.isfinite(velocities[:-1])
@@ -140,14 +136,14 @@ def build_windows(
     channels: tuple[str, ...] | None = None,
     labels: tuple[str, ...] = ("anomaly_label", "risk_label", "progression_label", "fault_label"),
 ) -> WindowResult:
-    """Build §10 windows over each (event_id, node_id) series.
+    """Build windows over each (event_id, node_id) series.
 
-    One output row per window per series, carrying ``window_index``, window
-    start/end timestamps, per-channel statistics (``<ch>_mean`` / ``_std`` /
-    ``_slope`` / ``_velocity`` / ``_acceleration``) and the first label value
-    seen in the window (windows are within one event, so labels are
-    internally consistent; majority semantics are left to T-042).
-    """
+ One output row per window per series, carrying ``window_index``, window
+ start/end timestamps, per-channel statistics (``<ch>_mean`` / ``_std`` /
+ ``_slope`` / ``_velocity`` / ``_acceleration``) and the first label value
+ seen in the window (windows are within one event, so labels are
+ internally consistent; majority semantics are left to ).
+ """
     window, stride = windowing_params()
     interval_hours = float(
         load_config("preprocessing")["resampling"]["grid_interval_minutes"]
@@ -210,7 +206,7 @@ def build_windows(
                 row[f"{ch}_slope"] = _slope(v)
                 row[f"{ch}_velocity"] = _velocity(v, interval_hours)
                 row[f"{ch}_acceleration"] = _acceleration(v, interval_hours)
-            # §9 first-class data quality: fraction of steps with ANY missing
+            # first-class data quality: fraction of steps with ANY missing
             # core channel in this window (Group E's missing_ratio carries it)
             core = np.column_stack([series_data[ch][start:end] for ch in channels])
             row["window_missing_ratio"] = float((~np.isfinite(core)).any(axis=1).mean())
@@ -234,10 +230,10 @@ def build_windows(
 def assert_windowed(df: pd.DataFrame) -> None:
     """Guard: raise if a frame looks like raw per-timestep rows.
 
-    Models must consume window-level features. A frame that carries the raw
-    ``timestamp`` column without the windowing markers (``window_index`` /
-    ``window_timestamp``) is raw — pass it through :func:`build_windows` first.
-    """
+ Models must consume window-level features. A frame that carries the raw
+ ``timestamp`` column without the windowing markers (``window_index`` /
+ ``window_timestamp``) is raw — pass it through:func:`build_windows` first.
+ """
     if WINDOW_INDEX not in df.columns or WINDOW_TIMESTAMP not in df.columns:
         raise WindowingError(
             "raw per-timestep rows detected (missing 'window_index'/'window_timestamp'); "

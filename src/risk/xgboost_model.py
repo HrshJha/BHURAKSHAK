@@ -1,18 +1,16 @@
-"""XGBoost risk classifier — PRD §15, FR-6 (T-046).
-
-§15: multimodal risk classification, the primary first serious risk model.
+"""XGBoost risk classifier —,.: multimodal risk classification, the primary first serious risk model.
 
 - Target: the 3-class MVP ``risk_label`` (NORMAL/WARNING/CRITICAL;
-  GREEN/WATCH/WARNING/CRITICAL expansion comes after the 3-class model is
-  validated — the classes are read from the data, not hard-coded).
+ GREEN/WATCH/WARNING/CRITICAL expansion comes after the 3-class model is
+ validated — the classes are read from the data, not hard-coded).
 - Inputs: engineered feature groups A–F (as available) + the Isolation Forest
-  ``anomaly_score`` (T-043) + the ``physics_residual`` (T-040/T-041) — the §15
-  "multimodal" contract.
+ ``anomaly_score`` + the ``physics_residual`` — the 
+ "multimodal" contract.
 - Output: per-class probabilities that sum to 1 (softmax objective), consumed
-  by the §21.1 alert engine — the raw output never decides an action.
+ by the alert engine — the raw output never decides an action.
 
-Hyperparameters from configs/risk_model.yaml (NFR-6); the caller supplies the
-§23-safe split column (T-068) — this module never splits on its own and never
+Hyperparameters from configs/risk_model.yaml; the caller supplies the
+-safe split column — this module never splits on its own and never
 shuffles rows.
 """
 
@@ -29,9 +27,9 @@ from src.features.provenance import model_input_allowlist
 
 __all__ = ["XGBoostModelError", "RiskModel", "MODEL_INPUT_GROUPS", "train_risk_model"]
 
-#: §15 input contract: feature groups A–F plus the two cross-model signals.
-#: T-070 adds the Phase-4 modalities (G DGPS / H Sentinel-1) so the ablation
-#: arms can switch them on; T-077 adds the §16 forecast features (I_forecast),
+#: input contract: feature groups A–F plus the two cross-model signals.
+#: adds the Phase-4 modalities (G DGPS / H Sentinel-1) so the ablation
+#: arms can switch them on; adds the forecast features (I_forecast),
 #: present only on frames joined via src/forecasting/forecast_to_risk.py —
 #: the DEFAULT frame carries none of their columns, so behaviour for every
 #: pre-existing caller is unchanged (absent ⇒ skipped).
@@ -47,7 +45,7 @@ MODEL_INPUT_GROUPS = (
     "I_forecast",
 )
 
-#: Cross-model signals §15 adds on top of the feature groups.
+#: Cross-model signals adds on top of the feature groups.
 EXTRA_SIGNALS = ("anomaly_score", "physics_residual")
 
 
@@ -78,7 +76,7 @@ class RiskModel:
 
 
 def _resolve_features(df: pd.DataFrame) -> list[str]:
-    """§15 inputs = union of available §13 group columns + the two signals."""
+    """ inputs = union of available group columns + the two signals."""
     schema_cols = set(df.columns)
     group_features: list[str] = []
     seen: set[str] = set()
@@ -93,15 +91,15 @@ def _resolve_features(df: pd.DataFrame) -> list[str]:
         ("E_sensor_health", ("battery", "RSSI", "SNR", "packet_loss", "missing_ratio",
                              "stuck_sensor_flag", "drift_score")),
         ("F_physics", ("expected_displacement", "expected_tilt", "physics_residual", "physics_residual_velocity")),
-        # Phase-4 modalities (T-070 arms C/D/E): present only on frames joined
+        # Phase-4 modalities ( arms C/D/E): present only on frames joined
         # to DGPS control points / the mesh-aligned Sentinel-1 product.
         ("G_dgps", ("vertical_displacement", "horizontal_displacement", "velocity_dgps",
                     "acceleration_dgps", "mesh_vs_dgps_residual")),
         ("H_insar", ("LOS_displacement", "LOS_velocity", "LOS_acceleration", "cumulative_displacement",
                      "coherence", "spatial_gradient", "local_hotspot_density")),
-        # §16 forecast features (T-077): ``forecast_{channel}_h{steps}`` —
+        # forecast features: ``forecast_{channel}_h{steps}`` —
         # physical-unit forecasts entering the risk layer as FEATURES; the
-        # names are pattern-matched so any horizon config (T-078) resolves.
+        # names are pattern-matched so any horizon config resolves.
         ("I_forecast", tuple(sorted(n for n in schema_cols if n.startswith("forecast_")))),
     ):
         assert group in MODEL_INPUT_GROUPS
@@ -118,17 +116,17 @@ def _resolve_features(df: pd.DataFrame) -> list[str]:
     allowed = model_input_allowlist(group_features)
     group_features = [name for name in group_features if name in allowed]
     if not group_features:
-        raise XGBoostModelError("no §15 model inputs found in the frame")
+        raise XGBoostModelError("no  model inputs found in the frame")
     return group_features
 
 
 def train_risk_model(df: pd.DataFrame, feature_groups: list[str] | None = None) -> RiskModel:
-    """Fit the §15 classifier on the TRAIN split of ``df``.
+    """Fit the classifier on the TRAIN split of ``df``.
 
-    ``df`` must carry a ``split`` column (T-068) and the 3-class ``risk_label``.
-    Hyperparameters come from configs/risk_model.yaml; the objective is
-    multi-class softmax so per-class probabilities sum to 1 (§15).
-    """
+ ``df`` must carry a ``split`` column and the 3-class ``risk_label``.
+ Hyperparameters come from configs/risk_model.yaml; the objective is
+ multi-class softmax so per-class probabilities sum to 1.
+ """
     cfg = risk_model_config()["xgboost"]
     for col in ("split", "risk_label"):
         if col not in df.columns:
@@ -147,7 +145,7 @@ def train_risk_model(df: pd.DataFrame, feature_groups: list[str] | None = None) 
     classes = sorted(train["risk_label"].unique())
     if len(classes) != 3:
         raise XGBoostModelError(
-            f"§15 MVP expects exactly 3 classes, found {classes} — expand after validation"
+            f" MVP expects exactly 3 classes, found {classes} — expand after validation"
         )
     class_to_idx = {c: i for i, c in enumerate(classes)}
     y = train["risk_label"].map(class_to_idx).to_numpy()

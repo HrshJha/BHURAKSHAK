@@ -1,7 +1,7 @@
-# SubSense — Sentinel-1 InSAR configuration (PRD §18, T-056)
-# ONE study region, ONE acquisition geometry — §18 step 1. Every downstream
-# InSAR artifact (T-057…T-062) reads its geometry from this file; nothing in
-# src/ may hard-code these values (NFR-6 config discipline).
+# BhuRakshak — Sentinel-1 InSAR configuration 
+# ONE study region, ONE acquisition geometry — step 1. Every downstream
+# InSAR artifact (…) reads its geometry from this file; nothing in
+# src/ may hard-code these values ( config discipline).
 
 study_region:
   name: "Jharia coalfield (East Jharia), Dhanbad district, Jharkhand, India"
@@ -17,17 +17,17 @@ study_region:
 acquisition:
   mission: "Sentinel-1 (S1A through 2026-06, S1D from 2026-07 — fleet handover mid-2026)"
   product_type: "IW_SLC__1S"     # Interferometric Wide swath, Level-1 SLC, VV+VH
-  relative_orbit: 121            # FIXED track for the whole stack (§18: one geometry)
+  relative_orbit: 121            # FIXED track for the whole stack (: one geometry)
   orbit_direction: "DESCENDING"
   track_repeat_cycle_days: 12    # 6-day pair interleaving for this latitude
-  acquisition_window:            # Jan–Sep 2026 → 21 dates (≥ 20-scene §18 floor)
+  acquisition_window:            # Jan–Sep 2026 → 21 dates (≥ 20-scene floor)
     start: "2026-01-01"
     end: "2026-10-01"
   expected_slices_per_date: 1    # one slice covers the bbox on this track
 
 processing:
-  # Toolchain: pure-NumPy/SciPy module (T-058) — rasterio/SNAP deliberately
-  # NOT dependencies (§9.2 precedent: simple, auditable implementations).
+  # Toolchain: pure-NumPy/SciPy module — rasterio/SNAP deliberately
+  # NOT dependencies ( precedent: simple, auditable implementations).
   coregistration: "orbit-accuracy + DEM-assisted resampling (jitters < 0.1 pixel assumed for the MVP workflow)"
   interferogram:
     multi_look_factors: [2, 8]   # range x azimuth → ~20 x 20 m ground resolution
@@ -41,7 +41,7 @@ processing:
     max_baseline_days: 36        # longer pairs decorrelate over mining surfaces
   coherence:
     window: [5, 5]               # estimation window (multi-looked pixels)
-    mask_threshold: 0.45         # BELOW this a point is MASKED, never silently included (§18 step 4)
+    mask_threshold: 0.45         # BELOW this a point is MASKED, never silently included ( step 4)
   unwrapping: "skip (MVP) — unwrapped only via small-baseline stacking of filtered wraps; documented honestly in docs/insar_workflow.md"
   atmosphere: "none (MVP) — regional/seasonal trends assessed by stacking; noted as the dominant unmodelled error"
   reference_point:
@@ -53,10 +53,10 @@ processing:
     min_observations: 15               # of 21 dates
 
 outputs:
-  deformation_timeseries: "data/processed/insar/deformation_timeseries.parquet"  # T-059
-  inventory_manifest: "data/raw/sentinel1/inventory_manifest.json"               # T-057
+  deformation_timeseries: "data/processed/insar/deformation_timeseries.parquet"  # 
+  inventory_manifest: "data/raw/sentinel1/inventory_manifest.json"               # 
 
-mesh_feature:                    # T-061 Group H fusion semantics (§13 Group H, §9.1, FR-13)
+mesh_feature:                    # Group H fusion semantics ( Group H,, )
   max_staleness_hours: 240       # carry-forward budget = 2× the 12-day acquisition cadence;
                                  # a window with no observation inside this budget has NO
                                  # InSAR value (NaN) — never interpolated across acquisitions

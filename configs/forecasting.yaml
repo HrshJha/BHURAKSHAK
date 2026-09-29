@@ -1,9 +1,9 @@
-# §16 temporal forecasting configuration (T-076/T-078) — NFR-6: every horizon
-# and model parameter is configuration-driven; no §16 horizon literal is
+# temporal forecasting configuration —: every horizon
+# and model parameter is configuration-driven; no horizon literal is
 # hard-coded anywhere under src/ (see tests/test_forecast_horizons.py).
 
-architecture: lstm          # TCN | GRU | LSTM — LSTM is the §16 literature benchmark
-history_steps: 8            # §10 windows of history feeding each forecast
+architecture: lstm          # TCN | GRU | LSTM — LSTM is the literature benchmark
+history_steps: 8            # windows of history feeding each forecast
 width: 32                   # hidden width
 depth: 1                    # layers / conv blocks
 epochs: 30
@@ -12,12 +12,12 @@ learning_rate: 0.001
 seed: 42
 
 horizons:
-  # The five §16 horizons, expressed in MINUTES. They are resolved to §10
-  # window-steps via the §9.1 grid interval
+  # The five horizons, expressed in MINUTES. They are resolved to 
+  # window-steps via the grid interval
   # (configs/preprocessing.yaml → resampling.grid_interval_minutes) by
   # src/forecasting/horizons.py. next_window = 0 means "the next window on
   # the grid" (resolved to exactly 1 step).
-  next_window: 0            # next-window (one §10 window ahead)
+  next_window: 0            # next-window (one window ahead)
   minutes_30: 30            # 30 minutes
   hours_1: 60               # 1 hour
   hours_6: 360              # 6 hours

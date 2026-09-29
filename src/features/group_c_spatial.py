@@ -1,4 +1,4 @@
-"""Feature Group C — observable spatial features (PRD §13, FR-4).
+"""Feature Group C — observable spatial features.
 
 Spatial context is emitted only when a snapshot contains co-temporal nodes.
 The current one-node-per-event production corpus therefore receives gated
@@ -50,10 +50,10 @@ def emit_group_c(
 ) -> pd.DataFrame:
     """Emit causal, label-blind spatial features for each event snapshot.
 
-    ``center_mode='oracle'`` is rejected because model feature builds cannot
-    consume simulator geometry. ``detected`` estimates the center from the
-    current snapshot's observable displacement magnitudes only.
-    """
+ ``center_mode='oracle'`` is rejected because model feature builds cannot
+ consume simulator geometry. ``detected`` estimates the center from the
+ current snapshot's observable displacement magnitudes only.
+ """
     if center_mode == "oracle":
         raise SpatialFeatureError("center_mode='oracle' is forbidden for model features")
     if center_mode != "detected":

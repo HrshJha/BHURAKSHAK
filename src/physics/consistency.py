@@ -1,15 +1,15 @@
-"""Physics engine — physics_residual — PRD §21, FR-15 (T-040).
+"""Physics engine — physics_residual —,.
 
-§21 (via FR-15): the pipeline runs a physics-consistency check,
+ (via ): the pipeline runs a physics-consistency check,
 ``physics_residual = observed_deformation − expected_deformation``, where the
-expected deformation comes from the **same §10 influence-function/Knothe
+expected deformation comes from the **same influence-function/Knothe
 model that generated the synthetic data** — reused, never re-implemented
-(one source of physical truth, per §10's "physical coupling" principle).
+(one source of physical truth, per 's "physical coupling" principle).
 
 The residual is the "is the ground behaving like the model says?" signal:
 ≈ 0 when observation equals the model; structurally large when the observed
 movement cannot be explained by the configured mining geometry. It feeds
-XGBoost as a feature (Group F, T-041) and the explainability breakdown (§22).
+XGBoost as a feature (Group F, ) and the explainability breakdown.
 
 Units/timescales: the raw node table stamps rows in decimal **hours**; the
 Knothe time base is **days** (configs/physics.yaml ``time_coefficient`` per
@@ -26,7 +26,7 @@ __all__ = ["PhysicsConsistency", "physics_engine"]
 
 
 class PhysicsConsistency:
-    """Wrapper that reuses the §10 field for expected deformation (§21)."""
+    """Wrapper that reuses the field for expected deformation."""
 
     def __init__(self, field: DeformationField | None = None) -> None:
         self.field = field or DeformationField()
@@ -40,7 +40,7 @@ class PhysicsConsistency:
     def expected_tilt(
         self, x: float | np.ndarray, y: float | np.ndarray, t_hours: float | np.ndarray
     ) -> tuple[np.ndarray, np.ndarray]:
-        """Expected (tilt_x, tilt_y) from the analytic gradient of the §10 model."""
+        """Expected (tilt_x, tilt_y) from the analytic gradient of the model."""
         tx, ty = self.field.expected_tilt(x, y, np.asarray(t_hours) / 24.0)
         return np.asarray(tx), np.asarray(ty)
 
@@ -51,7 +51,7 @@ class PhysicsConsistency:
         y: float | np.ndarray,
         t_hours: float | np.ndarray,
     ) -> np.ndarray:
-        """§21: physics_residual = observed_deformation − expected_deformation."""
+        """: physics_residual = observed_deformation − expected_deformation."""
         return np.asarray(observed_mm, dtype=float) - self.expected_displacement_mm(x, y, t_hours)
 
     def tilt_residual(
@@ -68,5 +68,5 @@ class PhysicsConsistency:
 
 
 def physics_engine() -> PhysicsConsistency:
-    """Config-built engine (§10 parameters from configs/physics.yaml)."""
+    """Config-built engine ( parameters from configs/physics.yaml)."""
     return PhysicsConsistency()

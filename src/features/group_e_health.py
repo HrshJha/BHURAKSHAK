@@ -1,21 +1,21 @@
-"""Feature Group E — Sensor health — PRD §13 Group E, FR-4 (T-039).
+"""Feature Group E — Sensor health — Group E,.
 
-§13 Group E, exactly: ``battery, RSSI, SNR, packet_loss, missing_ratio,
+ Group E, exactly: ``battery, RSSI, SNR, packet_loss, missing_ratio,
 stuck_sensor_flag, drift_score``.
 
 Sources (window level):
 - ``battery`` / ``RSSI`` / ``SNR`` / ``packet_loss``: window means of the raw
-  telemetry channels (§13 names verbatim);
+ telemetry channels ( names verbatim);
 - ``missing_ratio``: fraction of steps inside the window that were not
-  observed on the §9.1 grid (carried through from T-029's resampling output
-  when present, else 0 when every step is present in the windowed input);
-- ``stuck_sensor_flag``: T-033's stuck detection re-expressed per window
-  (longest near-identical run inside the window ≥ ``stuck_min_repeats``);
-- ``drift_score``: T-033's trend significance restricted to the window's
-  60 steps (|t|, noise-normalised), computed on the displacement channel.
+ observed on the grid (carried through from 's resampling output
+ when present, else 0 when every step is present in the windowed input);
+- ``stuck_sensor_flag``: 's stuck detection re-expressed per window
+ (longest near-identical run inside the window ≥ ``stuck_min_repeats``);
+- ``drift_score``: 's trend significance restricted to the window's
+ 60 steps (|t|, noise-normalised), computed on the displacement channel.
 
 Group E is what lets the models treat "the sensor is dying" differently from
-"the ground is moving" — the §12 separation, in feature space.
+"the ground is moving" — the separation, in feature space.
 """
 
 from __future__ import annotations
@@ -54,13 +54,13 @@ def emit_group_e(
 ) -> pd.DataFrame:
     """Emit Group E features per window.
 
-    ``windowed`` is the windowing engine output (per-window telemetry
-    statistics over ``battery``/``RSSI``/``SNR``/``packet_loss``). ``raw`` is
-    the optional raw per-timestep frame (same event/node layout) used to
-    compute ``missing_ratio``, ``stuck_sensor_flag`` and ``drift_score``
-    within each window's steps; when omitted, the within-window behaviour
-    features degrade to 0.0 / series-level NaN conventions.
-    """
+ ``windowed`` is the windowing engine output (per-window telemetry
+ statistics over ``battery``/``RSSI``/``SNR``/``packet_loss``). ``raw`` is
+ the optional raw per-timestep frame (same event/node layout) used to
+ compute ``missing_ratio``, ``stuck_sensor_flag`` and ``drift_score``
+ within each window's steps; when omitted, the within-window behaviour
+ features degrade to 0.0 / series-level NaN conventions.
+ """
     p = params or sensor_health_params()
     required = [
         f"{c}_mean" for c in ("battery", "RSSI", "SNR", "packet_loss")
@@ -77,7 +77,7 @@ def emit_group_e(
 
     # Per-window behaviour features need the raw per-step rows. Without them,
     # missing_ratio falls back to the windowing engine's own in-window missing
-    # fraction (§9 first-class data quality), and behaviour features are 0.
+    # fraction ( first-class data quality), and behaviour features are 0.
     if raw is None:
         if "window_missing_ratio" in windowed.columns:
             out["missing_ratio"] = windowed["window_missing_ratio"].to_numpy(dtype=float)

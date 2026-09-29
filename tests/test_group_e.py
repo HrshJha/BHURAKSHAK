@@ -1,4 +1,4 @@
-"""T-039 acceptance tests — Feature Group E (sensor health)."""
+""" acceptance tests — Feature Group E (sensor health)."""
 
 from __future__ import annotations
 
@@ -78,7 +78,7 @@ def test_drift_score_high_for_drift_series_low_for_clean() -> None:
     raw2, windowed2 = _frames()
     out2 = emit_group_e(windowed2, raw2)
     assert out["drift_score"].mean() > out2["drift_score"].mean() + 1.0
-    assert (out["drift_score"] > 3.5).any(), "the §10 DRIFT fault must be visible in windows"
+    assert (out["drift_score"] > 3.5).any(), "the  DRIFT fault must be visible in windows"
 
 
 def test_missing_ratio_counts_absent_steps() -> None:

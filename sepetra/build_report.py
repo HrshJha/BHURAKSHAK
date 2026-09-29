@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Sepetra — model evaluation report (accuracy, precision, recall, F1 + graphs).
 
-Builds a complete, reproducible evaluation pack for the §15 risk model:
+Builds a complete, reproducible evaluation pack for the  risk model:
 
     sepetra/
       build_report.py      ← this script (re-run any time; idempotent)
@@ -17,10 +17,10 @@ Builds a complete, reproducible evaluation pack for the §15 risk model:
         per_class_metrics.png
         lead_time_false_alarm.png
 
-Source of truth: the T-068 event-level splits (no event spans splits), the
-§15 XGBoost via src/risk/xgboost_model.py, and metric primitives from
-src/evaluation/metrics.py (§24). Threshold = P(CRITICAL) >= 0.5, identical
-to the T-070 ablation convention, so numbers line up with
+Source of truth: the  event-level splits (no event spans splits), the
+ XGBoost via src/risk/xgboost_model.py, and metric primitives from
+src/evaluation/metrics.py (). Threshold = P(CRITICAL) >= 0.5, identical
+to the  ablation convention, so numbers line up with
 experiments/ablation_a_to_f.json.
 
 Deterministic: fixed hyperparameters from configs/risk_model.yaml, fixed
@@ -61,7 +61,7 @@ from src.risk.xgboost_model import train_risk_model  # noqa: E402
 SEPETRA = Path(__file__).resolve().parent
 GRAPHS = SEPETRA / "graphs"
 
-ALERT_THRESHOLD = 0.5  # P(CRITICAL) at which the alert engine fires (T-070 convention)
+ALERT_THRESHOLD = 0.5  # P(CRITICAL) at which the alert engine fires ( convention)
 
 
 def _fmt(x: float) -> str:
@@ -75,7 +75,7 @@ def main() -> int:
     )
     GRAPHS.mkdir(parents=True, exist_ok=True)
 
-    # ---- data + model (identical to the T-070 arm-E convention) -----------
+    # ---- data + model (identical to the  arm-E convention) -----------
     store = pd.read_parquet(REPO_ROOT / "data" / "features" / "features_v2.parquet")
     splits = pd.read_csv(REPO_ROOT / "data" / "features" / "split_assignment.csv")
     store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
@@ -85,7 +85,7 @@ def main() -> int:
     print(f"store: {len(store):,} windows across {store.event_id.nunique():,} events; "
           f"splits: {store['split'].value_counts().to_dict()}", flush=True)
 
-    model = train_risk_model(store)  # full §15 input contract (Groups A–F + signals)
+    model = train_risk_model(store)  # full  input contract (Groups A–F + signals)
     classes = list(model.classes)
     i_crit = classes.index("CRITICAL")
 
@@ -173,7 +173,7 @@ def main() -> int:
                 ax.text(c, r, format(mat[r, c], fmt), ha="center", va="center",
                         color="white" if mat[r, c] > mat.max() * 0.6 else "black", fontsize=9)
     fig.colorbar(im, ax=axes, shrink=0.8)
-    fig.suptitle("Sepetra — §15 risk model, test split", y=1.02)
+    fig.suptitle("Sepetra —  risk model, test split", y=1.02)
     fig.savefig(GRAPHS / "confusion_matrices.png", dpi=120, bbox_inches="tight")
     plt.close(fig)
 
@@ -255,7 +255,7 @@ def main() -> int:
             "false_alarm_windows": int((g["p_CRITICAL"].ge(ALERT_THRESHOLD) & (g["anomaly_label"] == 0)).sum()),
         })
     ev = pd.DataFrame(rows)
-    leads = ev["lead_windows"].dropna() * 0.6  # §10 stride: 36 min per window
+    leads = ev["lead_windows"].dropna() * 0.6  #  stride: 36 min per window
     fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.4))
     axes[0].hist(leads, bins=np.arange(-0.5, 9.5, 1), color="#2e7d32", alpha=0.85)
     axes[0].set_xlabel("lead time (windows of 0.6 h; 0 = alert at onset)")
@@ -295,9 +295,9 @@ def write_readme(m: dict) -> None:
     lines = [
         "# Sepetra — Model Evaluation Report",
         "",
-        f"§15 risk model (XGBoost) evaluated on the **test split** "
-        f"({m['n_test_windows']:,} windows, {m['n_test_events']:,} events, T-068 event-level splits). "
-        f"Alert rule: P(CRITICAL) ≥ {m['threshold_p_critical']} (same convention as the T-070 ablation, "
+        f" risk model (XGBoost) evaluated on the **test split** "
+        f"({m['n_test_windows']:,} windows, {m['n_test_events']:,} events,  event-level splits). "
+        f"Alert rule: P(CRITICAL) ≥ {m['threshold_p_critical']} (same convention as the  ablation, "
         "so numbers match `experiments/ablation_a_to_f.json`).",
         "",
         "## Headline metrics",
@@ -320,7 +320,7 @@ def write_readme(m: dict) -> None:
         "“did the mesh raise an alert on a disturbed window?”; the *macro* view scores "
         "the 3-class risk grading. Both are reported — accuracy alone would flatter a "
         "model that never warns (NORMAL dominates this mesh), which is why the repo's "
-        "§24 headline set omits it while this report shows it with context.",
+        " headline set omits it while this report shows it with context.",
         "",
         "## Per-class detail",
         "",
@@ -358,17 +358,17 @@ def write_readme(m: dict) -> None:
         ".venv/bin/python sepetra/build_report.py",
         "```",
         "",
-        "Deterministic: config-driven hyperparameters, fixed T-068 splits, no sampling.",
+        "Deterministic: config-driven hyperparameters, fixed  splits, no sampling.",
         "Per-window scores: `predictions_test.parquet`. Machine-readable metrics: `metrics.json`.",
         "",
         "## Honest reading",
         "",
         "- **Accuracy is high but weakly informative here**: NORMAL is the majority class "
-        f"({pc['NORMAL']['support']:,} of {m['n_test_windows']:,} test windows), so the §24 discipline "
+        f"({pc['NORMAL']['support']:,} of {m['n_test_windows']:,} test windows), so the  discipline "
         "prefers precision/recall/F1 and calibration as headline numbers.",
         "- The binary alert view trades precision for recall at the 0.5 threshold — see "
         "`precision_recall_curves.png` for the full trade-off surface before moving it.",
-        "- Lead time is bounded by the §10 event generator (onset mid-event); see the T-070 "
+        "- Lead time is bounded by the  event generator (onset mid-event); see the  "
         "gate discussion in `reports/ablation.md`.",
     ]
     (SEPETRA / "README.md").write_text("\n".join(lines) + "\n")

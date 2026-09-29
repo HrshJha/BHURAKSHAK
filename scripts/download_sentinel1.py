@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
-"""T-057 — Acquire the Sentinel-1 SLC scene stack (PRD §18 step 2).
+""" — Acquire the Sentinel-1 SLC scene stack ( step 2).
 
-Reads the FIXED geometry from configs/insar.yaml (T-056): track 121,
+Reads the FIXED geometry from configs/insar.yaml: track 121,
 descending, Jharia bbox, 2026 acquisition window. Two modes:
 
-  inventory (default) — query the Copernicus Data Space Ecosystem OData
-  catalogue anonymously and write data/raw/sentinel1/inventory_manifest.json
-  listing every matching slice: date, track, geometry, product id, size.
+ inventory (default) — query the Copernicus Data Space Ecosystem OData
+ catalogue anonymously and write data/raw/sentinel1/inventory_manifest.json
+ listing every matching slice: date, track, geometry, product id, size.
 
-  download — additionally fetch each product's SLC zip. This REQUIRES
-  Copernicus credentials (env CDSE_USERNAME / CDSE_PASSWORD or --username /
-  --password): product download is an authenticated endpoint. Tokens are
-  requested from the CDSE identity service; nothing is hard-coded (NFR-6).
+ download — additionally fetch each product's SLC zip. This REQUIRES
+ Copernicus credentials (env CDSE_USERNAME / CDSE_PASSWORD or --username /
+ --password): product download is an authenticated endpoint. Tokens are
+ requested from the CDSE identity service; nothing is hard-coded.
 
-Usage:
-  .venv/bin/python scripts/download_sentinel1.py                 # inventory
-  CDSE_USERNAME=... CDSE_PASSWORD=... .venv/bin/python scripts/download_sentinel1.py --download
+Usage:.venv/bin/python scripts/download_sentinel1.py # inventory
+ CDSE_USERNAME=... CDSE_PASSWORD=....venv/bin/python scripts/download_sentinel1.py --download
 """
 
 from __future__ import annotations

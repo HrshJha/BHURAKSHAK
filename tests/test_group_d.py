@@ -1,4 +1,4 @@
-"""T-038 acceptance tests — Feature Group D (vibration, §8.3 summarised-only)."""
+""" acceptance tests — Feature Group D (vibration, summarised-only)."""
 
 from __future__ import annotations
 
@@ -78,7 +78,7 @@ def test_bursty_series_pushes_energy_high() -> None:
 
 
 def test_raw_high_rate_samples_are_refused() -> None:
-    """§8.3: features must come from on-node summarised vibration, never raw."""
+    """: features must come from on-node summarised vibration, never raw."""
     windowed = _windowed()
     for col in ("raw_samples", "raw_waveform", "raw_acceleration"):
         with pytest.raises(ValueError, match="raw high-rate"):

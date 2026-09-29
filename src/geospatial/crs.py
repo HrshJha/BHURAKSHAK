@@ -1,15 +1,13 @@
-"""§9.2 dual coordinate reference system (T-032).
-
-PRD §9.2:
+""" dual coordinate reference system.:
 - **Mesh-local coordinates** — metres, origin at a fixed reference — used for
-  all inter-node distance/strain/gradient calculations.
+ all inter-node distance/strain/gradient calculations.
 - **Global coordinates** — every node also stores a WGS84 (lat, lon) pair for
-  GIS mapping and alignment with Sentinel-1/DGPS/NISAR products.
+ GIS mapping and alignment with Sentinel-1/DGPS/NISAR products.
 - **Transformation** — a fixed local tangent-plane converts between the two;
-  the transformation parameters (origin lat/lon, UTM zone) are stored per
-  deployment so synthetic and real datasets remain comparable.
+ the transformation parameters (origin lat/lon, UTM zone) are stored per
+ deployment so synthetic and real datasets remain comparable.
 
-Implementation: pure-NumPy equirectangular local tangent plane (§9.2 explicitly
+Implementation: pure-NumPy equirectangular local tangent plane ( explicitly
 allows "a simple equirectangular approximation for small panel extents" — a
 400-node, 500 m mesh is far below the kilometre scale where distortion matters;
 pyproj is deliberately not a dependency). Transformation parameters come from
@@ -44,7 +42,7 @@ class CRSError(ValueError):
 
 @dataclass(frozen=True)
 class CRSDefinition:
-    """Per-deployment transformation parameters (§9.2)."""
+    """Per-deployment transformation parameters."""
 
     origin_lat_deg: float
     origin_lon_deg: float

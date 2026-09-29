@@ -1,4 +1,4 @@
-"""T-020 acceptance tests — same seed ⇒ byte-identical output; different seed ⇒ not."""
+""" acceptance tests — same seed ⇒ byte-identical output; different seed ⇒ not."""
 
 from __future__ import annotations
 

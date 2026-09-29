@@ -1,6 +1,6 @@
-# SubSense — validation-split config (PRD §23, T-068)
-# All split fractions live here (NFR-6); code never hard-codes them.
-# §23: random row-shuffling across time is explicitly disallowed — the module
+# BhuRakshak — validation-split config 
+# All split fractions live here; code never hard-codes them.
+#: random row-shuffling across time is explicitly disallowed — the module
 # refuses to implement it.
 
 time_split:
@@ -15,13 +15,13 @@ spatial_split:
   boundary_fraction_y: 0.5
 
 node_split:
-  # §23 example: nodes 1–15 → train, nodes 16–20 → test (fractions of the
+  # example: nodes 1–15 → train, nodes 16–20 → test (fractions of the
   # node-id-ordered list; middle slice is validation)
   train_upper_fraction: 0.75
   val_upper_fraction: 0.875
 
 event_split:
-  # §23: train on slow deformation, test on accelerating deformation.
+  #: train on slow deformation, test on accelerating deformation.
   # Families are matched by substring against the event's scenario family.
   train_families: ["stable", "slow", "vibration", "temperature", "packet", "sensor", "communication", "single_node", "multiple"]
   test_families: ["accelerating", "rapid", "irregular"]
@@ -29,7 +29,7 @@ event_split:
   validation_fraction: 0.2
 
 regime_split:
-  # §35 unseen-parameter-regime holdout (fixall Phase 1.2): the TEST split is
+  # unseen-parameter-regime holdout (fixall Phase 1.2): the TEST split is
   # whole scenario REGIMES the model never sees in train/validation — the two
   # growth regimes (rapid, accelerating) and the no-deformation regime
   # (stable). stable_ground is included so P(NORMAL) has held-out support;
@@ -41,7 +41,7 @@ regime_split:
   validation_fraction: 0.2
 
 synthetic_split:
-  # §23 example: train σ=5–20, test σ=22–30 → hold out the TOP fraction of the
+  # example: train σ=5–20, test σ=22–30 → hold out the TOP fraction of the
   # subsidence-magnitude range (a complete parameter regime, never sampled in
   # training) plus a middle slice for validation.
   test_upper_fraction: 0.2

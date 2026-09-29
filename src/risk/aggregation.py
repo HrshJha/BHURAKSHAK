@@ -1,24 +1,22 @@
-"""Per-node → region risk roll-up — PRD §21.1 (spatial aggregation), T-052.
-
-§21.1: risk state is tracked per-node and rolled up to a region/panel level
+"""Per-node → region risk roll-up — (spatial aggregation),.: risk state is tracked per-node and rolled up to a region/panel level
 as the **max over its constituent nodes' states**, so one severely affected
 node cannot be diluted by averaging with quiet neighbours — but a single
 noisy node also cannot trigger a panel-wide CRITICAL without the
-multi-node confirmation rule (the §21.1 WARNING→CRITICAL requirement:
+multi-node confirmation rule (the WARNING→CRITICAL requirement:
 confirmation by neighbouring nodes, ``min_confirming_neighbours`` from
 configs/alerts.yaml).
 
 Concretely, a region reads CRITICAL only when:
 - at least TWO constituent nodes are at CRITICAL (the multi-node case IS the
-  confirmation), or
+ confirmation), or
 - the CRITICAL node(s) report the configured number of confirming
-  neighbours.
+ neighbours.
 
 A lone, unconfirmed CRITICAL node degrades the REGION one level (WARNING):
 the panel still shows elevated risk — never diluted to GREEN — while the
 node itself keeps its true state (roll-up is read-only over node states).
 The rule name and the guard flag are read from configs/alerts.yaml
-(``spatial_aggregation``), never hard-coded (NFR-6).
+(``spatial_aggregation``), never hard-coded.
 """
 
 from __future__ import annotations
@@ -50,7 +48,7 @@ class RegionAggregation:
 
 
 class RegionAggregator:
-    """Max-rule roll-up of per-node §21.1 alert levels to a region/panel state."""
+    """Max-rule roll-up of per-node alert levels to a region/panel state."""
 
     def __init__(
         self,
@@ -61,7 +59,7 @@ class RegionAggregator:
         cfg = alerts_config()["spatial_aggregation"] if aggregation_cfg is None else dict(aggregation_cfg)
         self.rule = str(cfg.get("rule", "max"))
         if self.rule != "max":
-            raise RegionAggregationError(f"unsupported spatial aggregation rule {self.rule!r} (§21.1 mandates max)")
+            raise RegionAggregationError(f"unsupported spatial aggregation rule {self.rule!r} ( mandates max)")
         self.single_node_critical_requires_confirmation = bool(
             cfg.get("single_node_critical_requires_neighbour_confirmation", True)
         )
@@ -83,11 +81,11 @@ class RegionAggregator:
     ) -> RegionAggregation:
         """Aggregate node levels for ``region_id``.
 
-        ``node_levels`` maps node_id → §21.1 alert level (as produced by the
-        T-050/T-051 engines). ``neighbour_confirmations`` optionally maps
-        node_id → confirming-neighbour count for the single-node CRITICAL
-        guard; nodes absent from it count as unconfirmed.
-        """
+ ``node_levels`` maps node_id → alert level (as produced by the
+ / engines). ``neighbour_confirmations`` optionally maps
+ node_id → confirming-neighbour count for the single-node CRITICAL
+ guard; nodes absent from it count as unconfirmed.
+ """
         if not node_levels:
             raise RegionAggregationError("a region needs at least one constituent node to roll up")
         confirmations = neighbour_confirmations or {}

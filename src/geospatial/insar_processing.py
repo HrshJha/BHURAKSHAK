@@ -1,28 +1,26 @@
-"""Offline InSAR processing workflow — PRD §18 step 3, §4 non-goal (T-058).
-
-§18: InSAR processing runs on the workstation, NEVER on the Raspberry Pi.
+"""Offline InSAR processing workflow — step 3, non-goal.: InSAR processing runs on the workstation, NEVER on the Raspberry Pi.
 Toolchain: pure NumPy/SciPy — rasterio/SNAP/ISCE are deliberately NOT
-dependencies (the §9.2 precedent: simple, auditable implementations over
+dependencies (the precedent: simple, auditable implementations over
 heavy geospatial stacks for a small-area MVP). Every parameter comes from
-configs/insar.yaml (NFR-6).
+configs/insar.yaml.
 
 Pipeline per interferometric pair (all functions complex-domain unless noted):
 
 1. **coarseregister** — shift the secondary SLC onto the master grid by an
-   integer pixel offset (orbit-accuracy coregistration for the MVP; the
-   sub-pixel DEM-assisted refinement of full processors is documented as an
-   assumption in docs/insar_workflow.md).
+ integer pixel offset (orbit-accuracy coregistration for the MVP; the
+ sub-pixel DEM-assisted refinement of full processors is documented as an
+ assumption in docs/insar_workflow.md).
 2. **multi_look** — complex averaging (range × azimuth factors from config)
-   for ~20 × 20 m ground resolution and speckle reduction.
+ for ~20 × 20 m ground resolution and speckle reduction.
 3. **interferogram** — master · conj(secondary); remove the flat-Earth
-   phase ramp (a plane fit in range/azimuth — MVP-level orbital fringe
-   removal).
+ phase ramp (a plane fit in range/azimuth — MVP-level orbital fringe
+ removal).
 4. **power_spectrum_filter** — topographic-phase-independent noise
-   filtering of the wrapped interferogram (non-linear spectral filter; the
-   Goldstein-Werner power-spectrum approach, simplified).
+ filtering of the wrapped interferogram (non-linear spectral filter; the
+ Goldstein-Werner power-spectrum approach, simplified).
 5. **coherence** — sliding-window |<m·s*>| / sqrt(<|m|²><|s|²>) with the
-   configured window; low-coherence pixels are MASKED (never silently
-   included — §18 step 4).
+ configured window; low-coherence pixels are MASKED (never silently
+ included — step 4).
 
 The small-baseline stack combines all pairs whose temporal baseline is
 within [min, max] days (config): per multi-look pixel, wrapped phases are
@@ -32,9 +30,9 @@ get per-date displacement estimates relative to the highest-coherence /
 lowest-variance reference candidate outside mapped subsidence.
 
 Validation: the module is exercised on SYNTHETIC SLC stacks with a known
-deformation signal (the T-058 tests and the notebook-08 builder) — the
+deformation signal (the tests and the notebook-08 builder) — the
 processing recovers the imposed deformation, which validates the chain
-given real SLC scenes from T-057's credentialed download.
+given real SLC scenes from 's credentialed download.
 """
 
 from __future__ import annotations
@@ -117,10 +115,10 @@ class InSARConfig:
 def coarseregister(secondary: np.ndarray, dr: int, da: int) -> np.ndarray:
     """Integer-pixel shift of ``secondary`` onto the master grid (orbit accuracy).
 
-    Positive ``dr``/``da`` mean the secondary must move toward larger
-    range/azimuth indices. Shifted-in borders are zeroed (they carry no
-    valid signal).
-    """
+ Positive ``dr``/``da`` mean the secondary must move toward larger
+ range/azimuth indices. Shifted-in borders are zeroed (they carry no
+ valid signal).
+ """
     if secondary.ndim != 2 or not np.iscomplexobj(secondary):
         raise InSARError("coarseregister expects a 2-D complex SLC array")
     out = np.zeros_like(secondary)
@@ -183,14 +181,14 @@ def interferogram(
 def power_spectrum_filter(ifg: np.ndarray, alpha: float = 1 / 2, block: int = 32) -> np.ndarray:
     """Goldstein–Werner non-linear spectral filter of the COMPLEX interferogram.
 
-    Per ``block × block`` tile: FFT of the complex ifg, multiply the spectrum
-    by ``|spectrum|**alpha`` (α = the α parameter, one-half by default), inverse FFT. Phase is preserved
-    for smooth fields (the weighting reshapes magnitudes only) while fringing
-    noise is suppressed. Operating on the phase field instead would CORRUPT
-    phase (amplitude leakage) — a bug caught by the synthetic-stack recovery
-    check and fixed by filtering the complex domain, as in the literature.
-    Tiles are padded so block edges do not create seams.
-    """
+ Per ``block × block`` tile: FFT of the complex ifg, multiply the spectrum
+ by ``|spectrum|**alpha`` (α = the α parameter, one-half by default), inverse FFT. Phase is preserved
+ for smooth fields (the weighting reshapes magnitudes only) while fringing
+ noise is suppressed. Operating on the phase field instead would CORRUPT
+ phase (amplitude leakage) — a bug caught by the synthetic-stack recovery
+ check and fixed by filtering the complex domain, as in the literature.
+ Tiles are padded so block edges do not create seams.
+ """
     if ifg.ndim != 2 or not np.iscomplexobj(ifg):
         raise InSARError("power_spectrum_filter expects a 2-D COMPLEX interferogram")
     out = np.empty_like(ifg)
@@ -230,9 +228,9 @@ def coherence(master: np.ndarray, secondary: np.ndarray, window: tuple[int, int]
 def amplitude_dispersion(stack_amplitudes: np.ndarray) -> np.ndarray:
     """Amplitude dispersion σ_A/μ_A per pixel across the stack (PS gate).
 
-    ``stack_amplitudes`` is (n_dates, ...) — the reduction is over axis 0,
-    so 2-D (n_dates, n_pixels) and 3-D (n_dates, rows, cols) inputs both work.
-    """
+ ``stack_amplitudes`` is (n_dates,...) — the reduction is over axis 0,
+ so 2-D (n_dates, n_pixels) and 3-D (n_dates, rows, cols) inputs both work.
+ """
     if stack_amplitudes.ndim < 2:
         raise InSARError("amplitude_dispersion expects (n_dates, ...) — one amplitude map per date")
     mean = stack_amplitudes.mean(axis=0)
@@ -277,8 +275,8 @@ def process_pair(
 ) -> tuple[np.ndarray, np.ndarray]:
     """Full per-pipe: multi-look → interferogram → [optional filter] → coherence.
 
-    Returns ``(wrapped_ifg, coherence)`` at multi-look resolution.
-    """
+ Returns ``(wrapped_ifg, coherence)`` at multi-look resolution.
+ """
     m, s = multi_look(master, cfg.range_looks, cfg.azimuth_looks), multi_look(
         secondary, cfg.range_looks, cfg.azimuth_looks
     )
@@ -295,11 +293,11 @@ def build_stack(
 ) -> dict:
     """Small-baseline stack over the whole scene set.
 
-    Per multi-look pixel with enough observations: coherence-weighted mean of
-    the wrapped, filtered pair phases (unwrapping skipped — MVP), then PS
-    gating by amplitude dispersion + stack coherence. Returns per-date
-    phase-derived displacement proxy arrays, the PS mask, and diagnostics.
-    """
+ Per multi-look pixel with enough observations: coherence-weighted mean of
+ the wrapped, filtered pair phases (unwrapping skipped — MVP), then PS
+ gating by amplitude dispersion + stack coherence. Returns per-date
+ phase-derived displacement proxy arrays, the PS mask, and diagnostics.
+ """
     if len(slcs) != len(dates) or len(dates) < 3:
         raise InSARError("build_stack needs aligned slcs/dates (>= 3 dates)")
     pairs = small_baseline_pairs(dates, cfg)

@@ -1,27 +1,25 @@
-"""Isolation Forest module — PRD §14, FR-5 (T-043).
-
-§14: the detector answers "does this look abnormal?" — never "is this
+"""Isolation Forest module —,.: the detector answers "does this look abnormal?" — never "is this
 subsidence?". It is trained **only on healthy-baseline windows**, unsupervised,
 and its output feeds forward as ONE input feature to XGBoost
 (``anomaly_score = -model.score_samples(X)``), never interpreted directly as a
 subsidence probability.
 
-Hyperparameters come from configs/anomaly.yaml and replicate the §14 code
+Hyperparameters come from configs/anomaly.yaml and replicate the code
 block exactly: ``IsolationForest(n_estimators=300, contamination="auto",
 random_state=42)``.
 
-Healthy-baseline rule (Gap G-2, resolved for the 3-class MVP): §14's literal
+Healthy-baseline rule (Gap, resolved for the 3-class MVP): 's literal
 ``df[df["risk_label"] == "GREEN"]`` is inoperable because the MVP vocabulary
 has no GREEN. The healthy mask here is the triple-healthy conjunction
 
-    anomaly_label == 0  AND  fault_label == "NONE"  AND  risk_label == "NORMAL"
+ anomaly_label == 0 AND fault_label == "NONE" AND risk_label == "NORMAL"
 
 so sensor-faulted windows (which carry ``risk_label == NORMAL`` under a fault)
-are excluded from the baseline — keeping §12's "sensor is broken ≠ ground is
+are excluded from the baseline — keeping 's "sensor is broken ≠ ground is
 moving" separation true in the training set itself.
 
 Split discipline: the module accepts an explicit ``split`` column (produced by
-the caller from the §23 event/parameter-regime logic); the decision threshold
+the caller from the event/parameter-regime logic); the decision threshold
 is the ``far_alpha``-quantile of **validation** healthy scores, so the
 false-alarm rate on unseen healthy data ≈ 1 − far_alpha by construction.
 """
@@ -44,7 +42,7 @@ __all__ = [
     "train_isolation_forest",
 ]
 
-#: The three §14 ablation feature groups, in order (A physical, B +temporal, C +spatial).
+#: The three ablation feature groups, in order (A physical, B +temporal, C +spatial).
 ABLATION_STEPS = ("A_physical", "B_add_temporal", "C_add_spatial")
 
 
@@ -63,7 +61,7 @@ class IsolationForestModel:
     n_training_windows: int
 
     def anomaly_score(self, df: pd.DataFrame) -> np.ndarray:
-        """§14: anomaly_score = -score_samples(X). Higher = more anomalous."""
+        """: anomaly_score = -score_samples(X). Higher = more anomalous."""
         missing = [c for c in self.features if c not in df.columns]
         if missing:
             raise IsolationForestError(f"feature columns missing for scoring: {missing}")
@@ -75,14 +73,14 @@ class IsolationForestModel:
 
 
 def healthy_baseline_mask(df: pd.DataFrame) -> np.ndarray:
-    """The G-2 triple-healthy mask (see module docstring).
+    """The triple-healthy mask (see module docstring).
 
-    ``risk_label == NORMAL`` is required only when the column exists; tables
-    without labels (pure inference frames) cannot assert healthiness and raise.
-    """
+ ``risk_label == NORMAL`` is required only when the column exists; tables
+ without labels (pure inference frames) cannot assert healthiness and raise.
+ """
     for col in ("anomaly_label", "fault_label"):
         if col not in df.columns:
-            raise IsolationForestError(f"healthy-baseline mask needs the §12 column {col!r}")
+            raise IsolationForestError(f"healthy-baseline mask needs the  column {col!r}")
     # pandas 3 / Arrow-backed frames may expose read-only NumPy views. Build
     # new boolean arrays instead of mutating a view owned by the Series.
     mask = (pd.to_numeric(df["anomaly_label"], errors="coerce") == 0).to_numpy(dtype=bool, copy=True)
@@ -112,16 +110,16 @@ def train_isolation_forest(
     df: pd.DataFrame,
     feature_groups: list[str] | None = None,
 ) -> IsolationForestModel:
-    """Fit the §14 detector on healthy-baseline windows of the TRAIN split only.
+    """Fit the detector on healthy-baseline windows of the TRAIN split only.
 
-    ``df`` must carry a ``split`` column with at least the values ``train`` and
-    ``validation``. The threshold is set so that ``far_alpha`` (configs/
-    anomaly.yaml, default 0.99) of VALIDATION healthy windows stay below it.
-    """
+ ``df`` must carry a ``split`` column with at least the values ``train`` and
+ ``validation``. The threshold is set so that ``far_alpha`` (configs/
+ anomaly.yaml, default 0.99) of VALIDATION healthy windows stay below it.
+ """
     cfg = anomaly_config()["isolation_forest"]
     for col in ("split",):
         if col not in df.columns:
-            raise IsolationForestError("frame must carry a 'split' column (§23 discipline)")
+            raise IsolationForestError("frame must carry a 'split' column ( discipline)")
     df = df.reset_index(drop=True)  # boolean masks are positional; never trust index labels
 
     features = _resolve_features(feature_groups)
@@ -139,7 +137,7 @@ def train_isolation_forest(
     train_healthy = train[healthy_baseline_mask(train)]
     if len(train_healthy) < 100:
         raise IsolationForestError(
-            f"healthy training baseline too small ({len(train_healthy)} rows) for §14 training"
+            f"healthy training baseline too small ({len(train_healthy)} rows) for  training"
         )
 
     model = IsolationForest(

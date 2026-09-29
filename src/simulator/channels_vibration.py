@@ -1,15 +1,15 @@
-"""Vibration channel — PRD §10 (T-015).
+"""Vibration channel —.
 
-    vibration = normal_noise + vehicle/personnel disturbance
-                + localized transient + high-frequency burst
+ vibration = normal_noise + vehicle/personnel disturbance
+ + localized transient + high-frequency burst
 
 Vibration is **supporting evidence only**: `vibration alone ≠ subsidence`.
 All four components are independently toggleable and default OFF unless the
-scenario enables them — the label engine (T-018) maps a vibration-only event
+scenario enables them — the label engine maps a vibration-only event
 to NON_SUBSIDENCE, never SUBSIDENCE.
 
 All component amplitudes/rates come from configs/physics.yaml (vibration
-block) via src/config.py — no numeric scenario literals live here (NFR-6).
+block) via src/config.py — no numeric scenario literals live here.
 """
 
 from __future__ import annotations
@@ -29,9 +29,9 @@ def _vibration_cfg() -> dict:
 class VibrationComponents:
     """Toggleable components; every flag defaults False (nothing hidden on).
 
-    Numeric parameters left as ``None`` resolve from configs/physics.yaml at
-    generation time, so tuning never requires touching this module.
-    """
+ Numeric parameters left as ``None`` resolve from configs/physics.yaml at
+ generation time, so tuning never requires touching this module.
+ """
 
     normal_noise: bool = False
     vehicle_disturbance: bool = False
@@ -95,12 +95,12 @@ def generate_vibration(
     rng: np.random.Generator,
     sampling_hz: float = 100.0,
 ) -> VibrationResult:
-    """One on-node high-rate burst summarised to §8.3 uplink statistics.
+    """One on-node high-rate burst summarised to uplink statistics.
 
-    Simulates ``sampling_hz`` samples around time ``t`` (hours) and returns
-    RMS / peak / crest-factor — the summary that would actually be transmitted
-    (§8.3: raw high-rate samples are never transmitted).
-    """
+ Simulates ``sampling_hz`` samples around time ``t`` (hours) and returns
+ RMS / peak / crest-factor — the summary that would actually be transmitted
+ (: raw high-rate samples are never transmitted).
+ """
     c = components.resolved()
     n = max(int(sampling_hz * 60), 2)  # one minute of on-node samples
     samples = np.zeros(n)
@@ -139,8 +139,8 @@ def generate_vibration(
 
 
 def vibration_only_is_non_subsidence() -> bool:
-    """Encoding of the §10 rule enforced again by the scenario engine (T-018):
-    a vibration-only event is labelled NON_SUBSIDENCE, never SUBSIDENCE."""
+    """Encoding of the rule enforced again by the scenario engine:
+ a vibration-only event is labelled NON_SUBSIDENCE, never SUBSIDENCE."""
     return True
 
 
@@ -153,11 +153,11 @@ def summarized_vibration_batch(
 ) -> VibrationResult:
     """Vectorised per-step vibration summaries for dataset generation.
 
-    Identical statistical model to :func:`generate_vibration` (same component
-    probabilities and amplitudes from config) but computed for ``n_steps``
-    steps at once; returns arrays of RMS / peak / crest per step plus the list
-    of components active anywhere in the batch.
-    """
+ Identical statistical model to:func:`generate_vibration` (same component
+ probabilities and amplitudes from config) but computed for ``n_steps``
+ steps at once; returns arrays of RMS / peak / crest per step plus the list
+ of components active anywhere in the batch.
+ """
     c = components.resolved()
     win = float(
         window_seconds

@@ -1167,6 +1167,6 @@
         "process_rss_peak_sampled_bytes": 657653760
       }
     },
-    "note": "workstation CPU/process RSS; sampled RSS is not device peak; no numeric edge budget is defined in PRD NFR-2"
+    "note": "workstation CPU/process RSS; sampled RSS is not device peak; no numeric edge budget is defined in  "
   }
 }

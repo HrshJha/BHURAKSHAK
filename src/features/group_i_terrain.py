@@ -1,17 +1,17 @@
-"""Feature Group I — Terrain / mine geometry — PRD §13 Group I (T-066).
+"""Feature Group I — Terrain / mine geometry — Group I.
 
-§13 Group I, exactly: ``elevation, slope, aspect, curvature, mine_depth,
+ Group I, exactly: ``elevation, slope, aspect, curvature, mine_depth,
 panel_distance, panel_geometry, overburden``.
 
 Terrain is STATIC at node level — the ground doesn't move between windows —
 so the emitter takes the mesh node table and broadcasts each node's row
 unchanged across the caller's window frame (same keys, 1:1 order). Nothing
-here is measured: **G-10 honesty** — no real DEM, LiDAR or mine survey exists
+here is measured: ** honesty** — no real DEM, LiDAR or mine survey exists
 in MVP scope. Elevation is a smooth synthetic surface (regional dip plus
 seeded gentle undulations) parameterised from configs/physics.yaml
 ``terrain``; the provenance is stamped on every frame via ``terrain_source``
 and the surface parameters echo into the frame ``attrs``. ``mine_depth``,
-``panel_distance`` and ``panel_geometry`` come from the §10 physics config —
+``panel_distance`` and ``panel_geometry`` come from the physics config —
 they describe the SYNTHETIC working panel, the same one the physics engine
 subsides, so the features are consistent with the data by construction.
 """
@@ -47,7 +47,7 @@ GROUP_I_FEATURES = (
 #: The full Group I frame: window keys + the eight features + provenance.
 TERRAIN_COLUMNS = ("event_id", "node_id", "window_index", *GROUP_I_FEATURES, "terrain_source")
 
-_TERRAIN_SOURCE = "synthetic (G-10: no real DEM in MVP scope)"
+_TERRAIN_SOURCE = "synthetic (: no real DEM in MVP scope)"
 
 
 class GroupITerrainError(ValueError):
@@ -64,11 +64,11 @@ def _terrain_params() -> dict:
 def terrain_surface(node_coords: pd.DataFrame) -> pd.DataFrame:
     """Per-node static terrain and mine geometry (the Group I payload).
 
-    ``node_coords``: ``node_id, x, y`` (mesh-local metres, §9.2). Returns one
-    row per node with ``elevation, slope, aspect, curvature, mine_depth,
-    panel_distance, panel_geometry, overburden`` plus ``terrain_source`` and
-    a ``terrain_params`` attrs echo of the config used.
-    """
+ ``node_coords``: ``node_id, x, y`` (mesh-local metres, ). Returns one
+ row per node with ``elevation, slope, aspect, curvature, mine_depth,
+ panel_distance, panel_geometry, overburden`` plus ``terrain_source`` and
+ a ``terrain_params`` attrs echo of the config used.
+ """
     if node_coords["node_id"].duplicated().any():
         raise GroupITerrainError("node_coords carries duplicate node_id values")
     for col in ("node_id", "x", "y"):
@@ -80,7 +80,7 @@ def terrain_surface(node_coords: pd.DataFrame) -> pd.DataFrame:
     x = node_coords["x"].to_numpy(dtype=float)
     y = node_coords["y"].to_numpy(dtype=float)
 
-    # Synthetic elevation surface (G-10): regional dip + seeded undulations.
+    # Synthetic elevation surface: regional dip + seeded undulations.
     base = float(tp["base_elevation_m"])
     slope_frac = float(tp["regional_slope_fraction"])
     az = math.radians(float(tp["regional_slope_azimuth_deg"]))
@@ -121,7 +121,7 @@ def terrain_surface(node_coords: pd.DataFrame) -> pd.DataFrame:
     aspect = (np.degrees(np.arctan2(-dh_dx, -dh_dy))) % 360.0  # downslope bearing
     curvature = curv
 
-    # --- Mine geometry from the §10 physics config (the synthetic panel).
+    # --- Mine geometry from the physics config (the synthetic panel).
     cx = float(physics["panel_center_x"])
     cy = float(physics["panel_center_y"])
     width = float(physics["panel_width"])
@@ -158,13 +158,13 @@ def emit_group_i(
 ) -> pd.DataFrame:
     """Broadcast static Group I terrain features onto the window frame.
 
-    ``node_coords``: ``node_id, x, y`` (mesh-local metres). ``windowed``: the
-    caller's window frame (must carry the window keys; ``window_timestamp``
-    optional). The Group I row for a node is IDENTICAL at every window —
-    terrain doesn't change between windows — so rows align 1:1 with
-    ``windowed`` (same keys, same order). A precomputed ``terrain`` frame
-    (``terrain_surface`` output) may be passed to avoid recomputation.
-    """
+ ``node_coords``: ``node_id, x, y`` (mesh-local metres). ``windowed``: the
+ caller's window frame (must carry the window keys; ``window_timestamp``
+ optional). The Group I row for a node is IDENTICAL at every window —
+ terrain doesn't change between windows — so rows align 1:1 with
+ ``windowed`` (same keys, same order). A precomputed ``terrain`` frame
+ (``terrain_surface`` output) may be passed to avoid recomputation.
+ """
     for col in ("event_id", "node_id", "window_index"):
         if col not in windowed.columns:
             raise GroupITerrainError(f"windowed frame missing {col!r}")

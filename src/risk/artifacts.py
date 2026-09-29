@@ -1,10 +1,10 @@
-"""Versioned model artifacts with integrity + FR-14 metadata (fixall Phase 2).
+"""Versioned model artifacts with integrity + metadata (fixall Phase 2).
 
-Closes audit §2 MEDIUM (artifacts carry no version/schema) and §3 MEDIUM
-(unauthenticated pickle). Every saved bundle embeds an FR-14 block
+Closes audit MEDIUM (artifacts carry no version/schema) and MEDIUM
+(unauthenticated pickle). Every saved bundle embeds an block
 
-    model_name, model_version, feature_version, training_dataset_version,
-    timestamp, split_name, seed
+ model_name, model_version, feature_version, training_dataset_version,
+ timestamp, split_name, seed
 
 plus ``preprocessing`` (what the loader must apply before the model sees
 data: ``"standardise"`` for bundles carrying a fitted scaler, ``"none"`` for
@@ -12,9 +12,9 @@ scale-invariant models). A sha256 sidecar (``<path>.sha256``) is written at
 save time and verified at load time — a tampered or truncated file fails
 loudly instead of silently deserialising.
 
-Saves register through :mod:`src.risk.model_registry` when the dataset
+Saves register through:mod:`src.risk.model_registry` when the dataset
 version resolves, so ``models/registry.json`` is the single index of what is
-shipped and every prediction path can log FR-14 records from a registered
+shipped and every prediction path can log records from a registered
 entry.
 """
 
@@ -77,10 +77,10 @@ def save_model_artifact(
 ) -> dict[str, Any]:
     """Dump a versioned bundle + sha256 sidecar, and register it.
 
-    ``preprocessing`` defaults to ``"standardise"`` when a ``scaler`` is
-    given and ``"none"`` otherwise; passing both a scaler and
-    ``preprocessing="none"`` raises (the declaration must match the payload).
-    """
+ ``preprocessing`` defaults to ``"standardise"`` when a ``scaler`` is
+ given and ``"none"`` otherwise; passing both a scaler and
+ ``preprocessing="none"`` raises (the declaration must match the payload).
+ """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     if preprocessing is None:
@@ -143,14 +143,14 @@ def verify_sidecar(path: str | Path) -> None:
 
 
 def load_model_artifact(path: str | Path, *, expected_schema_version: str | None = None) -> dict[str, Any]:
-    """Verify integrity, load, and assert the FR-14 + preprocessing contract.
+    """Verify integrity, load, and assert the + preprocessing contract.
 
-    ``expected_schema_version`` defaults to the live configs/feature_schema
-    version — a model trained on another schema is refused, not silently
-    applied. Returns ``{"model", "scaler", "features", "preprocessing",
-    "fr14", "transform"}`` where ``transform(df)`` applies the declared
-    preprocessing (or the identity for ``"none"``).
-    """
+ ``expected_schema_version`` defaults to the live configs/feature_schema
+ version — a model trained on another schema is refused, not silently
+ applied. Returns ``{"model", "scaler", "features", "preprocessing",
+ "fr14", "transform"}`` where ``transform(df)`` applies the declared
+ preprocessing (or the identity for ``"none"``).
+ """
     path = Path(path)
     verify_sidecar(path)
     payload = joblib.load(path)
@@ -160,7 +160,7 @@ def load_model_artifact(path: str | Path, *, expected_schema_version: str | None
     fr14 = payload["fr14"]
     missing = [f for f in FR14_PAYLOAD_FIELDS if f not in fr14]
     if missing:
-        raise ArtifactError(f"artifact {path.name} FR-14 block missing fields: {missing}")
+        raise ArtifactError(f"artifact {path.name}  block missing fields: {missing}")
 
     live_schema = str(feature_schema_config()["feature_schema_version"])
     want_schema = str(expected_schema_version) if expected_schema_version is not None else live_schema

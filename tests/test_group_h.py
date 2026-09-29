@@ -1,4 +1,4 @@
-"""T-061 acceptance tests — Feature Group H (InSAR), §13 Group H names."""
+""" acceptance tests — Feature Group H (InSAR), Group H names."""
 
 from __future__ import annotations
 
@@ -83,7 +83,7 @@ def test_future_observations_never_leak_into_earlier_windows() -> None:
 
 
 def test_no_observation_inside_staleness_budget_yields_nan() -> None:
-    """§9.1/FR-13: a staler-than-budget observation is NaN, never interpolated."""
+    """/: a staler-than-budget observation is NaN, never interpolated."""
     out = emit_group_h(_joined(), _windowed([H2 + 24.0 * 11]), _coords())  # 11 d past last obs > 10 d budget
     row = out.iloc[0]
     assert np.isnan(row["LOS_displacement"])
@@ -109,7 +109,7 @@ def test_cumulative_displacement_referenced_to_first_observation() -> None:
 
 def test_spatial_gradient_uses_nearest_co_timed_neighbour() -> None:
     """V_A at H2: −3 mm; nearest co-timed neighbour V_B (50 m): +1 mm →
-    (−3 − 1)/50 per metre."""
+ (−3 − 1)/50 per metre."""
     out = emit_group_h(_joined(), _windowed([H2]), _coords())
     a = out[out.node_id == "V_A"].iloc[0]
     assert a["spatial_gradient"] == pytest.approx((-3.0 - 1.0) / 50.0)
@@ -126,7 +126,7 @@ def test_node_without_observation_has_nan_features_but_neighbours_stay_finite() 
 
 def test_hotspot_density_counts_hot_nodes_inside_radius() -> None:
     """Default hotspot radius = 2 × 1.5 × 25 m = 75 m: V_A and V_B qualify.
-    |cumulative| ≥ 10 mm marks a hotspot; push V_B over via a custom joined set."""
+ |cumulative| ≥ 10 mm marks a hotspot; push V_B over via a custom joined set."""
     out = emit_group_h(_joined(), _windowed([H2]), _coords())
     assert out.iloc[0]["local_hotspot_density"] == pytest.approx(0.0)
 

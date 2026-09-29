@@ -1,4 +1,4 @@
-"""T-014 acceptance tests — strain from inter-node distance change under W."""
+""" acceptance tests — strain from inter-node distance change under W."""
 
 from __future__ import annotations
 
@@ -78,8 +78,8 @@ def test_diagonal_is_nan() -> None:
 
 def test_factor_is_config_driven() -> None:
     """Default factor must come from config: passing the configured value explicitly
-    reproduces the default behaviour exactly (strain is nonlinear in amplitude,
-    so this is an equivalence check, not a linearity check)."""
+ reproduces the default behaviour exactly (strain is nonlinear in amplitude,
+ so this is an equivalence check, not a linearity check)."""
     from src.config import physics_config
 
     f = _field()

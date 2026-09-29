@@ -1,7 +1,7 @@
 {
   "models": [
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/tabletop/isolation_forest.joblib",
+      "artifact_path": "models/tabletop/isolation_forest.joblib",
       "feature_version": "v2",
       "model_name": "tabletop_isolation_forest",
       "model_version": "1.0.0",
@@ -9,7 +9,7 @@
       "training_dataset_version": "tabletop-recorded-v1"
     },
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/tabletop/random_forest.joblib",
+      "artifact_path": "models/tabletop/random_forest.joblib",
       "feature_version": "v2",
       "model_name": "tabletop_random_forest",
       "model_version": "1.0.0",
@@ -18,7 +18,7 @@
     },
     {
       "feature_version": "v2",
-      "model_name": "subsense_xgboost_risk",
+      "model_name": "bhurakshak_xgboost_risk",
       "model_version": "1.0.0",
       "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
       "registered_at": "2026-09-28T12:54:09.606064+00:00",
@@ -27,7 +27,7 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytest-165/test_load_refuses_schema_misma0/m.joblib",
+      "artifact_path": "/private/var/folders/dh/_5m7l0cd7gv5nypd9dv3lyyh0000gn/T/pytest-of-harshkumarjha/pytes/test_load_refuses_schema_misma0/m.joblib",
       "feature_version": "v2",
       "model_name": "test_model",
       "model_version": "1.0.0",
@@ -37,9 +37,9 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/temporal_model/forecaster_tuned.pt",
+      "artifact_path": "models/temporal_model/forecaster_tuned.pt",
       "feature_version": "v2",
-      "model_name": "subsense_temporal_forecaster",
+      "model_name": "bhurakshak_temporal_forecaster",
       "model_version": "v2.0.0-tuned-dev",
       "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
       "registered_at": "2026-09-28T08:41:50.206771+00:00",
@@ -48,9 +48,9 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/risk_xgboost_tuned.joblib",
+      "artifact_path": "models/tuned/risk_xgboost_tuned.joblib",
       "feature_version": "v2",
-      "model_name": "SubSense risk XGBoost tuned",
+      "model_name": "BhuRakshak risk XGBoost tuned",
       "model_version": "v2.0.0-dev",
       "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
       "registered_at": "2026-09-28T12:25:51.452714+00:00",
@@ -59,9 +59,9 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/risk_xgboost_default.joblib",
+      "artifact_path": "models/tuned/risk_xgboost_default.joblib",
       "feature_version": "v2",
-      "model_name": "SubSense risk XGBoost default baseline",
+      "model_name": "BhuRakshak risk XGBoost default baseline",
       "model_version": "v2.0.0-dev",
       "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
       "registered_at": "2026-09-28T12:25:51.463016+00:00",
@@ -70,9 +70,9 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/risk_logistic_baseline.joblib",
+      "artifact_path": "models/tuned/risk_logistic_baseline.joblib",
       "feature_version": "v2",
-      "model_name": "SubSense risk logistic baseline",
+      "model_name": "BhuRakshak risk logistic baseline",
       "model_version": "v2.0.0-dev",
       "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
       "registered_at": "2026-09-28T12:25:51.467118+00:00",
@@ -81,9 +81,9 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/iforest_default.joblib",
+      "artifact_path": "models/tuned/iforest_default.joblib",
       "feature_version": "v2",
-      "model_name": "SubSense iforest_default",
+      "model_name": "BhuRakshak iforest_default",
       "model_version": "v2.0.0-dev",
       "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
       "registered_at": "2026-09-28T12:25:51.498710+00:00",
@@ -92,9 +92,9 @@
       "training_dataset_version": "synthetic-v2-label-blind"
     },
     {
-      "artifact_path": "/Users/harshkumarjha/mine/models/tuned/iforest_tuned.joblib",
+      "artifact_path": "models/tuned/iforest_tuned.joblib",
       "feature_version": "v2",
-      "model_name": "SubSense iforest_tuned",
+      "model_name": "BhuRakshak iforest_tuned",
       "model_version": "v2.0.0-dev",
       "provenance_hash": "e15c91f2f14a14cec033288cba9297d65a6387b36dd230fe2ebc0f5f419ed204",
       "registered_at": "2026-09-28T12:25:51.607818+00:00",

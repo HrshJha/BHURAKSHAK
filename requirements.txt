@@ -1,9 +1,9 @@
-# SubSense — Data + ML workstream dependencies
-# PRD refs: §26 (software stack), §33 (repo structure), NFR-7 (reproducibility -> exact pins)
+# BhuRakshak — Data + ML workstream dependencies
+#  refs:  (software stack),  (repo structure),  (reproducibility -> exact pins)
 #
 # SCOPE NOTE: this file declares the Data + ML stack only. FastAPI, paho-mqtt,
 # database drivers and ONNX Runtime belong to the backend / gateway / Raspberry Pi
-# edge stack (PRD §26, §28, §29) and are excluded by workstream scope.
+# edge stack ( , , ) and are excluded by workstream scope.
 
 # --- Core numerics & data ---
 numpy==2.3.5
@@ -11,25 +11,25 @@ scipy==1.16.3
 pandas==2.3.3
 pyarrow==21.0.0
 
-# --- Modelling (PRD §14 Isolation Forest, §15 XGBoost, §16 temporal DL) ---
+# --- Modelling (  Isolation Forest,  XGBoost,  temporal DL) ---
 scikit-learn==1.6.1
 xgboost==3.2.0
 torch==2.10.0
 joblib==1.5.2
 
-# --- Explainability (PRD §22, FR-15) ---
-# shap==0.51.0  # UNPINNED from the runtime set: §22 explanations are the
+# --- Explainability ( , ) ---
+# shap==0.51.0  # UNPINNED from the runtime set:  explanations are the
 # deterministic signal-catalogue breakdown (src/risk/explainability.py); no
 # module imports shap. Re-add when a SHAP-based explainer lands.
 
-# --- Notebooks (PRD §33: notebooks/01_ .. 10_) ---
+# --- Notebooks ( : notebooks/01_ .. 10_) ---
 notebook==7.4.5
 jupyter-core==5.8.1
 nbformat==5.10.4
 nbclient==0.10.2
 matplotlib==3.10.6
 
-# --- Config & testing (NFR-6, NFR-4) ---
+# --- Config & testing (, ) ---
 PyYAML==6.0.3
 pytest==8.4.2
 optuna==5.0.0
@@ -38,13 +38,13 @@ colorlog==6.12.0
 Mako==1.4.3
 SQLAlchemy==2.1.1
 
-# --- Used by scripts/ (T-057 downloader; T-080 profiling) ---
+# --- Used by scripts/ ( downloader;  profiling) ---
 requests==2.34.2
 psutil==7.2.2
 
-# --- Geospatial (PRD §9.2 CRS, §18 Sentinel-1, §19 DGPS) ---
+# --- Geospatial (  CRS,  Sentinel-1,  DGPS) ---
 # NOT INSTALLABLE in the current sandbox: PyPI egress is denied, so these are
-# declared but unverified. src/geospatial/crs.py implements the §9.2 local
+# declared but unverified. src/geospatial/crs.py implements the  local
 # projection in pure NumPy so Phases 0-3 do not depend on them.
 # pyproj==3.7.0
 # shapely==2.0.6

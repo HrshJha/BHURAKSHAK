@@ -1,10 +1,10 @@
-"""20×20 virtual-grid mesh generator — PRD §10 (T-019).
+"""20×20 virtual-grid mesh generator —.
 
 Produces the virtual node layout for the synthetic dataset: exactly
-``nodes_per_side²`` nodes (§10 scale: 20×20 = 400) with mesh-local (x, y)
+``nodes_per_side²`` nodes ( scale: 20×20 = 400) with mesh-local (x, y)
 coordinates in metres, config-driven from configs/physics.yaml (grid block;
-§9.2 mesh-local frame). The generator is designed so scale can grow later
-(§10) — only the config changes.
+ mesh-local frame). The generator is designed so scale can grow later
+ — only the config changes.
 """
 
 from __future__ import annotations

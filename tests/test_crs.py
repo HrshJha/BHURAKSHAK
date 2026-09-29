@@ -1,4 +1,4 @@
-"""T-032 acceptance tests — §9.2 dual coordinate reference system."""
+""" acceptance tests — dual coordinate reference system."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from src.geospatial.crs import (
 
 def test_config_crs_loads_jharia_deployment_parameters() -> None:
     crs = crs_from_config()
-    # §18 study region: Jharia coalfield (Dhanbad, Jharkhand), UTM zone 45N
+    # study region: Jharia coalfield (Dhanbad, Jharkhand), UTM zone 45N
     assert 23.0 < crs.origin_lat_deg < 24.5
     assert 86.0 < crs.origin_lon_deg < 87.5
     assert crs.utm_zone == 45
@@ -33,7 +33,7 @@ def test_origin_maps_to_itself() -> None:
 
 
 def test_every_node_carries_both_representations() -> None:
-    """§9.2: mesh-local (x, y) AND WGS84 (lat, lon) for every node."""
+    """: mesh-local (x, y) AND WGS84 (lat, lon) for every node."""
     from src.simulator.grid import build_grid
 
     crs = crs_from_config()
@@ -57,7 +57,7 @@ def test_round_trip_returns_to_within_0_1_m() -> None:
 
 def test_round_trip_survives_serialisation_to_6_decimal_places() -> None:
     """GIS interchange rounds lat/lon to micro-degrees; the pair must still be
-    recoverable to better than 0.1 m for a ~500 m mesh."""
+ recoverable to better than 0.1 m for a ~500 m mesh."""
     crs = crs_from_config()
     x, y = 137.5, -212.5
     lat, lon = local_to_wgs84(crs, x, y)
@@ -74,7 +74,7 @@ def test_east_and_north_are_positive_in_the_right_direction() -> None:
 
 
 def test_transform_parameters_are_stored_per_deployment() -> None:
-    """§9.2: origin lat/lon and UTM zone live in the deployment config, not code."""
+    """: origin lat/lon and UTM zone live in the deployment config, not code."""
     from src.config import load_config
 
     cfg = load_config("physics")["crs"]

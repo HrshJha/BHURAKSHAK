@@ -1,14 +1,12 @@
-"""Packet-level data validation — PRD FR-3 + §9 (T-028).
-
-§9: the pipeline "must tolerate missing packets, delayed packets, duplicated
-packets, corrupted data, out-of-order timestamps ... treated as first-class
+"""Packet-level data validation — +.: the pipeline "must tolerate missing packets, delayed packets, duplicated
+packets, corrupted data, out-of-order timestamps... treated as first-class
 data-quality states, not edge cases patched in later".
 
 This module is the pipeline's first gate after ingestion: it scans a raw node
-table **per series** (``event_id`` × ``node_id`` — the §10 unit of continuous
+table **per series** (``event_id`` × ``node_id`` — the unit of continuous
 sensing) and attaches explicit boolean flag columns for each data-quality
-state. It never drops or repairs rows; downstream stages (T-029 resampling,
-T-034 windowing) read the flags and decide.
+state. It never drops or repairs rows; downstream stages ( resampling,
+ windowing) read the flags and decide.
 """
 
 from __future__ import annotations
@@ -55,14 +53,14 @@ class ValidationResult:
         }
 
 
-#: Data-quality flag columns added to the frame (first-class §9 states).
+#: Data-quality flag columns added to the frame (first-class states).
 DQ_MISSING = "dq_missing"
 DQ_DUPLICATE = "dq_duplicate"
 DQ_OUT_OF_ORDER = "dq_out_of_order"
 DQ_CORRUPTED = "dq_corrupted"
 DQ_FLAG_COLUMNS = (DQ_MISSING, DQ_DUPLICATE, DQ_OUT_OF_ORDER, DQ_CORRUPTED)
 
-#: Channels whose corruption is meaningful for the §11/raw schema (§8/§9 raw
+#: Channels whose corruption is meaningful for the /raw schema (/ raw
 #: stream). NaN in packet_loss (a count) also counts as corrupted.
 _NUMERIC_CHANNELS = (
     "x",
@@ -90,11 +88,11 @@ def _series_groups(df: pd.DataFrame) -> list[tuple[str, str, pd.DataFrame]]:
 def validate_packets(df: pd.DataFrame) -> ValidationResult:
     """Flag missing / duplicate / out-of-order / corrupted rows as DQ states.
 
-    ``dq_missing`` detects grid gaps against the §8.3 cadence in
-    configs/preprocessing.yaml; duplicates and out-of-order timestamps flag
-    all but the first occurrence; ``dq_corrupted`` covers non-numeric/NaN
-    values in the raw §9 channels.
-    """
+ ``dq_missing`` detects grid gaps against the cadence in
+ configs/preprocessing.yaml; duplicates and out-of-order timestamps flag
+ all but the first occurrence; ``dq_corrupted`` covers non-numeric/NaN
+ values in the raw channels.
+ """
     from src.config import load_config
 
     interval = float(

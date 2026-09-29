@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""T-065 — build and execute notebooks/09_dgps_validation.ipynb.
+""" — build and execute notebooks/09_dgps_validation.ipynb.
 
-Acceptance (TASKS.md T-065): the notebook executes end-to-end and reports
+Acceptance: the notebook executes end-to-end and reports
 mesh-vs-DGPS displacement agreement and any detected systematic sensor bias.
 
-§19 study design (G-7 honesty): no real DGPS campaign exists, so the survey
-is the T-063 synthetic fixture — GNSS-level noise on the §10 physics field at
+ study design ( honesty): no real DGPS campaign exists, so the survey
+is the synthetic fixture — GNSS-level noise on the physics field at
 six sparse control locations. The MESH side (what is audited) is the truth
 plus an injected +2 mm systematic bias plus mesh-level noise; the residual
 pipeline must recover that bias from the residuals alone. DGPS is used ONLY
-as an evaluation target (T-063 ``usage_class`` discipline) — never as a
+as an evaluation target ( ``usage_class`` discipline) — never as a
 training feature. Idempotent: rebuilds and re-executes the notebook in place.
 """
 
@@ -29,20 +29,20 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "09_dgps_validation.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 09 — DGPS Validation: mesh-vs-DGPS agreement & systematic bias (PRD §19)
+        """# 09 — DGPS Validation: mesh-vs-DGPS agreement & systematic bias ( )
 
 **Claim under test:** the sensor-mesh displacement estimate agrees with an
 INDEPENDENT high-accuracy reference at sparse control locations, and a
-systematic mesh-side bias — the classic calibration error §19 sends DGPS to
+systematic mesh-side bias — the classic calibration error  sends DGPS to
 find — is detectable from the residuals alone.
 
-**Roles (§19, enforced):** the mesh provides coverage; DGPS provides sparse
+**Roles (, enforced):** the mesh provides coverage; DGPS provides sparse
 **evaluation targets**. Every frame here carries
 `usage_class = "evaluation_target_only"`; DGPS never enters the model feature
-matrix (T-063 guard asserted below).
+matrix ( guard asserted below).
 
-**G-7 honesty:** §19 names no receiver, vendor or survey partner. The survey
-is the T-063 synthetic fixture — GNSS-level noise (σ = 1 mm) on the §10
+** honesty:**  names no receiver, vendor or survey partner. The survey
+is the  synthetic fixture — GNSS-level noise (σ = 1 mm) on the 
 physics field at 6 control points, three survey passes. The mesh side is the
 truth + an injected **+2 mm systematic bias** + mesh noise (σ = 0.8 mm); the
 study must recover that bias from the residuals."""
@@ -77,9 +77,9 @@ SEED = 42
 rng = np.random.default_rng(SEED)
 grid = build_grid()
 engine = physics_engine()
-print(f"mesh: {grid.n_nodes} nodes, spacing 25 m (§10)")"""
+print(f"mesh: {grid.n_nodes} nodes, spacing 25 m ()")"""
     ),
-    new_markdown_cell("## 1 — Six sparse control locations on the mesh (§19: sparse, not at-scale)"),
+    new_markdown_cell("## 1 — Six sparse control locations on the mesh (: sparse, not at-scale)"),
     new_code_cell(
         """# control points: mesh corners, centre and edge midpoints — the classic
 # geotechnical survey pattern around a working panel
@@ -93,10 +93,10 @@ ctrl["lat"], ctrl["lon"] = ctrl_lat, ctrl_lon
 print(ctrl.to_string(index=False))"""
     ),
     new_markdown_cell(
-        """## 2 — Three survey passes: GNSS-noisy observations of the §10 truth"""
+        """## 2 — Three survey passes: GNSS-noisy observations of the  truth"""
     ),
     new_code_cell(
-        """# the event window axis: nine §10-stride windows across one simulated day
+        """# the event window axis: nine -stride windows across one simulated day
 window_hours = np.arange(0, 9) * (10 * 6) / 60.0  # window_timestamp hours (60-min cadence)
 pass_windows = [0, 4, 8]  # survey passes at t = 0, 4 h, 8 h
 pass_times = [(EPOCH + pd.Timedelta(hours=float(window_hours[w]))).isoformat() for w in pass_windows]
@@ -133,7 +133,7 @@ for i, row in ctrl.iterrows():
 mesh_est = pd.DataFrame(mesh_rows)
 print(f"mesh estimate at control nodes: truth + {MESH_BIAS_MM} mm bias + N(0, 0.8^2) mesh noise")"""
     ),
-    new_markdown_cell("## 4 — Residuals: mesh − DGPS at matched windows (±1 h §9.1 tolerance)"),
+    new_markdown_cell("## 4 — Residuals: mesh − DGPS at matched windows (±1 h  tolerance)"),
     new_code_cell(
         """dgps = ingest_dgps(survey)
 res = mesh_vs_dgps_residual(mesh_est, dgps, pd.DataFrame({"node_id": grid.node_ids, "x": grid.x, "y": grid.y}), epoch=EPOCH)
@@ -144,7 +144,7 @@ assert summary["n_matched"] == len(dgps) == 18 and summary["n_out_of_tolerance"]
 print(res[["point_id", "node_id", "observation_timestamp", "dgps_vertical_mm",
           "mesh_displacement_mm", "residual_vertical_mm"]].head(8).to_string(index=False))"""
     ),
-    new_markdown_cell("## 5 — Agreement metrics per control point (§24 displacement-error family)"),
+    new_markdown_cell("## 5 — Agreement metrics per control point ( displacement-error family)"),
     new_code_cell(
         """def rmse(x):
     x = np.asarray(x, dtype=float)
@@ -204,7 +204,7 @@ assert detected, "the injected systematic bias must be detectable from residuals
 assert abs(bias_hat - MESH_BIAS_MM) < 1.0, "recovered bias within 1 mm of the injected value"
 print(f"\\nverdict: the mesh reads {bias_hat:+.1f} mm relative to DGPS; calibration correction: {-bias_hat:+.1f} mm")"""
     ),
-    new_markdown_cell("## 7 — Group G on the control nodes (§13 Group G) + evaluation-target discipline"),
+    new_markdown_cell("## 7 — Group G on the control nodes ( Group G) + evaluation-target discipline"),
     new_code_cell(
         """# one row per (node, pass) for the Group G emitter
 frames = []
@@ -222,7 +222,7 @@ print(g[g.node_id == ctrl.node_id.iloc[4]][["window_index", "vertical_displaceme
                                             "mesh_vs_dgps_residual"]].to_string(index=False))
 assert g["mesh_vs_dgps_residual"].notna().sum() == 18
 
-# §19 discipline: DGPS frames are evaluation targets, never training labels
+#  discipline: DGPS frames are evaluation targets, never training labels
 assert_evaluation_only(dgps)
 assert_evaluation_only(res)
 print("\\nDGPS role discipline: evaluation_target_only (asserted) — never a model input at scale")"""
@@ -230,11 +230,11 @@ print("\\nDGPS role discipline: evaluation_target_only (asserted) — never a mo
     new_code_cell(
         """agree.to_csv(REPO / "experiments" / "nb09_dgps_agreement.csv", index=False)
 print(f"agreement table → experiments/nb09_dgps_agreement.csv")
-print("\\nT-065 VERDICT")
+print("\\n VERDICT")
 print(f"  mesh-vs-DGPS agreement (6 control points, 3 passes): RMSE {overall['RMSE_mm']:.2f} mm, "
       f"MAE {overall['MAE_mm']:.2f} mm")
 print(f"  systematic bias: {bias_hat:+.2f} mm (injected {MESH_BIAS_MM:+.1f}) — detected: {detected}")
-print(f"  G-7 honesty: synthetic survey (no real campaign exists in MVP scope)")"""
+print(f"   honesty: synthetic survey (no real campaign exists in MVP scope)")"""
     ),
     new_markdown_cell(
         """## Verdict
@@ -242,7 +242,7 @@ print(f"  G-7 honesty: synthetic survey (no real campaign exists in MVP scope)")
 - **Agreement:** mesh-vs-DGPS residuals stay at the few-mm level across all
   six control points — consistent with the mesh-noise + GNSS-noise budget.
 - **Systematic bias found:** the residual mean recovers the injected +2 mm
-  mesh bias with |t| > 3, i.e. the §19 calibration role works: DGPS finds a
+  mesh bias with |t| > 3, i.e. the  calibration role works: DGPS finds a
   mesh-wide offset the mesh cannot see about itself.
 - **Discipline:** DGPS stayed an evaluation target throughout; Group G's
   residual channel is the only way the audit result reaches the feature

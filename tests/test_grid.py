@@ -1,4 +1,4 @@
-"""T-019 acceptance tests — exactly 400 config-driven virtual nodes."""
+""" acceptance tests — exactly 400 config-driven virtual nodes."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from src.simulator.grid import build_grid
 
 def test_exactly_400_nodes() -> None:
     grid = build_grid()
-    assert grid.n_nodes == 400, "§10: 20×20 = 400 virtual nodes"
+    assert grid.n_nodes == 400, ": 20×20 = 400 virtual nodes"
     assert len(grid.node_ids) == 400
     assert len(set(grid.node_ids)) == 400, "node_ids must be unique"
 

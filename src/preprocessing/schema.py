@@ -1,21 +1,21 @@
-"""§11 dataset schema module — PRD §11 + §8.4 fold-in (T-025).
+""" dataset schema module — + fold-in.
 
-The PRD defines one canonical dataset schema (§11). This module is the single
+The defines one canonical dataset schema. This module is the single
 authority for it:
 
-- ``dataset_schema_fields()`` returns the exact §11 field list, read from
-  current ``configs/feature_schema_v*.yaml`` (config-driven, NFR-6/NFR-7) — never
-  re-typed in code.
+- ``dataset_schema_fields`` returns the exact field list, read from
+ current ``configs/feature_schema_v*.yaml`` (config-driven, /) — never
+ re-typed in code.
 - ``validate_schema`` accepts a dataframe only when its columns are exactly
-  the §11 fields (modulo the ``require_all``/``forbid_unknown`` switches) and
-  checks the coarse dtypes that downstream stages rely on.
+ the fields (modulo the ``require_all``/``forbid_unknown`` switches) and
+ checks the coarse dtypes that downstream stages rely on.
 - ``validate_raw_node_table`` validates the raw per-timestep node table the
-  preprocessing pipeline consumes (the synthetic_nodes.csv layout: raw §8/§9
-  channels + the four §12 label columns).
-- §8.4 calibration output fields (per-node offsets, calibration date, drift
-  history) are folded into node metadata here — they must exist in the
-  node-metadata table even though the physical calibration protocol itself is
-  out of workstream scope (§8.4).
+ preprocessing pipeline consumes (the synthetic_nodes.csv layout: raw /
+ channels + the four label columns).
+- calibration output fields (per-node offsets, calibration date, drift
+ history) are folded into node metadata here — they must exist in the
+ node-metadata table even though the physical calibration protocol itself is
+ out of workstream scope.
 """
 
 from __future__ import annotations
@@ -43,7 +43,7 @@ __all__ = [
 
 
 class SchemaError(ValueError):
-    """Raised when a dataframe does not conform to a SubSense schema."""
+    """Raised when a dataframe does not conform to a BhuRakshak schema."""
 
 
 @dataclass(frozen=True)
@@ -60,18 +60,18 @@ class SchemaReport:
 
 
 def dataset_schema_fields() -> list[str]:
-    """The exact §11 field list, in PRD order, from the active feature schema."""
+    """The exact field list, in order, from the active feature schema."""
     fields = feature_schema_config()["dataset_fields"]
     if not isinstance(fields, list) or not fields:
         raise SchemaError("active feature schema:dataset_fields must be a non-empty list")
     return [str(f) for f in fields]
 
 
-#: §12 label columns carried alongside the §11 fields (never collapsed — T-026).
+#: label columns carried alongside the fields (never collapsed — ).
 RAW_NODE_LABEL_FIELDS = ("anomaly_label", "fault_label", "progression_label", "risk_label")
 
 #: Exact column list of the raw per-timestep node table (synthetic_nodes.csv
-#: layout): §9 raw stream + coordinates/event key + §12 labels.
+#: layout): raw stream + coordinates/event key + labels.
 RAW_NODE_TABLE_FIELDS = (
     "event_id",
     "timestamp",
@@ -92,7 +92,7 @@ RAW_NODE_TABLE_FIELDS = (
     *RAW_NODE_LABEL_FIELDS,
 )
 
-#: §8.4 calibration record folded into node metadata (T-025).
+#: calibration record folded into node metadata.
 NODE_METADATA_FIELDS = (
     "node_id",
     "x",
@@ -107,7 +107,7 @@ NODE_METADATA_FIELDS = (
     "drift_history",
 )
 
-#: Node metadata cannot be traced without these (§8.4, §10.1 traceability).
+#: Node metadata cannot be traced without these (, traceability).
 NODE_METADATA_REQUIRED_FIELDS = ("node_id", "calibration_date")
 
 
@@ -131,7 +131,7 @@ def _dtype_problems(df: pd.DataFrame, fields: tuple[str, ...]) -> list[str]:
             problems.append("timestamp must be numeric or datetime")
     for field in ("risk_label", "progression_label"):
         if field in fields and field in df.columns and not is_string_like(df[field]):
-            problems.append(f"{field} must be a string label (§12)")
+            problems.append(f"{field} must be a string label ()")
     return problems
 
 
@@ -142,7 +142,7 @@ def schema_violations(
     require_all: bool = True,
     forbid_unknown: bool = True,
 ) -> SchemaReport:
-    """Structural check against ``fields`` (default: the §11 list) without raising."""
+    """Structural check against ``fields`` (default: the list) without raising."""
     expected = list(fields) if fields is not None else dataset_schema_fields()
     present = list(df.columns)
     missing = [c for c in expected if c not in present] if require_all else []
@@ -160,20 +160,20 @@ def validate_schema(
     require_all: bool = True,
     forbid_unknown: bool = True,
 ) -> None:
-    """Validate a dataframe against the exact §11 field list.
+    """Validate a dataframe against the exact field list.
 
-    Raises ``SchemaError`` listing every missing and/or unknown column; the
-    message must be actionable because §9 makes data-quality states
-    first-class, never silently repaired.
-    """
+ Raises ``SchemaError`` listing every missing and/or unknown column; the
+ message must be actionable because makes data-quality states
+ first-class, never silently repaired.
+ """
     report = schema_violations(
         df, require_all=require_all, forbid_unknown=forbid_unknown
     )
     problems: list[str] = []
     if report.missing:
-        problems.append(f"missing §11 fields: {report.missing}")
+        problems.append(f"missing  fields: {report.missing}")
     if report.unknown:
-        problems.append(f"unknown columns (not in §11): {report.unknown}")
+        problems.append(f"unknown columns (not in ): {report.unknown}")
     problems.extend(report.dtype_problems)
     if problems:
         raise SchemaError("schema validation failed — " + "; ".join(problems))
@@ -182,9 +182,9 @@ def validate_schema(
 def validate_raw_node_table(df: pd.DataFrame) -> None:
     """Validate the raw per-timestep node table (preprocessing input layout).
 
-    This is the table every T-028…T-033 stage consumes; the §11 feature-store
-    schema (``validate_schema``) applies *after* feature generation.
-    """
+ This is the table every … stage consumes; the feature-store
+ schema (``validate_schema``) applies *after* feature generation.
+ """
     report = schema_violations(
         df, fields=RAW_NODE_TABLE_FIELDS, require_all=True, forbid_unknown=False
     )
@@ -195,20 +195,20 @@ def validate_raw_node_table(df: pd.DataFrame) -> None:
 
 
 def validate_node_metadata(meta: pd.DataFrame) -> None:
-    """Validate the §8.4 per-node calibration/metadata record.
+    """Validate the per-node calibration/metadata record.
 
-    Requires ``node_id`` and ``calibration_date`` (§8.4 traceability) and
-    rejects unknown calibration fields so the record stays auditable.
-    """
+ Requires ``node_id`` and ``calibration_date`` ( traceability) and
+ rejects unknown calibration fields so the record stays auditable.
+ """
     missing = [c for c in NODE_METADATA_REQUIRED_FIELDS if c not in meta.columns]
     unknown = [c for c in meta.columns if c not in set(NODE_METADATA_FIELDS)]
     problems: list[str] = []
     if missing:
-        problems.append(f"missing §8.4 calibration fields: {missing}")
+        problems.append(f"missing  calibration fields: {missing}")
     if unknown:
         problems.append(f"unknown node-metadata columns: {unknown}")
     if "calibration_date" in meta.columns:
         if meta["calibration_date"].isna().any():
-            problems.append("calibration_date must be present for every node (§8.4)")
+            problems.append("calibration_date must be present for every node ()")
     if problems:
         raise SchemaError("node metadata validation failed — " + "; ".join(problems))

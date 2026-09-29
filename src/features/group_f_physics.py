@@ -1,20 +1,20 @@
-"""Feature Group F — Physics — PRD §13 Group F, FR-15 (T-041).
+"""Feature Group F — Physics — Group F,.
 
-§13 Group F, exactly: ``expected_displacement, expected_tilt, physics_residual,
+ Group F, exactly: ``expected_displacement, expected_tilt, physics_residual,
 physics_residual_velocity``.
 
 Sources:
-- ``expected_displacement`` / ``expected_tilt``: the §10 model evaluated at
-  the node's (x, y) at the window timestamp (via T-040's engine — the same
-  model that generated the data);
-- ``physics_residual``: observed − expected (T-040), computed on the window's
-  mean observed displacement;
+- ``expected_displacement`` / ``expected_tilt``: the model evaluated at
+ the node's (x, y) at the window timestamp (via 's engine — the same
+ model that generated the data);
+- ``physics_residual``: observed − expected, computed on the window's
+ mean observed displacement;
 - ``physics_residual_velocity``: change of the residual between consecutive
-  windows of the same (event, node) series, per hour — a growing residual is
-  the classic "unexplained acceleration" signature (§21 motivation).
+ windows of the same (event, node) series, per hour — a growing residual is
+ the classic "unexplained acceleration" signature ( motivation).
 
 The engine is built once per call from configs/physics.yaml; the tilt feature
-carries the expected tilt **magnitude** (single §13 column; the signed
+carries the expected tilt **magnitude** (single column; the signed
 components are recoverable via the physics engine).
 """
 
@@ -44,11 +44,11 @@ def emit_group_f(
 ) -> pd.DataFrame:
     """Emit Group F features per window row.
 
-    ``windowed`` must carry the window keys, ``x``/``y`` per node (or be
-    joinable to ``node_coords``), ``displacement_mean``, ``tilt_x_mean`` and
-    ``tilt_y_mean``. The residual velocity is computed per (event, node)
-    series in ``window_index`` order.
-    """
+ ``windowed`` must carry the window keys, ``x``/``y`` per node (or be
+ joinable to ``node_coords``), ``displacement_mean``, ``tilt_x_mean`` and
+ ``tilt_y_mean``. The residual velocity is computed per (event, node)
+ series in ``window_index`` order.
+ """
     keys = ["event_id", "node_id", "window_index", "window_timestamp", "window_start", "window_end"]
     missing_cols = [c for c in ("displacement_mean",) if c not in windowed.columns]
     if missing_cols:
@@ -93,7 +93,7 @@ def emit_group_f(
         block["expected_tilt"] = expected_tilt_mag
         block["physics_residual"] = residual
         block["physics_residual_velocity"] = resid_vel
-        block["tilt_residual_unnamed"] = tilt_residual_mag  # auxiliary, not §13-named
+        block["tilt_residual_unnamed"] = tilt_residual_mag  # auxiliary, not -named
         frames.append(block)
 
     out = pd.concat(frames, ignore_index=True)

@@ -1,6 +1,4 @@
-"""§9.1 resampling and interpolation rule (T-029).
-
-PRD §9.1: "feature windows are built on a fixed grid (default:
+""" resampling and interpolation rule.: "feature windows are built on a fixed grid (default:
 nearest-neighbor within one half of the sampling interval, linear interpolation for
 single-sample gaps, no interpolation across gaps longer than 3 missed samples
 — those become ``DATA_QUALITY`` flags instead)".
@@ -9,17 +7,17 @@ This module realises exactly that rule, config-driven from
 configs/preprocessing.yaml (``resampling`` block):
 
 - observations are snapped onto a regular grid anchored at the first
-  observation of each series (``event_id`` × ``node_id``);
+ observation of each series (``event_id`` × ``node_id``);
 - an observation joins the grid slot only if it falls within
-  ±``match_tolerance_fraction`` × interval of that slot (nearest-neighbour
-  match); observations outside every slot's tolerance are dropped as junk and
-  counted;
+ ±``match_tolerance_fraction`` × interval of that slot (nearest-neighbour
+ match); observations outside every slot's tolerance are dropped as junk and
+ counted;
 - slots with exactly one matched observation take that value;
 - slots whose neighbourhood has a single-sample gap on one side get a linear
-  interpolation across that single gap;
+ interpolation across that single gap;
 - runs of more than ``max_interpolatable_gap_steps`` consecutive empty slots
-  are NEVER interpolated — they are emitted as ``DATA_QUALITY`` flag rows so
-  downstream stages can see the outage explicitly (§9: first-class states).
+ are NEVER interpolated — they are emitted as ``DATA_QUALITY`` flag rows so
+ downstream stages can see the outage explicitly (: first-class states).
 
 The output is a per-slot tidy table: one row per (series, grid slot) with
 value columns, an ``interpolated`` flag, and a ``data_quality`` column.
@@ -47,7 +45,7 @@ GRID_SLOT = "grid_slot"
 INTERPOLATED = "interpolated"
 DQ_STATE = "data_quality"
 
-#: §9.1 / §10 data-quality vocabulary for resampled slots.
+#: / data-quality vocabulary for resampled slots.
 DQ_OK = "OK"
 DQ_GAP = "DATA_QUALITY"
 
@@ -109,10 +107,10 @@ def _resampling_params() -> tuple[float, float, int]:
 def _match_to_grid(ts: np.ndarray, t0: float, interval: float, tol: float) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Nearest-neighbour snap of observations onto grid slots.
 
-    Returns ``(slot_index, matched_obs_position, unmatched_obs_position)``.
-    An observation matches the nearest slot only if |t_obs − t_slot| ≤ tol·interval.
-    A slot keeps at most one observation — its nearest; others are unmatched.
-    """
+ Returns ``(slot_index, matched_obs_position, unmatched_obs_position)``.
+ An observation matches the nearest slot only if |t_obs − t_slot| ≤ tol·interval.
+ A slot keeps at most one observation — its nearest; others are unmatched.
+ """
     slot_of = np.rint((ts - t0) / interval).astype(int)
     slot_time = t0 + slot_of * interval
     within_tol = np.abs(ts - slot_time) <= tol * interval
@@ -237,12 +235,12 @@ def _resample_series(
 
 
 def resample_to_grid(df: pd.DataFrame, *, channels: list[str] | None = None) -> ResampleResult:
-    """Resample raw node rows onto the §9.1 fixed grid, per (event, node) series.
+    """Resample raw node rows onto the fixed grid, per (event, node) series.
 
-    One output row per (series, grid slot). Slots carry ``data_quality ==
-    "DATA_QUALITY"`` when they sit inside a gap longer than the configured
-    maximum; those slots are never interpolated.
-    """
+ One output row per (series, grid slot). Slots carry ``data_quality ==
+ "DATA_QUALITY"`` when they sit inside a gap longer than the configured
+ maximum; those slots are never interpolated.
+ """
     interval, tol, max_gap = _resampling_params()
     if channels is None:
         use_channels = [c for c in _VALUE_CHANNELS if c in df.columns]

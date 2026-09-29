@@ -1,4 +1,4 @@
-"""T-068 acceptance tests — §23 leakage-safe validation splits."""
+""" acceptance tests — leakage-safe validation splits."""
 
 from __future__ import annotations
 
@@ -80,7 +80,7 @@ def test_node_split_matches_prd_shape() -> None:
     df = _frame(n_events=20, n_nodes=20)
     split = node_split(df)
     per_node = df.assign(_s=split).groupby("node_id")["_s"].first().value_counts()
-    assert per_node["train"] == 15, "§23 example: nodes 1-15 train (of 20)"
+    assert per_node["train"] == 15, " example: nodes 1-15 train (of 20)"
     assert per_node["test"] >= 1
     assert_no_leakage(df, split, "node_id")
 
@@ -117,9 +117,9 @@ def test_synthetic_split_holds_out_top_regime() -> None:
 
 
 def test_all_splits_refuse_row_level_leakage() -> None:
-    """Each split is exclusive on ITS OWN unit (§23 table): spatial/node splits
-    on node_id, event/synthetic splits on event_id; the time split guarantees
-    per-series temporal ordering instead (nodes may recur across events)."""
+    """Each split is exclusive on ITS OWN unit ( table): spatial/node splits
+ on node_id, event/synthetic splits on event_id; the time split guarantees
+ per-series temporal ordering instead (nodes may recur across events)."""
     df = _frame(n_events=8)
     assert_no_leakage(df, spatial_split(df), "node_id")
     assert_no_leakage(df, node_split(df), "node_id")
@@ -131,7 +131,7 @@ def test_all_splits_refuse_row_level_leakage() -> None:
 
 
 def test_random_row_split_is_refused() -> None:
-    """§23: random row-shuffling across time is explicitly disallowed."""
+    """: random row-shuffling across time is explicitly disallowed."""
     df = _frame(n_events=4)
     with pytest.raises(SplitsError, match="disallowed"):
         random_row_split(df)

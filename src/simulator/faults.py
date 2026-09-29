@@ -1,15 +1,15 @@
-"""Sensor-fault injection — PRD §10 (T-016), §12 (``fault_label``).
+"""Sensor-fault injection —, (``fault_label``).
 
 Five fault modes, each injectable and each tagged ``SENSOR_FAULT``:
 
-    BIAS    — constant offset from onset
-    STUCK   — readings flatline at the pre-fault level
-    DROPOUT — NaN runs (missing data)
-    SPIKE   — isolated extreme outliers
-    DRIFT   — slowly growing offset (sensor slow drift)
+ BIAS — constant offset from onset
+ STUCK — readings flatline at the pre-fault level
+ DROPOUT — NaN runs (missing data)
+ SPIKE — isolated extreme outliers
+ DRIFT — slowly growing offset (sensor slow drift)
 
 Without these, Isolation Forest would treat any sensor malfunction as ground
-failure (§9). Parameters come from configs/physics.yaml (faults block).
+failure. Parameters come from configs/physics.yaml (faults block).
 """
 
 from __future__ import annotations
@@ -73,10 +73,10 @@ def inject_fault(
 ) -> FaultResult:
     """Corrupt ``values`` from ``onset_step`` onward with the given fault mode.
 
-    Returns the corrupted series plus a boolean mask marking fault-affected
-    samples — the mask drives the ``SENSOR_FAULT`` label (T-018) so faulted
-    rows are separable from genuine ground movement.
-    """
+ Returns the corrupted series plus a boolean mask marking fault-affected
+ samples — the mask drives the ``SENSOR_FAULT`` label so faulted
+ rows are separable from genuine ground movement.
+ """
     p = params or FaultParams.from_config()
     v = np.array(values, dtype=float)
     n = v.size
@@ -118,5 +118,5 @@ def inject_fault(
 
 
 def all_fault_types() -> list[FaultType]:
-    """The five §10 fault modes — satisfies the §35 requirement of ≥3 fault types."""
+    """The five fault modes — satisfies the requirement of ≥3 fault types."""
     return list(FaultType)

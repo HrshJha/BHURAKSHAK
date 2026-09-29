@@ -1,6 +1,4 @@
-"""Node clock-drift estimation and correction — PRD §9.1 (T-030).
-
-§9.1: "each uplink packet carries the node's local timestamp; the gateway also
+"""Node clock-drift estimation and correction —.: "each uplink packet carries the node's local timestamp; the gateway also
 stamps its own receipt time. The two are compared per node to estimate drift,
 and a drift-correction offset is applied during feature generation rather than
 trusting raw node timestamps indefinitely — this offset is logged, not
@@ -8,16 +6,16 @@ silently absorbed."
 
 Design:
 - ``estimate_clock_drift`` consumes per-node (node-stamp, receipt-stamp)
-  pairs and produces a robust per-node offset estimate (median of the
-  differences), plus an informational drift-rate (seconds per hour) from a
-  linear fit.
+ pairs and produces a robust per-node offset estimate (median of the
+ differences), plus an informational drift-rate (seconds per hour) from a
+ linear fit.
 - Nodes with fewer than ``clock_drift.min_samples_for_estimate`` pairs are
-  never corrected (flag ``INSUFFICIENT_SAMPLES``); nodes whose estimated
-  offset exceeds ``clock_drift.max_abs_offset_seconds`` in magnitude are
-  flagged and NOT corrected (the offset is treated as suspect, not absorbed).
+ never corrected (flag ``INSUFFICIENT_SAMPLES``); nodes whose estimated
+ offset exceeds ``clock_drift.max_abs_offset_seconds`` in magnitude are
+ flagged and NOT corrected (the offset is treated as suspect, not absorbed).
 - ``apply_clock_correction`` shifts node timestamps by the estimated offset at
-  feature-generation time and returns the applied-correction log — every
-  applied offset is visible in ``drift_log`` output, never silently absorbed.
+ feature-generation time and returns the applied-correction log — every
+ applied offset is visible in ``drift_log`` output, never silently absorbed.
 """
 
 from __future__ import annotations
@@ -70,10 +68,10 @@ def _params() -> tuple[int, float]:
 def estimate_clock_drift(receipts: pd.DataFrame) -> list[ClockDriftEstimate]:
     """Estimate per-node drift from node-stamp vs gateway receipt-stamp pairs.
 
-    ``receipts`` must carry ``node_id``, ``node_timestamp`` and
-    ``receipt_timestamp`` (same unit — seconds). The offset is the median of
-    (receipt − node) differences: robust against packet jitter and outliers.
-    """
+ ``receipts`` must carry ``node_id``, ``node_timestamp`` and
+ ``receipt_timestamp`` (same unit — seconds). The offset is the median of
+ (receipt − node) differences: robust against packet jitter and outliers.
+ """
     min_n, max_off = _params()
     for col in ("node_id", "node_timestamp", "receipt_timestamp"):
         if col not in receipts.columns:
@@ -113,7 +111,7 @@ def estimate_clock_drift(receipts: pd.DataFrame) -> list[ClockDriftEstimate]:
 
 
 def drift_log(estimates: list[ClockDriftEstimate]) -> pd.DataFrame:
-    """The mandatory §9.1 log: one row per node, corrected or not."""
+    """The mandatory log: one row per node, corrected or not."""
     return pd.DataFrame(
         [
             {
@@ -137,12 +135,12 @@ def apply_clock_correction(
 ) -> tuple[pd.DataFrame, list[str]]:
     """Apply the per-node offset at feature-generation time.
 
-    Timestamps in ``df`` are decimal hours (raw node-table convention); the
-    offsets are seconds. ``corrected`` nodes get
-    ``t → t − offset/3600`` so node stamps land on gateway time. Nodes
-    without a usable estimate are left untouched and reported. The input
-    frame is never mutated.
-    """
+ Timestamps in ``df`` are decimal hours (raw node-table convention); the
+ offsets are seconds. ``corrected`` nodes get
+ ``t → t − offset/3600`` so node stamps land on gateway time. Nodes
+ without a usable estimate are left untouched and reported. The input
+ frame is never mutated.
+ """
     mapping = {e.node_id: e.offset_seconds for e in estimates if e.corrected}
     out = df.copy()
     if timestamp_col not in out.columns:

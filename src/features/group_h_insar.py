@@ -1,31 +1,31 @@
-"""Feature Group H — InSAR — PRD §13 Group H, FR-13 (T-061).
+"""Feature Group H — InSAR — Group H,.
 
-§13 Group H, exactly: ``LOS_displacement, LOS_velocity, LOS_acceleration,
+ Group H, exactly: ``LOS_displacement, LOS_velocity, LOS_acceleration,
 cumulative_displacement, coherence, spatial_gradient, local_hotspot_density``.
 
-Sources: the T-060 mesh-joined table (per node × acquisition date, nearest
-valid PS, staleness-explicit). All seven §13 names are produced as of the
+Sources: the mesh-joined table (per node × acquisition date, nearest
+valid PS, staleness-explicit). All seven names are produced as of the
 window timestamp:
 
 - ``LOS_displacement`` — the node's most recent LOS observation at or before
-  the window; NaN when the observation is staler than the configured carry
-  budget (configs/insar.yaml ``mesh_feature.max_staleness_hours``, default
-  two× the 12-day cadence) — §9.1: staleness visible, never implied, and no
-  interpolation across acquisitions.
+ the window; NaN when the observation is staler than the configured carry
+ budget (configs/insar.yaml ``mesh_feature.max_staleness_hours``, default
+ two× the 12-day cadence) —: staleness visible, never implied, and no
+ interpolation across acquisitions.
 - ``LOS_velocity`` / ``LOS_acceleration`` — per-PS trend terms carried
-  through the join.
+ through the join.
 - ``cumulative_displacement`` — LOS displacement relative to the earliest
-  observation in the node's joined series (the stack's own referencing);
-  NaN-preserving.
+ observation in the node's joined series (the stack's own referencing);
+ NaN-preserving.
 - ``coherence`` — the joined observation's per-date coherence.
 - ``spatial_gradient`` — per metre, the node's LOS minus the nearest
-  co-timed neighbour LOS, over mesh-local distance (Group C convention).
+ co-timed neighbour LOS, over mesh-local distance (Group C convention).
 - ``local_hotspot_density`` — fraction of mesh nodes within the hotspot
-  radius whose most-recent |cumulative LOS| reaches the configured hotspot
-  threshold.
+ radius whose most-recent |cumulative LOS| reaches the configured hotspot
+ threshold.
 
 Every row keeps ``observation_timestamp`` and ``staleness_hours`` so the
-window can see how fresh its satellite evidence is (FR-13).
+window can see how fresh its satellite evidence is.
 """
 
 from __future__ import annotations
@@ -54,7 +54,7 @@ class InSARFeatureError(ValueError):
 
 
 def _mesh_feature_cfg() -> dict:
-    """The T-061 fusion block of configs/insar.yaml (NFR-6: no literals here)."""
+    """The fusion block of configs/insar.yaml (: no literals here)."""
     from src.geospatial.insar_processing import load_insar_config
 
     block = load_insar_config().get("mesh_feature")
@@ -73,11 +73,11 @@ def emit_group_h(
 ) -> pd.DataFrame:
     """Emit Group H features per window row.
 
-    ``joined``: the T-060 mesh-joined table (node × date with staleness).
-    ``windowed``: window-key rows needing satellite evidence — must carry
-    ``event_id, node_id, window_index, window_timestamp`` (hours axis).
-    ``node_coords``: ``node_id, x, y`` (the shared §9.2 representation).
-    """
+ ``joined``: the mesh-joined table (node × date with staleness).
+ ``windowed``: window-key rows needing satellite evidence — must carry
+ ``event_id, node_id, window_index, window_timestamp`` (hours axis).
+ ``node_coords``: ``node_id, x, y`` (the shared representation).
+ """
     cfg = _mesh_feature_cfg()
     budget = float(max_staleness_hours) if max_staleness_hours is not None else float(cfg["max_staleness_hours"])
     hot_threshold = float(cfg["hotspot_threshold_mm"])
@@ -196,7 +196,7 @@ def _snapshot(
     epoch: pd.Timestamp,
 ) -> pd.DataFrame:
     """As-of state per node at window hours ``wt``: latest LOS/cumulative
-    within the staleness budget — the co-timed mesh snapshot."""
+ within the staleness budget — the co-timed mesh snapshot."""
     rows = []
     for node, series in obs_by_node.items():
         hours = (series["obs_ts"] - epoch).dt.total_seconds() / 3600.0

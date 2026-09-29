@@ -1,30 +1,30 @@
-"""Scenario taxonomy engine — PRD §10 (T-018).
+"""Scenario taxonomy engine —.
 
-Generates the full §10 event/scenario taxonomy. Each scenario produces, per
+Generates the full event/scenario taxonomy. Each scenario produces, per
 virtual node, a raw channel table plus per-row ``progression_label``,
 ``fault_label``, ``risk_label``, ``anomaly_label`` and data-quality flags.
 All numeric behaviour is config-driven (configs/physics.yaml → ``scenarios``).
 
-Label vocabulary mapping (Gap G-1, resolved as the scenario→schema mapping;
+Label vocabulary mapping (Gap, resolved as the scenario→schema mapping;
 see PROGRESS_LOG 2026-09-26):
 
-  Scenario                progression_label    risk_label
-  ----------------------  -------------------  -------------------
-  stable_ground           STABLE               NORMAL (GREEN slot)
-  slow_drift_temperature  STABLE               NORMAL
-  sensor_* fault modes     STABLE               NORMAL (fault_label set)
-  packet_loss             STABLE               NORMAL (DATA_QUALITY flag)
-  single_node_disturbance STABLE               NORMAL (LOCAL_ANOMALY flag)
-  vibration_only          STABLE               NORMAL (NON_SUBSIDENCE flag)
-  slow_subsidence         SLOW                 WARNING
-  accelerating_subsidence ACCELERATING         WARNING
-  rapid_subsidence        RAPID                CRITICAL
-  irregular_subsidence    ACCELERATING         WARNING
-  multiple_zones          SLOW                 WARNING / CRITICAL by zone
-  communication_failure   STABLE               NORMAL (COMM_FAILURE flag)
+ Scenario progression_label risk_label
+ ---------------------- ------------------- -------------------
+ stable_ground STABLE NORMAL (GREEN slot)
+ slow_drift_temperature STABLE NORMAL
+ sensor_* fault modes STABLE NORMAL (fault_label set)
+ packet_loss STABLE NORMAL (DATA_QUALITY flag)
+ single_node_disturbance STABLE NORMAL (LOCAL_ANOMALY flag)
+ vibration_only STABLE NORMAL (NON_SUBSIDENCE flag)
+ slow_subsidence SLOW WARNING
+ accelerating_subsidence ACCELERATING WARNING
+ rapid_subsidence RAPID CRITICAL
+ irregular_subsidence ACCELERATING WARNING
+ multiple_zones SLOW WARNING / CRITICAL by zone
+ communication_failure STABLE NORMAL (COMM_FAILURE flag)
 
-``risk_label`` uses the §12 3-class MVP vocabulary (NORMAL / WARNING /
-CRITICAL; NORMAL fills the GREEN slot — Gaps G-2/G-3 resolved at Phase 3).
+``risk_label`` uses the 3-class MVP vocabulary (NORMAL / WARNING /
+CRITICAL; NORMAL fills the GREEN slot — Gaps / resolved at Phase 3).
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ PROGRESSION_SLOW = "SLOW"
 PROGRESSION_ACCELERATING = "ACCELERATING"
 PROGRESSION_RAPID = "RAPID"
 
-RISK_NORMAL = "NORMAL"      # MVP 3-class (GREEN slot; G-2/G-3 resolved at Phase 3)
+RISK_NORMAL = "NORMAL"      # MVP 3-class (GREEN slot; / resolved at Phase 3)
 RISK_WARNING = "WARNING"
 RISK_CRITICAL = "CRITICAL"
 
@@ -62,7 +62,7 @@ COMM_FAILURE_FLAG = "COMMUNICATION_FAILURE"
 
 class Scenario(str, Enum):
     """Generator scenarios. The five sensor_* modes together form the single
-    §10 taxonomy row 'sensor bias / stuck / dropout / random spike / slow drift'."""
+ taxonomy row 'sensor bias / stuck / dropout / random spike / slow drift'."""
 
     STABLE_GROUND = "stable_ground"
     SLOW_DRIFT_TEMPERATURE = "slow_drift_temperature"
@@ -82,7 +82,7 @@ class Scenario(str, Enum):
     COMMUNICATION_FAILURE = "communication_failure"
 
 
-# §10 taxonomy table — the 12 scenario rows, verbatim
+# taxonomy table — the 12 scenario rows, verbatim
 TAXONOMY_ROWS: list[str] = [
     "stable ground",
     "slow drift / temperature drift",
@@ -118,7 +118,7 @@ FAULT_SCENARIOS = frozenset(_SCENARIO_TO_FAULT)
 
 
 def scenario_risk_mapping() -> dict[str, str]:
-    """Scenario name → default risk_label, per the §10 taxonomy mapping."""
+    """Scenario name → default risk_label, per the taxonomy mapping."""
     mapping: dict[str, str] = {}
     for s in Scenario:
         mapping[s.value] = _SUBSIDENCE_SCENARIOS.get(s, (PROGRESSION_STABLE, RISK_NORMAL))[1]
@@ -150,7 +150,7 @@ class ScenarioResult:
     snr_db: np.ndarray
     progression_label: str
     risk_label: str
-    anomaly_label: np.ndarray        # 0 normal / 1 abnormal (§12)
+    anomaly_label: np.ndarray        # 0 normal / 1 abnormal 
     fault_label: np.ndarray          # NONE / BIAS / STUCK / DROPOUT / SPIKE / DRIFT
     anomaly_flag: str                # '' | LOCAL_ANOMALY | NON_SUBSIDENCE
     data_quality_label: np.ndarray   # '' | DATA_QUALITY | COMMUNICATION_FAILURE
@@ -213,9 +213,9 @@ def generate_scenario(
 ) -> ScenarioResult:
     """Generate one node's raw channels and labels under one scenario.
 
-    A pure function of (scenario, node position, rng state) — reproducibility
-    (T-020) is guaranteed by the caller seeding ``rng``.
-    """
+ A pure function of (scenario, node position, rng state) — reproducibility
+ is guaranteed by the caller seeding ``rng``.
+ """
     cfg = _scn_cfg()
     fld = DeformationField(FieldParams.from_config())
 
@@ -233,7 +233,7 @@ def generate_scenario(
     weight = _spatial_weight(scenario, node_x, node_y, fld)
     subsidence = profile * weight
 
-    # tilt: analytic gradient of the same field (T-013 coupling)
+    # tilt: analytic gradient of the same field ( coupling)
     gx = np.asarray(fld.dW_dx(np.full(steps, node_x), np.full(steps, node_y), t_days))
     gy = np.asarray(fld.dW_dy(np.full(steps, node_x), np.full(steps, node_y), t_days))
     tilt_std = float(physics_config()["noise"]["tilt_noise_std_deg"])
@@ -245,7 +245,7 @@ def generate_scenario(
 
     strain = edge_strain_series(fld, node_x, node_y, reference_node[0], reference_node[1], t_days)
 
-    # vibration: supporting-only channel (T-015)
+    # vibration: supporting-only channel 
     vib_comps = VibrationComponents(normal_noise=True)
     vib = summarized_vibration_batch(vib_comps, rng, steps)
     vibration_rms = np.asarray(vib.rms)

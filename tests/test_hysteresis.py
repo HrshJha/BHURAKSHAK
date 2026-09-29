@@ -1,4 +1,4 @@
-"""T-051 tests — §21.1 de-escalation hysteresis (§35 acceptance bullet 8)."""
+""" tests — de-escalation hysteresis ( acceptance bullet 8)."""
 
 from __future__ import annotations
 
@@ -125,7 +125,7 @@ def test_escalation_and_deescalation_are_mutually_exclusive_per_window() -> None
     assert st.streaks.get("escalation", 0) == 0, "it holds WARNING but feeds the CRITICAL gate, not the WATCH→WARNING gate — no escalation credit"
 
 
-# --- §35: a borderline oscillating input does not flap ---------------------------
+# ---: a borderline oscillating input does not flap ---------------------------
 
 
 def test_borderline_oscillation_holds_level_without_flapping() -> None:
@@ -177,7 +177,7 @@ def test_crITICAL_de_escalates_with_its_own_window_count() -> None:
 
 
 def test_escalation_semantics_match_t050_alert_engine() -> None:
-    """Same transition table → identical escalation history (single implementation of §21.1 gates)."""
+    """Same transition table → identical escalation history (single implementation of gates)."""
     eng = HysteresisEngine(escalation=ESC, multiplier=1.5)
     plain = __import__("src.risk.alert_engine", fromlist=["AlertEngine"]).AlertEngine(escalation=ESC)
     worst = probs(0.0, 0.0, 1.0)

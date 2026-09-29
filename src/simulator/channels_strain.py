@@ -1,11 +1,11 @@
-"""Inter-node displacement and strain — PRD §10 (T-014).
+"""Inter-node displacement and strain —.
 
-    strain ≈ Δd_ij / d_ij   (from inter-node distance change d_ij → d'_ij)
+ strain ≈ Δd_ij / d_ij (from inter-node distance change d_ij → d'_ij)
 
 Kinematic model: a subsidence bowl pulls surface points horizontally toward
 the subsidence centre (convergence). Each node's ground position moves by
 
-    u(p, t) = -factor · W(x, y, t) · (p − p0) / σ      [metres]
+ u(p, t) = -factor · W(x, y, t) · (p − p0) / σ [metres]
 
 with `factor` from configs/physics.yaml (strain.horizontal_displacement_factor).
 Inter-node distance d_ij is recomputed from the displaced positions and strain
@@ -105,9 +105,9 @@ def edge_strain_series(
 ) -> np.ndarray:
     """Vectorised edge strain over a time axis — the dataset-builder form.
 
-    Exactly :func:`edge_strain` evaluated per t, computed once for the whole
-    series so generation of 1.4M rows stays fast.
-    """
+ Exactly:func:`edge_strain` evaluated per t, computed once for the whole
+ series so generation of 1.4M rows stays fast.
+ """
     t = np.asarray(t_days, dtype=float)
     ones_i = np.full(t.size, float(x_i))
     onesj = np.full(t.size, float(x_j))

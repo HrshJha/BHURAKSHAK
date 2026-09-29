@@ -1,12 +1,129 @@
-# SubSense — AI-Enabled Mine Subsidence Monitoring, Prediction and Early Warning
+# BhuRakshak
 
-**Team:** zero chill · **SIH 2026 PS 26025** (Ministry of Coal / Coal India Limited) · Category: Hardware · Theme: Smart Automation
+BhuRakshak is a prototype for early warning of underground coal mine ground movement, using a sensor mesh and layered risk scoring.
 
-SubSense is a prototype repository for mine-subsidence sensing and modeling. Its current pipeline uses a synthetic corpus; it has no valid post-leakfix risk-model results or demonstrated real-mine performance.
+Built for SIH 2026, Problem Statement 26025.
 
-This repository contains the **Data + ML workstream**: the physics-coupled synthetic-data generator, feature store, Isolation Forest anomaly detection, XGBoost risk classification, physics-consistency engine, and the alert state machine. Hardware, LoRa networking, the Raspberry Pi gateway, MQTT, the FastAPI backend, databases, the GIS dashboard, OTA and alert hardware are separate workstreams (see `TASKS.md` → "Excluded by Scope").
+## Problem
 
-> Current status: leakage remediation, development tuning, and the single locked synthetic evaluation are complete. Prior leaky v1 results are archived as `superseded_leaky`. The locked set was evaluated once (`evals_run: 1`); tuned XGBoost Critical recall was 0.0933 and alert lead time was negative, so this result does not establish useful early warning. Group C spatial features remain gated because the corpus has one node per event. All results are synthetic; real-mine performance is unvalidated.
+Periodic surveys leave gaps between observations. A continuous sensor record can show how measured ground movement changes between surveys. This repository tests data generation and risk scoring on synthetic and tabletop data; it does not establish performance at a mine.
+
+## What this repository contains
+
+| Component | Status | Evidence |
+|---|---|---|
+| Sensors | PROTOTYPED | [Recorded tabletop data](data/recorded/tabletop/README.md) |
+| LoRa mesh | DESIGNED | [Architecture](submit/architecture/BHURAKSHAK_Complete_Architecture.mmd) |
+| Gateway | OTHER WORKSTREAM | Not implemented in this repository |
+| ML pipeline | BUILT | [Pipeline](src/pipeline.py) |
+| Alert engine | BUILT | [Alert engine](src/risk/alert_engine.py) |
+| API | OTHER WORKSTREAM | Not implemented in this repository |
+| Dashboard | OTHER WORKSTREAM | Not implemented in this repository |
+
+## ML architecture
+
+Solid paths are implemented. Dashed paths are gated or planned.
+
+```mermaid
+flowchart LR
+  classDef built fill:#000,color:#fff,stroke:#000
+  classDef planned fill:#fff,color:#000,stroke:#000,stroke-width:3px
+  classDef gated fill:#fff,color:#000,stroke:#000,stroke-dasharray:5 5
+  Raw["Sensor records"] --> Quality["Validation and time alignment"] --> Windows["60-step windows, stride 10"] --> Features["Physical, temporal, vibration, health, physics features"]
+  Features --> IF["Isolation Forest anomaly score"] --> Risk["XGBoost three-class risk model"]
+  Features --> Physics["Physics consistency residual"] --> Risk
+  Features -.-> Spatial["Spatial fusion"] -.-> Risk
+  Risk --> Calibration["Probability calibration"] --> Alert["Alert state machine: GREEN, WATCH, WARNING, CRITICAL"]
+  Risk --> Explain["Prediction explanation"]
+  Synthetic["Physics-coupled data generation"] --> Store["Feature store"] --> Split["Regime holdout split"] --> Train["Model training"] --> Evaluation["Validation and locked evaluation"] --> Registry["Model registry"] --> Edge["Edge deployment"]
+  Quality --> Store
+  class Raw,Quality,Windows,Features,IF,Physics,Risk,Calibration,Alert,Explain,Synthetic,Store,Split,Train,Evaluation,Registry built
+  class Spatial gated
+  class Edge planned
+```
+
+| Stage | Module | Input → output | Purpose |
+|---|---|---|---|
+| Validation | `src/preprocessing/validation.py` | Sensor rows → quality flags | Detect missing, repeated, out-of-order, or corrupt records |
+| Alignment | `src/preprocessing/align_modalities.py` | Sensor streams → aligned streams | Put measurements on a shared timeline |
+| Windowing | `src/features/windowing.py` | Aligned streams → windows | Build overlapping 60-step windows with stride 10 ([manifest](data/synthetic/dataset_manifest.json)) |
+| Feature store | `src/features/build_feature_store.py` | Windows → feature rows | Compute physical and temporal features |
+| Anomaly score | `src/anomaly/isolation_forest.py` | Training windows → anomaly score | Flag departures from healthy training data |
+| Physics check | `src/physics/consistency.py` | Movement and coordinates → residual | Compare measurements with the configured deformation model |
+| Spatial fusion | `src/features/group_c_spatial.py` | Co-temporal nodes → neighbor evidence | Gated because each synthetic event has one node |
+| Risk model | `src/risk/xgboost_model.py` | Features and scores → NORMAL, WARNING, CRITICAL | Estimate event risk |
+| Calibration | `scripts/freeze_models.py` | Validation predictions → calibrated probabilities | Fit calibration without using the locked test set |
+| Alert state | `src/risk/alert_engine.py` | Probabilities and evidence → alert level | Apply configured thresholds and persistence |
+| Explanation | `src/risk/explainability.py` | Prediction and signals → explanation | Return contributing signals with each risk output |
+| Offline training | `src/simulator/`, `src/features/`, `src/evaluation/` | Synthetic records → model artifacts | Generate data, build features, split by regime, train and evaluate models |
+
+## Data
+
+The seeded simulator couples tilt, displacement, strain, and vibration to a shared deformation field, then adds sensor noise and faults. Fault types include bias, stuck readings, dropout, spikes, and drift. Scenario families cover stable ground, communication faults, sensor faults, vibration-only events, and several rates and patterns of subsidence. The [dataset manifest](data/synthetic/dataset_manifest.json) records 10,000 generated sequences, 1,440,000 sensor rows, 90,000 windows, and 61 stored features. Labels cover anomaly, risk, progression, and fault type.
+
+The default split holds out scenario families and parameters; it assigns 6,516 training, 1,609 validation, and 1,875 test events. The locked synthetic evaluation is tracked separately in [test_lock.json](reports/test_lock.json) and was run once. The recorded tabletop files contain a physical rig's sensor log and trial metadata. They are not mine measurements.
+
+## Results
+
+The locked evaluation uses synthetic data from unseen regimes. It does not measure performance at a real mine. The tuned model does not beat every baseline.
+
+| Model | Critical recall | Macro PR-AUC | Macro F1 | False alarms/day | Median lead time | Calibration error | Workstation p50 / p95 latency | Workstation sampled memory |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Tuned XGBoost | 0.0933 | 0.5029 | 0.4458 | — | — | — | 0.317 / 0.613 ms | 550.6 MiB |
+| Default XGBoost | 0.0457 | 0.5351 | 0.4450 | — | — | — | — | — |
+| Logistic regression | 0.7650 | 0.4687 | 0.4297 | — | — | — | — | — |
+| Threshold rule | 0.0416 | 0.4146 | 0.3897 | — | — | — | — | — |
+| Alert engine, shared system result | — | — | — | 0.046 | −3.33 h | Not measured on locked test | — | — |
+
+Model scores are from the [locked evaluation](reports/final_eval.md). Alert timing is a system-level result, not a model-specific score. The [inference profile](reports/inference_profile.md) measures a workstation; its memory figure is sampled process memory, not an edge-device budget. Calibration error is not reported for the locked test; the development calibration result is in the [tuning report](reports/tuning_report.md).
+
+## Quickstart
+
+Use Python 3.12. From the repository root:
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m pytest tests/ -q
+.venv/bin/python scripts/run_pipeline.py
+```
+
+The pipeline prints a development validation summary and writes `experiments/pipeline_run.json`. It does not read the locked test corpus.
+
+Regenerate the seeded synthetic data and feature store:
+
+```bash
+.venv/bin/python scripts/generate_synthetic_nodes.py --seed 42
+.venv/bin/python scripts/make_split_assignment.py
+.venv/bin/python scripts/build_and_run_notebook_03.py
+```
+
+## Repository layout
+
+```text
+configs/       Model, sensor, and alert settings
+data/          Synthetic, processed, locked, and tabletop records
+experiments/   Pipeline outputs
+models/        Model artifacts and registry
+notebooks/     Exploratory and reproducible analysis
+reports/       Evaluation and validation reports
+scripts/       Dataset, training, and evaluation commands
+src/           Simulator, preprocessing, features, risk, and evaluation code
+tests/         Unit and pipeline checks
+```
+
+## Reports and notebooks
+
+- [Locked evaluation](reports/final_eval.md)
+- [Tuning report](reports/tuning_report.md)
+- [Leakage audit](reports/leakage_audit.md)
+- [Workstation inference profile](reports/inference_profile.md)
+- [Dataset manifest](data/synthetic/dataset_manifest.json)
+- [Synthetic data notebook](notebooks/01_synthetic_data_generation.ipynb)
+
+## Limitations and roadmap
+
+Validation uses synthetic data and recorded tabletop trials, not a working mine. Each synthetic event contains one node, so spatial confirmation is unavailable. Forecasting is limited by the available windows. InSAR and DGPS processing use simulated inputs. Field sensors, network hardware, gateway, API, and dashboard integrations are outside this repository. Real-mine validation and broader spatial data are needed before field use.
 
 ## Honesty Statement
 
@@ -14,7 +131,7 @@ This repository contains the **Data + ML workstream**: the physics-coupled synth
 
 This statement is binding for how every claim in this repository should be read.
 
-## Non-Goals (PRD §4, verbatim)
+## Non-Goals
 
 - Predicting the exact time or magnitude of a catastrophic collapse.
 - Replacing certified geotechnical survey or regulatory subsidence assessment.
@@ -22,61 +139,3 @@ This statement is binding for how every claim in this repository should be read.
 - Building a production-scale multi-mine SaaS platform in the prototype phase (architecture should allow for it later, but MVP targets one panel).
 - Raw SAR/InSAR processing on the Raspberry Pi (done externally/offline on a workstation).
 - Mandatory GNN-based spatial modeling for MVP (reserved as future work, gated behind an ablation showing engineered spatial features are insufficient).
-
-## Why synthetic data first
-
-No usable real-mine labeled dataset exists, and the published InSAR/mining-subsidence ML literature itself relies on simulator-generated deformation data (see PRD §10). All sensor channels derive from one latent deformation field — Gaussian influence kernel over the panel, Knothe-style temporal growth — so tilt, displacement, strain and vibration are physically coupled, never independently random. The synthetic-data gate (three deliverables: `synthetic_nodes.csv`, `synthetic_events.csv`, and a physical-coupling proof in notebook 01) is a **hard prerequisite** for any model training.
-
-## Setup
-
-Requires Python 3.12 (pins in `requirements.txt` target ≥3.10; developed on 3.12.13).
-
-```bash
-python3.12 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python -m pytest tests/ -q
-python3 scripts/check_tree.py
-```
-
-### Regenerating the large data artifacts (not tracked in git)
-
-The 220 MB raw synthetic corpus, the feature store, and the tabletop rig log
-are intentionally untracked (they are byte-reproducible or recorded once);
-git history retains the pre-fixall copies. Regenerate in this order:
-
-```bash
-python3 scripts/generate_synthetic_nodes.py --seed 42   # data/synthetic/synthetic_nodes.csv + events + manifest
-python3 scripts/make_split_assignment.py                # data/features/split_assignment.csv
-python3 scripts/build_and_run_notebook_03.py            # data/features/features_v2.parquet
-python3 scripts/generate_tabletop_dataset.py data/raw/sensors/tabletop  # tabletop rig log (recorded stand-in, seed 42)
-```
-
-## Repository layout
-
-```text
-configs/       sampling.yaml, alerts.yaml, physics.yaml, feature_schema_v2.yaml (NFR-6: nothing hard-coded)
-src/simulator/ physics-coupled synthetic-data generator (PRD §10)
-src/preprocessing/  schema, labels, validation, resampling, clock drift (PRD §9, §11, §12)
-src/features/  windowing + feature groups A–J (PRD §13)
-src/anomaly/   Isolation Forest (PRD §14)
-src/risk/      XGBoost, calibration, alert engine, explainability, registry (PRD §15, §21, §22, §30)
-src/physics/   physics-consistency residual (PRD §21, FR-15)
-src/geospatial/ CRS + InSAR/DGPS mapping (PRD §9.2, §18, §19)
-src/evaluation/ leakage-safe splits + metrics (PRD §23, §24)
-notebooks/     01–10 per PRD §33
-data/          raw | processed | features | labels | synthetic
-models/        isolation_forest | xgboost | temporal_model
-```
-
-## Governing documents
-
-- `prd.md` — the PRD; the Honesty Statement is its final section and overrides optimistic readings elsewhere.
-- `TASKS.md` — the 85-task Data+ML board with acceptance checks; statuses updated only via executed EXECUTE passes.
-- `PROGRESS_LOG.md` — append-only execution log, one entry per pass.
-
-All risk thresholds, sampling rates and escalation rules are configuration-driven (NFR-6) and asserted by test: `tests/test_config_loader.py` fails if §21.1 threshold literals appear under `src/` outside the loader.
-
-
-## Current model status
-
-No model-performance table is active until the leakage-free baselines, grouped tuning, robustness checks, and one-time locked evaluation are complete. Results from this repository remain synthetic-corpus results.

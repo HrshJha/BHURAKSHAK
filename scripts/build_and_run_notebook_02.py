@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""T-027 — build and execute notebooks/02_dataset_quality_and_EDA.ipynb.
+""" — build and execute notebooks/02_dataset_quality_and_EDA.ipynb.
 
-Acceptance (TASKS.md T-027): the notebook executes end-to-end and reports
-per-class counts for every §10 scenario label, explicitly quantifying the
-imbalance toward NORMAL that §15/§24 cite as the reason accuracy is rejected
+Acceptance: the notebook executes end-to-end and reports
+per-class counts for every scenario label, explicitly quantifying the
+imbalance toward NORMAL that / cite as the reason accuracy is rejected
 as a headline metric.
 
 Idempotent: rebuilds and re-executes the notebook in place.
@@ -25,15 +25,15 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "02_dataset_quality_and_EDA.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 02 — Dataset Quality & EDA (PRD §33, §15, §24)
+        """# 02 — Dataset Quality & EDA ( , , )
 
 **Purpose:** profile the synthetic gate dataset end-to-end — per-class label
-counts for every §10 label column, missing/duplicate/timestamp integrity (§9/FR-3),
+counts for every  label column, missing/duplicate/timestamp integrity (/),
 channel distributions, and an explicit quantification of the class imbalance
-toward NORMAL that §15/§24 cite as the reason **accuracy is rejected** as a
+toward NORMAL that / cite as the reason **accuracy is rejected** as a
 headline metric (minority-class PR-AUC/F1 and calibration carry that role).
 
-**Acceptance (T-027):** executes end-to-end; per-class counts for every §10
+**Acceptance ():** executes end-to-end; per-class counts for every 
 scenario label; imbalance toward NORMAL explicitly quantified."""
     ),
     new_code_cell(
@@ -57,7 +57,7 @@ df = pd.read_csv(nodes_path, usecols=["event_id", "node_id", "timestamp", "packe
 events = pd.read_csv(DATA / "synthetic_events.csv")
 print(f"rows: {len(df):,}  events: {df.event_id.nunique():,}  nodes: {df.node_id.nunique()}")"""
     ),
-    new_markdown_cell("## 1 — Per-class counts for every §10 label column"),
+    new_markdown_cell("## 1 — Per-class counts for every  label column"),
     new_code_cell(
         """counts = {}
 for col in LABEL_COLS:
@@ -73,7 +73,7 @@ for ax, (col, vc) in zip(axes.ravel(), counts.items()):
     ax.tick_params(axis="x", rotation=30)
     for i, v in enumerate(vc.values):
         ax.text(i, float(v), f"{v:,}", ha="center", va="bottom", fontsize=8)
-fig.suptitle("§10 label distributions (log scale) — synthetic_nodes.csv", y=1.02)
+fig.suptitle(" label distributions (log scale) — synthetic_nodes.csv", y=1.02)
 fig.tight_layout()
 fig.savefig(Path.cwd().parent / "reports" / "nb02_label_counts.png", dpi=110, bbox_inches="tight")
 plt.show()
@@ -86,7 +86,7 @@ for col, vc in counts.items():
     new_markdown_cell(
         """## 2 — Imbalance toward NORMAL, explicitly quantified
 
-§15 trains a 3-class risk model; §24 rejects bare accuracy. If NORMAL
+ trains a 3-class risk model;  rejects bare accuracy. If NORMAL
 dominates, a trivial all-NORMAL classifier scores high accuracy while missing
 every warning — so the imbalance is quantified and used to justify the metric
 choice, not hidden."""
@@ -108,9 +108,9 @@ print(f"  CRITICAL {n_critical:>9,}  ({100.0 * n_critical / n_total:6.2f}%)")
 print(f"imbalance NORMAL : (WARNING+CRITICAL) = {imbalance_ratio:.2f} : 1")
 print(f"trivial all-NORMAL accuracy = {100.0 * trivial_acc:.2f}% — while missing 100% of warnings")
 assert n_normal > minority, "expected substantial NORMAL dominance in the gate dataset"
-print("=> accuracy is rejected as a headline metric; PR-AUC / F1 / calibration per §24")"""
+print("=> accuracy is rejected as a headline metric; PR-AUC / F1 / calibration per ")"""
     ),
-    new_markdown_cell("## 3 — Data-quality profile (§9 first-class states, FR-3)"),
+    new_markdown_cell("## 3 — Data-quality profile ( first-class states, )"),
     new_code_cell(
         """from src.preprocessing.validation import validate_packets
 
@@ -154,7 +154,7 @@ print(df.groupby("risk_label")[["tilt_magnitude", "displacement", "vibration_rms
     ),
     new_markdown_cell("## Verdict"),
     new_code_cell(
-        """print("T-027 DATASET QUALITY + EDA")
+        """print(" DATASET QUALITY + EDA")
 print(f"  per-class counts reported for: {', '.join(LABEL_COLS)}")
 print(f"  NORMAL dominance quantified   : {imbalance_ratio:.2f}:1 over minority classes")
 print(f"  trivial-accuracy argument     : {100.0 * trivial_acc:.1f}% accuracy, 0% warnings caught")

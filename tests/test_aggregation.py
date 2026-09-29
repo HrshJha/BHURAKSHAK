@@ -1,4 +1,4 @@
-"""T-052 tests — §21.1 per-node → region roll-up (max rule + noisy-node guard)."""
+""" tests — per-node → region roll-up (max rule + noisy-node guard)."""
 
 from __future__ import annotations
 
@@ -55,7 +55,7 @@ def test_region_read_only_over_node_states() -> None:
     assert levels == {"n1": "WARNING", "n2": "GREEN"}
 
 
-# --- single noisy node guard (§21.1 confirmation rule) ---------------------------
+# --- single noisy node guard ( confirmation rule) ---------------------------
 
 
 def test_single_unconfirmed_critical_node_cannot_make_the_region_critical() -> None:

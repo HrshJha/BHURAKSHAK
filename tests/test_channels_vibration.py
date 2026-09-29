@@ -1,4 +1,4 @@
-"""T-015 acceptance tests — vibration components toggleable; vibration-only ≠ subsidence."""
+""" acceptance tests — vibration components toggleable; vibration-only ≠ subsidence."""
 
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ def test_crest_factor_positive() -> None:
 
 
 def test_summary_never_raw_samples() -> None:
-    """§8.3: the returned object carries summary statistics only — no raw array."""
+    """: the returned object carries summary statistics only — no raw array."""
     comps = VibrationComponents(normal_noise=True)
     r = generate_vibration(0.0, comps, np.random.default_rng(0))
     assert not hasattr(r, "samples"), "raw high-rate samples must never be emitted"
@@ -74,5 +74,5 @@ def test_defaults_from_config() -> None:
 
 
 def test_vibration_only_label_rule() -> None:
-    """§10: vibration alone ≠ subsidence — the encoding the scenario engine uses."""
+    """: vibration alone ≠ subsidence — the encoding the scenario engine uses."""
     assert vibration_only_is_non_subsidence()

@@ -5,7 +5,7 @@ The current scan covers the v2 synthetic feature store and compares it with the 
 - Active artifact: `data/features/features_v2.parquet` (90,000 windows; schema v2).
 - Archived comparison: `reports/superseded_leaky/data/features/features_v1.parquet` (90,000 windows; `superseded_leaky`).
 - Labels are present only as targets. `build_feature_store` passes a copy containing structural keys and sensor channels only to feature emitters.
-- Group C has no finite values in v2: all 90,000 production snapshots have one node and no co-temporal neighbors. The schema gate excludes C from XGBoost and Isolation Forest. §21.1 neighbor confirmation is not validated by this corpus.
+- Group C has no finite values in v2: all 90,000 production snapshots have one node and no co-temporal neighbors. The schema gate excludes C from XGBoost and Isolation Forest.  neighbor confirmation is not validated by this corpus.
 - Group B persistence and change-point values are causal prefixes; truncation tests prove future windows do not alter earlier outputs.
 - Split exclusivity: 10,000 unique events and `5,012` generating-parameter groups; zero group overlap across train/validation/test.
 - Neighbor confirmations use only nodes co-temporal within the same event/window; alert persistence is isolated by event.

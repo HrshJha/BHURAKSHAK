@@ -1,7 +1,7 @@
-"""T-060 acceptance tests — satellite features onto the mesh representation.
+""" acceptance tests — satellite features onto the mesh representation.
 
-Covers §18 step 5 + FR-13: InSAR values join the shared feature schema on the
-same node spatial representation (§9.2 mesh-local frame), and every fused
+Covers step 5 +: InSAR values join the shared feature schema on the
+same node spatial representation ( mesh-local frame), and every fused
 value carries its own observation timestamp plus a staleness age.
 """
 
@@ -21,18 +21,18 @@ from src.geospatial.insar_to_mesh import (
 
 DATES = ["2026-01-08", "2026-01-20", "2026-02-13", "2026-03-09"]
 #: Fixture coherence gates on a 0–10 scale — written as integers×10 so the
-#: NFR-6 scan (which forbids bare 0.5/0.6/0.7/1.5 literals) stays clean.
+#: scan (which forbids bare 0.5/0.6/0.7/1.5 literals) stays clean.
 FIX_COH = {"PS_ORIG": 9.0, "PS_EAST": 8.5, "PS_NORTH": 8.0}
 
 
 def _mini_timeseries() -> pd.DataFrame:
     """A 3×3 multi-look grid inside the study bbox.
 
-    On this grid PS (1, 1) sits at the bbox centre == the mesh origin
-    (23.75 N, 86.45 E); PS (1, 2) lies east, PS (0, 1) north. PS_EAST is
-    masked on dates 2–4 and NaN on 3–4; PS_NORTH lacks date 1; NOTHING is
-    valid on the final date — exercising fallback, masking and no-row paths.
-    """
+ On this grid PS (1, 1) sits at the bbox centre == the mesh origin
+ (23.75 N, 86.45 E); PS (1, 2) lies east, PS (0, 1) north. PS_EAST is
+ masked on dates 2–4 and NaN on 3–4; PS_NORTH lacks date 1; NOTHING is
+ valid on the final date — exercising fallback, masking and no-row paths.
+ """
     specs = {
         # positions under the corrected descending mapping: range (row) → E–W
         # (index 0 = east edge), azimuth (column) → N–S (index 0 = north edge).
@@ -62,7 +62,7 @@ def _mini_timeseries() -> pd.DataFrame:
 
 def _node_coords(geo: pd.DataFrame) -> pd.DataFrame:
     """Mesh nodes: the origin, a node ON the east PS, one on the north PS,
-    and one 200 m east of the origin (for the distance-cap test)."""
+ and one 200 m east of the origin (for the distance-cap test)."""
     east = geo.loc[geo.ps_id == "PS_EAST"].iloc[0]
     north = geo.loc[geo.ps_id == "PS_NORTH"].iloc[0]
     return pd.DataFrame(
@@ -93,7 +93,7 @@ def test_ps_at_grid_centre_maps_to_mesh_origin() -> None:
 
 def test_axis_directions_match_descending_convention() -> None:
     """Descending right-looking pass: range (cross-track, looks WEST) index
-    increases east→west; azimuth (along-track) index increases north→south."""
+ increases east→west; azimuth (along-track) index increases north→south."""
     geo = georeference_ps(_mini_timeseries(), grid_shape=(3, 3))
     crs = crs_from_config()
     east = geo.loc[geo.ps_id == "PS_EAST"].iloc[0]   # (row 0, col 1)
@@ -131,7 +131,7 @@ def test_nearest_valid_ps_wins(joined: pd.DataFrame) -> None:
 
 
 def test_each_row_keeps_its_own_observation_timestamp(joined: pd.DataFrame) -> None:
-    """FR-13: the joined value carries ITS observation time, not the join time."""
+    """: the joined value carries ITS observation time, not the join time."""
     orig_rows = joined[joined.node_id == "V_ORIG"].set_index("date")
     assert orig_rows.loc["2026-01-08", "observation_timestamp"] == pd.Timestamp("2026-01-08")
     assert orig_rows.loc["2026-02-13", "observation_timestamp"] == pd.Timestamp("2026-02-13")
@@ -154,8 +154,8 @@ def test_explicit_as_of_overrides_staleness_reference() -> None:
 
 
 def test_masked_low_coherence_falls_back_to_next_nearest_valid_ps() -> None:
-    """§18 step 4 discipline: masked observations are never force-joined —
-    the node falls back to the next-nearest VALID scatterer that date."""
+    """ step 4 discipline: masked observations are never force-joined —
+ the node falls back to the next-nearest VALID scatterer that date."""
     ts = _mini_timeseries()
     geo = georeference_ps(ts, grid_shape=(3, 3))
     out = map_ps_to_mesh(ts, _node_coords(geo), grid_shape=(3, 3))
@@ -228,7 +228,7 @@ def test_join_rejects_missing_node_columns() -> None:
 
 def test_real_geocoded_latlon_input_joins_unchanged() -> None:
     """Forward path for real products: PS rows already carrying lat/lon bypass
-    the synthetic index mapping and flow through the identical join."""
+ the synthetic index mapping and flow through the identical join."""
     ts = _mini_timeseries()
     geo = georeference_ps(ts, grid_shape=(3, 3))
     ts_geo = ts.merge(geo[["ps_id", "lat", "lon"]], on="ps_id", how="left")

@@ -1,27 +1,27 @@
-"""Temporal forecasting model — PRD §16 (T-076).
+"""Temporal forecasting model —.
 
-§16 Phase 2: forecasting is implemented AFTER Isolation Forest + XGBoost are
-validated (T-049/T-071 done), and it predicts **a physical quantity — future
+ Phase 2: forecasting is implemented AFTER Isolation Forest + XGBoost are
+validated (/ done), and it predicts **a physical quantity — future
 displacement / tilt / deformation velocity — never "future danger" directly.**
 The layered design is preserved: forecasts feed the XGBoost risk layer as
-FEATURES (T-077); the forecaster has no code path to a risk state, label or
+FEATURES; the forecaster has no code path to a risk state, label or
 probability (asserted by tests/test_temporal_model_fc.py).
 
-Architectures (§16): TCN, GRU and LSTM are selectable from
-configs/forecasting.yaml (T-078); **LSTM is retained as the literature
-benchmark** — the subsidence-forecasting literature the PRD §16 draws on
+Architectures: TCN, GRU and LSTM are selectable from
+configs/forecasting.yaml; **LSTM is retained as the literature
+benchmark** — the subsidence-forecasting literature the draws on
 uses LSTM-style recurrences, so the benchmark stays in the selection set.
 
-Training discipline (mirrors §14/§15):
+Training discipline (mirrors /):
 - fits on TRAIN-split series only; early stopping on the VALIDATION split;
-- inputs are per-window physical channel histories (the same §10 windows
-  the feature store uses), never labels;
+- inputs are per-window physical channel histories (the same windows
+ the feature store uses), never labels;
 - outputs are per-horizon physical values in the channel's own unit (mm or
-  deg) — a :class:`Forecast` is a small table of (channel, horizon,
-  predicted_value), not a class;
-- the multi-horizon head is config-driven (§16 horizons: next-window,
-  30 min, 1 h, 6 h, 24 h — T-078); horizons beyond a series' remaining
-  length are simply not emitted for that series.
+ deg) — a:class:`Forecast` is a small table of (channel, horizon,
+ predicted_value), not a class;
+- the multi-horizon head is config-driven ( horizons: next-window,
+ 30 min, 1 h, 6 h, 24 h — ); horizons beyond a series' remaining
+ length are simply not emitted for that series.
 
 PyTorch is the backend; the module imports it lazily so the rest of the
 repo works without torch installed.
@@ -54,7 +54,7 @@ __all__ = [
     "train_temporal_forecaster",
 ]
 
-#: The physical channels §16 forecasting may predict (subset of the §10/§13
+#: The physical channels forecasting may predict (subset of the /
 #: movement channels; a forecast is a physical quantity, never a label).
 FORECASTABLE_CHANNELS = ("displacement", "tilt_x", "tilt_y")
 
@@ -78,7 +78,7 @@ class Forecast:
         }
         if bad:
             raise ForecastError(
-                f"Forecast carries risk-like columns {sorted(bad)} — §16 forbids "
+                f"Forecast carries risk-like columns {sorted(bad)} —  forbids "
                 "the forecaster from emitting anything but physical quantities"
             )
 
@@ -98,12 +98,12 @@ def build_sequences(
 ) -> tuple[np.ndarray, np.ndarray, list[tuple[str, str]]]:
     """Sliding (history → target) sequences per (event, node) series.
 
-    Inputs are the windowed frame's ``{ch}_mean`` columns. X: (n, history,
-    n_channels); Y: (n, n_channels) — the channel value ``horizon_steps``
-    windows ahead. Series shorter than history + horizon produce nothing.
-    Returns also the (event_id, node_id) key of every sample so predictions
-    can be attributed.
-    """
+ Inputs are the windowed frame's ``{ch}_mean`` columns. X: (n, history,
+ n_channels); Y: (n, n_channels) — the channel value ``horizon_steps``
+ windows ahead. Series shorter than history + horizon produce nothing.
+ Returns also the (event_id, node_id) key of every sample so predictions
+ can be attributed.
+ """
     for ch in channels:
         if f"{ch}_mean" not in windowed.columns:
             raise ForecastError(f"windowed frame missing {ch}_mean for forecasting")
@@ -145,11 +145,11 @@ def _build_multi_horizon(
 ) -> tuple[np.ndarray, np.ndarray, list[tuple[str, str]]]:
     """Sliding sequences with ALL horizons aligned by index.
 
-    X: (n, history, C); Y: (n, H, C) where Y[s, h_i] is the channel value
-    ``horizons[h_i]`` windows after the history window ends. Sequences whose
-    targets run past a series' end (or hit a NaN) are dropped — per-horizon
-    counts therefore stay aligned by construction (no truncation hacks).
-    """
+ X: (n, history, C); Y: (n, H, C) where Y[s, h_i] is the channel value
+ ``horizons[h_i]`` windows after the history window ends. Sequences whose
+ targets run past a series' end (or hit a NaN) are dropped — per-horizon
+ counts therefore stay aligned by construction (no truncation hacks).
+ """
     for ch in channels:
         if f"{ch}_mean" not in windowed.columns:
             raise ForecastError(f"windowed frame missing {ch}_mean for forecasting")
@@ -163,7 +163,7 @@ def _build_multi_horizon(
             x = series[start : start + history_steps]
             try:
                 y = np.stack([series[start + history_steps - 1 + h] for h in horizons], axis=0)
-            except IndexError:  # pragma: no cover — range() already bounds this
+            except IndexError:  # pragma: no cover — range already bounds this
                 continue
             if not np.isfinite(x).all() or not np.isfinite(y).all():
                 continue
@@ -226,15 +226,14 @@ class TemporalForecaster:
     def predict(self, windowed: pd.DataFrame) -> Forecast:
         """Forecast every horizon for every series in ``windowed``.
 
-        Each series' LAST complete history window is the input; outputs are
-        in the channel's physical unit (unscaled). Series shorter than the
-        history produce no rows — never an invented forecast.
+ Each series' LAST complete history window is the input; outputs are
+ in the channel's physical unit (unscaled). Series shorter than the
+ history produce no rows — never an invented forecast.
 
-        Single source of truth: delegates to
-        :func:`src.forecasting.forecast_to_risk.forecast_all_origins` and keeps
-        each series' LAST origin (imported lazily to avoid a module-level
-        cycle; forecast_to_risk imports this module's types).
-        """
+ Single source of truth: delegates to:func:`src.forecasting.forecast_to_risk.forecast_all_origins` and keeps
+ each series' LAST origin (imported lazily to avoid a module-level
+ cycle; forecast_to_risk imports this module's types).
+ """
         if self.torch_module is None:
             raise ForecastError("forecaster is not fitted")
         from src.forecasting.forecast_to_risk import forecast_all_origins
@@ -275,12 +274,12 @@ def train_temporal_forecaster(
 ) -> TemporalForecaster:
     """Fit a TCN/GRU/LSTM forecaster for PHYSICAL channel values.
 
-    ``split``: optional §23 split labels aligned with ``windowed`` (train /
-    validation). Without it, all sequences are train (pure-fitting use).
-    Early stopping keeps the epoch with the best validation loss; without a
-    validation split the final epoch is kept. The LSTM default is the
-    §16 literature benchmark.
-    """
+ ``split``: optional split labels aligned with ``windowed`` (train /
+ validation). Without it, all sequences are train (pure-fitting use).
+ Early stopping keeps the epoch with the best validation loss; without a
+ validation split the final epoch is kept. The LSTM default is the
+ literature benchmark.
+ """
     import torch
     import torch.nn as nn
 
@@ -299,7 +298,7 @@ def train_temporal_forecaster(
         banned = set(channels) - set(FORECASTABLE_CHANNELS)
         raise ForecastError(
             f"channels {sorted(banned)} are not forecastable physical channels — "
-            "§16: the forecaster predicts displacement/tilt only, never a risk quantity"
+            ": the forecaster predicts displacement/tilt only, never a risk quantity"
         )
 
     torch.manual_seed(seed)

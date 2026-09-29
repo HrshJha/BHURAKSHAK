@@ -2,7 +2,7 @@
   "dataset_version": "tabletop-recorded-v1",
   "generator_version": "tabletop-bridge-0.1.0",
   "random_seed": 42,
-  "description": "Recorded tabletop rig corpus (T-072/T-074): 26 trials, raw 10 Hz log bridged through the \u00a710 pipeline; seed 42 generator, reproducibility verified against the Desktop copy.",
+  "description": "Recorded tabletop rig corpus: 26 trials with a raw 10 Hz sensor log and trial metadata. Generated with seed 42.",
   "row_counts": {
     "raw_log_rows": 1200000,
     "windows": 14552

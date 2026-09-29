@@ -1,4 +1,4 @@
-"""T-011 acceptance tests — Knothe temporal model matches §10 formula exactly."""
+""" acceptance tests — Knothe temporal model matches formula exactly."""
 
 from __future__ import annotations
 

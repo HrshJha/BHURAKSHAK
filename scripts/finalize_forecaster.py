@@ -47,7 +47,7 @@ def main() -> int:
         manifest = json.loads((ROOT / "data/synthetic/dataset_manifest.json").read_text(encoding="utf-8"))
         artifact = ROOT / "models/temporal_model/forecaster_tuned.pt"
         artifact.parent.mkdir(parents=True, exist_ok=True)
-        torch.save({"metadata": {"model_name": "SubSense temporal forecaster", "model_version": "v2.0.0-tuned-dev",
+        torch.save({"metadata": {"model_name": "BhuRakshak temporal forecaster", "model_version": "v2.0.0-tuned-dev",
                                  "feature_schema_version": manifest["feature_schema_version"],
                                  "training_dataset_version": manifest["dataset_version"],
                                  "training_groups": int(frame.event_id.nunique()), "held_out_test_used": False},
@@ -58,7 +58,7 @@ def main() -> int:
         provenance_hash = hashlib.sha256((ROOT / "configs/feature_provenance.yaml").read_bytes()).hexdigest()
         from src.risk.model_registry import ModelRegistry
         ModelRegistry().register_model(
-            model_name="subsense_temporal_forecaster", model_version="v2.0.0-tuned-dev",
+            model_name="bhurakshak_temporal_forecaster", model_version="v2.0.0-tuned-dev",
             feature_version=str(manifest["feature_schema_version"]),
             training_dataset_version=str(manifest["dataset_version"]), artifact_path=str(artifact),
             split_name="train+validation development groups", seed=42, provenance_hash=provenance_hash,

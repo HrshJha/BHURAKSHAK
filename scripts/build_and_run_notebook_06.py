@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""T-079 — build and execute notebooks/06_temporal_forecasting.ipynb.
+""" — build and execute notebooks/06_temporal_forecasting.ipynb.
 
-Acceptance (TASKS.md T-079): the notebook executes end-to-end and reports
+Acceptance: the notebook executes end-to-end and reports
 MAE, RMSE, max absolute error and bias per horizon against a persistence
 baseline, stating whether the neural forecaster justifies its complexity.
 
-Design: the §16 horizons come from configs/forecasting.yaml (T-078) and are
-resolved against the MEASURED window stride of the §23 feature store (the
-synthetic corpus is generated at 0.6 h/window — the §9.1 10-minute config
+Design: the horizons come from configs/forecasting.yaml and are
+resolved against the MEASURED window stride of the feature store (the
+synthetic corpus is generated at 0.6 h/window — the 10-minute config
 grid is a raw-data cadence, not the store's). Horizons that the corpus'
 9-window series depth cannot support (6 h / 24 h here) are stated as
-unsupported, never silently dropped. Sequences are built with the T-076
-trainer-side helper (`_build_multi_horizon`), split §23-safe at event level
-via the T-068 split assignment, and the persistence baseline needs no model:
+unsupported, never silently dropped. Sequences are built with the 
+trainer-side helper (`_build_multi_horizon`), split -safe at event level
+via the split assignment, and the persistence baseline needs no model:
 the last history step of each sequence IS the persistence forecast for every
-horizon. §24 error family only (MAE/RMSE/max-abs/bias) — accuracy plays no
+horizon. error family only (MAE/RMSE/max-abs/bias) — accuracy plays no
 role. Every number is computed in-notebook from the store; idempotent.
 """
 
@@ -34,27 +34,27 @@ NOTEBOOK_PATH = REPO_ROOT / "notebooks" / "06_temporal_forecasting.ipynb"
 
 CELLS = [
     new_markdown_cell(
-        """# 06 — Temporal Forecasting (PRD §16, §24, §33)
+        """# 06 — Temporal Forecasting ( , , )
 
 **Claims under test:**
 
-1. **§16** — the temporal forecaster predicts **physical quantities**
-   (displacement / tilt) over the §16 horizons, never "future danger" (T-076
-   contract); the horizons are config-driven (T-078) and resolved here
+1. **** — the temporal forecaster predicts **physical quantities**
+   (displacement / tilt) over the  horizons, never "future danger" (
+   contract); the horizons are config-driven () and resolved here
    against the corpus' *measured* window stride.
-2. **§24** — the deformation-error family (MAE, RMSE, max absolute error,
+2. **** — the deformation-error family (MAE, RMSE, max absolute error,
    bias) per horizon, for the neural forecaster AND the persistence
    baseline (last observed value carried forward).
 3. **Verdict** — whether the neural forecaster justifies its complexity:
    it must beat persistence's MAE by more than 5% on the test split to do so.
 
-**Honest scope:** the §23 synthetic corpus stores 9 windows per event series.
+**Honest scope:** the  synthetic corpus stores 9 windows per event series.
 A horizon of *h* steps needs series of at least `history + h` windows, so only
-horizons that fit that depth are evaluated; the §16 horizons that do not fit
+horizons that fit that depth are evaluated; the  horizons that do not fit
 — or that resolve to less than one full window step on the corpus' *measured*
-window stride (computed in §1, not assumed) — are reported as unsupported by
+window stride (computed in , not assumed) — are reported as unsupported by
 the data, never silently skipped or rounded to a fake "0-step" forecast.
-Forecasts feed the XGBoost risk layer as features (T-077); this notebook
+Forecasts feed the XGBoost risk layer as features (); this notebook
 scores the forecaster itself."""
     ),
     new_code_cell(
@@ -85,13 +85,13 @@ torch.set_num_threads(1)
 print("torch", torch.__version__, "| forecastable channels:", FORECASTABLE_CHANNELS)"""
     ),
     new_markdown_cell(
-        "## 1 — Load the §23 store, measure the stride, resolve the §16 horizons"
+        "## 1 — Load the  store, measure the stride, resolve the  horizons"
     ),
     new_code_cell(
         """store = pd.read_parquet(REPO / "data" / "features" / "features_v2.parquet")
 splits = pd.read_csv(REPO / "data" / "features" / "split_assignment.csv")
 store = store.merge(splits[["event_id", "split"]], on="event_id", how="left", validate="many_to_one")
-assert store["split"].notna().all(), "every event must carry a §23 split"
+assert store["split"].notna().all(), "every event must carry a  split"
 
 # MEASURED corpus stride: median spacing of consecutive window timestamps per series
 dts = []
@@ -103,7 +103,7 @@ STRIDE_H = float(np.median(dts))
 print(f"store: {len(store):,} windows | {store.event_id.nunique():,} events | "
       f"measured window stride {STRIDE_H:.3g} h ({STRIDE_H * 60:.0f} min)")
 
-# §16 horizons from config (minutes) → window steps on the MEASURED stride
+#  horizons from config (minutes) → window steps on the MEASURED stride
 minutes = configured_horizon_minutes()
 depth = store.groupby(["event_id", "node_id"]).size()
 MAX_DEPTH = int(depth.max())
@@ -134,7 +134,7 @@ for key in HORIZON_ORDER:
     })
 resolution_df = pd.DataFrame(resolution)
 display(resolution_df)
-# Dedup by resolved steps (§16 order first): on this corpus' stride two §16
+# Dedup by resolved steps ( order first): on this corpus' stride two 
 # horizons can collapse onto the same window step — scored once, stated here.
 seen_steps: set[int] = set()
 SUPPORTED = []
@@ -143,7 +143,7 @@ for key, m, steps, ok, reason in supported:
         print(f"UNSUPPORTED: {key} ({m} min = {steps} steps) — {reason}")
     elif steps in seen_steps:
         print(f"{key} ({m} min) resolves to the same {steps}-step horizon as an earlier "
-              f"§16 horizon on the measured stride — scored once")
+              f" horizon on the measured stride — scored once")
     else:
         seen_steps.add(steps)
         SUPPORTED.append((key, m, steps))
@@ -153,9 +153,9 @@ assert HORIZON_STEPS and HORIZON_STEPS[0] == 1
 print("supported horizons (steps):", HORIZON_STEPS)"""
     ),
     new_markdown_cell(
-        """## 2 — Build §16 sequences (§23-safe)
+        """## 2 — Build  sequences (-safe)
 
-`_build_multi_horizon` (the T-076 trainer-side helper) yields, per sample:
+`_build_multi_horizon` (the  trainer-side helper) yields, per sample:
 history `X (n, 3, C)` and aligned targets `Y (n, H, C)` where `Y[s, i, c]`
 is channel *c* exactly `HORIZON_STEPS[i]` windows after the history ends.
 Sequences whose targets run past a series are dropped — none invented.
@@ -165,7 +165,7 @@ is the persistence forecast for every horizon."""
     new_code_cell(
         """CHANNELS = FORECASTABLE_CHANNELS
 # the forecaster consumes the build_windows convention ({ch}_mean); the store
-# carries the bare §13 A-group names — rename, never recompute
+# carries the bare  A-group names — rename, never recompute
 fc_store = store.rename(columns={ch: f"{ch}_mean" for ch in CHANNELS})
 X, Y, keys = _build_multi_horizon(fc_store, CHANNELS, history_steps=HISTORY, horizons=HORIZON_STEPS)
 key_df = pd.DataFrame(keys, columns=["event_id", "node_id"])
@@ -179,7 +179,7 @@ assert n_train and n_val and n_test
 assert key_df["split"].notna().all()"""
     ),
     new_markdown_cell(
-        "## 3 — Train the §16 forecaster (LSTM benchmark, config hyper-parameters)"
+        "## 3 — Train the  forecaster (LSTM benchmark, config hyper-parameters)"
     ),
     new_code_cell(
         """cfg = forecasting_config()
@@ -201,7 +201,7 @@ fc = train_temporal_forecaster(
 print(f"trained {fc.architecture}: train loss {fc.train_loss:.5f}, val loss {fc.val_loss:.5f}")"""
     ),
     new_markdown_cell(
-        """## 4 — §24 error family per horizon: neural vs persistence (test split)
+        """## 4 —  error family per horizon: neural vs persistence (test split)
 
 The test split is touched exactly once, for scoring."""
     ),
@@ -261,7 +261,7 @@ if any_justified:
     print("VERDICT: the neural forecaster justifies its complexity on the horizons above.")
 else:
     print("VERDICT: on this corpus the neural forecaster does NOT beat persistence beyond "
-          "5% on any supported horizon — persistence remains the §16 baseline until a "
+          "5% on any supported horizon — persistence remains the  baseline until a "
           "corpus with deeper series (and the 6 h/24 h horizons) exists.")"""
     ),
     new_code_cell(
@@ -285,17 +285,17 @@ print("panels → reports/nb06_forecast_panels.png")"""
     new_markdown_cell(
         """## Provenance & honest notes
 
-- Store: `data/features/features_v2.parquet` (§10 windows over the §12
-  synthetic corpus); splits: `data/features/split_assignment.csv` (T-068,
+- Store: `data/features/features_v2.parquet` ( windows over the 
+  synthetic corpus); splits: `data/features/split_assignment.csv` (,
   event-level). Horizons: `configs/forecasting.yaml` resolved on the
-  **measured** corpus stride (the §9.1 10-minute grid is a raw cadence; the
+  **measured** corpus stride (the  10-minute grid is a raw cadence; the
   store's stride is what forecasting actually operates on).
-- Sequences: T-076 `_build_multi_horizon` — aligned per-horizon targets, no
+- Sequences:  `_build_multi_horizon` — aligned per-horizon targets, no
   truncation; gappy/short series yield fewer sequences, none invented.
-- Unsupported horizons are stated in §1 with the reason (series depth, or
+- Unsupported horizons are stated in  with the reason (series depth, or
   shorter than one window step on the measured stride); they are **not**
   interpolated, rounded to a 0-step forecast, or dropped silently.
-- The forecaster never emits risk (T-076); risk integration is T-077's
+- The forecaster never emits risk (); risk integration is 's
   bridge and is not re-claimed here."""
     ),
 ]

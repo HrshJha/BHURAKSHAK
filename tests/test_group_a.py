@@ -1,4 +1,4 @@
-"""T-035 acceptance tests — Feature Group A (physical)."""
+""" acceptance tests — Feature Group A (physical)."""
 
 from __future__ import annotations
 

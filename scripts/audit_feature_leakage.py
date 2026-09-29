@@ -64,7 +64,7 @@ def main() -> None:
         f"- Active artifact: `{CURRENT.relative_to(ROOT)}` ({len(current):,} windows; schema v2).",
         f"- Archived comparison: `{OLD.relative_to(ROOT)}` ({len(previous):,} windows; `superseded_leaky`).",
         "- Labels are present only as targets. `build_feature_store` passes a copy containing structural keys and sensor channels only to feature emitters.",
-        "- Group C has no finite values in v2: all 90,000 production snapshots have one node and no co-temporal neighbors. The schema gate excludes C from XGBoost and Isolation Forest. §21.1 neighbor confirmation is not validated by this corpus.",
+        "- Group C has no finite values in v2: all 90,000 production snapshots have one node and no co-temporal neighbors. The schema gate excludes C from XGBoost and Isolation Forest.  neighbor confirmation is not validated by this corpus.",
         "- Group B persistence and change-point values are causal prefixes; truncation tests prove future windows do not alter earlier outputs.",
         f"- Split exclusivity: {len(splits):,} unique events and `{splits['generation_parameter_id'].nunique():,}` generating-parameter groups; zero group overlap across train/validation/test.",
         "- Neighbor confirmations use only nodes co-temporal within the same event/window; alert persistence is isolated by event.",

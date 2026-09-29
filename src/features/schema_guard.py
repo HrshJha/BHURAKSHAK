@@ -1,18 +1,17 @@
 """Feature-schema drift guard (fixall Phase 3.1).
 
 Closes the audit HIGH: the schema and the emitted store had drifted in both
-directions. :func:`assert_schema_drift` enforces, for a frame's columns vs
+directions.:func:`assert_schema_drift` enforces, for a frame's columns vs
 configs/feature_schema_v1.yaml:
 
 - every emitted feature column is DECLARED (undeclared columns fail — silent
-  emitter changes become loud), and
+ emitter changes become loud), and
 - every DECLARED column of a group the frame claims to carry is either
-  present or covered by an explicit ``gates:`` entry in the schema (declared
-  but silently missing fails).
+ present or covered by an explicit ``gates:`` entry in the schema (declared
+ but silently missing fails).
 
 Non-feature key columns (event/node/window keys, labels, split columns) are
-exempt via :data:`KEY_COLUMNS` / :data:`LABEL_SUFFIXES` / :data:`EXEMPT_COLUMNS`.
-:func:`assert_manifest_schema_version` ties the §10.1 manifest's
+exempt via:data:`KEY_COLUMNS` /:data:`LABEL_SUFFIXES` /:data:`EXEMPT_COLUMNS`.:func:`assert_manifest_schema_version` ties the manifest's
 ``feature_schema_version`` to the live config so a regenerated store cannot
 claim the wrong schema.
 """
@@ -64,10 +63,10 @@ def _is_exempt(col: str) -> bool:
 def assert_schema_drift(columns: pd.Index | list[str], schema: dict | None = None) -> None:
     """Fail on undeclared emitted columns and on ungated absent declared columns.
 
-    ``schema`` defaults to the live configs/feature_schema_v1.yaml. The
-    allowed-absent set is the union of every group's names listed under
-    ``gates:`` with ``gated: true`` — a gate without a reason fails.
-    """
+ ``schema`` defaults to the live configs/feature_schema_v1.yaml. The
+ allowed-absent set is the union of every group's names listed under
+ ``gates:`` with ``gated: true`` — a gate without a reason fails.
+ """
     schema = schema or feature_schema_config()
     declared = declared_feature_names(schema)
     gates = schema.get("gates", {})
@@ -98,7 +97,7 @@ def assert_schema_drift(columns: pd.Index | list[str], schema: dict | None = Non
 
 
 def assert_manifest_schema_version(manifest_path: str | Path) -> str:
-    """The §10.1 manifest's feature_schema_version must equal the live schema."""
+    """The manifest's feature_schema_version must equal the live schema."""
     manifest = json.loads(Path(manifest_path).read_text(encoding="utf-8"))
     manifest_version = str(manifest.get("feature_schema_version", ""))
     live_version = str(feature_schema_config()["feature_schema_version"])

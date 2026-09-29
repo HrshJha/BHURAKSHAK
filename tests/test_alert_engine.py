@@ -1,4 +1,4 @@
-"""T-050 tests — §21.1 alert-engine state machine (FR-7)."""
+""" tests — alert-engine state machine."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from src.risk.alert_engine import (
     probability_of,
 )
 
-#: §21.1 escalation table as configured (mirrors configs/alerts.yaml MVP values).
+#: escalation table as configured (mirrors configs/alerts.yaml MVP values).
 ESC = {
     "GREEN_to_WATCH": {"probability_of": "WATCH_or_higher", "class_threshold": 0.5, "persistence_windows": 3, "requires": []},
     "WATCH_to_WARNING": {
@@ -31,7 +31,7 @@ ESC = {
 
 CONFIRMED = {"physics_residual_low": True, "neighbour_confirmations": 3}
 
-#: every §21.1 requirement evidenced at once (the fastest legal escalation path)
+#: every requirement evidenced at once (the fastest legal escalation path)
 FULLY_CONFIRMED = {
     "spatial_coherence_above_threshold": True,
     "displacement_trend_positive": True,
@@ -67,7 +67,7 @@ def test_probability_of_rejects_incomplete_or_unknown_targets() -> None:
         probability_of("NOT_A_LEVEL", probs(1.0, 0.0, 0.0))
 
 
-# §21.1 persistence: transitions fire only after consecutive windows
+# persistence: transitions fire only after consecutive windows
 
 
 def test_green_to_watch_needs_three_consecutive_qualifying_windows() -> None:
@@ -121,14 +121,14 @@ def test_warning_to_critical_needs_physics_and_two_neighbours() -> None:
     assert eng.update("n1", severe, conditions=CONFIRMED) == "CRITICAL"
 
 
-# FR-7: no single reading escalates straight to CRITICAL
+#: no single reading escalates straight to CRITICAL
 
 
 def test_no_single_reading_can_escalate_to_critical() -> None:
     eng = engine()
     worst = probs(0.0, 0.0, 1.0)  # maximally severe reading
     first = eng.update("n1", worst, conditions=FULLY_CONFIRMED)
-    assert first == "GREEN", "FR-7: persistence 3 — one window cannot even reach WATCH"
+    assert first == "GREEN", ": persistence 3 — one window cannot even reach WATCH"
     assert eng.state("n1").level != "CRITICAL"
 
 
@@ -159,7 +159,7 @@ def test_top_level_is_absorbing_until_t051_hysteresis() -> None:
         eng.update("n1", worst, conditions=FULLY_CONFIRMED)
     assert eng.state("n1").level == "CRITICAL"
     calm = probs(0.99, 0.01, 0.0)
-    assert eng.update("n1", calm) == "CRITICAL"  # de-escalation is T-051
+    assert eng.update("n1", calm) == "CRITICAL"  # de-escalation is 
 
 
 # input validation
@@ -185,7 +185,7 @@ def test_state_is_tracked_per_node() -> None:
     assert eng.state("n3").level == "GREEN"  # untouched node defaults to GREEN
 
 
-# configuration discipline (NFR-6 / §21.1)
+# configuration discipline 
 
 
 def test_engine_reads_the_real_alerts_config() -> None:

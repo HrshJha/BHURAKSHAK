@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "task": "T-070 (\u00a725 mandatory ablation A\u2013F)",
+    "task": " ( mandatory ablation A\u2013F)",
     "store": "data/features/features_v2.parquet",
     "n_store_rows": 90000,
     "splits": {
@@ -13,16 +13,16 @@
     "window_stride_hours": 0.6,
     "event_span_days": 1.0,
     "deviations_from_prd": [
-      "No +DGPS arm: \u00a719 makes DGPS sparse and evaluation-target-only (T-063 assert_evaluation_only); it cannot be a model input at scale.",
-      "No temporal-DL/GNN arms: \u00a726/\u00a727 architectures are what this ablation gates.",
+      "No +DGPS arm:  makes DGPS sparse and evaluation-target-only ( assert_evaluation_only); it cannot be a model input at scale.",
+      "No temporal-DL/GNN arms: / architectures are what this ablation gates.",
       "Isolation-Forest anomaly_score held out of every arm (constant across arms).",
-      "Sentinel-1 arm F joins the node-level LOS snapshot from the single available acquisition (T-062/nb08) as static per-node context \u2014 no per-window InSAR exists because the synthetic events carry no wall-clock dates."
+      "Sentinel-1 arm F joins the node-level LOS snapshot from the single available acquisition (/nb08) as static per-node context \u2014 no per-window InSAR exists because the synthetic events carry no wall-clock dates."
     ]
   },
   "arms": {
     "A_sensors_only": {
       "arm": "A_sensors_only",
-      "development": "Group A (\u00a713)",
+      "development": "Group A ()",
       "n_features": 5,
       "features": [
         "tilt_x",
@@ -458,7 +458,7 @@
     },
     "F_add_sentinel1": {
       "arm": "F_add_sentinel1",
-      "development": "E + Group H (Sentinel-1 modality, T-062 mesh-aligned LOS)",
+      "development": "E + Group H (Sentinel-1 modality,  mesh-aligned LOS)",
       "n_features": 68,
       "features": [
         "tilt_x",

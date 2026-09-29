@@ -1,4 +1,4 @@
-"""T-063 acceptance tests — DGPS ingestion and mesh-vs-DGPS residuals (§19)."""
+""" acceptance tests — DGPS ingestion and mesh-vs-DGPS residuals."""
 
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ def _survey() -> pd.DataFrame:
 
 def _mesh(hours=(168.0, 456.0, 744.0)) -> pd.DataFrame:
     """Mesh vertical displacement at V_A/V_B at three windows: 168/456/744 h
-    from the 2026-03-02 epoch == the survey dates Mar 9/21, Apr 2."""
+ from the 2026-03-02 epoch == the survey dates Mar 9/21, Apr 2."""
     epoch = pd.Timestamp("2026-03-02")
     rows = []
     for node, vals in (("V_A", [0.0, -4.6, -8.7]), ("V_B", [0.0, 1.4, 2.5])):
@@ -114,7 +114,7 @@ def test_residuals_carry_staleness_within_one_hour() -> None:
     dgps = ingest_dgps(_survey())
     mesh, epoch = _mesh()
     res = mesh_vs_dgps_residual(mesh, dgps, _nodes(), epoch=epoch)
-    assert (res["staleness_hours"].abs() <= 1.0).all(), "§9.1: DGPS aligns within ±1 h"
+    assert (res["staleness_hours"].abs() <= 1.0).all(), ": DGPS aligns within ±1 h"
     assert res.attrs["join_summary"]["n_out_of_tolerance"] == 0
 
 
@@ -146,9 +146,9 @@ def test_residual_frame_is_marked_evaluation_only() -> None:
 
 def test_synthetic_survey_exposes_a_known_bias() -> None:
     """Notebook 09's bias-detection path: with mesh_bias_mm = 2 the mean
-    vertical residual must recover ≈ +2 mm (mesh reads high). Signal-free
-    truth (all-zero displacement) so the residual mean IS the bias estimate;
-    GNSS noise averages out over 6 matched observations (seeded)."""
+ vertical residual must recover ≈ +2 mm (mesh reads high). Signal-free
+ truth (all-zero displacement) so the residual mean IS the bias estimate;
+ GNSS noise averages out over 6 matched observations (seeded)."""
     nodes = _nodes()
     truth = np.zeros((2, 3))
     survey = synthesize_dgps_survey(
@@ -165,7 +165,7 @@ def test_synthetic_survey_exposes_a_known_bias() -> None:
     mesh["displacement_mean"] = 2.0
     res = mesh_vs_dgps_residual(mesh, dgps, nodes, epoch=epoch)
     assert res.residual_vertical_mm.mean() == pytest.approx(2.0, abs=0.2)
-    assert (dgps["source"] == "synthetic (G-7 stand-in)").all()
+    assert (dgps["source"] == "synthetic ( stand-in)").all()
 
 
 def test_synthetic_survey_rejects_wrong_shapes() -> None:
