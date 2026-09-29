@@ -1,0 +1,5 @@
+{
+  "median_ms": 0.36820849345531315,
+  "p95_ms": 0.4421270859893411,
+  "scope": "warm one-row feature inference, excludes raw feature extraction; smoothing has no earlier context in one-row call"
+}

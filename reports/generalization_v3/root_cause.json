@@ -1,0 +1,14 @@
+{
+  "source": "v3 development only",
+  "legacy_critical_windows": 1116,
+  "locally_normal_fraction_of_legacy_critical": 0.46236559139784944,
+  "below_half_mm_fraction_of_legacy_critical": 0.25448028673835127,
+  "target_change": "explicit: prior local severity policy 15/35 mm, distinct from scenario identity",
+  "defects": [
+    "scenario-specific gradient/strain inconsistency",
+    "missing-endpoint velocity denominator",
+    "vibration/disturbance label without signal",
+    "fault drift cadence mismatch"
+  ],
+  "identifiability_test": "identical power-profile raw observations can have different legacy scenario labels; see test_coupled_v3.py"
+}

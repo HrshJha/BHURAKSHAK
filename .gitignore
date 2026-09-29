@@ -57,3 +57,16 @@ data/raw/sensors/tabletop/raw_sensor_log.csv
 # Additional one-use optimization evaluation corpus; never train on this directory.
 /data/optimization_independent_v1/
 /data/optimization_reproduction_independent_v1/
+
+# Versioned experiment corpora are regenerated from frozen specifications.
+/reports/generalization_v3/*_observations.parquet
+/reports/generalization_v3/*_truth.parquet
+/reports/generalization_v3/*_features.parquet
+/reports/generalization_v3/independent_test_parameters.csv
+/reports/generalization_v3_pre_cadence_fix/*_observations.parquet
+/reports/generalization_v3_pre_cadence_fix/*_truth.parquet
+/reports/generalization_v3_pre_cadence_fix/*_features.parquet
+/reports/generalization_v3*/*_observations.parquet
+/reports/generalization_v3*/*_truth.parquet
+/reports/generalization_v3*/*_features.parquet
+/reports/generalization_v3*/independent_test_parameters.csv

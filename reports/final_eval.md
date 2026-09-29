@@ -1,4 +1,6 @@
-# One-time locked evaluation
+# Historical v2 one-time locked evaluation — superseded for current claims
+
+> This is the preserved v2 result from a previously consumed test. It remains useful for historical v2 replay only. It is **not** the current README result and is not comparable to v3 local-severity metrics: v3 uses a separately versioned target and generator. Do not tune against or rerun this locked corpus. See the [current v3 report](generalization_v3/final_report.md).
 
 All results are from the synthetic held-out corpus.
 

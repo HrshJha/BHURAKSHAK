@@ -1,0 +1,60 @@
+{
+  "selected": {
+    "model": "selected",
+    "scope": "independent_unseen_shape_test",
+    "target": "local_severity_v1",
+    "critical_recall": 0.9864864864864865,
+    "macro_pr_auc": 0.9739819226356129,
+    "macro_f1": 0.8917692899022341,
+    "normal_fpr": 0.00013819789939192924,
+    "normal_critical_fpr": 0.0,
+    "brier": 0.008308108896017075,
+    "ece": 0.003587205011259605,
+    "rows": 8640,
+    "confusion_matrix": [
+      [
+        7235,
+        1,
+        0
+      ],
+      [
+        100,
+        120,
+        0
+      ],
+      [
+        9,
+        7,
+        1168
+      ]
+    ]
+  },
+  "uncertainty": {
+    "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+    "groups": 480,
+    "replicates": 500,
+    "critical_recall_95pct": [
+      0.975294076848384,
+      0.9945183773755203
+    ],
+    "normal_fpr_95pct": [
+      0.0,
+      0.00042541129414080535
+    ]
+  },
+  "acceptance": {
+    "target_policy": "local_displacement_severity_v1",
+    "legacy_target_not_claimed": true,
+    "point_estimates_pass": true,
+    "group_95pct_bounds_pass": true,
+    "test_events": 960,
+    "parameter_groups": 480,
+    "windows": 8640,
+    "unseen_shapes": [
+      "sigmoid",
+      "smoothstep",
+      "two_stage"
+    ],
+    "qualification": "synthetic prototype-scale local severity classification; not validation of original scenario-label target, field safety or collapse prediction"
+  }
+}

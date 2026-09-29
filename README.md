@@ -1,145 +1,121 @@
-# BhuRakshak
+# BHURAKSHAK
 
-BhuRakshak is a prototype for early warning of underground coal mine ground movement, using a sensor mesh and layered risk scoring.
+BHURAKSHAK is a research prototype for detecting local ground movement from time-series sensor observations and presenting risk states for human review. The repository contains synthetic-data experiments and a seeded tabletop-data stand-in. It has **not** been validated at an operating mine and is not an autonomous evacuation or mine-safety system.
 
-Built for SIH 2026, Problem Statement 26025.
+The current experiment is the versioned **v3 local-displacement severity** task. Its fresh synthetic test meets the project’s numerical gates for Critical recall and Normal false-positive rate. This is a revised, directly observable target: it does **not** establish that the earlier scenario-identity labels can be predicted. The legacy scenario-label target remains below goal. Neither task predicts the time of a mine collapse.
 
-## Problem
+## Current evidence
 
-This project models ground movement from sensor records and tests whether those records can support risk alerts. Evaluation uses synthetic and tabletop data; performance at a mine has not been established.
+The v3 evaluation uses 960 generated events (480 complete generating-parameter groups, two noise realizations per group) and 8,640 overlapping windows. The test uses sigmoid, smoothstep and two-stage temporal patterns withheld from development and validation, with twice the development sensor-noise scale. The one-use test was frozen before its generation and was evaluated once. All numbers below refer only to this synthetic protocol.
 
-## What this repository contains
+The label policy follows the prototype’s existing displacement rule: at the end of a causal window, NORMAL is at or below 15 mm, WARNING is above 15 mm through 35 mm, and CRITICAL is above 35 mm. These boundaries are **not geotechnical or mine-safety thresholds**. On the selected two-stage model, Critical recall is 98.65% (1,168/1,184) and Normal FPR is 0.014% (1/7,236; this counts either WARNING or CRITICAL on a Normal window). Group-bootstrap 95% intervals are 97.53–99.45% and 0.000–0.043%, respectively. The false positive was a WARNING; no Normal window was classified CRITICAL.
 
-| Component | Status | Evidence |
-|---|---|---|
-| Sensors | PROTOTYPED | [Recorded tabletop data](data/recorded/tabletop/README.md) |
-| LoRa mesh | OTHER WORKSTREAM | No LoRa implementation in this repository |
-| Gateway | OTHER WORKSTREAM | Not implemented in this repository |
-| ML pipeline | BUILT | [Pipeline](src/pipeline.py) |
-| Alert engine | BUILT | [Alert engine](src/risk/alert_engine.py) |
-| API | OTHER WORKSTREAM | Not implemented in this repository |
-| Dashboard | OTHER WORKSTREAM | Not implemented in this repository |
+| Model on identical v3 test windows | Critical recall | Normal FPR | Macro average precision | Macro F1 |
+|---|---:|---:|---:|---:|
+| Selected two-stage model | 98.65% | 0.014% | 0.9740 | 0.8918 |
+| Random Forest | 98.40% | 0.000% | 0.9870 | 0.8736 |
+| Original XGBoost settings, refit for v3 | 98.23% | 0.207% | 0.9701 | 0.9787 |
+| Fixed 15/35 mm displacement rule | 99.58% | 0.055% | 0.9976 | 0.9844 |
 
-## ML architecture
+The fixed physical rule leads on this target’s Macro AP and Macro F1. The selected model was frozen before this independent test; test comparisons did not trigger another selection or tuning round. Entire generating-parameter groups stay together across development folds and test partitions, following the same non-overlapping-group principle documented for [GroupKFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupKFold.html). Macro AP is the mean one-vs-rest average precision (stepwise AP), not trapezoidal PR-area; see [scikit-learn’s metric definition](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html). Probability calibration is fit only on development partitions; the reliability-curve convention is described in the [scikit-learn calibration guide](https://scikit-learn.org/stable/modules/calibration.html). XGBoost is one investigated model family, not an assumed winner; its original method is described by [Chen and Guestrin (KDD 2016)](https://doi.org/10.1145/2939672.2939785).
 
-Solid paths are implemented. Dashed paths are gated or planned.
+The selected model classified 120/220 WARNING windows correctly (54.55%). In the separate event-level alert analysis, persistence across one, two and three windows detected 138/142, 138/142 and 138/142 critical events. Median delay after the true synthetic 35 mm crossing was 3.17, 4.83 and 6.50 hours among detected events; no false Critical episode occurred in 798 entirely Normal events. This is local threshold-crossing delay, **not collapse lead time**. The inherited 60-sample window has about 9.83 hours of warmup at ten-minute sample cadence, followed by an output every ten samples. Alert-event measures are separate from window classification scores.
+
+![V3 model comparison on the independent synthetic local-severity test.](reports/readme_v3_model_comparison.png)
+
+![Selected v3 model confusion matrix on the same test.](reports/readme_v3_confusion_matrix.png)
+
+![Separate event-level detection and delay analysis.](reports/readme_v3_alert_timing.png)
+
+### Target change and historical results
+
+The v3 score is not a comparable improvement over the old scenario-label result. On the same v3 observations scored against retained **legacy scenario taxonomy** labels, the v3 model has 41.13% Critical recall; the previous frozen artifact has 6.74%. Neither meets the earlier 89% goal. The local-severity labels measure displacement at the current window endpoint; legacy labels mark synthetic scenario categories and can mark a window CRITICAL while local displacement is still small. The report documents that mismatch and the target change. Old v2 evaluation and optimization reports are retained as historical records and marked superseded for current claims; their graphs are no longer used as current README evidence.
+
+Anomaly detection is also a distinct task. The historical 89.59% Isolation Forest anomaly recall is not a Critical recall score and is not part of the v3 severity experiment. It must not be compared to the v3 classification results as if the targets were interchangeable. Isolation Forest is an anomaly-detection method ([Liu, Ting and Zhou, IEEE ICDM 2008](https://doi.org/10.1109/ICDM.2008.17)); it does not by itself identify geotechnical severity.
+
+## System and implementation status
 
 ```mermaid
 flowchart LR
-  classDef built fill:#000,color:#fff,stroke:#000
-  classDef planned fill:#fff,color:#000,stroke:#000,stroke-width:3px
-  classDef gated fill:#fff,color:#000,stroke:#000,stroke-dasharray:5 5
-  Raw["Sensor records"] --> Quality["Validation and time alignment"] --> Windows["60-step windows, stride 10"] --> Features["Physical, temporal, vibration, health, physics features"]
-  Features --> IF["Isolation Forest anomaly score"] --> Risk["XGBoost three-class risk model"]
-  Features --> Physics["Physics consistency residual"] --> Risk
-  Features -.-> Spatial["Spatial fusion"] -.-> Risk
-  Risk --> Calibration["Probability calibration"] --> Alert["Alert state machine: GREEN, WATCH, WARNING, CRITICAL"]
-  Risk --> Explain["Prediction explanation"]
-  Synthetic["Physics-coupled data generation"] --> Store["Feature store"] --> Split["Regime holdout split"] --> Train["Model training"] --> Evaluation["Validation and locked evaluation"] --> Registry["Model registry"] --> Edge["Edge deployment"]
-  Quality --> Store
-  class Raw,Quality,Windows,Features,IF,Physics,Risk,Calibration,Alert,Explain,Synthetic,Store,Split,Train,Evaluation,Registry built
-  class Spatial gated
-  class Edge planned
+  Raw["Timestamped sensor observations"] --> Check["Quality checks and alignment"] --> Window["Causal windows"] --> Features["Label-blind v3 features"]
+  Features --> Rule["Fixed local displacement rule"]
+  Features --> Candidate["Experimental calibrated classifier"]
+  Rule --> Review["Risk output for human review"]
+  Candidate --> Review
+  Sim["Coupled synthetic simulator"] --> Raw
+  Sim --> Group["Parameter-grouped development and validation"] --> Freeze["Frozen protocol and artifacts"] --> Eval["One-use independent synthetic test"]
+  Eval -. evaluated claims only .-> Review
 ```
 
-| Stage | Module | Input → output | Purpose |
-|---|---|---|---|
-| Validation | `src/preprocessing/validation.py` | Sensor rows → quality flags | Detect missing, repeated, out-of-order, or corrupt records |
-| Alignment | `src/preprocessing/align_modalities.py` | Sensor streams → aligned streams | Put measurements on a shared timeline |
-| Windowing | `src/features/windowing.py` | Aligned streams → windows | Build overlapping 60-step windows with stride 10 ([manifest](data/synthetic/dataset_manifest.json)) |
-| Feature store | `src/features/build_feature_store.py` | Windows → feature rows | Compute physical and temporal features |
-| Anomaly score | `src/anomaly/isolation_forest.py` | Training windows → anomaly score | Flag departures from healthy training data |
-| Physics check | `src/physics/consistency.py` | Movement and coordinates → residual | Compare measurements with the configured deformation model |
-| Spatial fusion | `src/features/group_c_spatial.py` | Co-temporal nodes → neighbor evidence | Gated because each synthetic event has one node |
-| Risk model | `src/risk/xgboost_model.py` | Features and scores → NORMAL, WARNING, CRITICAL | Estimate event risk |
-| Calibration | `scripts/freeze_models.py` | Validation predictions → calibrated probabilities | Fit calibration without using the locked test set |
-| Alert state | `src/risk/alert_engine.py` | Probabilities and evidence → alert level | Apply configured thresholds and persistence |
-| Explanation | `src/risk/explainability.py` | Prediction and signals → explanation | Return contributing signals with each risk output |
-| Offline training | `src/simulator/`, `src/features/`, `src/evaluation/` | Synthetic records → model artifacts | Generate data, build features, split by regime, train and evaluate models |
+| Component | Repository status | Notes |
+|---|---|---|
+| Sensor records | Prototype inputs | Synthetic streams plus a generated tabletop stand-in; no mine data |
+| Physical coupling and simulator | Implemented for versioned experiments | v3 derives tilt and strain from a shared local displacement field; assumptions remain simulated |
+| Causal features and windowing | Implemented | Endpoint/temporal v3 features; no labels, scenario identity or future observations in model inputs |
+| Fixed displacement rule | Evaluated baseline | Strongest v3 test results on the defined local-severity labels; thresholds remain unvalidated |
+| XGBoost / Random Forest | Experimental classifiers | Retained in v3 experiment artifacts; not promoted into existing deployed/default pipeline |
+| Isolation Forest | Historical anomaly task | Anomaly scores are separate from severity classes |
+| Regional alert state machine | Existing implementation | Neighbor confirmation is unavailable in one-node events; full regional escalation/recovery behavior is unvalidated |
+| LoRa, gateway, API, dashboard | Not implemented here | Separate workstreams; no integration is implied |
+| Hardware | One trapdoor scope | No additional physical components or multi-trapdoor prototype are claimed |
 
-## Data
+The synthetic v3 generator supports virtual zone conditions for analysis. A virtual zone is not a claim that additional physical sensors or trapdoors exist. Tabletop records are synthetic stand-ins and the physical rig campaign has not been run.
 
-The seeded simulator couples tilt, displacement, strain, and vibration to a shared deformation field, then adds sensor noise and faults. Fault types include bias, stuck readings, dropout, spikes, and drift. Scenario families cover stable ground, communication faults, sensor faults, vibration-only events, and several rates and patterns of subsidence. The [dataset manifest](data/synthetic/dataset_manifest.json) records 10,000 generated sequences, 1,440,000 sensor rows, 90,000 windows, and 61 stored features. Labels cover anomaly, risk, progression, and fault type.
+## Repository map
 
-The default split holds out scenario families and parameters; it assigns 6,516 training, 1,609 validation, and 1,875 test events. The locked synthetic evaluation is tracked separately in [test_lock.json](reports/test_lock.json) and was run once. The [tabletop records](data/recorded/tabletop/README.md) contain a physical rig's sensor log and trial metadata. They are not mine measurements.
+| Path | Purpose |
+|---|---|
+| `src/simulator/coupled_v3.py` | Versioned physically coupled synthetic observations |
+| `src/features/causal_v3.py` | Causal v3 feature builder and fixed feature contract |
+| `src/risk/severity_v3.py` | Experimental v3 severity inference |
+| `configs/generalization_v3.yaml` | Frozen development, validation, search and synthetic-test protocol |
+| `configs/feature_schema_v3.yaml` | Label-blind v3 model-input schema |
+| `scripts/run_generalization_v3.py` | Bounded development, one-use evaluation and opt-in inference commands |
+| `scripts/report_generalization_v3.py` | Rebuild the detailed report from saved aggregate results |
+| `reports/generalization_v3/final_report.md` | Full audit trail, methods, metrics, limitations, test lock and reproduction steps |
+| `reports/generalization_v3/independent_results.json` | Frozen aggregate synthetic test results used by the README graphs |
+| `reports/generalization_v3/selected_config.yaml` | Selected configuration and thresholds |
+| `reports/generalization_v3/independent_lock.json` | One-use test lock and recorded evaluation hashes |
+| `data/recorded/tabletop/README.md` | Scope and regeneration details for the tabletop stand-in |
 
-## Results
+The old pipeline and v2 artifacts remain available for historical replay. The v3 candidate is opt-in; the existing `src/pipeline.py` path and deployed artifacts were not replaced.
 
-The one-time locked evaluation covers unseen synthetic regimes. It does not measure performance at a real mine. Tuned XGBoost reached 0.093 critical recall, 0.503 macro PR-AUC, and 0.446 macro F1. Logistic regression reached 0.765 critical recall, with a 0.626 false-alarm rate on normal windows. The tuned model does not lead on every metric.
+## Reproduce reports and figures
 
-![Locked synthetic test scores for the four risk-model baselines.](reports/readme_risk_model_metrics.png)
-
-The tuned XGBoost confusion matrix shows where its misses occur. Most true CRITICAL windows were classified as WARNING.
-
-![Row-normalized confusion matrix for tuned XGBoost on the locked synthetic test.](reports/readme_tuned_confusion_matrix.png)
-
-The tuned Isolation Forest raises anomaly recall to 0.896 at the development healthy threshold; its normal-event false-positive rate is 0.022, compared with 0.006 for the default model.
-
-![Locked synthetic test metrics for the default and tuned Isolation Forest models.](reports/readme_anomaly_model_metrics.png)
-
-Exact locked-test scores and alert results are in the [evaluation report](reports/final_eval.md). The [inference profile](reports/inference_profile.md) measures workstation latency and sampled memory; it does not establish an edge-device budget. Development calibration results are in the [tuning report](reports/tuning_report.md).
-
-## Quickstart
-
-Use Python 3.12. From the repository root:
+Use the repository’s Python 3.12 environment. From the repository root:
 
 ```bash
-python3.12 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-.venv/bin/python scripts/generate_synthetic_nodes.py --sequences-per-scenario 625 --seed 42
-.venv/bin/python scripts/make_split_assignment.py
-.venv/bin/python scripts/build_and_run_notebook_03.py
-.venv/bin/python -m pytest tests/ -q
-.venv/bin/python scripts/run_pipeline.py
-```
-
-The three data commands create the ignored synthetic corpus and feature store required by the tests and pipeline. The pipeline prints a development validation summary and writes `experiments/pipeline_run.json`; it does not read the locked test corpus.
-
-Rebuild the result graphs embedded above from the saved evaluation record:
-
-```bash
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python scripts/report_generalization_v3.py
 .venv/bin/python scripts/build_readme_model_graphs.py
 ```
 
-## Repository layout
+These commands regenerate the v3 report from saved aggregate records and the three README figures from `independent_results.json`. They do not open test rows, retrain or reselect a model, or perform a new evaluation. The original bounded development and one-use evaluation commands are recorded in the [v3 report](reports/generalization_v3/final_report.md). Its reproduction procedure recreates the **same consumed test specification** in a separate directory; it is an audit/reproduction, not new independent evidence and must not be used for tuning.
 
-```text
-configs/       Model, sensor, and alert settings
-data/          Synthetic, processed, locked, and tabletop records
-experiments/   Pipeline outputs
-models/        Model artifacts and registry
-notebooks/     Exploratory and reproducible analysis
-reports/       Evaluation and validation reports
-scripts/       Dataset, training, and evaluation commands
-src/           Simulator, preprocessing, features, risk, and evaluation code
-tests/         Unit and pipeline checks
+To run the repository checks in the established environment:
+
+```bash
+.venv/bin/python -m pytest tests/ -o addopts='' -q
 ```
 
-## Reports and notebooks
+The v3 work reported 675 passing tests. Re-running tests verifies current code behavior only; it does not reproduce model selection or provide additional field validation.
 
-- [Locked evaluation](reports/final_eval.md)
-- [Tuning report](reports/tuning_report.md)
+## Limitations and next validation
+
+The v3 evidence is synthetic and shares assumptions with its generator. Noise scales and fault behavior are configured rather than estimated from mine instrumentation. The thresholds are a borrowed prototype policy, and Critical sensitivity does not establish warning usefulness: WARNING recall is 54.55%. Long windows cause substantial warmup and detection delay. The one-node event design cannot validate neighbor confirmation, spatial consensus, or the existing alert engine’s complete regional escalation and recovery behavior. Workstation timing is not an edge-device benchmark. No physical tabletop campaign or real mine trial has been completed.
+
+The legacy scenario-label target remains unresolved. A future claim requires fixing or replacing that target with reviewed physical labels, collecting independent measurements on the existing one-trapdoor scope, validating threshold meaning with geotechnical expertise, improving delay and WARNING sensitivity under development-only work, and then using a separately frozen untouched test. The test already reported here must remain closed to tuning.
+
+## Reports
+
+- [Current v3 experiment report](reports/generalization_v3/final_report.md)
+- [Current v3 progress log](reports/generalization_v3/PROGRESS_LOG.md)
+- [V3 experiment task ledger](reports/generalization_v3/TASKS.md)
+- [Legacy one-time v2 evaluation — historical, superseded](reports/final_eval.md)
+- [Legacy tuning report — historical, superseded](reports/tuning_report.md)
 - [Leakage audit](reports/leakage_audit.md)
 - [Workstation inference profile](reports/inference_profile.md)
-- [Dataset manifest](data/synthetic/dataset_manifest.json)
-- [Tabletop records](data/recorded/tabletop/README.md)
-- [Synthetic data notebook](notebooks/01_synthetic_data_generation.ipynb)
+- [Synthetic data manifest (legacy corpus)](data/synthetic/dataset_manifest.json)
+- [Tabletop records README](data/recorded/tabletop/README.md)
 
-## Limitations and roadmap
-
-Validation uses synthetic data and recorded tabletop trials, not a working mine. Each synthetic event contains one node, so spatial confirmation is unavailable. Forecasting is limited by the available windows. InSAR and DGPS processing use simulated inputs. Field sensors, network hardware, gateway, API, and dashboard integrations are outside this repository. Real-mine validation and broader spatial data are needed before field use.
-
-## Honesty Statement
-
-> This prototype can detect and analyze controlled ground movement on a lab-scale model. It cannot yet predict the exact time a real mine would fail. Before any real-mine use, risk thresholds and prediction accuracy must be tested and calibrated with real mine data and geotechnical expertise.
-
-This statement is binding for how every claim in this repository should be read.
-
-## Non-Goals
-
-- Predicting the exact time or magnitude of a catastrophic collapse.
-- Replacing certified geotechnical survey or regulatory subsidence assessment.
-- Operating as a fully autonomous evacuation-triggering system — CRITICAL alerts recommend action; evacuation remains human-authorized.
-- Building a production-scale multi-mine SaaS platform in the prototype phase (architecture should allow for it later, but MVP targets one panel).
-- Raw SAR/InSAR processing on the Raspberry Pi (done externally/offline on a workstation).
-- Mandatory GNN-based spatial modeling for MVP (reserved as future work, gated behind an ablation showing engineered spatial features are insufficient).
+> **Safety boundary:** This prototype detects and analyzes controlled synthetic local movement under a stated label policy. It has not demonstrated mine safety, operational performance, collapse prediction, or the exact time of a mine failure. Any real-world interpretation requires independent measurements and qualified geotechnical review.

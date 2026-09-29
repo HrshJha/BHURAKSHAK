@@ -1,0 +1,1483 @@
+{
+  "metrics": [
+    {
+      "model": "xgboost",
+      "scope": "independent_unseen_shape_test",
+      "target": "local_severity_v1",
+      "critical_recall": 0.9738175675675675,
+      "macro_pr_auc": 0.9713017390195606,
+      "macro_f1": 0.8899150932502241,
+      "normal_fpr": 0.00013819789939192924,
+      "normal_critical_fpr": 0.0,
+      "brier": 0.00974122155457735,
+      "ece": 0.0038233949216427503,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          7235,
+          1,
+          0
+        ],
+        [
+          100,
+          120,
+          0
+        ],
+        [
+          25,
+          6,
+          1153
+        ]
+      ]
+    },
+    {
+      "model": "random_forest",
+      "scope": "independent_unseen_shape_test",
+      "target": "local_severity_v1",
+      "critical_recall": 0.9839527027027027,
+      "macro_pr_auc": 0.9870193691820943,
+      "macro_f1": 0.8736139303702212,
+      "normal_fpr": 0.0,
+      "normal_critical_fpr": 0.0,
+      "brier": 0.004590334685882301,
+      "ece": 0.0027766106363077666,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          7236,
+          0,
+          0
+        ],
+        [
+          116,
+          104,
+          0
+        ],
+        [
+          17,
+          2,
+          1165
+        ]
+      ]
+    },
+    {
+      "model": "two_stage",
+      "scope": "independent_unseen_shape_test",
+      "target": "local_severity_v1",
+      "critical_recall": 0.9864864864864865,
+      "macro_pr_auc": 0.9739819226356129,
+      "macro_f1": 0.8917692899022341,
+      "normal_fpr": 0.00013819789939192924,
+      "normal_critical_fpr": 0.0,
+      "brier": 0.008308108896017075,
+      "ece": 0.003587205011259605,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          7235,
+          1,
+          0
+        ],
+        [
+          100,
+          120,
+          0
+        ],
+        [
+          9,
+          7,
+          1168
+        ]
+      ]
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scope": "independent_unseen_shape_test",
+      "target": "local_severity_v1",
+      "critical_recall": 0.9822635135135135,
+      "macro_pr_auc": 0.9701316277508223,
+      "macro_f1": 0.9786677334731806,
+      "normal_fpr": 0.0020729684908789387,
+      "normal_critical_fpr": 0.0,
+      "brier": 0.005762538406997919,
+      "ece": 0.0030296218064096237,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          7221,
+          15,
+          0
+        ],
+        [
+          4,
+          216,
+          0
+        ],
+        [
+          16,
+          5,
+          1163
+        ]
+      ]
+    },
+    {
+      "model": "selected",
+      "scope": "independent_unseen_shape_test",
+      "target": "local_severity_v1",
+      "critical_recall": 0.9864864864864865,
+      "macro_pr_auc": 0.9739819226356129,
+      "macro_f1": 0.8917692899022341,
+      "normal_fpr": 0.00013819789939192924,
+      "normal_critical_fpr": 0.0,
+      "brier": 0.008308108896017075,
+      "ece": 0.003587205011259605,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          7235,
+          1,
+          0
+        ],
+        [
+          100,
+          120,
+          0
+        ],
+        [
+          9,
+          7,
+          1168
+        ]
+      ]
+    },
+    {
+      "model": "selected_vs_legacy_scenario_labels",
+      "scope": "independent_unseen_shape_test",
+      "target": "legacy_scenario_taxonomy_different_task",
+      "critical_recall": 0.41134751773049644,
+      "macro_pr_auc": 0.43957391357466086,
+      "macro_f1": 0.4385236689089049,
+      "normal_fpr": 0.0,
+      "normal_critical_fpr": 0.0,
+      "brier": 0.4978986382484436,
+      "ece": 0.2481321457980408,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          5940,
+          0,
+          0
+        ],
+        [
+          959,
+          75,
+          820
+        ],
+        [
+          445,
+          53,
+          348
+        ]
+      ]
+    },
+    {
+      "model": "physics_rule",
+      "scope": "independent_unseen_shape_test",
+      "target": "local_severity_v1",
+      "critical_recall": 0.995777027027027,
+      "macro_pr_auc": 0.9975671393426252,
+      "macro_f1": 0.9844374520005498,
+      "normal_fpr": 0.000552791597567717,
+      "normal_critical_fpr": 0.0,
+      "brier": 0.003572786660379234,
+      "ece": 0.0011768396389028506,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          7232,
+          4,
+          0
+        ],
+        [
+          5,
+          209,
+          6
+        ],
+        [
+          2,
+          3,
+          1179
+        ]
+      ]
+    },
+    {
+      "model": "original_frozen_cross_task_diagnostic",
+      "scope": "independent_unseen_shape_test",
+      "target": "local_severity_v1_not_original_training_target",
+      "critical_recall": 0.03547297297297297,
+      "macro_pr_auc": 0.40997065279462275,
+      "macro_f1": 0.3387730556519657,
+      "normal_fpr": 0.25594250967385296,
+      "normal_critical_fpr": 0.017136539524599224,
+      "brier": 0.46514671866637103,
+      "ece": 0.1895042397172228,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          5384,
+          1728,
+          124
+        ],
+        [
+          30,
+          179,
+          11
+        ],
+        [
+          201,
+          941,
+          42
+        ]
+      ]
+    },
+    {
+      "model": "original_frozen_legacy_taxonomy",
+      "scope": "independent_unseen_shape_test",
+      "target": "legacy_scenario_taxonomy",
+      "critical_recall": 0.0673758865248227,
+      "macro_pr_auc": 0.5206265753301899,
+      "macro_f1": 0.49880093077158344,
+      "normal_fpr": 0.18164983164983164,
+      "normal_critical_fpr": 0.01026936026936027,
+      "brier": 0.40811050238927105,
+      "ece": 0.15320505488755254,
+      "rows": 8640,
+      "confusion_matrix": [
+        [
+          4861,
+          1018,
+          61
+        ],
+        [
+          517,
+          1278,
+          59
+        ],
+        [
+          237,
+          552,
+          57
+        ]
+      ]
+    }
+  ],
+  "uncertainty": {
+    "xgboost": {
+      "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+      "groups": 480,
+      "replicates": 500,
+      "critical_recall_95pct": [
+        0.9396140703988017,
+        0.9928332610685552
+      ],
+      "normal_fpr_95pct": [
+        0.0,
+        0.00042541129414080535
+      ]
+    },
+    "random_forest": {
+      "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+      "groups": 480,
+      "replicates": 500,
+      "critical_recall_95pct": [
+        0.9722163985233125,
+        0.9925706737004452
+      ],
+      "normal_fpr_95pct": [
+        0.0,
+        0.0
+      ]
+    },
+    "two_stage": {
+      "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+      "groups": 480,
+      "replicates": 500,
+      "critical_recall_95pct": [
+        0.975294076848384,
+        0.9945183773755203
+      ],
+      "normal_fpr_95pct": [
+        0.0,
+        0.00042541129414080535
+      ]
+    },
+    "original_hyperparameters_refit": {
+      "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+      "groups": 480,
+      "replicates": 500,
+      "critical_recall_95pct": [
+        0.9677552826795549,
+        0.9929597555366153
+      ],
+      "normal_fpr_95pct": [
+        0.0002008079067086487,
+        0.004720732598765993
+      ]
+    },
+    "selected": {
+      "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+      "groups": 480,
+      "replicates": 500,
+      "critical_recall_95pct": [
+        0.975294076848384,
+        0.9945183773755203
+      ],
+      "normal_fpr_95pct": [
+        0.0,
+        0.00042541129414080535
+      ]
+    },
+    "physics_rule": {
+      "unit": "generation_parameter_id (whole events and repeat noise realizations)",
+      "groups": 480,
+      "replicates": 500,
+      "critical_recall_95pct": [
+        0.9891490739287395,
+        1.0
+      ],
+      "normal_fpr_95pct": [
+        0.0,
+        0.0015355556672084424
+      ]
+    }
+  },
+  "events": {
+    "xgboost": [
+      {
+        "persistence_windows": 1,
+        "critical_events": 142,
+        "detected_critical_events": 137,
+        "missed_critical_events": 5,
+        "critical_event_recall": 0.9647887323943662,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 3.166666666666666,
+        "p90_detection_delay_hours": 6.8999999999999995,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 2,
+        "critical_events": 142,
+        "detected_critical_events": 136,
+        "missed_critical_events": 6,
+        "critical_event_recall": 0.9577464788732394,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 4.833333333333334,
+        "p90_detection_delay_hours": 8.583333333333334,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 3,
+        "critical_events": 142,
+        "detected_critical_events": 136,
+        "missed_critical_events": 6,
+        "critical_event_recall": 0.9577464788732394,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 6.5,
+        "p90_detection_delay_hours": 10.25,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      }
+    ],
+    "random_forest": [
+      {
+        "persistence_windows": 1,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 3.166666666666666,
+        "p90_detection_delay_hours": 6.883333333333332,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 2,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 4.833333333333334,
+        "p90_detection_delay_hours": 8.55,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 3,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 6.5,
+        "p90_detection_delay_hours": 10.216666666666665,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      }
+    ],
+    "two_stage": [
+      {
+        "persistence_windows": 1,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 3.166666666666666,
+        "p90_detection_delay_hours": 6.883333333333332,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 2,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 4.833333333333334,
+        "p90_detection_delay_hours": 8.55,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 3,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 6.5,
+        "p90_detection_delay_hours": 10.216666666666665,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      }
+    ],
+    "original_hyperparameters_refit": [
+      {
+        "persistence_windows": 1,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 3.166666666666666,
+        "p90_detection_delay_hours": 6.883333333333332,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 2,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 4.833333333333334,
+        "p90_detection_delay_hours": 8.55,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 3,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 6.5,
+        "p90_detection_delay_hours": 10.216666666666665,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      }
+    ],
+    "selected": [
+      {
+        "persistence_windows": 1,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 3.166666666666666,
+        "p90_detection_delay_hours": 6.883333333333332,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 2,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 4.833333333333334,
+        "p90_detection_delay_hours": 8.55,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 3,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 6.5,
+        "p90_detection_delay_hours": 10.216666666666665,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      }
+    ],
+    "physics_rule": [
+      {
+        "persistence_windows": 1,
+        "critical_events": 142,
+        "detected_critical_events": 142,
+        "missed_critical_events": 0,
+        "critical_event_recall": 1.0,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 3.0833333333333326,
+        "p90_detection_delay_hours": 6.833333333333332,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 2,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 4.833333333333334,
+        "p90_detection_delay_hours": 8.55,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      },
+      {
+        "persistence_windows": 3,
+        "critical_events": 142,
+        "detected_critical_events": 138,
+        "missed_critical_events": 4,
+        "critical_event_recall": 0.971830985915493,
+        "normal_events": 798,
+        "false_critical_event_fraction": 0.0,
+        "false_critical_episodes": 0,
+        "median_detection_delay_hours": 6.5,
+        "p90_detection_delay_hours": 10.216666666666665,
+        "meaning": "local severity detector; delay from true 35 mm crossing among detected events, not collapse lead time; regional neighbor gate unchanged"
+      }
+    ]
+  },
+  "by_scenario": [
+    {
+      "model": "xgboost",
+      "scenario": "accelerating_subsidence",
+      "rows": 540,
+      "critical_rows": 220,
+      "normal_rows": 266,
+      "critical_recall": 0.9227272727272727,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "communication_failure",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "irregular_subsidence",
+      "rows": 540,
+      "critical_rows": 202,
+      "normal_rows": 266,
+      "critical_recall": 0.9801980198019802,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "multiple_zones",
+      "rows": 540,
+      "critical_rows": 280,
+      "normal_rows": 254,
+      "critical_recall": 0.9928571428571429,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "packet_loss",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "rapid_subsidence",
+      "rows": 540,
+      "critical_rows": 212,
+      "normal_rows": 256,
+      "critical_recall": 0.9764150943396226,
+      "normal_fpr": 0.00390625
+    },
+    {
+      "model": "xgboost",
+      "scenario": "sensor_bias",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "sensor_drift",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "sensor_dropout",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "sensor_spike",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "sensor_stuck",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "single_node_disturbance",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "slow_drift_temperature",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "slow_subsidence",
+      "rows": 540,
+      "critical_rows": 270,
+      "normal_rows": 254,
+      "critical_recall": 0.9888888888888889,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "stable_ground",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "xgboost",
+      "scenario": "vibration_only",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "accelerating_subsidence",
+      "rows": 540,
+      "critical_rows": 220,
+      "normal_rows": 266,
+      "critical_recall": 0.9863636363636363,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "communication_failure",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "irregular_subsidence",
+      "rows": 540,
+      "critical_rows": 202,
+      "normal_rows": 266,
+      "critical_recall": 0.9851485148514851,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "multiple_zones",
+      "rows": 540,
+      "critical_rows": 280,
+      "normal_rows": 254,
+      "critical_recall": 0.9857142857142858,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "packet_loss",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "rapid_subsidence",
+      "rows": 540,
+      "critical_rows": 212,
+      "normal_rows": 256,
+      "critical_recall": 0.9622641509433962,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "sensor_bias",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "sensor_drift",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "sensor_dropout",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "sensor_spike",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "sensor_stuck",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "single_node_disturbance",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "slow_drift_temperature",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "slow_subsidence",
+      "rows": 540,
+      "critical_rows": 270,
+      "normal_rows": 254,
+      "critical_recall": 0.9962962962962963,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "stable_ground",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "random_forest",
+      "scenario": "vibration_only",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "accelerating_subsidence",
+      "rows": 540,
+      "critical_rows": 220,
+      "normal_rows": 266,
+      "critical_recall": 0.9863636363636363,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "communication_failure",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "irregular_subsidence",
+      "rows": 540,
+      "critical_rows": 202,
+      "normal_rows": 266,
+      "critical_recall": 0.9851485148514851,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "multiple_zones",
+      "rows": 540,
+      "critical_rows": 280,
+      "normal_rows": 254,
+      "critical_recall": 0.9928571428571429,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "packet_loss",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "rapid_subsidence",
+      "rows": 540,
+      "critical_rows": 212,
+      "normal_rows": 256,
+      "critical_recall": 0.9811320754716981,
+      "normal_fpr": 0.00390625
+    },
+    {
+      "model": "two_stage",
+      "scenario": "sensor_bias",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "sensor_drift",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "sensor_dropout",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "sensor_spike",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "sensor_stuck",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "single_node_disturbance",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "slow_drift_temperature",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "slow_subsidence",
+      "rows": 540,
+      "critical_rows": 270,
+      "normal_rows": 254,
+      "critical_recall": 0.9851851851851852,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "stable_ground",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "two_stage",
+      "scenario": "vibration_only",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "accelerating_subsidence",
+      "rows": 540,
+      "critical_rows": 220,
+      "normal_rows": 266,
+      "critical_recall": 0.9681818181818181,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "communication_failure",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "irregular_subsidence",
+      "rows": 540,
+      "critical_rows": 202,
+      "normal_rows": 266,
+      "critical_recall": 0.9801980198019802,
+      "normal_fpr": 0.022556390977443608
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "multiple_zones",
+      "rows": 540,
+      "critical_rows": 280,
+      "normal_rows": 254,
+      "critical_recall": 1.0,
+      "normal_fpr": 0.023622047244094488
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "packet_loss",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "rapid_subsidence",
+      "rows": 540,
+      "critical_rows": 212,
+      "normal_rows": 256,
+      "critical_recall": 0.9764150943396226,
+      "normal_fpr": 0.00390625
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "sensor_bias",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "sensor_drift",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "sensor_dropout",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "sensor_spike",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "sensor_stuck",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "single_node_disturbance",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "slow_drift_temperature",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "slow_subsidence",
+      "rows": 540,
+      "critical_rows": 270,
+      "normal_rows": 254,
+      "critical_recall": 0.9814814814814815,
+      "normal_fpr": 0.007874015748031496
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "stable_ground",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "original_hyperparameters_refit",
+      "scenario": "vibration_only",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "accelerating_subsidence",
+      "rows": 540,
+      "critical_rows": 220,
+      "normal_rows": 266,
+      "critical_recall": 0.9863636363636363,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "communication_failure",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "irregular_subsidence",
+      "rows": 540,
+      "critical_rows": 202,
+      "normal_rows": 266,
+      "critical_recall": 0.9851485148514851,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "multiple_zones",
+      "rows": 540,
+      "critical_rows": 280,
+      "normal_rows": 254,
+      "critical_recall": 0.9928571428571429,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "packet_loss",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "rapid_subsidence",
+      "rows": 540,
+      "critical_rows": 212,
+      "normal_rows": 256,
+      "critical_recall": 0.9811320754716981,
+      "normal_fpr": 0.00390625
+    },
+    {
+      "model": "selected",
+      "scenario": "sensor_bias",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "sensor_drift",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "sensor_dropout",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "sensor_spike",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "sensor_stuck",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "single_node_disturbance",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "slow_drift_temperature",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "slow_subsidence",
+      "rows": 540,
+      "critical_rows": 270,
+      "normal_rows": 254,
+      "critical_recall": 0.9851851851851852,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "stable_ground",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "selected",
+      "scenario": "vibration_only",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "accelerating_subsidence",
+      "rows": 540,
+      "critical_rows": 220,
+      "normal_rows": 266,
+      "critical_recall": 1.0,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "communication_failure",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "irregular_subsidence",
+      "rows": 540,
+      "critical_rows": 202,
+      "normal_rows": 266,
+      "critical_recall": 0.995049504950495,
+      "normal_fpr": 0.0037593984962406013
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "multiple_zones",
+      "rows": 540,
+      "critical_rows": 280,
+      "normal_rows": 254,
+      "critical_recall": 1.0,
+      "normal_fpr": 0.011811023622047244
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "packet_loss",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "rapid_subsidence",
+      "rows": 540,
+      "critical_rows": 212,
+      "normal_rows": 256,
+      "critical_recall": 0.9905660377358491,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "sensor_bias",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "sensor_drift",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "sensor_dropout",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "sensor_spike",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "sensor_stuck",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "single_node_disturbance",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "slow_drift_temperature",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "slow_subsidence",
+      "rows": 540,
+      "critical_rows": 270,
+      "normal_rows": 254,
+      "critical_recall": 0.9925925925925926,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "stable_ground",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    },
+    {
+      "model": "physics_rule",
+      "scenario": "vibration_only",
+      "rows": 540,
+      "critical_rows": 0,
+      "normal_rows": 540,
+      "critical_recall": null,
+      "normal_fpr": 0.0
+    }
+  ],
+  "acceptance": {
+    "target_policy": "local_displacement_severity_v1",
+    "legacy_target_not_claimed": true,
+    "point_estimates_pass": true,
+    "group_95pct_bounds_pass": true,
+    "test_events": 960,
+    "parameter_groups": 480,
+    "windows": 8640,
+    "unseen_shapes": [
+      "sigmoid",
+      "smoothstep",
+      "two_stage"
+    ],
+    "qualification": "synthetic prototype-scale local severity classification; not validation of original scenario-label target, field safety or collapse prediction"
+  }
+}

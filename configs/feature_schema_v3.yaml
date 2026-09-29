@@ -1,0 +1,150 @@
+feature_schema_version: v3
+window_steps: 60
+stride_steps: 10
+short_steps: 18
+endpoint_steps: 3
+observable_channels:
+- displacement
+- tilt_x
+- tilt_y
+- strain
+- vibration_rms
+- vibration_peak
+- packet_loss
+features:
+- displacement_endpoint
+- displacement_mean
+- displacement_std
+- displacement_velocity
+- displacement_projected
+- displacement_acceleration
+- tilt_x_endpoint
+- tilt_x_mean
+- tilt_x_std
+- tilt_x_velocity
+- tilt_x_projected
+- tilt_x_acceleration
+- tilt_y_endpoint
+- tilt_y_mean
+- tilt_y_std
+- tilt_y_velocity
+- tilt_y_projected
+- tilt_y_acceleration
+- strain_endpoint
+- strain_mean
+- strain_std
+- strain_velocity
+- strain_projected
+- strain_acceleration
+- displacement_change
+- displacement_missing_ratio
+- channel_missing_ratio
+- vibration_rms
+- vibration_peak
+- packet_loss
+provenance:
+  displacement_endpoint:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  displacement_mean:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  displacement_std:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  displacement_velocity:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  displacement_projected:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  displacement_acceleration:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_x_endpoint:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_x_mean:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_x_std:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_x_velocity:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_x_projected:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_x_acceleration:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_y_endpoint:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_y_mean:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_y_std:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_y_velocity:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_y_projected:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  tilt_y_acceleration:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  strain_endpoint:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  strain_mean:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  strain_std:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  strain_velocity:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  strain_projected:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  strain_acceleration:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  displacement_change:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  displacement_missing_ratio:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  channel_missing_ratio:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  vibration_rms:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  vibration_peak:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+  packet_loss:
+    source: observable causal sensor history
+    availability: existing synthetic sensor channels
+excluded:
+- true_displacement_mm
+- true_velocity_mm_per_hour
+- risk_label
+- legacy_risk_label
+- generation_parameter_id
+- scenario_family
+- shape_family
+- x
+- y
+- amplitude
+- onset
+- duration
+- rate
+- sigma

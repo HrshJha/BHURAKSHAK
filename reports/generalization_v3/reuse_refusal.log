@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Users/harshkumarjha/mine/scripts/run_generalization_v3.py", line 342, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/Users/harshkumarjha/mine/scripts/run_generalization_v3.py", line 337, in main
+    elif args.action=='evaluate':evaluate(cfg,out)
+                                 ^^^^^^^^^^^^^^^^^
+  File "/Users/harshkumarjha/mine/scripts/run_generalization_v3.py", line 292, in evaluate
+    with lock.open('x') as f:json.dump(dict(status='claimed_before_generation',evals_run=1,freeze_sha256=sha(out/'freeze.json'),test_spec=cfg['independent_test']),f,indent=2)
+         ^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: '/Users/harshkumarjha/mine/reports/generalization_v3/independent_lock.json'
